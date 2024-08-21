@@ -1,0 +1,11 @@
+@import "variables.scss";
+@import "addProduct.scss";
+@import "app.scss";
+@import "login.scss";
+@import "dashboard.scss";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
