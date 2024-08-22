@@ -1,0 +1,41 @@
+// _filtrado.scss
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    select, input {
+        margin-bottom: 10px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    select {
+        width: 200px;
+    }
+
+    input[type="text"] {
+        width: 100%;
+    }
+
+    .filter-buttons {
+        display: flex;
+        gap: 10px;
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+
+            &:hover {
+                background-color: #0056b3;
+            }
+        }
+    }
+}

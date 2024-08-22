@@ -3,9 +3,20 @@
 @import "app.scss";
 @import "login.scss";
 @import "dashboard.scss";
+@import "productList.scss";
+@import "editProduct.scss";
+@import "menusDesplegables.scss";
+@import "filtrado.scss";
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
 }
