@@ -4,8 +4,9 @@ import { doc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore'
 import { useParams, useNavigate } from 'react-router-dom';
 
 const EditProduct = () => {
-    const { id } = useParams(); // Obtener el ID del producto desde los parámetros de la URL
-    const navigate = useNavigate(); // Hook para redirigir después de editar
+    const { id } = useParams();
+    const navigate = useNavigate();
+    
     const [producto, setProducto] = useState(null);
     const [nombre, setNombre] = useState('');
     const [categoria, setCategoria] = useState('');
@@ -22,12 +23,12 @@ const EditProduct = () => {
             try {
                 const snapshot = await getDocs(collection(db, 'categories'));
                 const categoriesData = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
+                    adress: doc.data().adress,
+                    nombre: doc.data().nombre,
+                    subcategorias: doc.data().subcategorias
                 }));
                 setCategorias(categoriesData);
 
-                // Llamar a fetchProduct después de obtener las categorías
                 fetchProduct(categoriesData);
             } catch (error) {
                 console.error('Error al obtener las categorías: ', error);
@@ -42,15 +43,14 @@ const EditProduct = () => {
                     const data = productSnap.data();
                     setProducto(data);
                     setNombre(data.nombre);
-                    setCategoria(data.categoria);
+                    setCategoria(data.categoryAdress); // Utilizar categoryAdress para la categoría
                     setSubcategoria(data.subcategoria);
                     setPrecio(data.precio);
                     setStock(data.stock);
                     setDescripcion(data.descripcion);
                     setImagen(data.imagen);
 
-                    // Establecer subcategorías basadas en la categoría del producto
-                    const selectedCategoria = categoriesData.find(cat => cat.nombre === data.categoria);
+                    const selectedCategoria = categoriesData.find(cat => cat.adress === data.categoryAdress);
                     setSubcategorias(selectedCategoria ? selectedCategoria.subcategorias : []);
                 } else {
                     console.log('No se encontró el producto');
@@ -64,10 +64,10 @@ const EditProduct = () => {
     }, [id]);
 
     const handleCategoriaChange = (e) => {
-        const selectedCategoria = categorias.find(cat => cat.id === e.target.value);
-        setCategoria(selectedCategoria ? selectedCategoria.nombre : ''); // Guardar el nombre de la categoría
+        const selectedCategoria = categorias.find(cat => cat.adress === e.target.value);
+        setCategoria(e.target.value);
         setSubcategorias(selectedCategoria ? selectedCategoria.subcategorias : []);
-        setSubcategoria(''); // Resetear subcategoría cuando cambia la categoría
+        setSubcategoria('');
     };
 
     const handleSubmit = async (e) => {
@@ -78,76 +78,103 @@ const EditProduct = () => {
             const productRef = doc(db, 'productos', id);
             await updateDoc(productRef, {
                 nombre,
-                categoria, // Aquí se guarda el nombre de la categoría en lugar del ID
+                categoria: categorias.find(cat => cat.adress === categoria)?.nombre || producto.categoria,
                 subcategoria,
                 precio: parseFloat(precio),
                 stock: parseInt(stock),
                 descripcion,
-                imagen
+                imagen,
+                categoryAdress: categoria // Actualizar categoryAdress en lugar de añadir un nuevo campo
             });
             alert('Producto actualizado exitosamente');
-            navigate('/admin/products'); // Redirigir a la lista de productos después de la actualización
+            navigate('/admin/products');
         } catch (error) {
             console.error("Error al actualizar el producto: ", error);
         }
     };
 
     return (
-        <div>
+        <div className="edit-product-container">
             <h2>Editar Producto</h2>
             {producto ? (
                 <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
-                        placeholder="Nombre del producto"
-                        required
-                    />
+                    <label>
+                        Nombre:
+                        <input
+                            type="text"
+                            value={nombre}
+                            onChange={(e) => setNombre(e.target.value)}
+                            placeholder="Nombre del producto"
+                            required
+                        />
+                    </label>
                     
-                    <select value={categoria} onChange={handleCategoriaChange} required>
-                        <option value="" disabled>Seleccionar Categoría</option>
-                        {categorias.map(cat => (
-                            <option key={cat.id} value={cat.id}>{cat.nombre}</option>
-                        ))}
-                    </select>
-
-                    {subcategorias.length > 0 && (
-                        <select value={subcategoria} onChange={(e) => setSubcategoria(e.target.value)} required>
-                            <option value="" disabled>Seleccionar Subcategoría</option>
-                            {subcategorias.map(subcat => (
-                                <option key={subcat} value={subcat}>{subcat}</option>
+                    <label>
+                        Categoría:
+                        <select value={categoria} onChange={handleCategoriaChange} required>
+                            <option value="" disabled>Seleccionar Categoría</option>
+                            {categorias.map(cat => (
+                                <option key={cat.adress} value={cat.adress}>{cat.nombre}</option>
                             ))}
                         </select>
+                    </label>
+
+                    {subcategorias.length > 0 && (
+                        <label>
+                            Subcategoría:
+                            <select value={subcategoria} onChange={(e) => setSubcategoria(e.target.value)} required>
+                                <option value="" disabled>Seleccionar Subcategoría</option>
+                                {subcategorias.map(subcat => (
+                                    <option key={subcat} value={subcat}>{subcat}</option>
+                                ))}
+                            </select>
+                        </label>
                     )}
 
-                    <input
-                        type="number"
-                        value={precio}
-                        onChange={(e) => setPrecio(e.target.value)}
-                        placeholder="Precio"
-                        required
-                    />
-                    <input
-                        type="number"
-                        value={stock}
-                        onChange={(e) => setStock(e.target.value)}
-                        placeholder="Stock disponible"
-                        required
-                    />
-                    <textarea
-                        value={descripcion}
-                        onChange={(e) => setDescripcion(e.target.value)}
-                        placeholder="Descripción"
-                        required
-                    ></textarea>
-                    <input
-                        type="text"
-                        value={imagen}
-                        onChange={(e) => setImagen(e.target.value)}
-                        placeholder="URL de la imagen"
-                        required
-                    />
+                    <label>
+                        Precio:
+                        <input
+                            type="number"
+                            step="0.01"
+                            value={precio}
+                            onChange={(e) => setPrecio(e.target.value)}
+                            placeholder="Precio"
+                            required
+                        />
+                    </label>
+                    
+                    <label>
+                        Stock:
+                        <input
+                            type="number"
+                            value={stock}
+                            onChange={(e) => setStock(e.target.value)}
+                            placeholder="Stock disponible"
+                            required
+                        />
+                    </label>
+                    
+                    <label>
+                        Descripción:
+                        <textarea
+                            value={descripcion}
+                            onChange={(e) => setDescripcion(e.target.value)}
+                            placeholder="Descripción"
+                            required
+                        />
+                    </label>
+                    
+                    <label>
+                        Imagen (URL):
+                        <input
+                            type="text"
+                            value={imagen}
+                            onChange={(e) => setImagen(e.target.value)}
+                            placeholder="URL de la imagen"
+                            required
+                        />
+                    </label>
+                    
                     <button type="submit">Actualizar Producto</button>
                 </form>
             ) : (

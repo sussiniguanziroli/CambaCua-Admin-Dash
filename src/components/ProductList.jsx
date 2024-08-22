@@ -8,7 +8,6 @@ const ProductList = () => {
     const [productos, setProductos] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
 
-    // Fetch products from Firestore
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -27,7 +26,6 @@ const ProductList = () => {
         fetchProducts();
     }, []);
 
-    // Toggle product active status
     const toggleProductActive = async (producto) => {
         const productRef = doc(db, 'productos', producto.id);
         await updateDoc(productRef, {
@@ -41,7 +39,6 @@ const ProductList = () => {
         ));
     };
 
-    // Delete product
     const deleteProduct = async (producto) => {
         if (window.confirm(`¿Estás seguro de que deseas eliminar el producto "${producto.nombre}"?`)) {
             try {
@@ -56,7 +53,6 @@ const ProductList = () => {
         }
     };
 
-    // Handle filtering based on category, subcategory, and text
     const handleFilter = ({ category, subcategory, text }) => {
         let filtered = productos;
 

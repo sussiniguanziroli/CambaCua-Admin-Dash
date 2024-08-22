@@ -8,14 +8,14 @@ const Filtrado = ({ onFilter }) => {
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [searchText, setSearchText] = useState('');
 
-    // Fetch categories only once when component mounts
     useEffect(() => {
         const fetchCategories = async () => {
             try {
                 const snapshot = await getDocs(collection(db, 'categories'));
                 const categoriesData = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
+                    adress: doc.data().adress,
+                    nombre: doc.data().nombre,
+                    subcategorias: doc.data().subcategorias
                 }));
                 setCategories(categoriesData);
             } catch (error) {
@@ -26,7 +26,6 @@ const Filtrado = ({ onFilter }) => {
         fetchCategories();
     }, []);
 
-    // Use callback to memoize filter function to prevent unnecessary re-renders
     const handleFilterChange = useCallback(() => {
         onFilter({ category: selectedCategory, subcategory: selectedSubcategory, text: searchText });
     }, [selectedCategory, selectedSubcategory, searchText, onFilter]);
@@ -37,7 +36,7 @@ const Filtrado = ({ onFilter }) => {
 
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
-        setSelectedSubcategory(''); // Reset subcategoría cuando cambia la categoría
+        setSelectedSubcategory('');
     };
 
     const handleSubcategoryChange = (e) => {
@@ -48,14 +47,14 @@ const Filtrado = ({ onFilter }) => {
         setSearchText(e.target.value);
     };
 
-    const selectedCategoryObj = categories.find(cat => cat.id === selectedCategory);
+    const selectedCategoryObj = categories.find(cat => cat.adress === selectedCategory);
 
     return (
         <div className="filter-container">
             <select className="filter-select" value={selectedCategory} onChange={handleCategoryChange}>
                 <option value="">Todas las Categorías</option>
                 {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
+                    <option key={category.adress} value={category.adress}>
                         {category.nombre}
                     </option>
                 ))}
