@@ -57,7 +57,7 @@ const ProductList = () => {
         let filtered = productos;
 
         if (category) {
-            filtered = filtered.filter(producto => producto.categoria === category);
+            filtered = filtered.filter(producto => producto.categoryAdress === category);
         }
 
         if (subcategory) {
@@ -67,7 +67,7 @@ const ProductList = () => {
         if (text) {
             filtered = filtered.filter(producto =>
                 producto.nombre.toLowerCase().includes(text.toLowerCase()) ||
-                producto.categoria.toLowerCase().includes(text.toLowerCase()) ||
+                producto.categoryAdress.toLowerCase().includes(text.toLowerCase()) ||
                 producto.subcategoria.toLowerCase().includes(text.toLowerCase())
             );
         }

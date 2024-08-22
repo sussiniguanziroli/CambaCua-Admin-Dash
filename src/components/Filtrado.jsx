@@ -26,17 +26,17 @@ const Filtrado = ({ onFilter }) => {
         fetchCategories();
     }, []);
 
-    const handleFilterChange = useCallback(() => {
+    const applyFilter = () => {
         onFilter({ category: selectedCategory, subcategory: selectedSubcategory, text: searchText });
-    }, [selectedCategory, selectedSubcategory, searchText, onFilter]);
+    };
 
     useEffect(() => {
-        handleFilterChange();
-    }, [handleFilterChange]);
+        applyFilter();
+    }, [selectedCategory, selectedSubcategory, searchText]); // Dependencias de los filtros
 
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
-        setSelectedSubcategory('');
+        setSelectedSubcategory(''); // Limpiar subcategoría al cambiar categoría
     };
 
     const handleSubcategoryChange = (e) => {
