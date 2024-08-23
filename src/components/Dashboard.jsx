@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import AddProduct from './AddProducts';
 import EditProduct from './EditProduct';
 import ProductList from './ProductList';
 
-
 const Dashboard = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="dashboard">
-      <nav className="sidebar">
+    <div className={`dashboard ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+      <button className="toggle-button" onClick={toggleSidebar}>
+        {isSidebarOpen ? '➖' : 'Menu'}
+      </button>
+      <nav className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <ul>
           <li><Link to="/admin/add-product">Agregar Producto</Link></li>
-          <li><Link to="/admin/products">Productos</Link></li>
+          <li><Link to="/admin/products">Ver Productos</Link></li>
         </ul>
       </nav>
       <div className="content">

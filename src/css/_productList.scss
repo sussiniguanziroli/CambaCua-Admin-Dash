@@ -2,71 +2,80 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     margin: .5rem;
-    gap: .7rem;
-    .product-item {
-        color: rgb(66, 66, 66);
-        font-weight: 600;
-        background-color: goldenrod;
-        padding: 1rem;
-        border-radius: 1rem;
+    gap: 1rem;
+
+}
+
+.product-item {
+    color: rgb(39, 39, 39);
+    font-weight: 600;
+    background-color: rgb(191, 190, 190);
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    button {
+        width: 7rem;
+    }
+}
+
+.metalinks {
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+}
+
+
+
+.ex-ul {
+    list-style: none;
+    padding: 0;
+
+
+    div {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
         display: flex;
-        flex-direction: column;
-        gap: .5rem;
-        button {
-            width: 7rem;
-        }
-    }
-    .metalinks {
-        text-decoration: none;
-        background-color: #007bff;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
+        justify-content: space-between;
+        gap: 7%;
+        align-items: center;
+        width: 100%;
+        height: 15rem;
 
-        &:hover {
-            background-color: #0056b3;
-        }
-    }
-
-   
-
-    .ex-ul {
-        list-style: none;
-        padding: 0;
-    
-      
-        div {
-          padding: 10px;
-          border-bottom: 1px solid #ddd;
-          display: flex;
-          justify-content: space-between;
-          gap: 7%;
-          align-items: center;
-          width: 100%;
-          height: 15rem;
-
-          img {
+        img {
             object-fit: contain;
             width: 100%;
             height: 100%;
-          }
-      
-          button {
+        }
+
+        button {
             background-color: #007bff;
             border: none;
             color: #fff;
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
-      
-            &:hover {
-              background-color: #0056b3;
-            }
-          }
-        }
-      }
-      
 
+            &:hover {
+                background-color: #0056b3;
+            }
+        }
+    }
 }
 
-
+@media (max-width: 768px) {
+    .product-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin: .5rem;
+        gap: .5rem;
+    }
+}

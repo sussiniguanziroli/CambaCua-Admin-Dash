@@ -31,10 +31,10 @@ const ProductList = () => {
         await updateDoc(productRef, {
             activo: !producto.activo
         });
-        setProductos(productos.map(p => 
+        setProductos(productos.map(p =>
             p.id === producto.id ? { ...p, activo: !p.activo } : p
         ));
-        setFilteredProducts(filteredProducts.map(p => 
+        setFilteredProducts(filteredProducts.map(p =>
             p.id === producto.id ? { ...p, activo: !p.activo } : p
         ));
     };
@@ -83,11 +83,11 @@ const ProductList = () => {
                     filteredProducts.map(producto => (
                         <div key={producto.id} className="product-item">
                             <h3>{producto.nombre}</h3>
-                            <p>{producto.descripcion}</p>
+
                             <p>Precio: ${producto.precio}</p>
                             <p>Stock: {producto.stock}</p>
-                            <p>Categoría: {producto.categoria}</p>
-                            <p>Subcategoría: {producto.subcategoria}</p>
+                            <p>Descripcion:{producto.descripcion}</p>
+                            <p>Subcategoría: {producto.subcategoria}</p><p>Categoría: {producto.categoria}</p>
                             <button onClick={() => toggleProductActive(producto)}>
                                 {producto.activo ? 'Desactivar' : 'Activar'}
                             </button>
