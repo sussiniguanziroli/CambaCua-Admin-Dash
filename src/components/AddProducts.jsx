@@ -53,6 +53,7 @@ const AddProduct = () => {
 
             // Agregar producto a Firestore
             await addDoc(collection(db, 'productos'), {
+                activo: true,
                 nombre,
                 categoria: selectedCategoria.nombre, // Guardar el nombre de la categoría
                 subcategoria,
