@@ -13,7 +13,9 @@ const AddProduct = () => {
     const [precio, setPrecio] = useState('');
     const [stock, setStock] = useState('');
     const [descripcion, setDescripcion] = useState('');
-    const [imagen, setImagen] = useState('');
+    const [imagenA, setImagenA] = useState('');
+    const [imagenB, setImagenB] = useState('');
+    const [imagenC, setImagenC] = useState('');
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -60,7 +62,9 @@ const AddProduct = () => {
                 precio: parseFloat(precio),
                 stock: parseInt(stock),
                 descripcion,
-                imagen,
+                imagenA,
+                imagenB,
+                imagenC,
                 categoryAdress: selectedCategoria.adress // Guardar solo la dirección de la categoría
             });
 
@@ -141,11 +145,31 @@ const AddProduct = () => {
                 </label>
 
                 <label>
-                    Imagen (URL):
+                    Imagen A (URL):
                     <input
                         type="text"
-                        value={imagen}
-                        onChange={(e) => setImagen(e.target.value)}
+                        value={imagenA}
+                        onChange={(e) => setImagenA(e.target.value)}
+                        placeholder="URL de la imagen"
+                    />
+                </label>
+
+                <label>
+                    Imagen B (URL):
+                    <input
+                        type="text"
+                        value={imagenB}
+                        onChange={(e) => setImagenB(e.target.value)}
+                        placeholder="URL de la imagen"
+                    />
+                </label>
+
+                <label>
+                    Imagen C (URL):
+                    <input
+                        type="text"
+                        value={imagenC}
+                        onChange={(e) => setImagenC(e.target.value)}
                         placeholder="URL de la imagen"
                     />
                 </label>
