@@ -15,6 +15,8 @@ const EditProduct = () => {
     const [stock, setStock] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [imagen, setImagen] = useState('');
+    const [imagenB, setImagenB] = useState('');
+    const [imagenC, setImagenC] = useState('');
     const [categorias, setCategorias] = useState([]);
     const [subcategorias, setSubcategorias] = useState([]);
 
@@ -49,6 +51,8 @@ const EditProduct = () => {
                     setStock(data.stock);
                     setDescripcion(data.descripcion);
                     setImagen(data.imagen);
+                    setImagenB(data.imagenB);
+                    setImagenC(data.imagenC);
 
                     const selectedCategoria = categoriesData.find(cat => cat.adress === data.categoryAdress);
                     setSubcategorias(selectedCategoria ? selectedCategoria.subcategorias : []);
@@ -84,6 +88,8 @@ const EditProduct = () => {
                 stock: parseInt(stock),
                 descripcion,
                 imagen,
+                imagenB,
+                imagenC,
                 categoryAdress: categoria // Actualizar categoryAdress en lugar de añadir un nuevo campo
             });
             alert('Producto actualizado exitosamente');
@@ -165,7 +171,7 @@ const EditProduct = () => {
                     </label>
                     
                     <label>
-                        Imagen (URL):
+                        Imagen A (URL):
                         <input
                             type="text"
                             value={imagen}
@@ -175,6 +181,30 @@ const EditProduct = () => {
                         />
                     </label>
                     
+                    <label>
+                        Imagen B (URL):
+                        <input
+                            type="text"
+                            value={imagenB}
+                            onChange={(e) => setImagenB(e.target.value)}
+                            placeholder="URL de la imagen"
+                            required
+                        />
+                    </label>
+
+                    <label>
+                        Imagen C (URL):
+                        <input
+                            type="text"
+                            value={imagenC}
+                            onChange={(e) => setImagenC(e.target.value)}
+                            placeholder="URL de la imagen"
+                            required
+                        />
+                    </label>
+                    
+                    
+
                     <button type="submit">Actualizar Producto</button>
                 </form>
             ) : (

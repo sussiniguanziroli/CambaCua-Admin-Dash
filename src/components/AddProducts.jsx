@@ -13,7 +13,7 @@ const AddProduct = () => {
     const [precio, setPrecio] = useState('');
     const [stock, setStock] = useState('');
     const [descripcion, setDescripcion] = useState('');
-    const [imagenA, setImagenA] = useState('');
+    const [imagen, setImagen] = useState('');
     const [imagenB, setImagenB] = useState('');
     const [imagenC, setImagenC] = useState('');
 
@@ -62,7 +62,7 @@ const AddProduct = () => {
                 precio: parseFloat(precio),
                 stock: parseInt(stock),
                 descripcion,
-                imagenA,
+                imagen,
                 imagenB,
                 imagenC,
                 categoryAdress: selectedCategoria.adress // Guardar solo la dirección de la categoría
@@ -148,8 +148,8 @@ const AddProduct = () => {
                     Imagen A (URL):
                     <input
                         type="text"
-                        value={imagenA}
-                        onChange={(e) => setImagenA(e.target.value)}
+                        value={imagen}
+                        onChange={(e) => setImagen(e.target.value)}
                         placeholder="URL de la imagen"
                     />
                 </label>
