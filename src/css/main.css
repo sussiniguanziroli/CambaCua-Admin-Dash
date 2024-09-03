@@ -404,6 +404,97 @@ button[type=submit]:focus {
   background-color: #0056b3;
 }
 
+.pedido-item {
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #212121;
+}
+.pedido-item h3 {
+  margin-top: 0;
+  font-size: 1.5em;
+  color: #0b369c;
+  font-weight: 500;
+}
+.pedido-item p {
+  margin: 10px 0;
+  font-size: 1em;
+  color: #404040;
+}
+.pedido-item p strong {
+  font-size: 1.2rem;
+}
+.pedido-item h4 {
+  margin-top: 15px;
+  font-size: 1.2em;
+  color: #021128;
+  font-weight: 400;
+}
+.pedido-item ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.pedido-item ul li {
+  border-bottom: 1px solid #404040;
+  padding: 8px 0;
+  font-size: 1em;
+  color: #404040;
+}
+.pedido-item ul li:last-child {
+  border-bottom: none;
+}
+.pedido-item button {
+  background-color: #0b369c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+.pedido-item button:hover {
+  background-color: #2359d9;
+}
+.pedido-item button.danger {
+  background-color: #b00020;
+}
+.pedido-item button.danger:hover {
+  background-color: #7d0017;
+}
+
+h2 {
+  font-size: 2em;
+  color: #021128;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+button {
+  background-color: #0b369c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+button:hover {
+  background-color: #2359d9;
+}
+button.danger {
+  background-color: #b00020;
+}
+button.danger:hover {
+  background-color: #7d0017;
+}
+
 * {
   margin: 0;
   padding: 0;
