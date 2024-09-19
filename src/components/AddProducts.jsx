@@ -145,7 +145,7 @@ const AddProduct = () => {
                 </label>
 
                 <label>
-                    Imagen A (URL):
+                    Imagen A (URL) "Esta imagen debe ser el icono del producto, ya que es la primera que aparece en la lista como portada":
                     <input
                         type="text"
                         value={imagen}

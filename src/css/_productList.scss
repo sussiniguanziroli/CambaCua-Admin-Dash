@@ -14,7 +14,15 @@
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: .5rem;
+
+    img {
+        border-radius: 1rem;
+        object-fit: cover;
+        width: 7rem;
+        height: 100%;
+    }
 
     button {
         width: 7rem;

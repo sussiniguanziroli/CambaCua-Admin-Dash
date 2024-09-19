@@ -206,7 +206,14 @@ form p {
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 0.5rem;
+}
+.product-item img {
+  border-radius: 1rem;
+  object-fit: cover;
+  width: 7rem;
+  height: 100%;
 }
 .product-item button {
   width: 7rem;
@@ -502,7 +509,7 @@ button.danger:hover {
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Roboto", system-ui;
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
