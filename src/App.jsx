@@ -31,11 +31,11 @@ function App() {
 
   return (
     <Router>
-      <div>
+      <div className='app-div'>
         {user ? (
           <>
             <h1>Bienvenido, {user.email}</h1>
-            <button onClick={handleLogout}>Cerrar sesión</button>
+            <button className='cerrar-sesion' onClick={handleLogout}>Cerrar sesión</button>
             <Dashboard />
           </>
         ) : (
