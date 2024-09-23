@@ -4,22 +4,22 @@ import { db } from '../firebase/config'; // Asegúrate de importar correctamente
 
 const HandleOrders = () => {
     const [pedidos, setPedidos] = useState([]);
-    const [archivados, setArchivados] = useState([]);
-    const [viewArchived, setViewArchived] = useState(false);
+    const [completados, setCompletados] = useState([]);
+    const [viewCompleted, setViewCompleted] = useState(false);
 
-    // Fetch orders based on viewArchived state
+    // Fetch orders based on viewCompleted state
     useEffect(() => {
         const fetchPedidos = async () => {
-            const pedidosCollection = viewArchived ? collection(db, 'archivo-pedidos') : collection(db, 'pedidos');
+            const pedidosCollection = viewCompleted ? collection(db, 'completados') : collection(db, 'pedidos');
             const pedidosSnapshot = await getDocs(pedidosCollection);
             const pedidosList = pedidosSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            viewArchived ? setArchivados(pedidosList) : setPedidos(pedidosList);
+            viewCompleted ? setCompletados(pedidosList) : setPedidos(pedidosList);
         };
 
         fetchPedidos();
-    }, [viewArchived]);
+    }, [viewCompleted]);
 
-    // Mark order as finished and archive it
+    // Mark order as finished and move it to the completed collection
     const marcarComoFinalizado = async (id) => {
         try {
             const pedidoRef = doc(db, 'pedidos', id);
@@ -27,68 +27,68 @@ const HandleOrders = () => {
             const pedidoData = pedidoDoc.data();
 
             if (pedidoData) {
-                // Move the order to the archive collection
-                await setDoc(doc(db, 'archivo-pedidos', id), pedidoData);
+                // Move the order to the completed collection
+                await setDoc(doc(db, 'completados', id), pedidoData);
                 // Remove the order from the current orders collection
                 await deleteDoc(pedidoRef);
-                alert('Pedido marcado como finalizado y archivado');
+                alert('Pedido marcado como completado');
                 setPedidos(pedidos.filter(pedido => pedido.id !== id));
             }
         } catch (error) {
-            console.error('Error al marcar el pedido como finalizado:', error);
+            console.error('Error al marcar el pedido como completado:', error);
         }
     };
 
-    // Delete archived order permanently
-    const borrarPedidoArchivado = async (id) => {
+    // Delete completed order permanently
+    const borrarPedidoCompletado = async (id) => {
         try {
-            const pedidoRef = doc(db, 'archivo-pedidos', id);
+            const pedidoRef = doc(db, 'completados', id);
             await deleteDoc(pedidoRef);
-            alert('Pedido archivado borrado');
-            setArchivados(archivados.filter(pedido => pedido.id !== id));
+            alert('Pedido completado borrado');
+            setCompletados(completados.filter(pedido => pedido.id !== id));
         } catch (error) {
-            console.error('Error al borrar el pedido archivado:', error);
+            console.error('Error al borrar el pedido completado:', error);
         }
     };
 
     // Unarchive an order and move it back to the current orders
     const desarchivarPedido = async (id) => {
         try {
-            const pedidoRef = doc(db, 'archivo-pedidos', id);
+            const pedidoRef = doc(db, 'completados', id);
             const pedidoDoc = await getDoc(pedidoRef);
             const pedidoData = pedidoDoc.data();
 
             if (pedidoData) {
                 // Move the order back to the current orders collection
                 await setDoc(doc(db, 'pedidos', id), pedidoData);
-                // Remove the order from the archive collection
+                // Remove the order from the completed collection
                 await deleteDoc(pedidoRef);
-                alert('Pedido desarchivado');
-                setArchivados(archivados.filter(pedido => pedido.id !== id));
+                alert('Pedido movido a pedidos actuales');
+                setCompletados(completados.filter(pedido => pedido.id !== id));
             }
         } catch (error) {
-            console.error('Error al desarchivar el pedido:', error);
+            console.error('Error al mover el pedido a pedidos actuales:', error);
         }
     };
 
-    // Toggle between viewing current orders and archived orders
-    const toggleArchivados = () => {
-        setViewArchived(!viewArchived);
+    // Toggle between viewing current orders and completed orders
+    const toggleCompletados = () => {
+        setViewCompleted(!viewCompleted);
     };
 
     return (
         <div>
-            <h2>{viewArchived ? 'Pedidos Archivados' : 'Pedidos Actuales'}</h2>
-            <button onClick={toggleArchivados}>
-                {viewArchived ? 'Ver Pedidos Actuales' : 'Ver Pedidos Archivados'}
+            <h2>{viewCompleted ? 'Pedidos Completados' : 'Pedidos Actuales'}</h2>
+            <button onClick={toggleCompletados}>
+                {viewCompleted ? 'Ver Pedidos Actuales' : 'Ver Pedidos Completados'}
             </button>
-            {viewArchived ? (
+            {viewCompleted ? (
                 <div>
-                    {archivados.length === 0 ? (
-                        <p>No hay pedidos archivados.</p>
+                    {completados.length === 0 ? (
+                        <p>No hay pedidos completados.</p>
                     ) : (
                         <div>
-                            {archivados.map((pedido) => (
+                            {completados.map((pedido) => (
                                 <div key={pedido.id} className="pedido-item">
                                     <h3>Pedido de {pedido.nombre}</h3>
                                     <p>Dirección: {pedido.direccion}</p>
@@ -113,8 +113,8 @@ const HandleOrders = () => {
                                     ) : (
                                         <p>No hay productos en este pedido.</p>
                                     )}
-                                    <button onClick={() => desarchivarPedido(pedido.id)}>Desarchivar</button>
-                                    <button onClick={() => borrarPedidoArchivado(pedido.id)}>Borrar</button>
+                                    <button onClick={() => desarchivarPedido(pedido.id)}>Mover a Pedidos Actuales</button>
+                                    <button onClick={() => borrarPedidoCompletado(pedido.id)}>Borrar</button>
                                 </div>
                             ))}
                         </div>
