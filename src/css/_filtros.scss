@@ -1,0 +1,138 @@
+// _filtros.scss
+
+.filtros-container {
+    background-color: $color-fondo;
+    padding: 1.5rem;
+    border-radius: $border-radius;
+    margin-bottom: 2rem;
+    box-shadow: $shadow-sm;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    border: 1px solid $color-borde;
+  
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+      padding: 1rem;
+    }
+  
+    .filtro-group {
+      margin-bottom: 0.5rem;
+  
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: $font-weight-semibold;
+        color: $color-texto-secundario;
+        font-size: 0.9rem;
+      }
+  
+      input, .react-datepicker-wrapper input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid $color-borde;
+        border-radius: $border-radius-sm;
+        font-size: 0.9rem;
+        transition: $transition-base;
+  
+        &:focus {
+          outline: none;
+          border-color: $color-primario;
+          box-shadow: 0 0 0 2px rgba($color-primario, 0.1);
+        }
+  
+        &::placeholder {
+          color: $color-texto-placeholder;
+        }
+      }
+    }
+  
+    .price-range, .date-range {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+  
+      input {
+        flex: 1;
+        min-width: 0;
+      }
+  
+      span {
+        color: $color-texto-secundario;
+        font-size: 0.9rem;
+        white-space: nowrap;
+      }
+    }
+  
+    .btn-reset {
+      @include boton-base;
+      background-color: $color-secundario;
+      color: $color-texto-claro;
+      padding: 0.75rem 1.25rem;
+      align-self: flex-end;
+      margin-top: auto;
+      font-size: 0.9rem;
+      transition: $transition-base;
+  
+      &:hover {
+        background-color: darken($color-secundario, 10%);
+        transform: translateY(-1px);
+      }
+  
+      @media (max-width: $breakpoint-md) {
+        width: 100%;
+        margin-top: 1rem;
+      }
+    }
+  }
+  
+  // Estilos para el datepicker
+  .react-datepicker {
+    font-family: $font-family-base;
+    border-color: $color-borde;
+    box-shadow: $shadow-md;
+  
+    &__header {
+      background-color: $color-fondo;
+      border-bottom-color: $color-borde;
+    }
+  
+    &__current-month, &__day-name {
+      color: $color-texto;
+      font-weight: $font-weight-semibold;
+    }
+  
+    &__day {
+      color: $color-texto;
+  
+      &:hover {
+        background-color: rgba($color-primario, 0.1);
+      }
+  
+      &--selected {
+        background-color: $color-primario;
+        color: white;
+      }
+  
+      &--keyboard-selected {
+        background-color: rgba($color-primario, 0.2);
+      }
+    }
+  
+    &__navigation {
+      top: 1rem;
+      border-color: $color-texto-secundario;
+  
+      &:hover {
+        border-color: $color-primario;
+      }
+    }
+  }
+  
+  // Contador de resultados
+  .contador-resultados {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: $color-texto-secundario;
+    font-style: italic;
+  }

@@ -1,66 +1,266 @@
+// Variables (asegúrate de que estén definidas en tu tema)
+$primary-color: #3498db;
+$primary-light: lighten($primary-color, 10%);
+$primary-dark: darken($primary-color, 15%);
+$error-color: #e74c3c;
+$success-color: #2ecc71;
+$warning-color: #f39c12;
+$border-radius: 1rem;
+$box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+// Estilos base
+.pedidos-container {
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 h2 {
-    font-size: 2em;
-    color: $primary-dark;
-    margin-bottom: 20px;
-    font-weight: 500;
+  font-size: 2em;
+  color: $primary-dark;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 0.5rem;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: $primary-color;
+  }
 }
 
-button {
-    background-color: $primary-color;
-    color: #fff;
-    border: none;
-    border-radius: 1rem;
-    padding: .7rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-        background-color: $primary-light;
-    }
-
-    &.danger {
-        background-color: $error-color;
-        &:hover {
-            background-color: darken($error-color, 10%);
-        }
-    }
-}
-
+// Grid y tarjetas
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
 }
 
 .pedido-box {
-    border: 1px solid #ddd;
-    padding: 1.2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-}
+  border: 1px solid #e0e0e0;
+  padding: 1.5rem;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
 
-.pedido-actions {
-    margin-top: 1.2rem;
-    display: flex;
-    gap: 10px;
-}
+  h3 {
+    margin-top: 0;
+    color: $primary-dark;
+    font-size: 1.3rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+  }
 
-
-.pedido-actions button:hover {
-    background-color: #0056b3;
-}
-
-
-.pedido {
-    border-radius: 1rem;
-    background-color: lightgrey;
-    padding: 1rem;
-    max-width: 25vw;
-    li { 
-        p {
-            margin-top: .3rem;
-        }
+  p {
+    margin: 0.5rem 0;
+    line-height: 1.5;
+    
+    strong {
+      color: #555;
+      font-weight: 500;
     }
+  }
+}
+
+// Estado archivado
+.pedido-box.archived {
+  border-left: 4px solid $success-color;
+  background-color: #f8f9fa;
+  
+  h3 {
+    color: $success-color;
+  }
+}
+
+// Lista de productos
+.productos-list {
+  padding-left: 1rem;
+  margin: 0.8rem 0;
+  list-style-type: none;
+  
+  li {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    
+    strong {
+      color: $primary-dark;
+    }
+  }
+}
+
+// Acciones
+.pedido-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  
+  button {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+// Botones
+button {
+  background-color: $primary-color;
+  color: #fff;
+  border: none;
+  border-radius: $border-radius;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  transition: $transition;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  
+  &:hover {
+    background-color: $primary-light;
+    transform: translateY(-2px);
+  }
+
+  &.btn-cancelar {
+    background-color: $error-color;
+    
+    &:hover {
+      background-color: darken($error-color, 10%);
+    }
+  }
+
+  &.btn-pagado {
+    background-color: $warning-color;
+    
+    &:hover {
+      background-color: darken($warning-color, 10%);
+    }
+  }
+
+  &.btn-completar {
+    background-color: $success-color;
+    
+    &:hover {
+      background-color: darken($success-color, 10%);
+    }
+  }
+
+  &.btn-desarchivar {
+    background-color: #9b59b6;
+    
+    &:hover {
+      background-color: darken(#9b59b6, 10%);
+    }
+  }
+
+  &.btn-reset {
+    background-color: #7f8c8d;
+    
+    &:hover {
+      background-color: darken(#7f8c8d, 10%);
+    }
+  }
+}
+
+// Filtros (para PedidosCompletados)
+.filtros-container {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: $border-radius;
+  margin-bottom: 2rem;
+  box-shadow: $box-shadow;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  border: 1px solid #e0e0e0;
+
+  .filtro-group {
+    margin-bottom: 0;
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    input, .react-datepicker-wrapper input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e0e0e0;
+      border-radius: $border-radius;
+      font-size: 0.9rem;
+      transition: $transition;
+      
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+      }
+    }
+  }
+
+  .price-range, .date-range {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    input {
+      flex: 1;
+    }
+    
+    span {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// Mensajes de estado
+.pedido-mensaje {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .filtros-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .pedido-actions {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
 }

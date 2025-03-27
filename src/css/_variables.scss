@@ -51,3 +51,32 @@ $surface-color: #ffffff;
 $error-color: #b00020;
 $text-color: #212121;
 $subtext-color: #404040;
+
+// _variables.scss (extracto)
+$color-fondo: #f8f9fa;
+$color-borde: #dee2e6;
+$color-primario: #3498db;
+$color-secundario: #6c757d;
+$color-texto: #333;
+$color-texto-secundario: #6c757d;
+$color-texto-claro: #fff;
+$color-texto-placeholder: #adb5bd;
+$border-radius: 0.5rem;
+$border-radius-sm: 0.3rem;
+$shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+$shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+$transition-base: all 0.2s ease-in-out;
+$font-family-base: 'Segoe UI', Roboto, sans-serif;
+$font-weight-semibold: 600;
+$breakpoint-md: 768px;
+
+// Mixin para botones base
+@mixin boton-base {
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  font-weight: $font-weight-semibold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
