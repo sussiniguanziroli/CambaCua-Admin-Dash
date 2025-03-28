@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, setDoc, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -58,9 +58,9 @@ const PedidosCompletados = () => {
             const term = searchTerm.toLowerCase();
             result = result.filter(pedido => 
                 (pedido.nombre?.toLowerCase().includes(term) ||
-                (pedido.email?.toLowerCase().includes(term)) ||
-                (pedido.dni?.toString().includes(term)) ||
-                (pedido.id.toLowerCase().includes(term)))
+                pedido.email?.toLowerCase().includes(term) ||
+                pedido.dni?.toString().includes(term) ||
+                pedido.id.toLowerCase().includes(term))
             );
         }
         
@@ -91,8 +91,8 @@ const PedidosCompletados = () => {
         if (!isConfirmed) return;
 
         try {
-            // 1. Mover de vuelta a pedidos
-            await addDoc(collection(db, 'pedidos'), {
+            // 1. Mover de vuelta a pedidos manteniendo ID
+            await setDoc(doc(db, 'pedidos', pedido.id), {
                 ...pedido,
                 estado: 'Pendiente',
                 fechaCompletado: null
@@ -218,7 +218,9 @@ const PedidosCompletados = () => {
                         <div key={pedido.id} className="pedido-box archived">
                             <div className="pedido-header">
                                 <h3>Pedido #{pedido.id.substring(0, 8)}</h3>
-                                <span className="status-badge completado">Completado</span>
+                                <span className={`status-badge ${pedido.estado.toLowerCase()}`}>
+                                    {pedido.estado}
+                                </span>
                             </div>
                             
                             <div className="cliente-info">

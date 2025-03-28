@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc, deleteDoc, addDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import Swal from 'sweetalert2';
 
@@ -34,24 +34,24 @@ const HandleOrders = () => {
         fetchPedidos();
     }, []);
 
-    // Función para completar y mover pedido
-    const completarPedido = async (pedido) => {
+    // Función para mover pedido a completados
+    const moverPedido = async (pedido, estado) => {
         const { isConfirmed } = await Swal.fire({
-            title: '¿Completar pedido?',
-            text: `¿Marcar el pedido #${pedido.id.substring(0, 8)} como completado?`,
+            title: `¿${estado} pedido?`,
+            text: `¿Marcar el pedido #${pedido.id.substring(0, 8)} como ${estado.toLowerCase()}?`,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'Sí, completar',
+            confirmButtonText: `Sí, ${estado.toLowerCase()}`,
             cancelButtonText: 'Cancelar'
         });
 
         if (!isConfirmed) return;
 
         try {
-            // 1. Mover a pedidos_completados
-            await addDoc(collection(db, 'pedidos_completados'), {
+            // 1. Mover a pedidos_completados manteniendo el mismo ID
+            await setDoc(doc(db, 'pedidos_completados', pedido.id), {
                 ...pedido,
-                estado: 'Completado',
+                estado: estado,
                 fechaCompletado: new Date()
             });
 
@@ -63,15 +63,15 @@ const HandleOrders = () => {
 
             Swal.fire({
                 title: '¡Éxito!',
-                text: 'Pedido marcado como completado',
+                text: `Pedido marcado como ${estado.toLowerCase()}`,
                 icon: 'success',
                 confirmButtonText: 'Entendido'
             });
         } catch (error) {
-            console.error("Error completando pedido:", error);
+            console.error("Error moviendo pedido:", error);
             Swal.fire({
                 title: 'Error',
-                text: 'No se pudo completar el pedido',
+                text: 'No se pudo completar la operación',
                 icon: 'error',
                 confirmButtonText: 'Entendido'
             });
@@ -106,17 +106,22 @@ const HandleOrders = () => {
                 )
             );
 
-            Swal.fire({
-                title: '¡Éxito!',
-                text: `Pedido ${nuevoEstado.toLowerCase()}`,
-                icon: 'success',
-                confirmButtonText: 'Entendido'
-            });
+            if (nuevoEstado === 'Cancelado') {
+                const pedido = pedidos.find(p => p.id === id);
+                await moverPedido(pedido, 'Cancelado');
+            } else {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: `Estado actualizado a: ${nuevoEstado}`,
+                    icon: 'success',
+                    confirmButtonText: 'Entendido'
+                });
+            }
         } catch (error) {
             console.error("Error actualizando estado:", error);
             Swal.fire({
                 title: 'Error',
-                text: 'No se pudo actualizar el estado del pedido',
+                text: 'No se pudo actualizar el estado',
                 icon: 'error',
                 confirmButtonText: 'Entendido'
             });
@@ -190,7 +195,7 @@ const HandleOrders = () => {
                                 </button>
                                 <button 
                                     className="btn-completar"
-                                    onClick={() => completarPedido(pedido)}
+                                    onClick={() => moverPedido(pedido, 'Completado')}
                                 >
                                     Completar/Enviar
                                 </button>
