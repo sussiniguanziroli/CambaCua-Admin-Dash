@@ -1,123 +1,196 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc, updateDoc, addDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, addDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
+import Swal from 'sweetalert2';
 
 const HandleOrders = () => {
     const [pedidos, setPedidos] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    // Obtener solo pedidos NO archivados
+    // Obtener pedidos activos
     useEffect(() => {
         const fetchPedidos = async () => {
-            const pedidosCollection = collection(db, 'pedidos');
-            const pedidosSnapshot = await getDocs(pedidosCollection);
-            const pedidosList = pedidosSnapshot.docs
-                .map(doc => ({ id: doc.id, ...doc.data() }))
-                .filter(pedido => !pedido.archivado);
-            setPedidos(pedidosList);
+            setLoading(true);
+            try {
+                const querySnapshot = await getDocs(collection(db, 'pedidos'));
+                const pedidosList = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                    fecha: doc.data().fecha?.toDate()
+                }));
+                setPedidos(pedidosList);
+            } catch (error) {
+                console.error("Error obteniendo pedidos:", error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudieron cargar los pedidos',
+                    icon: 'error',
+                    confirmButtonText: 'Entendido'
+                });
+            } finally {
+                setLoading(false);
+            }
         };
         fetchPedidos();
     }, []);
 
-    // Función para archivar pedido (marcar como completado)
-    const archivarPedido = async (pedido) => {
+    // Función para completar y mover pedido
+    const completarPedido = async (pedido) => {
+        const { isConfirmed } = await Swal.fire({
+            title: '¿Completar pedido?',
+            text: `¿Marcar el pedido #${pedido.id.substring(0, 8)} como completado?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, completar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!isConfirmed) return;
+
         try {
-            // 1. Actualizar el pedido original como "archivado"
-            const pedidoRef = doc(db, 'pedidos', pedido.id);
-            await updateDoc(pedidoRef, { 
+            // 1. Mover a pedidos_completados
+            await addDoc(collection(db, 'pedidos_completados'), {
+                ...pedido,
                 estado: 'Completado',
-                archivado: true,
                 fechaCompletado: new Date()
             });
 
-            // 2. Crear una copia en "pedidos_completados"
-            const pedidosCompletadosRef = collection(db, 'pedidos_completados');
-            await addDoc(pedidosCompletadosRef, { 
-                ...pedido,
-                estado: 'Completado',
-                fechaArchivado: new Date() 
-            });
+            // 2. Eliminar de pedidos
+            await deleteDoc(doc(db, 'pedidos', pedido.id));
 
-            // 3. Actualizar el estado local (eliminar de la lista)
-            setPedidos(prevPedidos => prevPedidos.filter(p => p.id !== pedido.id));
-            alert("¡Pedido completado y archivado!");
+            // 3. Actualizar estado local
+            setPedidos(prev => prev.filter(p => p.id !== pedido.id));
+
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Pedido marcado como completado',
+                icon: 'success',
+                confirmButtonText: 'Entendido'
+            });
         } catch (error) {
-            console.error("Error archivando el pedido:", error);
-            alert("Error al archivar el pedido");
+            console.error("Error completando pedido:", error);
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo completar el pedido',
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
         }
     };
 
-    // Función para otros estados (Pagado, Cancelado)
+    // Función para actualizar estado
     const actualizarEstado = async (id, nuevoEstado) => {
-        const pedidoRef = doc(db, 'pedidos', id);
+        const estadoText = {
+            'Pagado': 'marcar como pagado',
+            'Cancelado': 'cancelar'
+        }[nuevoEstado];
+
+        const { isConfirmed } = await Swal.fire({
+            title: `¿${nuevoEstado}?`,
+            text: `¿Estás seguro que deseas ${estadoText} este pedido?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: `Sí, ${estadoText}`,
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!isConfirmed) return;
+
         try {
+            const pedidoRef = doc(db, 'pedidos', id);
             await updateDoc(pedidoRef, { estado: nuevoEstado });
+            
             setPedidos(prevPedidos =>
                 prevPedidos.map(pedido => 
                     pedido.id === id ? { ...pedido, estado: nuevoEstado } : pedido
                 )
             );
-            alert(`Estado actualizado a: ${nuevoEstado}`);
+
+            Swal.fire({
+                title: '¡Éxito!',
+                text: `Pedido ${nuevoEstado.toLowerCase()}`,
+                icon: 'success',
+                confirmButtonText: 'Entendido'
+            });
         } catch (error) {
-            console.error("Error actualizando el estado:", error);
-            alert("Error al actualizar el estado");
+            console.error("Error actualizando estado:", error);
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo actualizar el estado del pedido',
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
         }
     };
 
     return (
         <div className="pedidos-container">
             <h2>Pedidos Activos</h2>
-            {pedidos.length === 0 ? (
-                <p>No hay pedidos pendientes.</p>
+            {loading ? (
+                <div className="loading-spinner">
+                    <div className="spinner"></div>
+                    <p>Cargando pedidos...</p>
+                </div>
+            ) : pedidos.length === 0 ? (
+                <p className="no-orders">No hay pedidos pendientes.</p>
             ) : (
                 <div className="grid-container">
                     {pedidos.map(pedido => (
-                        <div key={pedido.id} className="pedido-box">
-                            <h3>Pedido de: {pedido.nombre}</h3>
-                            <p><strong>Dirección:</strong> {pedido.direccion}</p>
-                            <p><strong>Email:</strong> {pedido.email}</p>
-                            <p><strong>DNI:</strong> {pedido.dni}</p>
-                            <p><strong>Teléfono:</strong> {pedido.telefono}</p>
-                            {pedido.fecha ? (
-                                <p><strong>Fecha:</strong> {pedido.fecha.toDate().toLocaleString()}</p>
-                            ) : (
-                                <p><strong>Fecha:</strong> No disponible</p>
-                            )}
-                            <p><strong>Total:</strong> ${pedido.total}</p>
-                            <p><strong>Estado:</strong> {pedido.estado}</p>
+                        <div key={pedido.id} className={`pedido-box ${pedido.estado.toLowerCase()}`}>
+                            <div className="pedido-header">
+                                <h3>Pedido #{pedido.id.substring(0, 8)}</h3>
+                                <span className={`status-badge ${pedido.estado.toLowerCase()}`}>
+                                    {pedido.estado}
+                                </span>
+                            </div>
+                            
+                            <div className="cliente-info">
+                                <p><strong>Cliente:</strong> {pedido.nombre}</p>
+                                <p><strong>Email:</strong> {pedido.email}</p>
+                                <p><strong>Teléfono:</strong> {pedido.telefono}</p>
+                                <p><strong>Dirección:</strong> {pedido.direccion}</p>
+                                <p><strong>DNI:</strong> {pedido.dni}</p>
+                            </div>
 
-                            <h4>Productos:</h4>
-                            {pedido.productos && pedido.productos.length > 0 ? (
-                                <ul className="productos-list">
-                                    {pedido.productos.map((producto, index) => (
+                            <div className="pedido-details">
+                                <p><strong>Fecha:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'No disponible'}</p>
+                                <p><strong>Total:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
+                                <p><strong>Método de pago:</strong> {pedido.metodoPago || 'No especificado'}</p>
+                            </div>
+
+                            <div className="productos-list">
+                                <h4>Productos:</h4>
+                                <ul>
+                                    {pedido.productos?.map((producto, index) => (
                                         <li key={index}>
                                             <strong>{producto.nombre}</strong> - 
                                             Cantidad: {producto.cantidad} - 
-                                            Precio: ${producto.precio}
+                                            Precio: ${producto.precio.toLocaleString('es-AR')}
                                             {producto.talle && <span> - Talle: {producto.talle}</span>}
                                             {producto.color && <span> - Color: {producto.color}</span>}
                                         </li>
-                                    ))}
+                                    )) || <li>No hay productos registrados</li>}
                                 </ul>
-                            ) : (
-                                <p>No hay productos en este pedido.</p>
-                            )}
+                            </div>
 
                             <div className="pedido-actions">
                                 <button 
                                     className="btn-cancelar"
                                     onClick={() => actualizarEstado(pedido.id, 'Cancelado')}
+                                    disabled={pedido.estado === 'Cancelado'}
                                 >
-                                    Cancelar Pedido
+                                    Cancelar
                                 </button>
                                 <button 
                                     className="btn-pagado"
                                     onClick={() => actualizarEstado(pedido.id, 'Pagado')}
+                                    disabled={pedido.estado === 'Pagado'}
                                 >
                                     Marcar como Pagado
                                 </button>
                                 <button 
                                     className="btn-completar"
-                                    onClick={() => archivarPedido(pedido)}
+                                    onClick={() => completarPedido(pedido)}
                                 >
                                     Completar/Enviar
                                 </button>

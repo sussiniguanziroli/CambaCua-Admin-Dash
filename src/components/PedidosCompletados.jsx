@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, query, orderBy, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, addDoc, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Swal from 'sweetalert2';
 
 const PedidosCompletados = () => {
     const [pedidos, setPedidos] = useState([]);
@@ -14,24 +15,34 @@ const PedidosCompletados = () => {
     const [endDate, setEndDate] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    // Obtener todos los pedidos archivados ordenados por fecha
+    // Obtener pedidos completados
     useEffect(() => {
         const fetchPedidos = async () => {
             setLoading(true);
             try {
-                const completadosCollection = collection(db, 'pedidos_completados');
-                const q = query(completadosCollection, orderBy('fechaArchivado', 'desc'));
-                const completadosSnapshot = await getDocs(q);
-                const pedidosList = completadosSnapshot.docs.map(doc => ({ 
-                    id: doc.id, 
+                const pedidosQuery = query(
+                    collection(db, 'pedidos_completados'),
+                    orderBy('fechaCompletado', 'desc')
+                );
+                const querySnapshot = await getDocs(pedidosQuery);
+                
+                const pedidosList = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
                     ...doc.data(),
-                    fechaArchivado: doc.data().fechaArchivado?.toDate(),
-                    fecha: doc.data().fecha?.toDate()
+                    fecha: doc.data().fecha?.toDate(),
+                    fechaCompletado: doc.data().fechaCompletado?.toDate()
                 }));
+                
                 setPedidos(pedidosList);
                 setFilteredPedidos(pedidosList);
             } catch (error) {
-                console.error("Error fetching pedidos:", error);
+                console.error("Error obteniendo pedidos:", error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudieron cargar los pedidos completados',
+                    icon: 'error',
+                    confirmButtonText: 'Entendido'
+                });
             } finally {
                 setLoading(false);
             }
@@ -39,77 +50,79 @@ const PedidosCompletados = () => {
         fetchPedidos();
     }, []);
 
-    // Función para aplicar filtros
+    // Aplicar filtros
     useEffect(() => {
         let result = [...pedidos];
         
-        // Filtrar por término de búsqueda (nombre, email o DNI)
         if (searchTerm) {
             const term = searchTerm.toLowerCase();
             result = result.filter(pedido => 
-                pedido.nombre?.toLowerCase().includes(term) ||
-                pedido.email?.toLowerCase().includes(term) ||
-                pedido.dni?.toLowerCase().includes(term)
+                (pedido.nombre?.toLowerCase().includes(term) ||
+                (pedido.email?.toLowerCase().includes(term)) ||
+                (pedido.dni?.toString().includes(term)) ||
+                (pedido.id.toLowerCase().includes(term)))
             );
         }
         
-        // Filtrar por rango de precios
-        if (minPrice) {
-            result = result.filter(pedido => pedido.total >= Number(minPrice));
-        }
-        if (maxPrice) {
-            result = result.filter(pedido => pedido.total <= Number(maxPrice));
-        }
+        if (minPrice) result = result.filter(pedido => pedido.total >= Number(minPrice));
+        if (maxPrice) result = result.filter(pedido => pedido.total <= Number(maxPrice));
         
-        // Filtrar por rango de fechas
-        if (startDate) {
-            result = result.filter(pedido => 
-                pedido.fechaArchivado >= startDate
-            );
-        }
+        if (startDate) result = result.filter(pedido => pedido.fechaCompletado >= startDate);
         if (endDate) {
             const endOfDay = new Date(endDate);
             endOfDay.setHours(23, 59, 59, 999);
-            result = result.filter(pedido => 
-                pedido.fechaArchivado <= endOfDay
-            );
+            result = result.filter(pedido => pedido.fechaCompletado <= endOfDay);
         }
         
         setFilteredPedidos(result);
     }, [pedidos, searchTerm, minPrice, maxPrice, startDate, endDate]);
 
-    // Función para desarchivar un pedido
-    const desarchivarPedido = async (pedido) => {
-        if (!window.confirm(`¿Estás seguro de marcar el pedido de ${pedido.nombre} como pendiente nuevamente?`)) {
-            return;
-        }
+    // Función para devolver pedido a activos
+    const devolverPedido = async (pedido) => {
+        const { isConfirmed } = await Swal.fire({
+            title: '¿Devolver pedido?',
+            text: `¿Quieres devolver el pedido #${pedido.id.substring(0, 8)} a pendientes?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, devolver',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!isConfirmed) return;
 
         try {
-            // 1. Mover el pedido de vuelta a la colección principal
-            const pedidosRef = collection(db, 'pedidos');
-            await addDoc(pedidosRef, {
+            // 1. Mover de vuelta a pedidos
+            await addDoc(collection(db, 'pedidos'), {
                 ...pedido,
                 estado: 'Pendiente',
-                archivado: false,
                 fechaCompletado: null
             });
 
-            // 2. Eliminar de pedidos_completados
-            const pedidoCompletadoRef = doc(db, 'pedidos_completados', pedido.id);
-            await deleteDoc(pedidoCompletadoRef);
+            // 2. Eliminar de completados
+            await deleteDoc(doc(db, 'pedidos_completados', pedido.id));
 
-            // 3. Actualizar el estado local
+            // 3. Actualizar estado local
             setPedidos(prev => prev.filter(p => p.id !== pedido.id));
             setFilteredPedidos(prev => prev.filter(p => p.id !== pedido.id));
 
-            alert("Pedido desarchivado correctamente");
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Pedido devuelto a pendientes',
+                icon: 'success',
+                confirmButtonText: 'Entendido'
+            });
         } catch (error) {
-            console.error("Error desarchivando pedido:", error);
-            alert("Error al desarchivar el pedido");
+            console.error("Error devolviendo pedido:", error);
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo devolver el pedido',
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
         }
     };
 
-    // Función para resetear filtros
+    // Resetear filtros
     const resetFilters = () => {
         setSearchTerm('');
         setMinPrice('');
@@ -125,7 +138,7 @@ const PedidosCompletados = () => {
             {/* Filtros */}
             <div className="filtros-container">
                 <div className="filtro-group">
-                    <label>Buscar (nombre, email o DNI):</label>
+                    <label>Buscar (nombre, email, DNI o ID):</label>
                     <input
                         type="text"
                         placeholder="Buscar..."
@@ -142,6 +155,8 @@ const PedidosCompletados = () => {
                             placeholder="Mínimo"
                             value={minPrice}
                             onChange={(e) => setMinPrice(e.target.value)}
+                            min="0"
+                            step="100"
                         />
                         <span>a</span>
                         <input
@@ -149,6 +164,8 @@ const PedidosCompletados = () => {
                             placeholder="Máximo"
                             value={maxPrice}
                             onChange={(e) => setMaxPrice(e.target.value)}
+                            min="0"
+                            step="100"
                         />
                     </div>
                 </div>
@@ -164,6 +181,8 @@ const PedidosCompletados = () => {
                             endDate={endDate}
                             placeholderText="Fecha inicio"
                             dateFormat="dd/MM/yyyy"
+                            maxDate={new Date()}
+                            locale="es"
                         />
                         <span>a</span>
                         <DatePicker
@@ -175,6 +194,8 @@ const PedidosCompletados = () => {
                             minDate={startDate}
                             placeholderText="Fecha fin"
                             dateFormat="dd/MM/yyyy"
+                            maxDate={new Date()}
+                            locale="es"
                         />
                     </div>
                 </div>
@@ -185,48 +206,57 @@ const PedidosCompletados = () => {
             </div>
 
             {loading ? (
-                <p>Cargando pedidos...</p>
+                <div className="loading-spinner">
+                    <div className="spinner"></div>
+                    <p>Cargando pedidos...</p>
+                </div>
             ) : filteredPedidos.length === 0 ? (
-                <p>No hay pedidos que coincidan con los filtros.</p>
+                <p className="no-orders">No hay pedidos que coincidan con los filtros.</p>
             ) : (
                 <div className="grid-container">
                     {filteredPedidos.map(pedido => (
                         <div key={pedido.id} className="pedido-box archived">
-                            <h3>Pedido de: {pedido.nombre}</h3>
-                            <p><strong>Estado:</strong> {pedido.estado}</p>
-                            <p><strong>Fecha de envío:</strong> {pedido.fechaArchivado?.toLocaleString()}</p>
-                            <p><strong>Dirección:</strong> {pedido.direccion}</p>
-                            <p><strong>Email:</strong> {pedido.email}</p>
-                            <p><strong>DNI:</strong> {pedido.dni}</p>
-                            <p><strong>Teléfono:</strong> {pedido.telefono}</p>
-                            {pedido.fecha && (
-                                <p><strong>Fecha del pedido:</strong> {pedido.fecha.toLocaleString()}</p>
-                            )}
-                            <p><strong>Total:</strong> ${pedido.total}</p>
+                            <div className="pedido-header">
+                                <h3>Pedido #{pedido.id.substring(0, 8)}</h3>
+                                <span className="status-badge completado">Completado</span>
+                            </div>
+                            
+                            <div className="cliente-info">
+                                <p><strong>Cliente:</strong> {pedido.nombre}</p>
+                                <p><strong>Email:</strong> {pedido.email}</p>
+                                <p><strong>Teléfono:</strong> {pedido.telefono}</p>
+                                <p><strong>Dirección:</strong> {pedido.direccion}</p>
+                                <p><strong>DNI:</strong> {pedido.dni}</p>
+                            </div>
 
-                            <h4>Productos:</h4>
-                            {pedido.productos && pedido.productos.length > 0 ? (
-                                <ul className="productos-list">
-                                    {pedido.productos.map((producto, index) => (
+                            <div className="pedido-details">
+                                <p><strong>Fecha pedido:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'No disponible'}</p>
+                                <p><strong>Fecha envío:</strong> {pedido.fechaCompletado?.toLocaleString('es-AR') || 'No disponible'}</p>
+                                <p><strong>Total:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
+                                <p><strong>Método pago:</strong> {pedido.metodoPago || 'No especificado'}</p>
+                            </div>
+
+                            <div className="productos-list">
+                                <h4>Productos:</h4>
+                                <ul>
+                                    {pedido.productos?.map((producto, index) => (
                                         <li key={index}>
                                             <strong>{producto.nombre}</strong> - 
                                             Cantidad: {producto.cantidad} - 
-                                            Precio: ${producto.precio}
+                                            Precio: ${producto.precio.toLocaleString('es-AR')}
                                             {producto.talle && <span> - Talle: {producto.talle}</span>}
                                             {producto.color && <span> - Color: {producto.color}</span>}
                                         </li>
-                                    ))}
+                                    )) || <li>No hay productos registrados</li>}
                                 </ul>
-                            ) : (
-                                <p>No hay productos en este pedido.</p>
-                            )}
+                            </div>
 
                             <div className="pedido-actions">
                                 <button 
                                     className="btn-desarchivar"
-                                    onClick={() => desarchivarPedido(pedido)}
+                                    onClick={() => devolverPedido(pedido)}
                                 >
-                                    Marcar como Pendiente
+                                    Devolver a Pendientes
                                 </button>
                             </div>
                         </div>
