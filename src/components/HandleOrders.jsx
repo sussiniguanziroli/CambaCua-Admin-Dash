@@ -143,7 +143,7 @@ const HandleOrders = () => {
                     {pedidos.map(pedido => (
                         <div key={pedido.id} className={`pedido-box ${pedido.estado.toLowerCase()}`}>
                             <div className="pedido-header">
-                                <h3>Pedido #{pedido.id.substring(0, 8)}</h3>
+                                <h3>Pedido #{pedido.id}</h3>
                                 <span className={`status-badge ${pedido.estado.toLowerCase()}`}>
                                     {pedido.estado}
                                 </span>

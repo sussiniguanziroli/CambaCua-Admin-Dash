@@ -1,4 +1,4 @@
-// Variables (compartidas)
+// Variables (copiadas del original)
 $primary-color: #3498db;
 $primary-light: lighten($primary-color, 10%);
 $primary-dark: darken($primary-color, 15%);
@@ -11,7 +11,7 @@ $border-radius: 1rem;
 $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 $transition: all 0.3s ease;
 
-// Estilos base específicos para HandleOrders
+// Estilos base compartidos (mejorados)
 .pedidos-container {
   padding: 2rem;
   max-width: 1400px;
@@ -24,6 +24,7 @@ $transition: all 0.3s ease;
     font-weight: 600;
     position: relative;
     padding-bottom: 0.8rem;
+    letter-spacing: -0.5px;
     
     &::after {
       content: '';
@@ -38,10 +39,10 @@ $transition: all 0.3s ease;
   }
 }
 
-// Grid y tarjetas específicas
+// Grid y tarjetas (estilos específicos para completados)
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 1.8rem;
   padding: 1.5rem 0;
 }
@@ -56,6 +57,8 @@ $transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
+  overflow: hidden;
   
   &:hover {
     transform: translateY(-5px);
@@ -84,8 +87,17 @@ $transition: all 0.3s ease;
   }
 }
 
-// Estados específicos para HandleOrders
+// Estados de pedidos (mejorados)
 .pedido-box {
+  &.archived {
+    border-left: 5px solid $success-color;
+    background-color: rgba($success-color, 0.03);
+    
+    h3 {
+      color: $success-color;
+    }
+  }
+
   &.cancelado {
     border-left: 5px solid $cancel-color;
     background-color: rgba($cancel-color, 0.03);
@@ -94,9 +106,18 @@ $transition: all 0.3s ease;
       color: $cancel-color;
     }
   }
+
+  &.cancelado-cliente {
+    border-left: 5px solid $client-cancel-color;
+    background-color: rgba($client-cancel-color, 0.03);
+    
+    h3 {
+      color: $client-cancel-color;
+    }
+  }
 }
 
-// Badges de estado específicos
+// Badges de estado (mejorados)
 .status-badge {
   padding: 0.4rem 1rem;
   border-radius: 20px;
@@ -107,6 +128,11 @@ $transition: all 0.3s ease;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   
+  &.completado {
+    background-color: $success-color;
+    color: white;
+  }
+  
   &.pendiente {
     background-color: $primary-color;
     color: white;
@@ -115,14 +141,25 @@ $transition: all 0.3s ease;
   &.cancelado {
     background-color: $cancel-color;
     color: white;
+    
+    &.cancelado-cliente {
+      background-color: $client-cancel-color;
+    }
   }
 }
 
-// Lista de productos específica
+// Lista de productos (mejorada)
 .productos-list {
   padding-left: 0;
   margin: 1rem 0;
   list-style-type: none;
+  
+  h4 {
+    font-size: 1.1rem;
+    color: $primary-dark;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+  }
   
   li {
     margin-bottom: 0.6rem;
@@ -139,7 +176,47 @@ $transition: all 0.3s ease;
   }
 }
 
-// Acciones específicas
+// Información de cancelación (mejorada)
+.cancelation-info {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  background-color: #fff5f5;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  border-left: 3px solid $cancel-color;
+  
+  p {
+    margin: 0.3rem 0;
+    
+    strong {
+      color: $cancel-color;
+    }
+  }
+  
+  &.client-cancel {
+    background-color: #fffaf0;
+    border-left-color: $client-cancel-color;
+    
+    strong {
+      color: $client-cancel-color;
+    }
+  }
+}
+
+.cancelation-reason {
+  background-color: #fef2f2;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  border-left: 3px solid $cancel-color;
+  
+  strong {
+    color: $cancel-color;
+  }
+}
+
+// Acciones (mejoradas)
 .pedido-actions {
   margin-top: auto;
   display: flex;
@@ -153,7 +230,7 @@ $transition: all 0.3s ease;
   }
 }
 
-// Botones específicos
+// Botones (mejorados)
 button {
   background-color: $primary-color;
   color: #fff;
@@ -206,10 +283,83 @@ button {
       background-color: darken($success-color, 8%);
     }
   }
+
+  &.btn-desarchivar {
+    background-color: #9b59b6;
+    
+    &:hover {
+      background-color: darken(#9b59b6, 8%);
+    }
+  }
+
+  &.btn-reset {
+    background-color: #7f8c8d;
+    
+    &:hover {
+      background-color: darken(#7f8c8d, 8%);
+    }
+  }
 }
 
-// Mensajes de estado específicos
-.no-orders {
+// Filtros (mejorados)
+.filtros-container {
+  background-color: #f8f9fa;
+  padding: 1.8rem;
+  border-radius: $border-radius;
+  margin-bottom: 2.5rem;
+  box-shadow: $box-shadow;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.8rem;
+  border: 1px solid #e0e0e0;
+
+  .filtro-group {
+    margin-bottom: 0;
+    
+    label {
+      display: block;
+      margin-bottom: 0.7rem;
+      font-weight: 600;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    input, .react-datepicker-wrapper input {
+      width: 100%;
+      padding: 0.85rem;
+      border: 1px solid #e0e0e0;
+      border-radius: $border-radius;
+      font-size: 0.95rem;
+      transition: $transition;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+      
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.15);
+      }
+    }
+  }
+
+  .price-range, .date-range {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    
+    input {
+      flex: 1;
+    }
+    
+    span {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  }
+}
+
+// Mensajes de estado (mejorados)
+.pedido-mensaje, .no-orders {
   text-align: center;
   padding: 3rem;
   color: #7f8c8d;
@@ -219,7 +369,7 @@ button {
   border-radius: $border-radius;
 }
 
-// Loading spinner específico
+// Loading spinner (mejorado)
 .loading-spinner {
   display: flex;
   flex-direction: column;
@@ -249,7 +399,7 @@ button {
   100% { transform: rotate(360deg); }
 }
 
-// Responsive específico
+// Responsive (mejorado)
 @media (max-width: 768px) {
   .pedidos-container {
     padding: 1.5rem;
@@ -261,6 +411,12 @@ button {
   
   .grid-container {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  .filtros-container {
+    grid-template-columns: 1fr;
+    padding: 1.2rem;
     gap: 1.2rem;
   }
   
