@@ -754,11 +754,15 @@ button {
   background-color: rgba(231, 76, 60, 0.03); }
   .pedido-box.cancelado h3 {
     color: #e74c3c; }
+  .pedido-box.cancelado:not(.cancelado-cliente) .btn-desarchivar {
+    display: flex; }
 .pedido-box.cancelado-cliente {
   border-left: 5px solid #f39c12;
   background-color: rgba(243, 156, 18, 0.03); }
   .pedido-box.cancelado-cliente h3 {
     color: #f39c12; }
+  .pedido-box.cancelado-cliente .pedido-actions {
+    display: none; }
 
 .status-badge {
   padding: 0.4rem 1rem;
@@ -875,9 +879,26 @@ button {
     button.btn-completar:hover {
       background-color: #26ab5f; }
   button.btn-desarchivar {
-    background-color: #9b59b6; }
-    button.btn-desarchivar:hover {
-      background-color: #8646a0; }
+    background-color: #9b59b6;
+    position: relative; }
+    button.btn-desarchivar:hover:not(:disabled) {
+      background-color: #8646a0;
+      transform: translateY(-2px); }
+    button.btn-desarchivar:disabled {
+      opacity: 0.7;
+      cursor: not-allowed; }
+      button.btn-desarchivar:disabled::after {
+        content: "No disponible para completados";
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: white;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        white-space: nowrap; }
   button.btn-reset {
     background-color: #7f8c8d; }
     button.btn-reset:hover {

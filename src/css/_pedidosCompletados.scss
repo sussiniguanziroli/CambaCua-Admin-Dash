@@ -105,6 +105,13 @@ $transition: all 0.3s ease;
     h3 {
       color: $cancel-color;
     }
+    
+    // Solo para cancelados por vendedor (mostrar botón)
+    &:not(.cancelado-cliente) {
+      .btn-desarchivar {
+        display: flex; // Asegurar que sea visible
+      }
+    }
   }
 
   &.cancelado-cliente {
@@ -113,6 +120,11 @@ $transition: all 0.3s ease;
     
     h3 {
       color: $client-cancel-color;
+    }
+    
+    // Ocultar completamente acciones para cliente
+    .pedido-actions {
+      display: none;
     }
   }
 }
@@ -286,9 +298,30 @@ button {
 
   &.btn-desarchivar {
     background-color: #9b59b6;
+    position: relative;
     
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: darken(#9b59b6, 8%);
+      transform: translateY(-2px);
+    }
+    
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      
+      &::after {
+        content: "No disponible para completados";
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: white;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+      }
     }
   }
 

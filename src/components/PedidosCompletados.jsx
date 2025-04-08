@@ -96,18 +96,9 @@ const PedidosCompletados = () => {
         setFilteredPedidos(result);
     }, [pedidos, searchTerm, minPrice, maxPrice, startDate, endDate]);
 
-    // Función para devolver pedido a activos (solo si no fue cancelado por cliente)
+    //Simplificacion de devolverpedido
     const devolverPedido = async (pedido) => {
-        if (pedido.canceladoPor === 'cliente') {
-            Swal.fire({
-                title: 'No permitido',
-                text: 'Los pedidos cancelados por el cliente no pueden ser reactivados',
-                icon: 'warning',
-                confirmButtonText: 'Entendido'
-            });
-            return;
-        }
-
+        // Eliminamos la validación redundante ya que el botón no aparece para clientes
         const { isConfirmed } = await Swal.fire({
             title: '¿Devolver pedido?',
             text: `¿Quieres devolver el pedido #${pedido.id.substring(0, 8)} a pendientes?`,
@@ -125,7 +116,9 @@ const PedidosCompletados = () => {
                 ...pedido,
                 estado: 'Pendiente',
                 fechaCompletado: null,
-                fechaCancelacion: null
+                fechaCancelacion: null,
+                canceladoPor: null, // Limpiamos este campo
+                motivoCancelacion: null // Limpiamos el motivo
             });
 
             // 2. Eliminar de completados
@@ -151,7 +144,6 @@ const PedidosCompletados = () => {
             });
         }
     };
-
     // Resetear filtros
     const resetFilters = () => {
         setSearchTerm('');
@@ -303,7 +295,7 @@ const PedidosCompletados = () => {
                                     <button
                                         className="btn-desarchivar"
                                         onClick={() => devolverPedido(pedido)}
-                                        disabled={pedido.estado === 'Cancelado'}
+                                        disabled={pedido.estado === 'Completado'}
                                     >
                                         Devolver a Pendientes
                                     </button>
