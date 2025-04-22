@@ -1,64 +1,151 @@
-.edit-product-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
-    h2 {
-        margin-bottom: 1.5rem;
-        color: #333;
-        font-size: 1.5rem;
-        text-align: center;
+// _editProduct.scss
+
+// Usar las mismas variables que en _productList.scss y _filtrado.scss
+$primary-color: #6CACDE;
+$primary-light: lighten($primary-color, 10%);
+$primary-dark: darken($primary-color, 15%);
+$error-color: #E57373;
+$success-color: #81C784;
+$warning-color: #FFB74D;
+$grey-light: #f8f9fa;
+$grey-medium: #e0e0e0;
+$grey-dark: #7f8c8d;
+$text-color: #333;
+$text-secondary: #555;
+$border-radius: 0.8rem;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+$transition: all 0.3s ease;
+
+// Mensajes globales (pueden ir en un archivo general)
+.loading-message, .error-message {
+  text-align: center;
+  padding: 3rem 1rem;
+  width: 100%;
+  font-size: 1.1rem;
+  color: $grey-dark;
+  margin-top: 2rem;
+}
+.error-message {
+  color: $error-color;
+  font-weight: bold;
+}
+
+// Contenedor del Formulario
+.product-form-container {
+  max-width: 700px; // Un poco más ancho para mejor disposición
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: $primary-dark;
+    font-weight: 600;
+  }
+}
+
+// Formulario
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem; // Espacio entre grupos/filas
+
+  // Grupo de formulario estándar (label + input/select/textarea)
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem; // Espacio entre label e input
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: $text-secondary;
     }
 
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
+    // Estilo base inputs
+    input[type="text"],
+    input[type="number"],
+    input[type="url"],
+    select,
+    textarea {
+      padding: 0.7rem 0.9rem;
+      border: 1px solid $grey-medium;
+      border-radius: $border-radius * 0.6;
+      font-size: 1rem;
+      background-color: #fff;
+      transition: $transition;
+      width: 100%;
+      box-sizing: border-box; // Asegurar que padding no aumente el tamaño
 
-        label {
-            display: flex;
-            flex-direction: column;
-            font-size: 1rem;
-            color: #555;
+      &:focus {
+        border-color: $primary-color;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+      }
 
-            input,
-            select,
-            textarea {
-                padding: 0.75rem;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                font-size: 1rem;
-                margin-top: 0.5rem;
-                transition: border-color 0.3s ease;
+      &:disabled {
+        background-color: $grey-light;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
 
-                &:focus {
-                    border-color: #007bff;
-                    outline: none;
-                }
-            }
+       // Placeholder más suave
+      &::placeholder {
+          color: $grey-dark;
+          opacity: 0.8;
+      }
+    }
 
-            textarea {
-                resize: vertical;
-                min-height: 100px;
-            }
-        }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+  }
 
-        button {
-            padding: 0.75rem 1.5rem;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+  // Fila para agrupar campos horizontalmente
+  .form-row {
+    display: flex;
+    flex-direction: column; // Apilado por defecto
+    gap: 1.2rem; // Mismo gap que vertical
 
-            &:hover {
-                background-color: #0056b3;
-            }
+    @media (min-width: 576px) { // Lado a lado en pantallas pequeñas+
+        flex-direction: row;
+        gap: 1rem; // Menor gap horizontal
+        .form-group {
+            flex: 1; // Ocupar espacio equitativamente
         }
     }
+  }
+
+  // Botón de envío
+  .btn-submit {
+    padding: 0.8rem 1.5rem;
+    margin-top: 1rem; // Espacio extra antes del botón
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius * 0.6;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: $transition;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; // Espacio para posible spinner
+
+    &:hover {
+      background-color: $primary-dark;
+    }
+
+    &:disabled {
+      background-color: $grey-medium;
+      color: $grey-dark;
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+  }
 }

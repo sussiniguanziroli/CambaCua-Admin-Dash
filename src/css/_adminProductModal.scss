@@ -1,0 +1,301 @@
+// _adminProductModal.scss
+
+// Variables del tema Admin
+$primary-color: #6CACDE;
+$primary-light: lighten($primary-color, 10%);
+$primary-dark: darken($primary-color, 15%);
+$error-color: #E57373;
+$success-color: #81C784;
+$warning-color: #FFB74D;
+$grey-light: #f8f9fa;
+$grey-medium: #e0e0e0;
+$grey-dark: #7f8c8d;
+$text-color: #333;
+$text-secondary: #555;
+$border-radius: 0.8rem;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+$transition: all 0.3s ease;
+
+// --- Animación --- (Sin cambios)
+@keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInUpModalContent { from { opacity: 0; transform: translateY(1.5rem) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+// Estilo base del Modal
+.admin-modal {
+  position: fixed;
+  inset: 0; // Equivalente a top/left/right/bottom: 0
+  background-color: rgba(30, 30, 30, 0.7); // Overlay un poco más oscuro
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 1rem;
+  opacity: 0;
+  animation: fadeInModal 0.3s ease forwards;
+  cursor: pointer; // Cursor para indicar que el overlay cierra el modal
+
+  .admin-modal-content {
+    background-color: #fff;
+    border-radius: $border-radius;
+    width: 90vw;
+    max-width: 850px; // Ligeramente más ancho
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    position: relative; // Necesario para el botón de cierre absoluto
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh; // Un poco más de altura permitida
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.98);
+    cursor: default; // Restaurar cursor normal sobre el contenido
+    animation: fadeInUpModalContent 0.35s 0.05s ease-out forwards; // Añadido pequeño delay
+  }
+
+  // Botón Cerrar (Revisado)
+  .admin-modal-close-button {
+    position: absolute;
+    top: 8px; // Más cerca del borde
+    right: 8px;
+    width: 38px; // Área táctil más grande
+    height: 38px;
+    font-size: 1.4rem; // Icono ligeramente más grande
+    line-height: 38px; // Centrado vertical
+    text-align: center;
+    cursor: pointer;
+    color: $text-secondary;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%; // Círculo perfecto
+    padding: 0; // Quitar padding por defecto
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    z-index: 20; // Z-index más alto para asegurar visibilidad
+
+    &:hover {
+      background-color: rgba($grey-medium, 0.5); // Fondo semi-transparente
+      color: $text-color;
+      transform: rotate(90deg);
+    }
+    &:active {
+        transform: rotate(90deg) scale(0.9); // Efecto al presionar
+    }
+
+    // Asegurar que el SVG/Icono dentro se centre bien si es necesario
+    svg {
+        display: block;
+        margin: auto;
+    }
+  }
+
+  // Área Principal (columnas)
+  .admin-modal-main-area {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.5rem 1rem 1.5rem; // Ajuste de padding
+    flex-grow: 1;
+    overflow: hidden;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      gap: 2rem; // Aumentar separación entre columnas
+      padding: 2rem 2.5rem; // Más padding horizontal
+    }
+  }
+
+  // Columna Carrusel
+  .admin-modal-carousel-column {
+    width: 100%;
+    margin-bottom: 1.5rem; // Más espacio abajo en móvil
+
+    @media (min-width: 768px) {
+      width: 55%;
+      flex-shrink: 0;
+      margin-bottom: 0;
+    }
+
+    .admin-carousel {
+      width: 100%;
+      border: 1px solid $grey-medium; // Borde sutil al carrusel
+      border-radius: $border-radius * 0.7;
+      overflow: hidden; // Asegura que el contenido no se salga
+
+      .admin-carousel-cell {
+        width: 100%;
+        background-color: $grey-light;
+        // Quitar borde de la celda si el carrusel ya tiene borde
+        // border-radius: $border-radius * 0.7;
+        // overflow: hidden;
+        // border: 1px solid $grey-medium;
+
+        img {
+          display: block;
+          width: 100%;
+          height: auto;
+          aspect-ratio: 4 / 3; // Mantener 4:3
+          object-fit: contain;
+          max-height: 60vh;
+        }
+      }
+
+      // Estilos Flickity (Revisados)
+      .flickity-prev-next-button {
+        width: 40px; // Ligeramente más grandes
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(#fff, 0.95); // Menos transparente
+        color: $primary-color;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        transition: $transition;
+
+        &:hover {
+          background: #fff;
+          transform: scale(1.08); // Efecto hover más notable
+          color: $primary-dark;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+         &:active {
+            transform: scale(1); // Efecto click
+         }
+        &.previous { left: 10px; }
+        &.next { right: 10px; }
+        svg { width: 20px; height: 20px; } // Iconos más grandes
+      }
+
+      .flickity-page-dots {
+        bottom: 10px; // Más arriba
+        .dot {
+          width: 10px;
+          height: 10px;
+          background: rgba($text-color, 0.25); // Más visibles
+          opacity: 1;
+          transition: $transition;
+          margin: 0 5px; // Más separación
+          border-radius: 50%; // Asegurar que sean redondos
+          &.is-selected {
+              background: $primary-color;
+              transform: scale(1.1); // Destacar punto activo
+          }
+        }
+      }
+    }
+  }
+
+  // Columna Información
+  .admin-modal-info-column {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; // Scroll vertical
+    max-height: 100%;
+    padding-right: 5px; // Pequeño espacio para la barra de scroll si aparece
+
+     // Estilo barra de scroll (Webkit)
+     &::-webkit-scrollbar { width: 6px; }
+     &::-webkit-scrollbar-track { background: $grey-light; border-radius: 3px;}
+     &::-webkit-scrollbar-thumb { background: $grey-medium; border-radius: 3px;}
+     &::-webkit-scrollbar-thumb:hover { background: $grey-dark; }
+
+
+    @media (min-width: 768px) {
+      width: 45%;
+      flex-shrink: 0;
+    }
+
+    .admin-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      padding-bottom: 0.8rem; // Más padding abajo
+      border-bottom: 1px solid $grey-medium;
+      gap: 1rem;
+
+      h2 {
+        font-size: 1.6rem; // Título más grande
+        font-weight: 600;
+        color: $primary-dark;
+        line-height: 1.3;
+        margin: 0;
+        flex-grow: 1;
+         padding-right: 45px; // Dejar espacio para el botón de cerrar si el título es muy largo y el badge no está
+      }
+
+      .admin-product-status {
+          color: white;
+          padding: 0.4rem 0.8rem; // Un poco más de padding
+          border-radius: $border-radius * 0.5;
+          font-size: 0.75rem; // Ligeramente más grande
+          font-weight: bold;
+          text-transform: uppercase;
+          white-space: nowrap;
+          flex-shrink: 0;
+          height: fit-content; // Ajustar altura al contenido
+
+          &.active { background-color: $success-color; }
+          &.inactive { background-color: $error-color; }
+       }
+    }
+
+    .admin-modal-body {
+      .admin-product-price {
+        font-size: 1.4rem; // Precio más prominente
+        font-weight: 600;
+        color: $primary-color;
+        margin-bottom: 0.8rem; // Menos espacio antes de stock
+      }
+
+       .admin-product-stock {
+        font-size: 0.95rem;
+        color: $text-secondary;
+        margin-bottom: 1.5rem; // Más espacio antes de descripción/detalles
+        strong { color: $text-color; }
+       }
+
+        // Título para secciones de descripción/detalles
+        .detail-section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: $text-color;
+            margin-bottom: 0.5rem;
+            display: block; // Asegurar que esté en su propia línea
+        }
+
+       .admin-product-description {
+           font-size: 0.9rem;
+           line-height: 1.6; // Mejor interlineado
+           color: $text-secondary;
+           margin-bottom: 1.5rem;
+           white-space: pre-wrap;
+           padding-left: 0.5rem; // Pequeña indentación
+           border-left: 3px solid $grey-light; // Línea sutil a la izquierda
+       }
+
+       .admin-product-details {
+           font-size: 0.85rem;
+           color: $text-secondary;
+           line-height: 1.7; // Más interlineado
+           background-color: rgba($grey-light, 0.5); // Más transparente
+           padding: 1rem 1.2rem; // Más padding
+           border-radius: $border-radius * 0.6;
+           border: 1px solid $grey-medium;
+
+            // Estilo para cada item (label + value)
+           .detail-item {
+               margin-bottom: 0.6rem; // Espacio entre items
+               &:last-child { margin-bottom: 0; } // Quitar margen del último
+           }
+
+           .detail-label { // strong
+               color: $text-color;
+               margin-right: 0.5rem;
+               display: inline-block;
+               min-width: 95px; // Ancho mínimo para alinear valores
+               font-weight: 500; // Ligeramente menos grueso
+           }
+            .detail-value { // span
+                word-break: break-all;
+                color: $text-secondary;
+            }
+       }
+    }
+  }
+}

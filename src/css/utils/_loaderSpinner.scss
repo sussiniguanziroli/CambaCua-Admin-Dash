@@ -1,0 +1,52 @@
+// _loaderSpinner.scss
+
+// Usar las variables de color del tema
+$primary-color: #6CACDE; // Azul suave
+$grey-light: #f8f9fa;
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader-spinner {
+  display: inline-block; // Para usar dentro de botones o texto
+  border-style: solid;
+  border-color: $grey-light; // Color base del círculo
+  border-top-color: $primary-color; // Color del segmento que gira
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite; // Animación
+
+  // Tamaños
+  &--small {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+  }
+
+  &--medium {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+  }
+
+  &--large {
+    width: 48px;
+    height: 48px;
+    border-width: 4px;
+  }
+}
+
+// Contenedor para centrar el loader en página completa o secciones
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 1rem; // Espaciado generoso
+    width: 100%;
+    min-height: 150px; // Altura mínima para que se vea bien
+    h3 {
+        color: $primary-light;
+    }
+}

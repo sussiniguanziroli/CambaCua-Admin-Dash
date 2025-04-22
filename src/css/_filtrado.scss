@@ -1,41 +1,124 @@
 // _filtrado.scss
 
+// Importar o definir variables (usando las de _productList.scss)
+$primary-color: #6CACDE;
+$primary-light: lighten($primary-color, 10%);
+$primary-dark: darken($primary-color, 15%);
+$error-color: #E57373;
+$success-color: #81C784;
+$warning-color: #FFB74D;
+$grey-light: #f8f9fa;
+$grey-medium: #e0e0e0;
+$grey-dark: #7f8c8d;
+$text-color: #333;
+$text-secondary: #555;
+$border-radius: 0.8rem;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+$transition: all 0.3s ease;
+
 .filter-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+  background-color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column; // Apilado por defecto
+  gap: 1rem; // Espacio entre controles y botón limpiar
 
-    select, input {
-        margin-bottom: 10px;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
+  @media (min-width: 768px) { // En pantallas más grandes
+      flex-direction: row; // Controles en línea
+      justify-content: space-between; // Espacio entre controles y botón
+      align-items: flex-end; // Alinear items abajo
+  }
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap; // Permitir que los controles se envuelvan
+  gap: 1rem; // Espacio entre grupos de filtros
+
+  @media (min-width: 768px) {
+      flex-grow: 1; // Permitir que ocupe espacio disponible
+      margin-right: 1rem; // Espacio antes del botón limpiar
+  }
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem; // Espacio entre label e input/select
+  flex: 1 1 180px; // Crecer/encoger, base de 180px
+
+  label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: $text-secondary;
+  }
+
+  // Estilo base para select e input
+  .filter-select, .filter-input {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid $grey-medium;
+    border-radius: $border-radius * 0.6;
+    font-size: 0.9rem;
+    background-color: #fff;
+    transition: $transition;
+    width: 100%; // Ocupar ancho del flex-item
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
     }
 
-    select {
-        width: 200px;
+    &:disabled {
+        background-color: $grey-light;
+        cursor: not-allowed;
+        opacity: 0.7;
     }
+  }
 
-    input[type="text"] {
-        width: 100%;
-    }
+  // Permitir que el campo de búsqueda sea más grande
+  &.filter-group-search {
+      @media (min-width: 480px) {
+        flex-basis: 240px; // Un poco más ancho en pantallas medianas
+      }
+       @media (min-width: 992px) {
+        flex-basis: 300px; // Más ancho en pantallas grandes
+      }
+  }
+}
 
-    .filter-buttons {
-        display: flex;
-        gap: 10px;
+// Botón Limpiar Filtros
+.btn-clear-filters {
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background-color: $grey-medium;
+  color: $text-secondary;
+  border: none;
+  border-radius: $border-radius * 0.6;
+  cursor: pointer;
+  transition: $transition;
+  white-space: nowrap; // Evitar que el texto se rompa
 
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
+  // Alinear el botón si está en layout de fila
+  @media (min-width: 768px) {
+      align-self: flex-end; // Alinear abajo
+      margin-bottom: 0; // Ajustar si es necesario por altura de inputs
+      // Podría necesitar un ajuste fino de margen si los inputs/selects
+      // tienen alturas diferentes o si el gap del contenedor padre afecta
+      // Por ejemplo, si el input tiene padding 0.6rem y font-size 0.9rem
+      // su altura será aprox 0.6*2 + ~1rem = ~2.2rem.
+      // El botón tiene padding 0.6rem y font-size 0.85rem -> altura ~2.1rem
+      // Si el input tiene label y el botón no, puede desalinearse.
+      // margin-bottom: 1px; // Ejemplo de ajuste fino si es necesario
+  }
 
-            &:hover {
-                background-color: #0056b3;
-            }
-        }
-    }
+
+  &:hover {
+    background-color: darken($grey-medium, 8%);
+    color: $text-color;
+  }
 }
