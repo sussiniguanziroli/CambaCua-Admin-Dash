@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import Flickity from 'flickity';
+import imagesLoaded from 'imagesloaded'; // Importar explícitamente
 import 'flickity/css/flickity.css';
-// Considerar importar imagesloaded si Flickity no lo incluye y tienes problemas
-// import imagesLoaded from 'imagesloaded';
 import { FaTimes } from 'react-icons/fa';
 
 const AdminProductModal = ({ producto, isOpen, onClose }) => {
@@ -10,77 +9,88 @@ const AdminProductModal = ({ producto, isOpen, onClose }) => {
     const flickityRef = useRef(null);
     const flktyInstance = useRef(null);
 
-    // Cerrar modal al hacer clic fuera
+    // Cerrar modal al hacer clic fuera (sin cambios)
     const handleClickOutside = useCallback((event) => {
-        // Verificar si el clic fue sobre el overlay (el div .admin-modal) directamente
-        // O si fue fuera del .admin-modal-content
         if (event.target.classList.contains('admin-modal') || (modalRef.current && !modalRef.current.contains(event.target))) {
             onClose();
         }
-    }, [onClose]); // Incluir onClose en las dependencias de useCallback
+    }, [onClose]);
 
     // Efecto para Flickity y listeners
     useEffect(() => {
-        let timerId = null;
-        let currentFlickityNode = flickityRef.current; // Guardar referencia al nodo actual
+        let flickityNode = flickityRef.current; // Guardar nodo en variable local
+        let currentInstance = flktyInstance.current; // Guardar instancia actual
 
-        if (isOpen && currentFlickityNode) {
+        // Limpiar instancia anterior si existe (importante si React StrictMode re-ejecuta)
+        if (currentInstance) {
+             try {
+                // console.log("[Flickity Cleanup] Destroying existing instance before init attempt.");
+                currentInstance.destroy();
+            } catch (error) {
+                console.error("[Flickity Cleanup] Error destroying previous instance:", error);
+            }
+            flktyInstance.current = null;
+        }
+
+
+        if (isOpen && flickityNode) {
             document.addEventListener('mousedown', handleClickOutside);
 
-            // Inicializar Flickity
-            timerId = setTimeout(() => {
-                if (currentFlickityNode && !flktyInstance.current) {
+            // Usar imagesLoaded explícitamente para más control
+            const imgLoad = imagesLoaded(flickityNode);
+
+            imgLoad.on('always', () => {
+                 // console.log("[imagesLoaded] All images settled (loaded or failed). Attempting Flickity init.");
+                 // Asegurarse que el nodo todavía existe y no hay ya una instancia
+                 if (flickityNode && !flktyInstance.current) {
                     try {
-                        flktyInstance.current = new Flickity(currentFlickityNode, {
+                        // console.log("[Flickity Init] Initializing Flickity...");
+                        flktyInstance.current = new Flickity(flickityNode, {
                             cellAlign: 'center',
                             contain: true,
                             pageDots: true,
                             prevNextButtons: true,
-                            wrapAround: true,
-                            imagesLoaded: true // Añadido: Espera a que las imágenes carguen
+                            wrapAround: imagenesCarousel.length > 1, // Solo hacer wrapAround si hay más de 1 imagen
+                            imagesLoaded: true // Mantener por si acaso, aunque usemos imagesLoaded manualmente
                         });
-                        // Forzar resize después de que las imágenes carguen puede ser más fiable
-                        flktyInstance.current.once('imagesLoaded', () => {
-                             if (flktyInstance.current) { // Verificar si aún existe la instancia
+                        // console.log("[Flickity Init] Flickity initialized.");
+
+                         // Forzar un resize después de la inicialización y carga de imágenes
+                         requestAnimationFrame(() => {
+                            if (flktyInstance.current) {
+                                // console.log("[Flickity Resize] Resizing Flickity instance.");
                                 flktyInstance.current.resize();
-                             }
-                        });
-                       // Si imagesLoaded falla o no se usa, un resize simple después de init
-                       // flktyInstance.current.resize();
+                            }
+                         });
+
                     } catch (error) {
-                       console.error("Error inicializando Flickity:", error);
+                       console.error("[Flickity Init] Error during Flickity initialization:", error);
                     }
-                }
-            }, 50); // Pequeño delay
+                 }
+            });
 
         } else {
-             // Limpieza si isOpen cambia a false ANTES del return del efecto
-             document.removeEventListener('mousedown', handleClickOutside);
-              if (flktyInstance.current) {
-                try {
-                    flktyInstance.current.destroy();
-                } catch (error) {
-                     console.error("Error destruyendo Flickity al cerrar:", error);
-                }
-                flktyInstance.current = null;
-            }
+            // Limpieza si isOpen cambia a false
+            document.removeEventListener('mousedown', handleClickOutside);
         }
 
         // Función de limpieza del efecto
         return () => {
-            clearTimeout(timerId);
+            // console.log("[Flickity Cleanup] Running effect cleanup...");
             document.removeEventListener('mousedown', handleClickOutside);
-            // Usar la referencia guardada para la limpieza por si el nodo cambia rápido
             if (flktyInstance.current) {
                  try {
+                    // console.log("[Flickity Cleanup] Destroying instance on cleanup.");
                     flktyInstance.current.destroy();
                 } catch (error) {
-                     console.error("Error destruyendo Flickity en cleanup:", error);
+                     console.error("[Flickity Cleanup] Error destroying instance:", error);
                 }
                 flktyInstance.current = null;
             }
         };
-    }, [isOpen, handleClickOutside]); // Depender de isOpen y la función memoizada handleClickOutside
+    // Añadir producto.id a las dependencias fuerza la re-ejecución si cambia el producto,
+    // lo cual limpiará y reiniciará Flickity.
+    }, [isOpen, producto?.id, handleClickOutside]);
 
     // No renderizar si no está abierto o no hay producto
     if (!isOpen || !producto) return null;
@@ -89,46 +99,41 @@ const AdminProductModal = ({ producto, isOpen, onClose }) => {
     const imagenesCarousel = [producto.imagen, producto.imagenB, producto.imagenC].filter(img => img && img.trim() !== '');
     const fallbackImage = "https://via.placeholder.com/400?text=Sin+Imagen";
 
+    // DEBUG: console.log("Imagenes para carrusel:", imagenesCarousel);
+
     return (
-        // Añadida clase fade-in directamente basada en isOpen para controlar animación CSS
-        <div className={`admin-modal ${isOpen ? 'fade-in' : ''}`} onClick={handleClickOutside} /* Añadido listener aquí también */ >
-            <div className="admin-modal-content" ref={modalRef} onClick={(e) => e.stopPropagation()} /* Evitar que clic dentro cierre */ >
-                {/* Botón Cerrar */}
+        <div className={`admin-modal ${isOpen ? 'fade-in' : ''}`} onClick={handleClickOutside}>
+            <div className="admin-modal-content" ref={modalRef} onClick={(e) => e.stopPropagation()}>
                 <button className="admin-modal-close-button" onClick={onClose} aria-label="Cerrar modal">
                     <FaTimes />
                 </button>
-
-                {/* Área Principal (columnas) */}
                 <div className="admin-modal-main-area">
-                    {/* Columna Carrusel */}
                     <div className="admin-modal-carousel-column">
-                        {/* Añadir un contenedor con key basada en producto.id puede forzar reinicio si cambia el producto */}
-                        <div className="admin-carousel" ref={flickityRef} key={producto.id}>
-                            {imagenesCarousel.length > 0 ? (
-                                imagenesCarousel.map((img, index) => (
-                                    <div key={`${producto.id}-img-${index}`} className="admin-carousel-cell">
-                                        <img src={img} alt={`${producto.nombre} - Imagen ${index + 1}`} onError={(e) => e.target.src = fallbackImage} />
+                        {/* Usar key en el contenedor puede ayudar a React a forzar el re-render */}
+                        <div className="admin-carousel-container" key={producto.id}>
+                            <div className="admin-carousel" ref={flickityRef}>
+                                {imagenesCarousel.length > 0 ? (
+                                    imagenesCarousel.map((img, index) => (
+                                        <div key={`${producto.id}-img-${index}`} className="admin-carousel-cell">
+                                            <img src={img} alt={`${producto.nombre} - Imagen ${index + 1}`} onError={(e) => e.target.src = fallbackImage} />
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="admin-carousel-cell">
+                                        <img src={fallbackImage} alt="Producto sin imagen" />
                                     </div>
-                                ))
-                            ) : (
-                                <div className="admin-carousel-cell">
-                                    <img src={fallbackImage} alt="Producto sin imagen" />
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
                     </div>
-
-                    {/* Columna Información */}
+                    {/* Columna Info (sin cambios respecto a la v2) */}
                     <div className="admin-modal-info-column">
-                        {/* Encabezado */}
                         <div className="admin-modal-header">
                             <h2>{producto.nombre}</h2>
                              <span className={`admin-product-status ${producto.activo ? 'active' : 'inactive'}`}>
                                 {producto.activo ? 'Activo' : 'Inactivo'}
                             </span>
                         </div>
-
-                        {/* Cuerpo */}
                         <div className="admin-modal-body">
                             <p className="admin-product-price">${producto.precio ? producto.precio.toFixed(2) : 'N/A'}</p>
                             <p className="admin-product-stock">
