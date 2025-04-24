@@ -48,16 +48,18 @@ const Filtrado = ({ onFilter }) => {
     useEffect(() => {
         // No aplicar filtro si las categorías aún están cargando para evitar llamadas iniciales innecesarias
         if (!isCatLoading) {
-             applyFilter();
+            applyFilter();
         }
     }, [selectedCategory, selectedSubcategory, applyFilter, isCatLoading]);
 
-     // Aplicar filtro con debounce al cambiar el texto de búsqueda
-     useEffect(() => {
-        // Limpiar el timeout anterior si existe
-        if (debounceTimeoutRef.current) {
-            clearTimeout(debounceTimeoutRef.current);
-        }
+    // Aplicar filtro con debounce al cambiar el texto de búsqueda
+    useEffect(() => {
+        // ... (lógica debounce) ...
+        debounceTimeoutRef.current = setTimeout(() => {
+            applyFilter(); // Llama a applyFilter después del delay
+        }, 500);
+        // ¡Este efecto también DEPENDE de applyFilter!
+
 
         // Establecer un nuevo timeout solo si no estamos cargando categorías
         if (!isCatLoading) {
@@ -126,8 +128,8 @@ const Filtrado = ({ onFilter }) => {
 
                 {/* Select Subcategoría (condicional) */}
                 {selectedCategory && currentSubcategories.length > 0 && (
-                     <div className="filter-group">
-                         <label htmlFor="subcategory-select">Subcategoría</label>
+                    <div className="filter-group">
+                        <label htmlFor="subcategory-select">Subcategoría</label>
                         <select
                             id='subcategory-select'
                             className="filter-select"
@@ -147,7 +149,7 @@ const Filtrado = ({ onFilter }) => {
 
                 {/* Input Búsqueda */}
                 <div className="filter-group filter-group-search">
-                     <label htmlFor="search-input">Buscar</label>
+                    <label htmlFor="search-input">Buscar</label>
                     <input
                         id='search-input'
                         className="filter-input"
@@ -160,12 +162,12 @@ const Filtrado = ({ onFilter }) => {
                 </div>
             </div>
 
-             {/* Botón Limpiar Filtros */}
-             {(selectedCategory || selectedSubcategory || searchText) && (
-                 <button className="btn-clear-filters" onClick={handleClearFilters}>
-                     Limpiar Filtros
-                 </button>
-             )}
+            {/* Botón Limpiar Filtros */}
+            {(selectedCategory || selectedSubcategory || searchText) && (
+                <button className="btn-clear-filters" onClick={handleClearFilters}>
+                    Limpiar Filtros
+                </button>
+            )}
         </div>
     );
 };

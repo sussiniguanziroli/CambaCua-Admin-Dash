@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../firebase/config';
 import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
@@ -84,7 +84,7 @@ const ProductList = () => {
             setFilteredProducts(updateList);
 
             // Si el modal está abierto y es el producto editado, actualizarlo también
-             if (isModalOpen && selectedProductForModal?.id === producto.id) {
+            if (isModalOpen && selectedProductForModal?.id === producto.id) {
                 setSelectedProductForModal(prev => ({ ...prev, activo: newState }));
             }
 
@@ -152,8 +152,8 @@ const ProductList = () => {
     };
 
     // Manejar filtros
-    const handleFilter = ({ category, subcategory, text }) => {
-        let filtered = productos;
+    const handleFilter = useCallback(({ category, subcategory, text }) => {
+        let filtered = productos; // Depende de 'productos'
 
         if (category) {
             filtered = filtered.filter(producto => producto.categoryAdress === category);
@@ -170,8 +170,8 @@ const ProductList = () => {
                 (producto.subcategoria && producto.subcategoria.toLowerCase().includes(lowerText))
             );
         }
-        setFilteredProducts(filtered);
-    };
+        setFilteredProducts(filtered); // Actualiza el estado de productos filtrados
+    }, [productos]);
 
     // *** FUNCIONES PARA MANEJAR EL MODAL ***
     const openProductModal = (producto) => {
@@ -183,7 +183,7 @@ const ProductList = () => {
         setIsModalOpen(false);
         // Pequeño delay antes de limpiar el producto para la animación de cierre
         setTimeout(() => {
-             setSelectedProductForModal(null);
+            setSelectedProductForModal(null);
         }, 300); // Ajustar si la animación dura más/menos
     };
 
@@ -208,9 +208,9 @@ const ProductList = () => {
             {!isLoading && !error && (
                 <div className="product-list">
                     {/* ... (mapeo de productos existente, sin cambios internos en el map) ... */}
-                     {filteredProducts.length > 0 ? (
+                    {filteredProducts.length > 0 ? (
                         filteredProducts.map(producto => (
-                             <div key={producto.id} className={`product-item ${!producto.activo ? 'inactive-item' : ''}`}>
+                            <div key={producto.id} className={`product-item ${!producto.activo ? 'inactive-item' : ''}`}>
                                 {/* Status Badge */}
                                 <span className={`product-status ${producto.activo ? 'active' : 'inactive'}`}>
                                     {producto.activo ? 'Activo' : 'Inactivo'}
@@ -219,9 +219,9 @@ const ProductList = () => {
                                 <h3 onClick={() => openProductModal(producto)} style={{ cursor: 'pointer' }} title="Ver detalles">
                                     {producto.nombre}
                                 </h3>
-                                 {/* Imagen Clickable */}
+                                {/* Imagen Clickable */}
                                 <div className="product-image-container" onClick={() => openProductModal(producto)} style={{ cursor: 'pointer' }} title="Ver detalles">
-                                    {producto.imagen ? <img src={producto.imagen} alt={producto.nombre} onError={(e) => e.target.src = 'https://via.placeholder.com/400?text=Sin+Imagen'}/> : <span className="no-image">Sin imagen</span>}
+                                    {producto.imagen ? <img src={producto.imagen} alt={producto.nombre} onError={(e) => e.target.src = 'https://via.placeholder.com/400?text=Sin+Imagen'} /> : <span className="no-image">Sin imagen</span>}
                                 </div>
                                 {/* Info básica */}
                                 <p><strong>Precio:</strong> ${producto.precio ? producto.precio.toFixed(2) : 'N/A'}</p>
@@ -241,7 +241,7 @@ const ProductList = () => {
                                         Editar
                                     </Link>
                                     <button className="btn-delete" onClick={() => deleteProduct(producto)} title="Eliminar producto">
-                                         Eliminar
+                                        Eliminar
                                     </button>
                                 </div>
                             </div>
