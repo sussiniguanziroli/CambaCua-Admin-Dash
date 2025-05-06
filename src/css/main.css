@@ -1,4 +1,5 @@
-.loading-message, .error-message {
+.loading-message,
+.error-message {
   text-align: center;
   padding: 3rem 1rem;
   width: 100%;
@@ -13,7 +14,7 @@
 }
 
 .product-form-container {
-  max-width: 700px;
+  max-width: 1000px;
   margin: 2rem auto;
   padding: 2rem;
   background-color: #fff;
@@ -26,27 +27,26 @@
   color: rgb(46.475, 136.6083333333, 207.025);
   font-weight: 600;
 }
-
-.product-form {
+.product-form-container .product-form {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
-.product-form .form-group {
+.product-form-container .product-form .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
-.product-form .form-group label {
+.product-form-container .product-form .form-group label {
   font-size: 0.9rem;
   font-weight: 500;
   color: #555;
 }
-.product-form .form-group input[type=text],
-.product-form .form-group input[type=number],
-.product-form .form-group input[type=url],
-.product-form .form-group select,
-.product-form .form-group textarea {
+.product-form-container .product-form .form-group input[type=text],
+.product-form-container .product-form .form-group input[type=number],
+.product-form-container .product-form .form-group input[type=url],
+.product-form-container .product-form .form-group select,
+.product-form-container .product-form .form-group textarea {
   padding: 0.7rem 0.9rem;
   border: 1px solid #e0e0e0;
   border-radius: 0.48rem;
@@ -56,61 +56,61 @@
   width: 100%;
   box-sizing: border-box;
 }
-.product-form .form-group input[type=text]:focus,
-.product-form .form-group input[type=number]:focus,
-.product-form .form-group input[type=url]:focus,
-.product-form .form-group select:focus,
-.product-form .form-group textarea:focus {
+.product-form-container .product-form .form-group input[type=text]:focus,
+.product-form-container .product-form .form-group input[type=number]:focus,
+.product-form-container .product-form .form-group input[type=url]:focus,
+.product-form-container .product-form .form-group select:focus,
+.product-form-container .product-form .form-group textarea:focus {
   border-color: #6CACDE;
   outline: none;
   box-shadow: 0 0 0 3px rgba(108, 172, 222, 0.15);
 }
-.product-form .form-group input[type=text]:disabled,
-.product-form .form-group input[type=number]:disabled,
-.product-form .form-group input[type=url]:disabled,
-.product-form .form-group select:disabled,
-.product-form .form-group textarea:disabled {
+.product-form-container .product-form .form-group input[type=text]:disabled,
+.product-form-container .product-form .form-group input[type=number]:disabled,
+.product-form-container .product-form .form-group input[type=url]:disabled,
+.product-form-container .product-form .form-group select:disabled,
+.product-form-container .product-form .form-group textarea:disabled {
   background-color: #f8f9fa;
   cursor: not-allowed;
   opacity: 0.7;
 }
-.product-form .form-group input[type=text]::placeholder,
-.product-form .form-group input[type=number]::placeholder,
-.product-form .form-group input[type=url]::placeholder,
-.product-form .form-group select::placeholder,
-.product-form .form-group textarea::placeholder {
+.product-form-container .product-form .form-group input[type=text]::placeholder,
+.product-form-container .product-form .form-group input[type=number]::placeholder,
+.product-form-container .product-form .form-group input[type=url]::placeholder,
+.product-form-container .product-form .form-group select::placeholder,
+.product-form-container .product-form .form-group textarea::placeholder {
   color: #7f8c8d;
   opacity: 0.8;
 }
-.product-form .form-group textarea {
+.product-form-container .product-form .form-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 150px;
 }
-.product-form .form-group .error-message-inline {
+.product-form-container .product-form .form-group .error-message-inline {
   font-size: 0.75rem;
   color: #E57373;
   margin-top: 0.2rem;
 }
-.product-form .form-group small {
+.product-form-container .product-form .form-group small {
   font-size: 0.75rem;
   color: #7f8c8d;
   margin-top: 0.2rem;
 }
-.product-form .form-row {
+.product-form-container .product-form .form-row {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
 @media (min-width: 576px) {
-  .product-form .form-row {
+  .product-form-container .product-form .form-row {
     flex-direction: row;
     gap: 1rem;
   }
-  .product-form .form-row .form-group {
+  .product-form-container .product-form .form-row .form-group {
     flex: 1;
   }
 }
-.product-form .btn-submit {
+.product-form-container .product-form .btn-submit {
   padding: 0.8rem 1.5rem;
   margin-top: 1rem;
   background-color: #6CACDE;
@@ -126,10 +126,10 @@
   justify-content: center;
   gap: 0.5rem;
 }
-.product-form .btn-submit:hover {
+.product-form-container .product-form .btn-submit:hover {
   background-color: rgb(46.475, 136.6083333333, 207.025);
 }
-.product-form .btn-submit:disabled {
+.product-form-container .product-form .btn-submit:disabled {
   background-color: #e0e0e0;
   color: #7f8c8d;
   cursor: not-allowed;
@@ -165,7 +165,7 @@ button:hover {
   background-color: #0056b3;
 }
 
-form {
+.login-form {
   max-width: 400px;
   margin: 50px auto;
   padding: 20px;
@@ -176,13 +176,13 @@ form {
   flex-direction: column;
   gap: 15px;
 }
-form input {
+.login-form input {
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-form button {
+.login-form button {
   background-color: #007BFF;
   color: #fff;
   padding: 10px;
@@ -191,10 +191,10 @@ form button {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-form button:hover {
+.login-form button:hover {
   background-color: #0056b3;
 }
-form p {
+.login-form p {
   color: red;
 }
 
@@ -485,7 +485,8 @@ form p {
     height: 150px;
   }
 }
-.loading-message, .error-message {
+.loading-message,
+.error-message {
   text-align: center;
   padding: 3rem 1rem;
   width: 100%;
@@ -500,7 +501,7 @@ form p {
 }
 
 .product-form-container {
-  max-width: 700px;
+  max-width: 1000px;
   margin: 2rem auto;
   padding: 2rem;
   background-color: #fff;
@@ -513,27 +514,26 @@ form p {
   color: rgb(46.475, 136.6083333333, 207.025);
   font-weight: 600;
 }
-
-.product-form {
+.product-form-container .product-form {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
-.product-form .form-group {
+.product-form-container .product-form .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
-.product-form .form-group label {
+.product-form-container .product-form .form-group label {
   font-size: 0.9rem;
   font-weight: 500;
   color: #555;
 }
-.product-form .form-group input[type=text],
-.product-form .form-group input[type=number],
-.product-form .form-group input[type=url],
-.product-form .form-group select,
-.product-form .form-group textarea {
+.product-form-container .product-form .form-group input[type=text],
+.product-form-container .product-form .form-group input[type=number],
+.product-form-container .product-form .form-group input[type=url],
+.product-form-container .product-form .form-group select,
+.product-form-container .product-form .form-group textarea {
   padding: 0.7rem 0.9rem;
   border: 1px solid #e0e0e0;
   border-radius: 0.48rem;
@@ -543,51 +543,51 @@ form p {
   width: 100%;
   box-sizing: border-box;
 }
-.product-form .form-group input[type=text]:focus,
-.product-form .form-group input[type=number]:focus,
-.product-form .form-group input[type=url]:focus,
-.product-form .form-group select:focus,
-.product-form .form-group textarea:focus {
+.product-form-container .product-form .form-group input[type=text]:focus,
+.product-form-container .product-form .form-group input[type=number]:focus,
+.product-form-container .product-form .form-group input[type=url]:focus,
+.product-form-container .product-form .form-group select:focus,
+.product-form-container .product-form .form-group textarea:focus {
   border-color: #6CACDE;
   outline: none;
   box-shadow: 0 0 0 3px rgba(108, 172, 222, 0.15);
 }
-.product-form .form-group input[type=text]:disabled,
-.product-form .form-group input[type=number]:disabled,
-.product-form .form-group input[type=url]:disabled,
-.product-form .form-group select:disabled,
-.product-form .form-group textarea:disabled {
+.product-form-container .product-form .form-group input[type=text]:disabled,
+.product-form-container .product-form .form-group input[type=number]:disabled,
+.product-form-container .product-form .form-group input[type=url]:disabled,
+.product-form-container .product-form .form-group select:disabled,
+.product-form-container .product-form .form-group textarea:disabled {
   background-color: #f8f9fa;
   cursor: not-allowed;
   opacity: 0.7;
 }
-.product-form .form-group input[type=text]::placeholder,
-.product-form .form-group input[type=number]::placeholder,
-.product-form .form-group input[type=url]::placeholder,
-.product-form .form-group select::placeholder,
-.product-form .form-group textarea::placeholder {
+.product-form-container .product-form .form-group input[type=text]::placeholder,
+.product-form-container .product-form .form-group input[type=number]::placeholder,
+.product-form-container .product-form .form-group input[type=url]::placeholder,
+.product-form-container .product-form .form-group select::placeholder,
+.product-form-container .product-form .form-group textarea::placeholder {
   color: #7f8c8d;
   opacity: 0.8;
 }
-.product-form .form-group textarea {
+.product-form-container .product-form .form-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 150px;
 }
-.product-form .form-row {
+.product-form-container .product-form .form-row {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
 @media (min-width: 576px) {
-  .product-form .form-row {
+  .product-form-container .product-form .form-row {
     flex-direction: row;
     gap: 1rem;
   }
-  .product-form .form-row .form-group {
+  .product-form-container .product-form .form-row .form-group {
     flex: 1;
   }
 }
-.product-form .btn-submit {
+.product-form-container .product-form .btn-submit {
   padding: 0.8rem 1.5rem;
   margin-top: 1rem;
   background-color: #6CACDE;
@@ -603,10 +603,10 @@ form p {
   justify-content: center;
   gap: 0.5rem;
 }
-.product-form .btn-submit:hover {
+.product-form-container .product-form .btn-submit:hover {
   background-color: rgb(46.475, 136.6083333333, 207.025);
 }
-.product-form .btn-submit:disabled {
+.product-form-container .product-form .btn-submit:disabled {
   background-color: #e0e0e0;
   color: #7f8c8d;
   cursor: not-allowed;

@@ -17,7 +17,8 @@ $box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 $transition: all 0.3s ease;
 
 // Mensajes globales (pueden ir en un archivo general)
-.loading-message, .error-message {
+.loading-message,
+.error-message {
   text-align: center;
   padding: 3rem 1rem;
   width: 100%;
@@ -25,6 +26,7 @@ $transition: all 0.3s ease;
   color: $grey-dark;
   margin-top: 2rem;
 }
+
 .error-message {
   color: $error-color;
   font-weight: bold;
@@ -32,7 +34,7 @@ $transition: all 0.3s ease;
 
 // Contenedor del Formulario
 .product-form-container {
-  max-width: 700px; // Un poco más ancho para mejor disposición
+  max-width: 1000px; // Un poco más ancho para mejor disposición
   margin: 2rem auto;
   padding: 2rem;
   background-color: #fff;
@@ -45,107 +47,110 @@ $transition: all 0.3s ease;
     color: $primary-dark;
     font-weight: 600;
   }
-}
 
-// Formulario
-.product-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem; // Espacio entre grupos/filas
-
-  // Grupo de formulario estándar (label + input/select/textarea)
-  .form-group {
+  // Formulario
+  .product-form {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem; // Espacio entre label e input
+    gap: 1.2rem; // Espacio entre grupos/filas
 
-    label {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: $text-secondary;
+    // Grupo de formulario estándar (label + input/select/textarea)
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem; // Espacio entre label e input
+
+      label {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: $text-secondary;
+      }
+
+      // Estilo base inputs
+      input[type="text"],
+      input[type="number"],
+      input[type="url"],
+      select,
+      textarea {
+        padding: 0.7rem 0.9rem;
+        border: 1px solid $grey-medium;
+        border-radius: $border-radius * 0.6;
+        font-size: 1rem;
+        background-color: #fff;
+        transition: $transition;
+        width: 100%;
+        box-sizing: border-box; // Asegurar que padding no aumente el tamaño
+
+        &:focus {
+          border-color: $primary-color;
+          outline: none;
+          box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        }
+
+        &:disabled {
+          background-color: $grey-light;
+          cursor: not-allowed;
+          opacity: 0.7;
+        }
+
+        // Placeholder más suave
+        &::placeholder {
+          color: $grey-dark;
+          opacity: 0.8;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 150px;
+      }
     }
 
-    // Estilo base inputs
-    input[type="text"],
-    input[type="number"],
-    input[type="url"],
-    select,
-    textarea {
-      padding: 0.7rem 0.9rem;
-      border: 1px solid $grey-medium;
+    // Fila para agrupar campos horizontalmente
+    .form-row {
+      display: flex;
+      flex-direction: column; // Apilado por defecto
+      gap: 1.2rem; // Mismo gap que vertical
+
+      @media (min-width: 576px) {
+        // Lado a lado en pantallas pequeñas+
+        flex-direction: row;
+        gap: 1rem; // Menor gap horizontal
+
+        .form-group {
+          flex: 1; // Ocupar espacio equitativamente
+        }
+      }
+    }
+
+    // Botón de envío
+    .btn-submit {
+      padding: 0.8rem 1.5rem;
+      margin-top: 1rem; // Espacio extra antes del botón
+      background-color: $primary-color;
+      color: white;
+      border: none;
       border-radius: $border-radius * 0.6;
       font-size: 1rem;
-      background-color: #fff;
+      font-weight: 500;
+      cursor: pointer;
       transition: $transition;
-      width: 100%;
-      box-sizing: border-box; // Asegurar que padding no aumente el tamaño
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem; // Espacio para posible spinner
 
-      &:focus {
-        border-color: $primary-color;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+      &:hover {
+        background-color: $primary-dark;
       }
 
       &:disabled {
-        background-color: $grey-light;
+        background-color: $grey-medium;
+        color: $grey-dark;
         cursor: not-allowed;
-        opacity: 0.7;
-      }
-
-       // Placeholder más suave
-      &::placeholder {
-          color: $grey-dark;
-          opacity: 0.8;
+        opacity: 0.8;
       }
     }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
   }
 
-  // Fila para agrupar campos horizontalmente
-  .form-row {
-    display: flex;
-    flex-direction: column; // Apilado por defecto
-    gap: 1.2rem; // Mismo gap que vertical
-
-    @media (min-width: 576px) { // Lado a lado en pantallas pequeñas+
-        flex-direction: row;
-        gap: 1rem; // Menor gap horizontal
-        .form-group {
-            flex: 1; // Ocupar espacio equitativamente
-        }
-    }
-  }
-
-  // Botón de envío
-  .btn-submit {
-    padding: 0.8rem 1.5rem;
-    margin-top: 1rem; // Espacio extra antes del botón
-    background-color: $primary-color;
-    color: white;
-    border: none;
-    border-radius: $border-radius * 0.6;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: $transition;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem; // Espacio para posible spinner
-
-    &:hover {
-      background-color: $primary-dark;
-    }
-
-    &:disabled {
-      background-color: $grey-medium;
-      color: $grey-dark;
-      cursor: not-allowed;
-      opacity: 0.8;
-    }
-  }
 }

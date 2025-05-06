@@ -19,7 +19,7 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className='login-form' onSubmit={handleSubmit}>
       <h2>Iniciar Sesión</h2>
       <input 
         type="email" 
