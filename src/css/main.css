@@ -24,7 +24,7 @@
 .product-form-container h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: rgb(46.475, 136.6083333333, 207.025);
+  color: #2e89cf;
   font-weight: 600;
 }
 .product-form-container .product-form {
@@ -127,7 +127,7 @@
   gap: 0.5rem;
 }
 .product-form-container .product-form .btn-submit:hover {
-  background-color: rgb(46.475, 136.6083333333, 207.025);
+  background-color: #2e89cf;
 }
 .product-form-container .product-form .btn-submit:disabled {
   background-color: #e0e0e0;
@@ -310,7 +310,7 @@ button:hover {
 }
 .product-item h3 {
   margin: 0 0 0.8rem 0;
-  color: rgb(35.5272277228, 126.0643564356, 195.9727722772);
+  color: #247ec4;
   font-size: 1.15rem;
   font-weight: 600;
   white-space: nowrap;
@@ -345,7 +345,7 @@ button:hover {
   margin: 0.3rem 0;
   font-size: 0.88rem;
   line-height: 1.4;
-  color: rgb(89.25, 89.25, 89.25);
+  color: #595959;
 }
 .product-item p strong {
   color: #333;
@@ -403,14 +403,14 @@ button:hover {
   color: white;
 }
 .btn-toggle.btn-activate:hover {
-  background-color: rgb(69.3913043478, 182.6086956522, 75.4782608696);
+  background-color: #45b74b;
 }
 .btn-toggle.btn-deactivate {
   background-color: #f5ad41;
   color: white;
 }
 .btn-toggle.btn-deactivate:hover {
-  background-color: rgb(242.45, 152.09, 16.55);
+  background-color: #f29811;
 }
 
 .btn-delete {
@@ -418,7 +418,7 @@ button:hover {
   color: white;
 }
 .btn-delete:hover {
-  background-color: rgb(224.4893617021, 46.5106382979, 46.5106382979);
+  background-color: #e02f2f;
 }
 
 .btn-edit {
@@ -426,7 +426,7 @@ button:hover {
   color: white;
 }
 .btn-edit:hover {
-  background-color: rgb(127.1732673267, 186.2277227723, 231.8267326733);
+  background-color: #7fbae8;
   color: white;
 }
 
@@ -511,7 +511,7 @@ button:hover {
 .product-form-container h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: rgb(46.475, 136.6083333333, 207.025);
+  color: #2e89cf;
   font-weight: 600;
 }
 .product-form-container .product-form {
@@ -604,7 +604,7 @@ button:hover {
   gap: 0.5rem;
 }
 .product-form-container .product-form .btn-submit:hover {
-  background-color: rgb(46.475, 136.6083333333, 207.025);
+  background-color: #2e89cf;
 }
 .product-form-container .product-form .btn-submit:disabled {
   background-color: #e0e0e0;
@@ -752,7 +752,7 @@ button[type=submit]:focus {
   }
 }
 .btn-clear-filters:hover {
-  background-color: rgb(203.6, 203.6, 203.6);
+  background-color: #cccccc;
   color: #333;
 }
 
@@ -763,7 +763,7 @@ button[type=submit]:focus {
 }
 .pedidos-container h2 {
   font-size: 2.2em;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   margin-bottom: 1.8rem;
   font-weight: 600;
   position: relative;
@@ -804,7 +804,7 @@ button[type=submit]:focus {
 }
 .pedido-box h3 {
   margin-top: 0;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   font-size: 1.4rem;
   border-bottom: 1px solid #eee;
   padding-bottom: 0.8rem;
@@ -859,10 +859,10 @@ button[type=submit]:focus {
   background-color: #f8f9fa;
   border-radius: 0.5rem;
   font-size: 0.92rem;
-  border-left: 3px solid rgb(95.3179916318, 173.9790794979, 226.6820083682);
+  border-left: 3px solid #5faee3;
 }
 .productos-list li strong {
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   font-weight: 600;
 }
 
@@ -895,7 +895,7 @@ button {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 button:hover {
-  background-color: rgb(95.3179916318, 173.9790794979, 226.6820083682);
+  background-color: #5faee3;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -909,19 +909,19 @@ button.btn-cancelar {
   background-color: #e74c3c;
 }
 button.btn-cancelar:hover {
-  background-color: rgb(222.7808219178, 45.698630137, 27.4191780822);
+  background-color: #df2e1b;
 }
 button.btn-pagado {
   background-color: #f39c12;
 }
 button.btn-pagado:hover {
-  background-color: rgb(209.5879518072, 132.6506024096, 10.6120481928);
+  background-color: #d2850b;
 }
 button.btn-completar {
   background-color: #2ecc71;
 }
 button.btn-completar:hover {
-  background-color: rgb(38.4928, 170.7072, 94.5584);
+  background-color: #26ab5f;
 }
 
 .no-orders {
@@ -1055,7 +1055,7 @@ button.btn-completar:hover {
   transition: all 0.2s ease-in-out;
 }
 .filtros-container .btn-reset:hover {
-  background-color: rgb(84.3605150215, 91.3905579399, 97.6394849785);
+  background-color: #545b62;
   transform: translateY(-1px);
 }
 @media (max-width: 768px) {
@@ -1113,7 +1113,7 @@ button.btn-completar:hover {
 }
 .pedidos-container h2 {
   font-size: 2.2em;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   margin-bottom: 1.8rem;
   font-weight: 600;
   position: relative;
@@ -1157,7 +1157,7 @@ button.btn-completar:hover {
 }
 .pedido-box h3 {
   margin-top: 0;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   font-size: 1.4rem;
   border-bottom: 1px solid #eee;
   padding-bottom: 0.8rem;
@@ -1235,7 +1235,7 @@ button.btn-completar:hover {
 }
 .productos-list h4 {
   font-size: 1.1rem;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   margin-bottom: 0.8rem;
   font-weight: 600;
 }
@@ -1245,10 +1245,10 @@ button.btn-completar:hover {
   background-color: #f8f9fa;
   border-radius: 0.5rem;
   font-size: 0.92rem;
-  border-left: 3px solid rgb(95.3179916318, 173.9790794979, 226.6820083682);
+  border-left: 3px solid #5faee3;
 }
 .productos-list li strong {
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   font-weight: 600;
 }
 
@@ -1315,7 +1315,7 @@ button {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 button:hover {
-  background-color: rgb(95.3179916318, 173.9790794979, 226.6820083682);
+  background-color: #5faee3;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -1329,26 +1329,26 @@ button.btn-cancelar {
   background-color: #e74c3c;
 }
 button.btn-cancelar:hover {
-  background-color: rgb(222.7808219178, 45.698630137, 27.4191780822);
+  background-color: #df2e1b;
 }
 button.btn-pagado {
   background-color: #f39c12;
 }
 button.btn-pagado:hover {
-  background-color: rgb(209.5879518072, 132.6506024096, 10.6120481928);
+  background-color: #d2850b;
 }
 button.btn-completar {
   background-color: #2ecc71;
 }
 button.btn-completar:hover {
-  background-color: rgb(38.4928, 170.7072, 94.5584);
+  background-color: #26ab5f;
 }
 button.btn-desarchivar {
   background-color: #9b59b6;
   position: relative;
 }
 button.btn-desarchivar:hover:not(:disabled) {
-  background-color: rgb(133.8820083682, 70.3121338912, 159.8878661088);
+  background-color: #8646a0;
   transform: translateY(-2px);
 }
 button.btn-desarchivar:disabled {
@@ -1372,7 +1372,7 @@ button.btn-reset {
   background-color: #7f8c8d;
 }
 button.btn-reset:hover {
-  background-color: rgb(107.0280991736, 119.2330578512, 120.1719008264);
+  background-color: #6b7778;
 }
 
 .filtros-container {
@@ -1618,7 +1618,7 @@ button.btn-reset:hover {
 .admin-modal .admin-modal-carousel-column .admin-carousel .flickity-prev-next-button:hover {
   background: #fff;
   transform: scale(1.08);
-  color: rgb(46.475, 136.6083333333, 207.025);
+  color: #2e89cf;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .admin-modal .admin-modal-carousel-column .admin-carousel .flickity-prev-next-button:active {
@@ -1690,7 +1690,7 @@ button.btn-reset:hover {
 .admin-modal .admin-modal-info-column .admin-modal-header h2 {
   font-size: 1.6rem;
   font-weight: 600;
-  color: rgb(46.475, 136.6083333333, 207.025);
+  color: #2e89cf;
   line-height: 1.3;
   margin: 0;
   flex-grow: 1;
@@ -1812,7 +1812,7 @@ button.btn-reset:hover {
   min-height: 150px;
 }
 .loader-container h3 {
-  color: rgb(149.65, 195.5166666667, 231.35);
+  color: #96c4e7;
 }
 
 * {
