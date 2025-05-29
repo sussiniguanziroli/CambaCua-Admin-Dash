@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../firebase/config';
 import { collection, getDocs } from 'firebase/firestore';
-import Swal from 'sweetalert2'; // Para posibles errores
+import Swal from 'sweetalert2';
 
 const Filtrado = ({ onFilter }) => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [searchText, setSearchText] = useState('');
-    const [isCatLoading, setIsCatLoading] = useState(true); // Estado carga categorías
-    const [catError, setCatError] = useState(null); // Estado error categorías
+    const [selectedStatus, setSelectedStatus] = useState(''); // '' for All, 'true' for Active, 'false' for Inactive
+    const [isCatLoading, setIsCatLoading] = useState(true);
+    const [catError, setCatError] = useState(null);
 
-    // Debounce timeout ref
     const debounceTimeoutRef = React.useRef(null);
 
-    // Cargar categorías
     useEffect(() => {
         const fetchCategories = async () => {
             setIsCatLoading(true);
@@ -24,14 +23,12 @@ const Filtrado = ({ onFilter }) => {
                 const categoriesData = snapshot.docs.map(doc => ({
                     adress: doc.data().adress,
                     nombre: doc.data().nombre,
-                    subcategorias: doc.data().subcategorias || [] // Asegurar que sea un array
+                    subcategorias: doc.data().subcategorias || []
                 }));
                 setCategories(categoriesData);
             } catch (error) {
                 console.error('Error al obtener las categorías: ', error);
                 setCatError('Error al cargar categorías.');
-                // Opcional: Notificar con Swal
-                // Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudieron cargar las categorías.' });
             } finally {
                 setIsCatLoading(false);
             }
@@ -39,36 +36,26 @@ const Filtrado = ({ onFilter }) => {
         fetchCategories();
     }, []);
 
-    // Función para aplicar filtros (llamada por los useEffect)
     const applyFilter = useCallback(() => {
-        onFilter({ category: selectedCategory, subcategory: selectedSubcategory, text: searchText });
-    }, [selectedCategory, selectedSubcategory, searchText, onFilter]);
+        // Pass selectedStatus to the onFilter callback
+        onFilter({ category: selectedCategory, subcategory: selectedSubcategory, text: searchText, status: selectedStatus });
+    }, [selectedCategory, selectedSubcategory, searchText, selectedStatus, onFilter]);
 
-    // Aplicar filtro inmediatamente al cambiar categoría o subcategoría
     useEffect(() => {
-        // No aplicar filtro si las categorías aún están cargando para evitar llamadas iniciales innecesarias
         if (!isCatLoading) {
             applyFilter();
         }
-    }, [selectedCategory, selectedSubcategory, applyFilter, isCatLoading]);
+    }, [selectedCategory, selectedSubcategory, selectedStatus, applyFilter, isCatLoading]); // Added selectedStatus
 
-    // Aplicar filtro con debounce al cambiar el texto de búsqueda
     useEffect(() => {
-        // ... (lógica debounce) ...
-        debounceTimeoutRef.current = setTimeout(() => {
-            applyFilter(); // Llama a applyFilter después del delay
-        }, 500);
-        // ¡Este efecto también DEPENDE de applyFilter!
-
-
-        // Establecer un nuevo timeout solo si no estamos cargando categorías
+        if (debounceTimeoutRef.current) {
+            clearTimeout(debounceTimeoutRef.current);
+        }
         if (!isCatLoading) {
             debounceTimeoutRef.current = setTimeout(() => {
                 applyFilter();
-            }, 500); // Delay de 500ms
+            }, 500);
         }
-
-        // Limpieza al desmontar o antes de la siguiente ejecución
         return () => {
             if (debounceTimeoutRef.current) {
                 clearTimeout(debounceTimeoutRef.current);
@@ -76,31 +63,30 @@ const Filtrado = ({ onFilter }) => {
         };
     }, [searchText, applyFilter, isCatLoading]);
 
-    // Manejador cambio categoría
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
-        setSelectedSubcategory(''); // Limpiar subcategoría
+        setSelectedSubcategory('');
     };
 
-    // Manejador cambio subcategoría
     const handleSubcategoryChange = (e) => {
         setSelectedSubcategory(e.target.value);
     };
 
-    // Manejador cambio texto búsqueda
     const handleSearchTextChange = (e) => {
         setSearchText(e.target.value);
     };
 
-    // Limpiar filtros
+    const handleStatusChange = (e) => {
+        setSelectedStatus(e.target.value);
+    };
+
     const handleClearFilters = () => {
         setSelectedCategory('');
         setSelectedSubcategory('');
         setSearchText('');
-        // No es necesario llamar a applyFilter aquí, el cambio de estado lo hará
+        setSelectedStatus(''); // Clear status filter
     };
 
-    // Encontrar subcategorías de la categoría seleccionada
     const selectedCategoryObj = categories.find(cat => cat.adress === selectedCategory);
     const currentSubcategories = selectedCategoryObj?.subcategorias || [];
 
@@ -126,7 +112,7 @@ const Filtrado = ({ onFilter }) => {
                     </select>
                 </div>
 
-                {/* Select Subcategoría (condicional) */}
+                {/* Select Subcategoría */}
                 {selectedCategory && currentSubcategories.length > 0 && (
                     <div className="filter-group">
                         <label htmlFor="subcategory-select">Subcategoría</label>
@@ -135,7 +121,7 @@ const Filtrado = ({ onFilter }) => {
                             className="filter-select"
                             value={selectedSubcategory}
                             onChange={handleSubcategoryChange}
-                            disabled={!selectedCategory} // Deshabilitado si no hay categoría
+                            disabled={!selectedCategory}
                         >
                             <option value="">Todas</option>
                             {currentSubcategories.map((subcategory) => (
@@ -147,6 +133,22 @@ const Filtrado = ({ onFilter }) => {
                     </div>
                 )}
 
+                {/* Select Estado */}
+                <div className="filter-group">
+                    <label htmlFor="status-select">Estado</label>
+                    <select
+                        id="status-select"
+                        className="filter-select"
+                        value={selectedStatus}
+                        onChange={handleStatusChange}
+                        disabled={isCatLoading} // Can be enabled even if categories fail
+                    >
+                        <option value="">Todos</option>
+                        <option value="true">Activo</option>
+                        <option value="false">Inactivo</option>
+                    </select>
+                </div>
+
                 {/* Input Búsqueda */}
                 <div className="filter-group filter-group-search">
                     <label htmlFor="search-input">Buscar</label>
@@ -157,13 +159,12 @@ const Filtrado = ({ onFilter }) => {
                         value={searchText}
                         onChange={handleSearchTextChange}
                         placeholder="Buscar producto..."
-                        disabled={isCatLoading} // Deshabilitado mientras cargan categorías iniciales
+                        disabled={isCatLoading}
                     />
                 </div>
             </div>
 
-            {/* Botón Limpiar Filtros */}
-            {(selectedCategory || selectedSubcategory || searchText) && (
+            {(selectedCategory || selectedSubcategory || searchText || selectedStatus) && ( // Added selectedStatus
                 <button className="btn-clear-filters" onClick={handleClearFilters}>
                     Limpiar Filtros
                 </button>

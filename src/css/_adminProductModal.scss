@@ -22,6 +22,29 @@ $transition: all 0.3s ease;
 
 // Estilo base del Modal
 .admin-modal {
+    .admin-product-timestamps {
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+      }
+      .detail-section-title {
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #333;
+      }
+      .detail-item {
+        margin-bottom: 5px;
+        font-size: 0.9em;
+        color: #555;
+      }
+      .detail-label {
+        font-weight: 600; /* Semibold */
+        margin-right: 5px;
+        color: #444;
+      }
+      .detail-value {
+        color: #666;
+      }
   position: fixed;
   inset: 0; // Equivalente a top/left/right/bottom: 0
   background-color: rgba(30, 30, 30, 0.7); // Overlay un poco más oscuro

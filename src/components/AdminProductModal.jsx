@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import Flickity from 'flickity';
-import imagesLoaded from 'imagesloaded'; // Importar explícitamente
+import imagesLoaded from 'imagesloaded';
 import 'flickity/css/flickity.css';
 import { FaTimes } from 'react-icons/fa';
 
@@ -9,22 +9,18 @@ const AdminProductModal = ({ producto, isOpen, onClose }) => {
     const flickityRef = useRef(null);
     const flktyInstance = useRef(null);
 
-    // Cerrar modal al hacer clic fuera (sin cambios)
     const handleClickOutside = useCallback((event) => {
         if (event.target.classList.contains('admin-modal') || (modalRef.current && !modalRef.current.contains(event.target))) {
             onClose();
         }
     }, [onClose]);
 
-    // Efecto para Flickity y listeners
     useEffect(() => {
-        let flickityNode = flickityRef.current; // Guardar nodo en variable local
-        let currentInstance = flktyInstance.current; // Guardar instancia actual
+        let flickityNode = flickityRef.current;
+        let currentInstance = flktyInstance.current;
 
-        // Limpiar instancia anterior si existe (importante si React StrictMode re-ejecuta)
         if (currentInstance) {
-             try {
-                // console.log("[Flickity Cleanup] Destroying existing instance before init attempt.");
+            try {
                 currentInstance.destroy();
             } catch (error) {
                 console.error("[Flickity Cleanup] Error destroying previous instance:", error);
@@ -32,55 +28,39 @@ const AdminProductModal = ({ producto, isOpen, onClose }) => {
             flktyInstance.current = null;
         }
 
-
         if (isOpen && flickityNode) {
             document.addEventListener('mousedown', handleClickOutside);
-
-            // Usar imagesLoaded explícitamente para más control
             const imgLoad = imagesLoaded(flickityNode);
 
             imgLoad.on('always', () => {
-                 // console.log("[imagesLoaded] All images settled (loaded or failed). Attempting Flickity init.");
-                 // Asegurarse que el nodo todavía existe y no hay ya una instancia
                  if (flickityNode && !flktyInstance.current) {
                     try {
-                        // console.log("[Flickity Init] Initializing Flickity...");
                         flktyInstance.current = new Flickity(flickityNode, {
                             cellAlign: 'center',
                             contain: true,
                             pageDots: true,
                             prevNextButtons: true,
-                            wrapAround: imagenesCarousel.length > 1, // Solo hacer wrapAround si hay más de 1 imagen
-                            imagesLoaded: true // Mantener por si acaso, aunque usemos imagesLoaded manualmente
+                            wrapAround: imagenesCarousel.length > 1,
+                            imagesLoaded: true 
                         });
-                        // console.log("[Flickity Init] Flickity initialized.");
-
-                         // Forzar un resize después de la inicialización y carga de imágenes
                          requestAnimationFrame(() => {
                             if (flktyInstance.current) {
-                                // console.log("[Flickity Resize] Resizing Flickity instance.");
                                 flktyInstance.current.resize();
                             }
                          });
-
                     } catch (error) {
                        console.error("[Flickity Init] Error during Flickity initialization:", error);
                     }
                  }
             });
-
         } else {
-            // Limpieza si isOpen cambia a false
             document.removeEventListener('mousedown', handleClickOutside);
         }
 
-        // Función de limpieza del efecto
         return () => {
-            // console.log("[Flickity Cleanup] Running effect cleanup...");
             document.removeEventListener('mousedown', handleClickOutside);
             if (flktyInstance.current) {
                  try {
-                    // console.log("[Flickity Cleanup] Destroying instance on cleanup.");
                     flktyInstance.current.destroy();
                 } catch (error) {
                      console.error("[Flickity Cleanup] Error destroying instance:", error);
@@ -88,18 +68,29 @@ const AdminProductModal = ({ producto, isOpen, onClose }) => {
                 flktyInstance.current = null;
             }
         };
-    // Añadir producto.id a las dependencias fuerza la re-ejecución si cambia el producto,
-    // lo cual limpiará y reiniciará Flickity.
-    }, [isOpen, producto?.id, handleClickOutside]);
+    }, [isOpen, producto?.id, handleClickOutside, producto?.imagen, producto?.imagenB, producto?.imagenC]); // Added image URLs to dependencies
 
-    // No renderizar si no está abierto o no hay producto
     if (!isOpen || !producto) return null;
 
-    // Preparar imágenes y fallback
     const imagenesCarousel = [producto.imagen, producto.imagenB, producto.imagenC].filter(img => img && img.trim() !== '');
     const fallbackImage = "https://via.placeholder.com/400?text=Sin+Imagen";
 
-    // DEBUG: console.log("Imagenes para carrusel:", imagenesCarousel);
+    // Helper function to format dates, accounts for Firestore Timestamps or JS Dates
+    const formatDate = (dateValue) => {
+        if (!dateValue) return 'N/A';
+        try {
+            const date = dateValue.toDate ? dateValue.toDate() : new Date(dateValue); // Handle Firestore Timestamp and JS Date
+            if (isNaN(date.getTime())) return 'Fecha inválida';
+            return date.toLocaleString('es-AR', { 
+                day: '2-digit', month: '2-digit', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit', second: '2-digit' 
+            });
+        } catch (e) {
+            console.error("Error formatting date:", dateValue, e);
+            return 'Error al formatear fecha';
+        }
+    };
+
 
     return (
         <div className={`admin-modal ${isOpen ? 'fade-in' : ''}`} onClick={handleClickOutside}>
@@ -109,8 +100,7 @@ const AdminProductModal = ({ producto, isOpen, onClose }) => {
                 </button>
                 <div className="admin-modal-main-area">
                     <div className="admin-modal-carousel-column">
-                        {/* Usar key en el contenedor puede ayudar a React a forzar el re-render */}
-                        <div className="admin-carousel-container" key={producto.id}>
+                        <div className="admin-carousel-container" key={producto.id + '-carousel'}> {/* More unique key */}
                             <div className="admin-carousel" ref={flickityRef}>
                                 {imagenesCarousel.length > 0 ? (
                                     imagenesCarousel.map((img, index) => (
@@ -126,7 +116,6 @@ const AdminProductModal = ({ producto, isOpen, onClose }) => {
                             </div>
                         </div>
                     </div>
-                    {/* Columna Info (sin cambios respecto a la v2) */}
                     <div className="admin-modal-info-column">
                         <div className="admin-modal-header">
                             <h2>{producto.nombre}</h2>
@@ -146,11 +135,32 @@ const AdminProductModal = ({ producto, isOpen, onClose }) => {
                                 </>
                             )}
                             <div className="admin-product-details">
-                                 <p className="detail-section-title"><strong>Detalles:</strong></p>
+                                 <p className="detail-section-title"><strong>Detalles Adicionales:</strong></p>
                                 {producto.categoria && (<div className="detail-item"><strong className="detail-label">Categoría:</strong> <span className="detail-value">{producto.categoria}</span></div>)}
                                 {producto.subcategoria && (<div className="detail-item"><strong className="detail-label">Subcategoría:</strong> <span className="detail-value">{producto.subcategoria}</span></div>)}
                                 {producto.categoryAdress && (<div className="detail-item"><strong className="detail-label">ID Categoría:</strong> <span className="detail-value">{producto.categoryAdress}</span></div>)}
                                 {producto.id && (<div className="detail-item"><strong className="detail-label">ID Producto:</strong> <span className="detail-value">{producto.id}</span></div>)}
+                            </div>
+
+                            {/* Timestamps Section */}
+                            <div className="admin-product-timestamps" style={{ marginTop: '15px', paddingTop: '10px', borderTop: '1px solid #eee' }}>
+                                <p className="detail-section-title"><strong>Historial de Fechas:</strong></p>
+                                <div className="detail-item">
+                                    <strong className="detail-label">Creado:</strong> 
+                                    <span className="detail-value">{formatDate(producto.createdAt)}</span>
+                                </div>
+                                <div className="detail-item">
+                                    <strong className="detail-label">Última Modificación General:</strong> 
+                                    <span className="detail-value">{formatDate(producto.updatedAt)}</span>
+                                </div>
+                                <div className="detail-item">
+                                    <strong className="detail-label">Última Modificación de Precio:</strong> 
+                                    <span className="detail-value">{formatDate(producto.precioLastUpdated)}</span>
+                                </div>
+                                <div className="detail-item">
+                                    <strong className="detail-label">Última Modificación de Stock:</strong> 
+                                    <span className="detail-value">{formatDate(producto.stockLastUpdated)}</span>
+                                </div>
                             </div>
                         </div>
                     </div>

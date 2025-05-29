@@ -19,149 +19,184 @@ $transition: all 0.3s ease;
 // Mensajes globales (pueden ir en un archivo general)
 .loading-message,
 .error-message {
-  text-align: center;
-  padding: 3rem 1rem;
-  width: 100%;
-  font-size: 1.1rem;
-  color: $grey-dark;
-  margin-top: 2rem;
+    text-align: center;
+    padding: 3rem 1rem;
+    width: 100%;
+    font-size: 1.1rem;
+    color: $grey-dark;
+    margin-top: 2rem;
 }
 
 .error-message {
-  color: $error-color;
-  font-weight: bold;
+    color: $error-color;
+    font-weight: bold;
 }
 
 // Contenedor del Formulario
 .product-form-container {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow;
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
 
 
-  h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: $primary-dark;
-    font-weight: 600;
-  }
-
-  // Formulario
-  .product-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    // Grupo de formulario
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-
-      label {
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: $text-secondary;
-      }
-
-      // Estilo base inputs
-      input[type="text"],
-      input[type="number"],
-      input[type="url"],
-      select,
-      textarea {
-        padding: 0.7rem 0.9rem;
-        border: 1px solid $grey-medium;
-        border-radius: $border-radius * 0.6;
-        font-size: 1rem;
-        background-color: #fff;
-        transition: $transition;
-        width: 100%;
-        box-sizing: border-box;
-
-        &:focus {
-          border-color: $primary-color;
-          outline: none;
-          box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
-        }
-
-        &:disabled {
-          background-color: $grey-light;
-          cursor: not-allowed;
-          opacity: 0.7;
-        }
-
-        &::placeholder {
-          color: $grey-dark;
-          opacity: 0.8;
-        }
-      }
-
-      textarea {
-        resize: vertical;
-        min-height: 150px;
-      }
-
-      // Mensaje de error inline pequeño debajo del input/select
-      .error-message-inline {
-        font-size: 0.75rem;
-        color: $error-color;
-        margin-top: 0.2rem;
-      }
-
-      // Ayuda visual debajo del input
-      small {
-        font-size: 0.75rem;
-        color: $grey-dark;
-        margin-top: 0.2rem;
-      }
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: $primary-dark;
+        font-weight: 600;
     }
 
-    // Fila horizontal
-    .form-row {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
+    // Formulario
+    .product-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
 
-      @media (min-width: 576px) {
-        flex-direction: row;
-        gap: 1rem;
+        // Grupo de formulario
+        .image-upload-group .image-inputs {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* Adjust as needed */
+        }
+
+        .image-upload-group .image-inputs span {
+            margin: 0 5px;
+        }
+
+        .image-preview {
+            max-width: 150px;
+            /* Or your preferred size */
+            max-height: 150px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 4px;
+            object-fit: cover;
+            /* To maintain aspect ratio */
+        }
+
+        /* For the small inline loader, assuming LoaderSpinner can take a className */
+        .loader-spinner.small-inline {
+            /* Adjust styles to make it small and inline */
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
 
         .form-group {
-          flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+
+            label {
+                font-size: 0.9rem;
+                font-weight: 500;
+                color: $text-secondary;
+            }
+
+            // Estilo base inputs
+            input[type="text"],
+            input[type="number"],
+            input[type="url"],
+            select,
+            textarea {
+                padding: 0.7rem 0.9rem;
+                border: 1px solid $grey-medium;
+                border-radius: $border-radius * 0.6;
+                font-size: 1rem;
+                background-color: #fff;
+                transition: $transition;
+                width: 100%;
+                box-sizing: border-box;
+
+                &:focus {
+                    border-color: $primary-color;
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+                }
+
+                &:disabled {
+                    background-color: $grey-light;
+                    cursor: not-allowed;
+                    opacity: 0.7;
+                }
+
+                &::placeholder {
+                    color: $grey-dark;
+                    opacity: 0.8;
+                }
+            }
+
+            textarea {
+                resize: vertical;
+                min-height: 150px;
+            }
+
+            // Mensaje de error inline pequeño debajo del input/select
+            .error-message-inline {
+                font-size: 0.75rem;
+                color: $error-color;
+                margin-top: 0.2rem;
+            }
+
+            // Ayuda visual debajo del input
+            small {
+                font-size: 0.75rem;
+                color: $grey-dark;
+                margin-top: 0.2rem;
+            }
+
         }
-      }
+
+        // Fila horizontal
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+
+            @media (min-width: 576px) {
+                flex-direction: row;
+                gap: 1rem;
+
+                .form-group {
+                    flex: 1;
+                }
+            }
+        }
+
+        // Botón de envío
+        .btn-submit {
+            padding: 0.8rem 1.5rem;
+            margin-top: 1rem;
+            background-color: $primary-color;
+            color: white;
+            border: none;
+            border-radius: $border-radius * 0.6;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: $transition;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+
+            &:hover {
+                background-color: $primary-dark;
+            }
+
+            &:disabled {
+                background-color: $grey-medium;
+                color: $grey-dark;
+                cursor: not-allowed;
+                opacity: 0.8;
+            }
+        }
     }
-
-    // Botón de envío
-    .btn-submit {
-      padding: 0.8rem 1.5rem;
-      margin-top: 1rem;
-      background-color: $primary-color;
-      color: white;
-      border: none;
-      border-radius: $border-radius * 0.6;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: $transition;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-
-      &:hover {
-        background-color: $primary-dark;
-      }
-
-      &:disabled {
-        background-color: $grey-medium;
-        color: $grey-dark;
-        cursor: not-allowed;
-        opacity: 0.8;
-      }
-    }
-  }
 }

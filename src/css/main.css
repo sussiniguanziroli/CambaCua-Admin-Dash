@@ -31,6 +31,35 @@
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  /* For the small inline loader, assuming LoaderSpinner can take a className */
+}
+.product-form-container .product-form .image-upload-group .image-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Adjust as needed */
+}
+.product-form-container .product-form .image-upload-group .image-inputs span {
+  margin: 0 5px;
+}
+.product-form-container .product-form .image-preview {
+  max-width: 150px;
+  /* Or your preferred size */
+  max-height: 150px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  padding: 5px;
+  border-radius: 4px;
+  object-fit: cover;
+  /* To maintain aspect ratio */
+}
+.product-form-container .product-form .loader-spinner.small-inline {
+  /* Adjust styles to make it small and inline */
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px;
 }
 .product-form-container .product-form .form-group {
   display: flex;
@@ -266,6 +295,57 @@ button:hover {
   .dashboard .content {
     margin-left: 0;
   }
+}
+
+.product-item.selected-product-item {
+  background-color: #e7f3ff; /* Light blue for selected items */
+  border-left: 5px solid #007bff;
+}
+
+.product-selector {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1; /* Ensure it's above other elements if needed */
+}
+
+.product-item h3 { /* Adjust if checkbox overlaps */
+  margin-left: 25px; /* Make space for the checkbox */
+}
+
+.bulk-action-panel {
+  /* Basic styling, customize as needed */
+  padding: 15px;
+  margin: 15px 20px;
+  border: 1px solid #007bff;
+  border-radius: 8px;
+  background-color: #e7f3ff;
+}
+
+.bulk-action-panel h4 {
+  margin-top: 0;
+  color: #0056b3;
+}
+
+.bulk-action-panel .form-group {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bulk-action-panel .form-group label {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+/* Style for inline loader in buttons if you use one */
+.loader-spinner.small-inline {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px;
+  border-width: 2px; /* Make it smaller */
 }
 
 .product-list-container {
@@ -518,6 +598,35 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  /* For the small inline loader, assuming LoaderSpinner can take a className */
+}
+.product-form-container .product-form .image-upload-group .image-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Adjust as needed */
+}
+.product-form-container .product-form .image-upload-group .image-inputs span {
+  margin: 0 5px;
+}
+.product-form-container .product-form .image-preview {
+  max-width: 150px;
+  /* Or your preferred size */
+  max-height: 150px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  padding: 5px;
+  border-radius: 4px;
+  object-fit: cover;
+  /* To maintain aspect ratio */
+}
+.product-form-container .product-form .loader-spinner.small-inline {
+  /* Adjust styles to make it small and inline */
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px;
 }
 .product-form-container .product-form .form-group {
   display: flex;
@@ -1516,6 +1625,29 @@ button.btn-reset:hover {
   opacity: 0;
   animation: fadeInModal 0.3s ease forwards;
   cursor: pointer;
+}
+.admin-modal .admin-product-timestamps {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+.admin-modal .detail-section-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+.admin-modal .detail-item {
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+.admin-modal .detail-label {
+  font-weight: 600; /* Semibold */
+  margin-right: 5px;
+  color: #444;
+}
+.admin-modal .detail-value {
+  color: #666;
 }
 .admin-modal .admin-modal-content {
   background-color: #fff;

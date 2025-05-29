@@ -1,36 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '../firebase/config';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { db, storage } from '../firebase/config';
+import { collection, addDoc, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import LoaderSpinner from './utils/LoaderSpinner'; // *** IMPORTAR LOADER ***
+import LoaderSpinner from './utils/LoaderSpinner';
 
 const AddProduct = () => {
     const navigate = useNavigate();
 
-    // Estados del formulario
+    // Estados del formulario (sin cambios)
     const [nombre, setNombre] = useState('');
     const [categoria, setCategoria] = useState('');
     const [subcategoria, setSubcategoria] = useState('');
     const [precio, setPrecio] = useState('');
     const [stock, setStock] = useState('');
     const [descripcion, setDescripcion] = useState('');
-    const [imagen, setImagen] = useState('');
-    const [imagenB, setImagenB] = useState('');
-    const [imagenC, setImagenC] = useState('');
 
-    // Estados de carga y datos auxiliares
+    const [imagenUrl, setImagenUrl] = useState('');
+    const [imagenFile, setImagenFile] = useState(null);
+    const [imagenPreview, setImagenPreview] = useState('');
+    const [isUploadingImagen, setIsUploadingImagen] = useState(false);
+
+    const [imagenBUrl, setImagenBUrl] = useState('');
+    const [imagenBFile, setImagenBFile] = useState(null);
+    const [imagenBPreview, setImagenBPreview] = useState('');
+    const [isUploadingImagenB, setIsUploadingImagenB] = useState(false);
+
+    const [imagenCUrl, setImagenCUrl] = useState('');
+    const [imagenCFile, setImagenCFile] = useState(null);
+    const [imagenCPreview, setImagenCPreview] = useState('');
+    const [isUploadingImagenC, setIsUploadingImagenC] = useState(false);
+
     const [categorias, setCategorias] = useState([]);
     const [subcategorias, setSubcategorias] = useState([]);
     const [isCatLoading, setIsCatLoading] = useState(true);
-    const [catError, setCatError] = useState(null); // Puede mostrar error de carga o de submit
-    const [isSubmitting, setIsSubmitting] = useState(false); // Envío de formulario
+    const [formError, setFormError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Cargar Categorías
+    // Cargar Categorías (sin cambios)
     useEffect(() => {
         const fetchCategories = async () => {
             setIsCatLoading(true);
-            setCatError(null);
+            setFormError(null);
             try {
                 const snapshot = await getDocs(collection(db, 'categories'));
                 const categoriesData = snapshot.docs.map(doc => ({
@@ -41,12 +53,8 @@ const AddProduct = () => {
                 setCategorias(categoriesData);
             } catch (error) {
                 console.error('Error al obtener las categorías: ', error);
-                setCatError('Error al cargar categorías.');
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error de Carga',
-                    text: 'No se pudieron cargar las categorías necesarias.',
-                });
+                setFormError('Error al cargar categorías.');
+                Swal.fire({ icon: 'error', title: 'Error de Carga', text: 'No se pudieron cargar las categorías necesarias.' });
             } finally {
                 setIsCatLoading(false);
             }
@@ -54,36 +62,95 @@ const AddProduct = () => {
         fetchCategories();
     }, []);
 
-    // Manejar cambio de categoría
+    // Manejar cambio de categoría (sin cambios)
     const handleCategoriaChange = (e) => {
         const selectedAdress = e.target.value;
         const selectedCat = categorias.find(cat => cat.adress === selectedAdress);
         setCategoria(selectedAdress);
         setSubcategorias(selectedCat ? selectedCat.subcategorias : []);
-        setSubcategoria(''); // Resetear subcategoría
+        setSubcategoria('');
     };
 
-    // Manejar envío del formulario
+    // Manejar cambio de archivo de imagen (sin cambios)
+    const handleFileChange = (event, setFile, setPreview, setUrlState) => {
+        const file = event.target.files[0];
+        if (file) {
+            setFile(file);
+            setPreview(URL.createObjectURL(file));
+            setUrlState('');
+        } else {
+            setFile(null);
+            setPreview('');
+        }
+    };
+
+    // Manejar cambio de URL manual de imagen (sin cambios)
+    const handleUrlChange = (event, setUrlState, setFile, setPreview) => {
+        const newUrl = event.target.value;
+        setUrlState(newUrl);
+        if (newUrl) {
+            setFile(null);
+            setPreview('');
+        }
+    };
+    
+    const uploadImageAndGetURL = async (file, currentUrl, setLoadingState, imageName, productId) => {
+        if (!file) return currentUrl; 
+
+        if (!productId) {
+            console.error("Product ID is required to upload image.");
+            Swal.fire('Error Interno', 'No se pudo obtener el ID del producto para subir la imagen.', 'error');
+            throw new Error("Product ID missing for image upload.");
+        }
+
+        setLoadingState(true);
+        const fileName = `productos/${productId}/${imageName}-${Date.now()}-${file.name}`;
+        const storageRef = ref(storage, fileName);
+        try {
+            await uploadBytes(storageRef, file);
+            const downloadUrl = await getDownloadURL(storageRef);
+            setLoadingState(false);
+            return downloadUrl;
+        } catch (error) {
+            console.error(`Error uploading ${imageName} for product ${productId}: `, error);
+            setLoadingState(false);
+            Swal.fire('Error de Subida', `No se pudo subir la imagen ${imageName}.`, 'error');
+            throw error; 
+        }
+    };
+    
+    const resetForm = () => {
+        setNombre(''); setCategoria(''); setSubcategoria('');
+        setPrecio(''); setStock(''); setDescripcion('');
+        setImagenUrl(''); setImagenFile(null); setImagenPreview('');
+        setImagenBUrl(''); setImagenBFile(null); setImagenBPreview('');
+        setImagenCUrl(''); setImagenCFile(null); setImagenCPreview('');
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsSubmitting(true); // Inicia submit
-        setCatError(null);
+        setIsSubmitting(true);
+        setFormError(null);
 
         const selectedCat = categorias.find(cat => cat.adress === categoria);
         if (!selectedCat) {
-             Swal.fire('Error', 'Debes seleccionar una categoría válida.', 'error');
-             setIsSubmitting(false);
-             return;
+            Swal.fire('Error', 'Debes seleccionar una categoría válida.', 'error');
+            setIsSubmitting(false); return;
         }
         if (subcategorias.length > 0 && !subcategoria) {
             Swal.fire('Campo Requerido', 'Por favor, selecciona una subcategoría.', 'warning');
-            setIsSubmitting(false);
-            return;
+            setIsSubmitting(false); return;
+        }
+        if (!imagenUrl && !imagenFile) {
+            Swal.fire('Campo Requerido', 'Por favor, proporciona una URL para la Imagen Principal o sube un archivo.', 'warning');
+            setIsSubmitting(false); return;
         }
 
+        let newDocRef; 
+
         try {
-            // Agregar producto a Firestore
-            await addDoc(collection(db, 'productos'), {
+            const currentDate = new Date(); // Get current date for timestamps
+            const productDataInitial = {
                 activo: true,
                 nombre: nombre.trim(),
                 categoria: selectedCat.nombre,
@@ -92,89 +159,85 @@ const AddProduct = () => {
                 precio: parseFloat(precio) || 0,
                 stock: parseInt(stock) || 0,
                 descripcion: descripcion.trim(),
-                imagen: imagen.trim(),
-                imagenB: imagenB.trim(),
-                imagenC: imagenC.trim(),
+                imagen: '', 
+                imagenB: '', 
+                imagenC: '', 
+                createdAt: currentDate,
+                updatedAt: currentDate, // Initially same as createdAt
+                precioLastUpdated: currentDate, // Set on creation
+                stockLastUpdated: currentDate,  // Set on creation
+            };
+            newDocRef = await addDoc(collection(db, 'productos'), productDataInitial);
+            const newProductId = newDocRef.id;
+
+            let finalImagenUrl = imagenUrl;
+            let finalImagenBUrl = imagenBUrl;
+            let finalImagenCUrl = imagenCUrl;
+
+            finalImagenUrl = await uploadImageAndGetURL(imagenFile, imagenUrl, setIsUploadingImagen, "principal", newProductId);
+            finalImagenBUrl = await uploadImageAndGetURL(imagenBFile, imagenBUrl, setIsUploadingImagenB, "secundaria_b", newProductId);
+            finalImagenCUrl = await uploadImageAndGetURL(imagenCFile, imagenCUrl, setIsUploadingImagenC, "secundaria_c", newProductId);
+
+            await updateDoc(doc(db, 'productos', newProductId), {
+                imagen: finalImagenUrl || '',
+                imagenB: finalImagenBUrl || '',
+                imagenC: finalImagenCUrl || '',
+                // No need to update timestamps here as they were set during creation with initial productData
             });
 
             Swal.fire({
-                icon: 'success',
-                title: 'Producto Creado',
+                icon: 'success', title: 'Producto Creado',
                 text: `"${nombre}" ha sido agregado exitosamente.`,
-                timer: 2000,
-                showConfirmButton: false
+                timer: 2000, showConfirmButton: false
             });
+            resetForm();
             navigate('/admin/products');
 
         } catch (error) {
             console.error('Error al crear el producto: ', error);
-            setCatError("Ocurrió un error al crear el producto.");
-            Swal.fire({
-                icon: 'error',
-                title: 'Error al Crear',
-                text: 'No se pudo crear el producto. Inténtalo de nuevo.',
-            });
+            if (newDocRef && !error.message.includes("No se pudo subir la imagen")) {
+                console.warn("Product document might have been created but image URLs not updated.", newDocRef.id);
+            }
+            if (!error.message.includes("No se pudo subir la imagen")) {
+                 setFormError("Ocurrió un error al crear el producto.");
+                 Swal.fire({ icon: 'error', title: 'Error al Crear', text: 'No se pudo crear el producto. Inténtalo de nuevo.' });
+            }
         } finally {
-            setIsSubmitting(false); // Finaliza submit
+            setIsSubmitting(false);
+            setIsUploadingImagen(false);
+            setIsUploadingImagenB(false);
+            setIsUploadingImagenC(false);
         }
     };
 
-    // --- Renderizado ---
+    // JSX (sin cambios)
     return (
         <div className="product-form-container">
-             <h2>Agregar Nuevo Producto</h2>
-            {/* Mostramos error de submit si existe */}
-            {catError && <p className="error-message" style={{textAlign: 'center', marginBottom: '1rem'}}>{catError}</p>}
-
+            <h2>Agregar Nuevo Producto</h2>
+            {formError && <p className="error-message" style={{ textAlign: 'center', marginBottom: '1rem' }}>{formError}</p>}
             <form onSubmit={handleSubmit} className="product-form">
                 {/* Nombre */}
                 <div className="form-group">
                     <label htmlFor="nombre">Nombre</label>
-                    <input
-                        id="nombre"
-                        type="text"
-                        value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
-                        placeholder="Nombre del producto"
-                        required
-                        disabled={isSubmitting}
-                    />
+                    <input id="nombre" type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Nombre del producto" required disabled={isSubmitting} />
                 </div>
 
                 {/* Categoría */}
                 <div className="form-group">
                     <label htmlFor="categoria">Categoría</label>
-                    <select
-                        id="categoria"
-                        value={categoria}
-                        onChange={handleCategoriaChange}
-                        required
-                        disabled={isSubmitting || isCatLoading} // Deshabilitado si carga categorías o envía
-                    >
+                    <select id="categoria" value={categoria} onChange={handleCategoriaChange} required disabled={isSubmitting || isCatLoading}>
                         <option value="" disabled>{isCatLoading ? 'Cargando Cat...' : 'Seleccionar Categoría'}</option>
-                        {categorias.map(cat => (
-                            <option key={cat.adress} value={cat.adress}>{cat.nombre}</option>
-                        ))}
+                        {categorias.map(cat => (<option key={cat.adress} value={cat.adress}>{cat.nombre}</option>))}
                     </select>
-                     {/* Mostrar error de carga de categorías aquí */}
-                     {catError && !isCatLoading && categoria === '' && <p className="error-message-inline">{catError}</p>}
                 </div>
 
-                {/* Subcategoría (Condicional) */}
+                {/* Subcategoría */}
                 {subcategorias.length > 0 && (
                     <div className="form-group">
                         <label htmlFor="subcategoria">Subcategoría</label>
-                        <select
-                            id="subcategoria"
-                            value={subcategoria}
-                            onChange={(e) => setSubcategoria(e.target.value)}
-                            required
-                            disabled={isSubmitting || !categoria}
-                        >
+                        <select id="subcategoria" value={subcategoria} onChange={(e) => setSubcategoria(e.target.value)} required disabled={isSubmitting || !categoria}>
                             <option value="" disabled>Seleccionar Subcategoría</option>
-                            {subcategorias.map(subcat => (
-                                <option key={subcat} value={subcat}>{subcat}</option>
-                            ))}
+                            {subcategorias.map(subcat => (<option key={subcat} value={subcat}>{subcat}</option>))}
                         </select>
                     </div>
                 )}
@@ -183,90 +246,74 @@ const AddProduct = () => {
                 <div className="form-row">
                     <div className="form-group">
                         <label htmlFor="precio">Precio ($)</label>
-                        <input
-                            id="precio"
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            value={precio}
-                            onChange={(e) => setPrecio(e.target.value)}
-                            placeholder="0.00"
-                            required
-                            disabled={isSubmitting}
-                        />
+                        <input id="precio" type="number" step="0.01" min="0" value={precio} onChange={(e) => setPrecio(e.target.value)} placeholder="0.00" required disabled={isSubmitting} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="stock">Stock</label>
-                        <input
-                            id="stock"
-                            type="number"
-                            step="1"
-                            min="0"
-                            value={stock}
-                            onChange={(e) => setStock(e.target.value)}
-                            placeholder="0"
-                            required
-                            disabled={isSubmitting}
-                        />
+                        <input id="stock" type="number" step="1" min="0" value={stock} onChange={(e) => setStock(e.target.value)} placeholder="0" required disabled={isSubmitting} />
                     </div>
                 </div>
 
                 {/* Descripción */}
                 <div className="form-group">
                     <label htmlFor="descripcion">Descripción</label>
-                    <textarea
-                        id="descripcion"
-                        value={descripcion}
-                        onChange={(e) => setDescripcion(e.target.value)}
-                        placeholder="Detalles del producto"
-                        rows="4"
-                        required
-                        disabled={isSubmitting}
-                    />
+                    <textarea id="descripcion" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} placeholder="Detalles del producto" rows="4" required disabled={isSubmitting} />
                 </div>
 
-                {/* Imagen Principal */}
-                <div className="form-group">
-                    <label htmlFor="imagen">Imagen Principal (URL)</label>
-                    <input
-                        id="imagen"
-                        type="url"
-                        value={imagen}
-                        onChange={(e) => setImagen(e.target.value)}
-                        placeholder="https://ejemplo.com/imagen-portada.jpg"
-                        disabled={isSubmitting}
-                    />
-                     <small>Esta imagen se usará como portada en la lista de productos.</small>
-                </div>
-
-                {/* Imágenes Secundarias */}
-                 <div className="form-row">
-                    <div className="form-group">
-                        <label htmlFor="imagenB">Imagen B (URL)</label>
+                {/* --- Imagen Principal --- */}
+                <div className="form-group image-upload-group">
+                    <label htmlFor="imagenUrl">Imagen Principal (URL o Subir Archivo)</label>
+                    <div className="image-inputs">
                         <input
-                            id="imagenB"
-                            type="url"
-                            value={imagenB}
-                            onChange={(e) => setImagenB(e.target.value)}
-                            placeholder="URL Imagen Opcional"
-                            disabled={isSubmitting}
-                        />
+                            id="imagenUrl" type="url" value={imagenUrl}
+                            onChange={(e) => handleUrlChange(e, setImagenUrl, setImagenFile, setImagenPreview)}
+                            placeholder="https://ejemplo.com/imagen.jpg"
+                            disabled={isSubmitting || isUploadingImagen} />
+                        <span>O</span>
+                        <input type="file" id="imagenFile" accept="image/*"
+                            onChange={(e) => handleFileChange(e, setImagenFile, setImagenPreview, setImagenUrl)}
+                            disabled={isSubmitting || isUploadingImagen} />
+                         {isUploadingImagen && <LoaderSpinner size="small-inline" />}
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="imagenC">Imagen C (URL)</label>
-                        <input
-                            id="imagenC"
-                            type="url"
-                            value={imagenC}
-                            onChange={(e) => setImagenC(e.target.value)}
-                            placeholder="URL Imagen Opcional"
-                            disabled={isSubmitting}
-                        />
-                    </div>
+                    {imagenPreview && <img src={imagenPreview} alt="Vista previa Imagen Principal" className="image-preview" />}
+                    <small>Esta imagen se usará como portada. Requerida.</small>
                 </div>
 
-                {/* Botón de Envío con Loader */}
-                <button type="submit" className="btn-submit" disabled={isSubmitting || isCatLoading}>
+                {/* --- Imagen B --- */}
+                <div className="form-group image-upload-group">
+                    <label htmlFor="imagenBUrl">Imagen B (URL o Subir Archivo)</label>
+                     <div className="image-inputs">
+                        <input id="imagenBUrl" type="url" value={imagenBUrl}
+                            onChange={(e) => handleUrlChange(e, setImagenBUrl, setImagenBFile, setImagenBPreview)}
+                            placeholder="URL Imagen Opcional"
+                            disabled={isSubmitting || isUploadingImagenB} />
+                        <span>O</span>
+                        <input type="file" id="imagenBFile" accept="image/*"
+                            onChange={(e) => handleFileChange(e, setImagenBFile, setImagenBPreview, setImagenBUrl)}
+                            disabled={isSubmitting || isUploadingImagenB} />
+                        {isUploadingImagenB && <LoaderSpinner size="small-inline" />}
+                    </div>
+                    {imagenBPreview && <img src={imagenBPreview} alt="Vista previa Imagen B" className="image-preview" />}
+                </div>
+
+                {/* --- Imagen C --- */}
+                <div className="form-group image-upload-group">
+                    <label htmlFor="imagenCUrl">Imagen C (URL o Subir Archivo)</label>
+                     <div className="image-inputs">
+                        <input id="imagenCUrl" type="url" value={imagenCUrl}
+                            onChange={(e) => handleUrlChange(e, setImagenCUrl, setImagenCFile, setImagenCPreview)}
+                            placeholder="URL Imagen Opcional"
+                            disabled={isSubmitting || isUploadingImagenC} />
+                        <span>O</span>
+                        <input type="file" id="imagenCFile" accept="image/*"
+                            onChange={(e) => handleFileChange(e, setImagenCFile, setImagenCPreview, setImagenCUrl)}
+                            disabled={isSubmitting || isUploadingImagenC} />
+                        {isUploadingImagenC && <LoaderSpinner size="small-inline" />}
+                    </div>
+                    {imagenCPreview && <img src={imagenCPreview} alt="Vista previa Imagen C" className="image-preview" />}
+                </div>
+
+                <button type="submit" className="btn-submit" disabled={isSubmitting || isCatLoading || isUploadingImagen || isUploadingImagenB || isUploadingImagenC}>
                     {isSubmitting ? <LoaderSpinner size="small" /> : 'Crear Producto'}
                 </button>
             </form>
