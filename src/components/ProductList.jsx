@@ -515,7 +515,7 @@ const ProductList = () => {
                     {totalPages > 1 && (
                         <div className="pagination-controls" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px 0', gap: '10px' }}>
                             {/* Pagination buttons... */}
-                            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} style={{ padding: '8px 16px', cursor: 'pointer', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: currentPage === 1 ? '#e0e0e0' : 'white' }}>Anterior</button>
+                            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} style={{color: 'gray', padding: '8px 16px', cursor: 'pointer', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: currentPage === 1 ? '#e0e0e0' : 'white' }}>Anterior</button>
                             {Array.from({ length: totalPages }, (_, i) => i + 1)
                                 .filter(pageNumber => { 
                                     const maxPagesToShow = 5;
@@ -527,7 +527,7 @@ const ProductList = () => {
                                 .map(pageNumber => (
                                 <button key={pageNumber} onClick={() => handlePageChange(pageNumber)} disabled={currentPage === pageNumber} style={{ padding: '8px 12px', cursor: 'pointer', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: currentPage === pageNumber ? '#007bff' : 'white', color: currentPage === pageNumber ? 'white' : 'black', margin: '0 2px' }}>{pageNumber}</button>
                             ))}
-                            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} style={{ padding: '8px 16px', cursor: 'pointer', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: currentPage === totalPages ? '#e0e0e0' : 'white' }}>Siguiente</button>
+                            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} style={{color: 'gray', padding: '8px 16px', cursor: 'pointer', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: currentPage === totalPages ? '#e0e0e0' : 'white' }}>Siguiente</button>
                             <span style={{ marginLeft: '10px' }}>Página {currentPage} de {totalPages}</span>
                         </div>
                     )}
