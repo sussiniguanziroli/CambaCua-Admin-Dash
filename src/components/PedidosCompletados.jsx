@@ -15,12 +15,11 @@ const PedidosCompletados = () => {
     const [endDate, setEndDate] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    // Obtener pedidos completados
+    // Fetch completed orders
     useEffect(() => {
         const fetchPedidos = async () => {
             setLoading(true);
             try {
-                // Cambiamos la consulta para no ordenar por fechaCompletado
                 const pedidosQuery = query(
                     collection(db, 'pedidos_completados')
                 );
@@ -31,7 +30,6 @@ const PedidosCompletados = () => {
                     return {
                         id: doc.id,
                         ...data,
-                        // Usamos fechaCancelacion si existe, sino fechaCompletado
                         fechaOrden: data.fechaCancelacion?.toDate() || data.fechaCompletado?.toDate(),
                         fecha: data.fecha?.toDate ? data.fecha.toDate() : new Date(data.fecha),
                         fechaCompletado: data.fechaCompletado?.toDate(),
@@ -39,7 +37,6 @@ const PedidosCompletados = () => {
                     };
                 });
 
-                // Ordenamos localmente por fechaOrden (descendente)
                 const pedidosOrdenados = pedidosList.sort((a, b) => {
                     if (!a.fechaOrden && !b.fechaOrden) return 0;
                     if (!a.fechaOrden) return 1;
@@ -50,13 +47,8 @@ const PedidosCompletados = () => {
                 setPedidos(pedidosOrdenados);
                 setFilteredPedidos(pedidosOrdenados);
             } catch (error) {
-                console.error("Error obteniendo pedidos:", error);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'No se pudieron cargar los pedidos completados',
-                    icon: 'error',
-                    confirmButtonText: 'Entendido'
-                });
+                console.error("Error fetching orders:", error);
+                Swal.fire('Error', 'No se pudieron cargar los pedidos completados', 'error');
             } finally {
                 setLoading(false);
             }
@@ -64,7 +56,7 @@ const PedidosCompletados = () => {
         fetchPedidos();
     }, []);
 
-    // Aplicar filtros
+    // Apply filters
     useEffect(() => {
         let result = [...pedidos];
 
@@ -96,9 +88,8 @@ const PedidosCompletados = () => {
         setFilteredPedidos(result);
     }, [pedidos, searchTerm, minPrice, maxPrice, startDate, endDate]);
 
-    //Simplificacion de devolverpedido
+    // Function to move an order back to pending
     const devolverPedido = async (pedido) => {
-        // Eliminamos la validación redundante ya que el botón no aparece para clientes
         const { isConfirmed } = await Swal.fire({
             title: '¿Devolver pedido?',
             text: `¿Quieres devolver el pedido #${pedido.id.substring(0, 8)} a pendientes?`,
@@ -111,40 +102,27 @@ const PedidosCompletados = () => {
         if (!isConfirmed) return;
 
         try {
-            // 1. Mover de vuelta a pedidos manteniendo ID
             await setDoc(doc(db, 'pedidos', pedido.id), {
                 ...pedido,
                 estado: 'Pendiente',
                 fechaCompletado: null,
                 fechaCancelacion: null,
-                canceladoPor: null, // Limpiamos este campo
-                motivoCancelacion: null // Limpiamos el motivo
+                canceladoPor: null,
+                motivoCancelacion: null
             });
 
-            // 2. Eliminar de completados
             await deleteDoc(doc(db, 'pedidos_completados', pedido.id));
-
-            // 3. Actualizar estado local
+            
             setPedidos(prev => prev.filter(p => p.id !== pedido.id));
-            setFilteredPedidos(prev => prev.filter(p => p.id !== pedido.id));
 
-            Swal.fire({
-                title: '¡Éxito!',
-                text: 'Pedido devuelto a pendientes',
-                icon: 'success',
-                confirmButtonText: 'Entendido'
-            });
+            Swal.fire('¡Éxito!', 'Pedido devuelto a pendientes', 'success');
         } catch (error) {
-            console.error("Error devolviendo pedido:", error);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se pudo devolver el pedido',
-                icon: 'error',
-                confirmButtonText: 'Entendido'
-            });
+            console.error("Error returning order:", error);
+            Swal.fire('Error', 'No se pudo devolver el pedido', 'error');
         }
     };
-    // Resetear filtros
+    
+    // Reset filters
     const resetFilters = () => {
         setSearchTerm('');
         setMinPrice('');
@@ -153,7 +131,6 @@ const PedidosCompletados = () => {
         setEndDate(null);
     };
 
-    // Función para formatear fecha con detalle de cancelación si existe
     const formatCancelationInfo = (pedido) => {
         if (pedido.estado === 'Cancelado' && pedido.fechaCancelacion) {
             const cancelationDate = pedido.fechaCancelacion.toLocaleString('es-AR');
@@ -165,11 +142,10 @@ const PedidosCompletados = () => {
 
     return (
         <div className="pedidos-container">
-            <h2>Historial de Pedidos Completados</h2>
+            <h2>Historial de Pedidos</h2>
 
-            {/* Filtros */}
             <div className="filtros-container">
-                <div className="filtro-group">
+                 <div className="filtro-group">
                     <label>Buscar (nombre, email, DNI o ID):</label>
                     <input
                         type="text"
@@ -178,63 +154,23 @@ const PedidosCompletados = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-
                 <div className="filtro-group">
                     <label>Rango de precios:</label>
                     <div className="price-range">
-                        <input
-                            type="number"
-                            placeholder="Mínimo"
-                            value={minPrice}
-                            onChange={(e) => setMinPrice(e.target.value)}
-                            min="0"
-                            step="100"
-                        />
+                        <input type="number" placeholder="Mínimo" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
                         <span>a</span>
-                        <input
-                            type="number"
-                            placeholder="Máximo"
-                            value={maxPrice}
-                            onChange={(e) => setMaxPrice(e.target.value)}
-                            min="0"
-                            step="100"
-                        />
+                        <input type="number" placeholder="Máximo" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
                     </div>
                 </div>
-
                 <div className="filtro-group">
                     <label>Rango de fechas:</label>
                     <div className="date-range">
-                        <DatePicker
-                            selected={startDate}
-                            onChange={(date) => setStartDate(date)}
-                            selectsStart
-                            startDate={startDate}
-                            endDate={endDate}
-                            placeholderText="Fecha inicio"
-                            dateFormat="dd/MM/yyyy"
-                            maxDate={new Date()}
-                            locale="es"
-                        />
+                        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} selectsStart startDate={startDate} endDate={endDate} placeholderText="Fecha inicio" dateFormat="dd/MM/yyyy" />
                         <span>a</span>
-                        <DatePicker
-                            selected={endDate}
-                            onChange={(date) => setEndDate(date)}
-                            selectsEnd
-                            startDate={startDate}
-                            endDate={endDate}
-                            minDate={startDate}
-                            placeholderText="Fecha fin"
-                            dateFormat="dd/MM/yyyy"
-                            maxDate={new Date()}
-                            locale="es"
-                        />
+                        <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} selectsEnd startDate={startDate} endDate={endDate} minDate={startDate} placeholderText="Fecha fin" dateFormat="dd/MM/yyyy" />
                     </div>
                 </div>
-
-                <button onClick={resetFilters} className="btn-reset">
-                    Limpiar Filtros
-                </button>
+                <button onClick={resetFilters} className="btn-reset">Limpiar Filtros</button>
             </div>
 
             {loading ? (
@@ -260,13 +196,15 @@ const PedidosCompletados = () => {
                                 <p><strong>Email:</strong> {pedido.email}</p>
                                 <p><strong>Teléfono:</strong> {pedido.telefono}</p>
                                 <p><strong>Dirección:</strong> {pedido.direccion}</p>
+                                {pedido.indicaciones && <p><strong>Indicaciones:</strong> {pedido.indicaciones}</p>}
                                 <p><strong>DNI:</strong> {pedido.dni}</p>
                             </div>
 
                             <div className="pedido-details">
                                 <p><strong>Fecha pedido:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'No disponible'}</p>
                                 <p><strong>Fecha finalización:</strong> {formatCancelationInfo(pedido)}</p>
-                                <p><strong>Total:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
+                                <p><strong>Total Productos:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
+                                {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${pedido.costoEnvio.toLocaleString('es-AR')}</p>}
                                 <p><strong>Método pago:</strong> {pedido.metodoPago || 'No especificado'}</p>
                                 {pedido.motivoCancelacion && (
                                     <p className="cancelation-reason">
@@ -290,17 +228,13 @@ const PedidosCompletados = () => {
                                 </ul>
                             </div>
 
-                            {pedido.canceladoPor !== 'cliente' && (
-                                <div className="pedido-actions">
-                                    <button
-                                        className="btn-desarchivar"
-                                        onClick={() => devolverPedido(pedido)}
-                                        disabled={pedido.estado === 'Completado'}
-                                    >
-                                        Devolver a Pendientes
-                                    </button>
-                                </div>
-                            )}
+                            {pedido.estado !== 'Completado' && pedido.estado !== 'Cancelado' && (
+                                 <div className="pedido-actions">
+                                     <button className="btn-desarchivar" onClick={() => devolverPedido(pedido)}>
+                                         Devolver a Pendientes
+                                     </button>
+                                 </div>
+                             )}
                         </div>
                     ))}
                 </div>
