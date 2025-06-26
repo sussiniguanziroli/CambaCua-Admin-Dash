@@ -7,7 +7,7 @@ const HandleOrders = () => {
     const [pedidos, setPedidos] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Obtener pedidos activos
+    // Fetch active orders
     useEffect(() => {
         const fetchPedidos = async () => {
             setLoading(true);
@@ -18,9 +18,11 @@ const HandleOrders = () => {
                     ...doc.data(),
                     fecha: doc.data().fecha?.toDate()
                 }));
+                // Sort by date descending
+                pedidosList.sort((a, b) => b.fecha - a.fecha);
                 setPedidos(pedidosList);
             } catch (error) {
-                console.error("Error obteniendo pedidos:", error);
+                console.error("Error fetching orders:", error);
                 Swal.fire({
                     title: 'Error',
                     text: 'No se pudieron cargar los pedidos',
@@ -34,7 +36,7 @@ const HandleOrders = () => {
         fetchPedidos();
     }, []);
 
-    // Función para mover pedido a completados
+    // Function to move an order to the completed collection
     const moverPedido = async (pedido, estado) => {
         const { isConfirmed } = await Swal.fire({
             title: `¿${estado} pedido?`,
@@ -48,17 +50,13 @@ const HandleOrders = () => {
         if (!isConfirmed) return;
 
         try {
-            // 1. Mover a pedidos_completados manteniendo el mismo ID
             await setDoc(doc(db, 'pedidos_completados', pedido.id), {
                 ...pedido,
                 estado: estado,
                 fechaCompletado: new Date()
             });
 
-            // 2. Eliminar de pedidos
             await deleteDoc(doc(db, 'pedidos', pedido.id));
-
-            // 3. Actualizar estado local
             setPedidos(prev => prev.filter(p => p.id !== pedido.id));
 
             Swal.fire({
@@ -68,17 +66,12 @@ const HandleOrders = () => {
                 confirmButtonText: 'Entendido'
             });
         } catch (error) {
-            console.error("Error moviendo pedido:", error);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se pudo completar la operación',
-                icon: 'error',
-                confirmButtonText: 'Entendido'
-            });
+            console.error("Error moving order:", error);
+            Swal.fire('Error', 'No se pudo completar la operación', 'error');
         }
     };
 
-    // Función para actualizar estado
+    // Function to update the status of an order
     const actualizarEstado = async (id, nuevoEstado) => {
         const estadoText = {
             'Pagado': 'marcar como pagado',
@@ -110,21 +103,11 @@ const HandleOrders = () => {
                 const pedido = pedidos.find(p => p.id === id);
                 await moverPedido(pedido, 'Cancelado');
             } else {
-                Swal.fire({
-                    title: '¡Éxito!',
-                    text: `Estado actualizado a: ${nuevoEstado}`,
-                    icon: 'success',
-                    confirmButtonText: 'Entendido'
-                });
+                Swal.fire('¡Éxito!', `Estado actualizado a: ${nuevoEstado}`, 'success');
             }
         } catch (error) {
-            console.error("Error actualizando estado:", error);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se pudo actualizar el estado',
-                icon: 'error',
-                confirmButtonText: 'Entendido'
-            });
+            console.error("Error updating status:", error);
+            Swal.fire('Error', 'No se pudo actualizar el estado', 'error');
         }
     };
 
@@ -154,12 +137,16 @@ const HandleOrders = () => {
                                 <p><strong>Email:</strong> {pedido.email}</p>
                                 <p><strong>Teléfono:</strong> {pedido.telefono}</p>
                                 <p><strong>Dirección:</strong> {pedido.direccion}</p>
+                                {/* Display 'indicaciones' if it exists */}
+                                {pedido.indicaciones && <p><strong>Indicaciones:</strong> {pedido.indicaciones}</p>}
                                 <p><strong>DNI:</strong> {pedido.dni}</p>
                             </div>
 
                             <div className="pedido-details">
                                 <p><strong>Fecha:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'No disponible'}</p>
-                                <p><strong>Total:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
+                                <p><strong>Total Productos:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
+                                {/* Display 'costoEnvio' if it exists */}
+                                {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${pedido.costoEnvio.toLocaleString('es-AR')}</p>}
                                 <p><strong>Método de pago:</strong> {pedido.metodoPago || 'No especificado'}</p>
                             </div>
 
@@ -189,13 +176,14 @@ const HandleOrders = () => {
                                 <button 
                                     className="btn-pagado"
                                     onClick={() => actualizarEstado(pedido.id, 'Pagado')}
-                                    disabled={pedido.estado === 'Pagado'}
+                                    disabled={pedido.estado === 'Pagado' || pedido.estado === 'Cancelado'}
                                 >
                                     Marcar como Pagado
                                 </button>
                                 <button 
                                     className="btn-completar"
                                     onClick={() => moverPedido(pedido, 'Completado')}
+                                    disabled={pedido.estado === 'Cancelado'}
                                 >
                                     Completar/Enviar
                                 </button>
