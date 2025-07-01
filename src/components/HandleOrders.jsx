@@ -85,7 +85,6 @@ const HandleOrders = () => {
             const pedidoRef = doc(db, 'pedidos', id);
             await updateDoc(pedidoRef, { 
                 estado: nuevoEstado,
-                // If we are moving it out of scheduled, remove the flag
                 ...(nuevoEstado === 'Pendiente' && { programado: false })
             });
             
@@ -180,13 +179,16 @@ const HandleOrders = () => {
                                 >
                                     Cancelar
                                 </button>
-                                <button 
-                                    className="btn-pagado"
-                                    onClick={() => actualizarEstado(pedido.id, 'Pagado')}
-                                    disabled={pedido.estado === 'Pagado' || pedido.estado === 'Cancelado'}
-                                >
-                                    Marcar como Pagado
-                                </button>
+                                {/* The "Pagado" button is now conditional */}
+                                {pedido.metodoPago !== 'Efectivo' && (
+                                    <button 
+                                        className="btn-pagado"
+                                        onClick={() => actualizarEstado(pedido.id, 'Pagado')}
+                                        disabled={pedido.estado === 'Pagado' || pedido.estado === 'Cancelado'}
+                                    >
+                                        Marcar como Pagado
+                                    </button>
+                                )}
                                 <button 
                                     className="btn-completar"
                                     onClick={() => moverPedido(pedido, 'Completado')}
