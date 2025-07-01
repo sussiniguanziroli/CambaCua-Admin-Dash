@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { collection, getDocs, doc, deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import Swal from 'sweetalert2';
+import { FaClock } from 'react-icons/fa';
 
 const HandleOrders = () => {
     const [pedidos, setPedidos] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Fetch active orders
     useEffect(() => {
         const fetchPedidos = async () => {
             setLoading(true);
@@ -18,17 +18,17 @@ const HandleOrders = () => {
                     ...doc.data(),
                     fecha: doc.data().fecha?.toDate()
                 }));
-                // Sort by date descending
-                pedidosList.sort((a, b) => b.fecha - a.fecha);
+                
+                pedidosList.sort((a, b) => {
+                    if (a.programado && !b.programado) return -1;
+                    if (!a.programado && b.programado) return 1;
+                    return b.fecha - a.fecha;
+                });
+
                 setPedidos(pedidosList);
             } catch (error) {
                 console.error("Error fetching orders:", error);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'No se pudieron cargar los pedidos',
-                    icon: 'error',
-                    confirmButtonText: 'Entendido'
-                });
+                Swal.fire('Error', 'No se pudieron cargar los pedidos', 'error');
             } finally {
                 setLoading(false);
             }
@@ -36,7 +36,6 @@ const HandleOrders = () => {
         fetchPedidos();
     }, []);
 
-    // Function to move an order to the completed collection
     const moverPedido = async (pedido, estado) => {
         const { isConfirmed } = await Swal.fire({
             title: `¿${estado} pedido?`,
@@ -55,27 +54,20 @@ const HandleOrders = () => {
                 estado: estado,
                 fechaCompletado: new Date()
             });
-
             await deleteDoc(doc(db, 'pedidos', pedido.id));
             setPedidos(prev => prev.filter(p => p.id !== pedido.id));
-
-            Swal.fire({
-                title: '¡Éxito!',
-                text: `Pedido marcado como ${estado.toLowerCase()}`,
-                icon: 'success',
-                confirmButtonText: 'Entendido'
-            });
+            Swal.fire('¡Éxito!', `Pedido marcado como ${estado.toLowerCase()}`, 'success');
         } catch (error) {
             console.error("Error moving order:", error);
             Swal.fire('Error', 'No se pudo completar la operación', 'error');
         }
     };
 
-    // Function to update the status of an order
     const actualizarEstado = async (id, nuevoEstado) => {
         const estadoText = {
             'Pagado': 'marcar como pagado',
-            'Cancelado': 'cancelar'
+            'Cancelado': 'cancelar',
+            'Pendiente': 'marcar como pendiente'
         }[nuevoEstado];
 
         const { isConfirmed } = await Swal.fire({
@@ -91,11 +83,15 @@ const HandleOrders = () => {
 
         try {
             const pedidoRef = doc(db, 'pedidos', id);
-            await updateDoc(pedidoRef, { estado: nuevoEstado });
+            await updateDoc(pedidoRef, { 
+                estado: nuevoEstado,
+                // If we are moving it out of scheduled, remove the flag
+                ...(nuevoEstado === 'Pendiente' && { programado: false })
+            });
             
             setPedidos(prevPedidos =>
                 prevPedidos.map(pedido => 
-                    pedido.id === id ? { ...pedido, estado: nuevoEstado } : pedido
+                    pedido.id === id ? { ...pedido, estado: nuevoEstado, ...(nuevoEstado === 'Pendiente' && { programado: false }) } : pedido
                 )
             );
 
@@ -127,9 +123,16 @@ const HandleOrders = () => {
                         <div key={pedido.id} className={`pedido-box ${pedido.estado.toLowerCase()}`}>
                             <div className="pedido-header">
                                 <h3>Pedido #{pedido.id}</h3>
-                                <span className={`status-badge ${pedido.estado.toLowerCase()}`}>
-                                    {pedido.estado}
-                                </span>
+                                <div className="status-container">
+                                    {pedido.programado && (
+                                        <span className="scheduled-indicator" title="Pedido programado fuera de horario">
+                                            <FaClock /> Programado
+                                        </span>
+                                    )}
+                                    <span className={`status-badge ${pedido.estado.toLowerCase()}`}>
+                                        {pedido.estado}
+                                    </span>
+                                </div>
                             </div>
                             
                             <div className="cliente-info">
@@ -137,7 +140,6 @@ const HandleOrders = () => {
                                 <p><strong>Email:</strong> {pedido.email}</p>
                                 <p><strong>Teléfono:</strong> {pedido.telefono}</p>
                                 <p><strong>Dirección:</strong> {pedido.direccion}</p>
-                                {/* Display 'indicaciones' if it exists */}
                                 {pedido.indicaciones && <p><strong>Indicaciones:</strong> {pedido.indicaciones}</p>}
                                 <p><strong>DNI:</strong> {pedido.dni}</p>
                             </div>
@@ -145,7 +147,6 @@ const HandleOrders = () => {
                             <div className="pedido-details">
                                 <p><strong>Fecha:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'No disponible'}</p>
                                 <p><strong>Total Productos:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
-                                {/* Display 'costoEnvio' if it exists */}
                                 {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${pedido.costoEnvio.toLocaleString('es-AR')}</p>}
                                 <p><strong>Método de pago:</strong> {pedido.metodoPago || 'No especificado'}</p>
                             </div>
@@ -158,14 +159,20 @@ const HandleOrders = () => {
                                             <strong>{producto.nombre}</strong> - 
                                             Cantidad: {producto.cantidad} - 
                                             Precio: ${producto.precio.toLocaleString('es-AR')}
-                                            {producto.talle && <span> - Talle: {producto.talle}</span>}
-                                            {producto.color && <span> - Color: {producto.color}</span>}
                                         </li>
                                     )) || <li>No hay productos registrados</li>}
                                 </ul>
                             </div>
 
                             <div className="pedido-actions">
+                                {pedido.estado === 'Programado' && (
+                                    <button 
+                                        className="btn-pendiente"
+                                        onClick={() => actualizarEstado(pedido.id, 'Pendiente')}
+                                    >
+                                        Marcar como Pendiente
+                                    </button>
+                                )}
                                 <button 
                                     className="btn-cancelar"
                                     onClick={() => actualizarEstado(pedido.id, 'Cancelado')}
