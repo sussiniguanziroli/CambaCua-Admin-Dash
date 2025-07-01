@@ -6,7 +6,8 @@ import Swal from 'sweetalert2';
 // List of authorized admin UIDs
 const ADMIN_UIDS = [
     'Co7Rg2ANZFRoCxhrK9JaHJOl2zR2', // celesteguanziroli@yahoo.com.ar
-    'Bk51tX4d7VXkjg9octa5yDUgGOr1'  // paddycheto@gmail.com
+    'Bk51tX4d7VXkjg9octa5yDUgGOr1',
+    'XQcRWLm56WdX5t6lcuRrKuYZxu42'  // paddycheto@gmail.com
 ];
 
 const Login = () => {
