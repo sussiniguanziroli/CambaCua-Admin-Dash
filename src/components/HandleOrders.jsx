@@ -153,11 +153,20 @@ const HandleOrders = () => {
                             <div className="productos-list">
                                 <h4>Productos:</h4>
                                 <ul>
-                                    {pedido.productos?.map((producto, index) => (
-                                        <li key={index}>
-                                            <strong>{producto.nombre}</strong> - 
-                                            Cantidad: {producto.cantidad} - 
-                                            Precio: ${producto.precio.toLocaleString('es-AR')}
+                                    {pedido.productos?.map((producto) => (
+                                        <li key={producto.id + (producto.variationId || '')}> {/* Unique key */}
+                                            <strong>{producto.name || producto.nombre}</strong> - 
+                                            Cantidad: {producto.quantity || producto.cantidad} - 
+                                            Precio: ${ (producto.price || producto.precio)?.toLocaleString('es-AR')}
+                                            {producto.hasVariations && producto.attributes && (
+                                                <span>
+                                                    {' ('}
+                                                    {Object.entries(producto.attributes).map(([key, value]) => (
+                                                        `${key}: ${value}`
+                                                    )).join(', ')}
+                                                    {')'}
+                                                </span>
+                                            )}
                                         </li>
                                     )) || <li>No hay productos registrados</li>}
                                 </ul>
