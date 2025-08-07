@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllUsers } from '../../services/userService';
 import UserListItem from './UserListItem';
-import UserDetailModal from './UserDetailModal'; // Import the new modal component
+import UserDetailModal from '../userManagement/UserDetailModal'; // Import the new modal component
 
 
 const UserList = () => {

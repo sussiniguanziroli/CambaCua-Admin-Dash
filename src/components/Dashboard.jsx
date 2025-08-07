@@ -5,7 +5,7 @@ import EditProduct from './EditProduct';
 import ProductList from './ProductList';
 import HandleOrders from './HandleOrders';
 import PedidosCompletados from "./PedidosCompletados";
-import UserList from './UserManagement/UserList';
+import UserList from "../components/userManagement/UserList";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
