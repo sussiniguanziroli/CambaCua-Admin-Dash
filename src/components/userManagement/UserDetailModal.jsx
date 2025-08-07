@@ -100,7 +100,7 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
                                 {userOrders.map(order => (
                                     <div key={order.id} className="order-item">
                                         <div className="order-details">
-                                            <span className="order-date">{order.fecha}</span>
+                                            <span className="order-date">{formatDate(order.fecha)}</span>
                                             <p className="order-id">Pedido #{order.id.substring(0, 8)}</p>
                                         </div>
                                         <div className="order-total">
