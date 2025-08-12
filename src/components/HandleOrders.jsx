@@ -1,5 +1,11 @@
+/*
+  File: HandleOrders.jsx
+  Description: Admin panel for managing active orders.
+  Status: FEATURE ADDED. Now displays point discounts and correctly
+          refunds points to the user if an admin cancels an order.
+*/
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc, deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, setDoc, writeBatch, increment, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import Swal from 'sweetalert2';
 import { FaClock } from 'react-icons/fa';
@@ -49,12 +55,16 @@ const HandleOrders = () => {
         if (!isConfirmed) return;
 
         try {
-            await setDoc(doc(db, 'pedidos_completados', pedido.id), {
+            const pedidoRef = doc(db, 'pedidos', pedido.id);
+            const completadoRef = doc(db, 'pedidos_completados', pedido.id);
+
+            await setDoc(completadoRef, {
                 ...pedido,
                 estado: estado,
                 fechaCompletado: new Date()
             });
-            await deleteDoc(doc(db, 'pedidos', pedido.id));
+            await deleteDoc(pedidoRef);
+            
             setPedidos(prev => prev.filter(p => p.id !== pedido.id));
             Swal.fire('¡Éxito!', `Pedido marcado como ${estado.toLowerCase()}`, 'success');
         } catch (error) {
@@ -64,6 +74,9 @@ const HandleOrders = () => {
     };
 
     const actualizarEstado = async (id, nuevoEstado) => {
+        const pedido = pedidos.find(p => p.id === id);
+        if (!pedido) return;
+
         const estadoText = {
             'Pagado': 'marcar como pagado',
             'Cancelado': 'cancelar',
@@ -82,22 +95,44 @@ const HandleOrders = () => {
         if (!isConfirmed) return;
 
         try {
+            const batch = writeBatch(db);
             const pedidoRef = doc(db, 'pedidos', id);
-            await updateDoc(pedidoRef, { 
+
+            batch.update(pedidoRef, { 
                 estado: nuevoEstado,
                 ...(nuevoEstado === 'Pendiente' && { programado: false })
             });
-            
-            setPedidos(prevPedidos =>
-                prevPedidos.map(pedido => 
-                    pedido.id === id ? { ...pedido, estado: nuevoEstado, ...(nuevoEstado === 'Pendiente' && { programado: false }) } : pedido
-                )
-            );
 
             if (nuevoEstado === 'Cancelado') {
-                const pedido = pedidos.find(p => p.id === id);
-                await moverPedido(pedido, 'Cancelado');
+                if (pedido.puntosDescontados > 0) {
+                    const userRef = doc(db, 'users', pedido.userId);
+                    batch.update(userRef, { score: increment(pedido.puntosDescontados) });
+                }
+                for (const item of pedido.productos) {
+                    const productRef = doc(db, 'productos', item.id);
+                    const productSnap = await getDoc(productRef); // Required for stock restoration
+                    if (productSnap.exists()) {
+                        const productData = productSnap.data();
+                        if (productData.hasVariations && item.variationId) {
+                            const newVariationsList = productData.variationsList.map(v => v.id === item.variationId ? { ...v, stock: (v.stock || 0) + item.quantity } : v);
+                            batch.update(productRef, { variationsList: newVariationsList });
+                        } else {
+                            batch.update(productRef, { stock: (productData.stock || 0) + item.quantity });
+                        }
+                    }
+                }
+                const completadoRef = doc(db, 'pedidos_completados', id);
+                batch.set(completadoRef, { ...pedido, estado: 'Cancelado', fechaCancelacion: new Date() });
+                batch.delete(pedidoRef);
+            }
+            
+            await batch.commit();
+
+            if (nuevoEstado === 'Cancelado') {
+                setPedidos(prev => prev.filter(p => p.id !== id));
+                Swal.fire('¡Cancelado!', 'El pedido ha sido cancelado y el stock restaurado.', 'success');
             } else {
+                setPedidos(prev => prev.map(p => p.id === id ? { ...p, estado: nuevoEstado, ...(nuevoEstado === 'Pendiente' && { programado: false }) } : p));
                 Swal.fire('¡Éxito!', `Estado actualizado a: ${nuevoEstado}`, 'success');
             }
         } catch (error) {
@@ -110,10 +145,7 @@ const HandleOrders = () => {
         <div className="pedidos-container">
             <h2>Pedidos Activos</h2>
             {loading ? (
-                <div className="loading-spinner">
-                    <div className="spinner"></div>
-                    <p>Cargando pedidos...</p>
-                </div>
+                <div className="loading-spinner"><div className="spinner"></div><p>Cargando pedidos...</p></div>
             ) : pedidos.length === 0 ? (
                 <p className="no-orders">No hay pedidos pendientes.</p>
             ) : (
@@ -123,14 +155,8 @@ const HandleOrders = () => {
                             <div className="pedido-header">
                                 <h3>Pedido #{pedido.id}</h3>
                                 <div className="status-container">
-                                    {pedido.programado && (
-                                        <span className="scheduled-indicator" title="Pedido programado fuera de horario">
-                                            <FaClock /> Programado
-                                        </span>
-                                    )}
-                                    <span className={`status-badge ${pedido.estado.toLowerCase()}`}>
-                                        {pedido.estado}
-                                    </span>
+                                    {pedido.programado && (<span className="scheduled-indicator" title="Pedido programado"><FaClock /> Programado</span>)}
+                                    <span className={`status-badge ${pedido.estado.toLowerCase()}`}>{pedido.estado}</span>
                                 </div>
                             </div>
                             
@@ -144,67 +170,33 @@ const HandleOrders = () => {
                             </div>
 
                             <div className="pedido-details">
-                                <p><strong>Fecha:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'No disponible'}</p>
-                                <p><strong>Total Productos:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
+                                <p><strong>Fecha:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'N/A'}</p>
+                                <p><strong>Subtotal:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
+                                {pedido.puntosDescontados > 0 && <p className="discount-detail"><strong>Descuento Puntos:</strong> -${pedido.puntosDescontados.toLocaleString('es-AR')}</p>}
+                                <p><strong>Total Productos:</strong> ${ (pedido.totalConDescuento ?? pedido.total).toLocaleString('es-AR')}</p>
                                 {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${pedido.costoEnvio.toLocaleString('es-AR')}</p>}
-                                <p><strong>Método de pago:</strong> {pedido.metodoPago || 'No especificado'}</p>
+                                <p><strong>Método de pago:</strong> {pedido.metodoPago || 'N/A'}</p>
                             </div>
 
                             <div className="productos-list">
                                 <h4>Productos:</h4>
                                 <ul>
                                     {pedido.productos?.map((producto) => (
-                                        <li key={producto.id + (producto.variationId || '')}> {/* Unique key */}
+                                        <li key={producto.id + (producto.variationId || '')}>
                                             <strong>{producto.name || producto.nombre}</strong> - 
-                                            Cantidad: {producto.quantity || producto.cantidad} - 
+                                            Cant: {producto.quantity || producto.cantidad} - 
                                             Precio: ${ (producto.price || producto.precio)?.toLocaleString('es-AR')}
-                                            {producto.hasVariations && producto.attributes && (
-                                                <span>
-                                                    {' ('}
-                                                    {Object.entries(producto.attributes).map(([key, value]) => (
-                                                        `${key}: ${value}`
-                                                    )).join(', ')}
-                                                    {')'}
-                                                </span>
-                                            )}
+                                            {producto.hasVariations && producto.attributes && (<span>{' ('}{Object.entries(producto.attributes).map(([k, v]) => `${k}: ${v}`).join(', ')}{')'}</span>)}
                                         </li>
-                                    )) || <li>No hay productos registrados</li>}
+                                    )) || <li>No hay productos.</li>}
                                 </ul>
                             </div>
 
                             <div className="pedido-actions">
-                                {pedido.estado === 'Programado' && (
-                                    <button 
-                                        className="btn-pendiente"
-                                        onClick={() => actualizarEstado(pedido.id, 'Pendiente')}
-                                    >
-                                        Marcar como Pendiente
-                                    </button>
-                                )}
-                                <button 
-                                    className="btn-cancelar"
-                                    onClick={() => actualizarEstado(pedido.id, 'Cancelado')}
-                                    disabled={pedido.estado === 'Cancelado'}
-                                >
-                                    Cancelar
-                                </button>
-                                {/* The "Pagado" button is now conditional */}
-                                {pedido.metodoPago !== 'Efectivo' && (
-                                    <button 
-                                        className="btn-pagado"
-                                        onClick={() => actualizarEstado(pedido.id, 'Pagado')}
-                                        disabled={pedido.estado === 'Pagado' || pedido.estado === 'Cancelado'}
-                                    >
-                                        Marcar como Pagado
-                                    </button>
-                                )}
-                                <button 
-                                    className="btn-completar"
-                                    onClick={() => moverPedido(pedido, 'Completado')}
-                                    disabled={pedido.estado === 'Cancelado'}
-                                >
-                                    Completar/Enviar
-                                </button>
+                                {pedido.programado && (<button className="btn-pendiente" onClick={() => actualizarEstado(pedido.id, 'Pendiente')}>Marcar Pendiente</button>)}
+                                <button className="btn-cancelar" onClick={() => actualizarEstado(pedido.id, 'Cancelado')} disabled={pedido.estado === 'Cancelado'}>Cancelar</button>
+                                {pedido.metodoPago !== 'Efectivo' && (<button className="btn-pagado" onClick={() => actualizarEstado(pedido.id, 'Pagado')} disabled={pedido.estado === 'Pagado' || pedido.estado === 'Cancelado'}>Marcar Pagado</button>)}
+                                <button className="btn-completar" onClick={() => moverPedido(pedido, 'Completado')} disabled={pedido.estado === 'Cancelado'}>Completar/Enviar</button>
                             </div>
                         </div>
                     ))}

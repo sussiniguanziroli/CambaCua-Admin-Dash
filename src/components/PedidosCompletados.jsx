@@ -1,5 +1,11 @@
+/*
+  File: PedidosCompletados.jsx
+  Description: Admin panel for viewing completed and canceled orders.
+  Status: REVISED. Removed the ability to return orders to the active list
+          and restored specific styling for client-canceled orders.
+*/
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc, deleteDoc, setDoc, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, doc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -15,35 +21,22 @@ const PedidosCompletados = () => {
     const [endDate, setEndDate] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    // Fetch completed orders
     useEffect(() => {
         const fetchPedidos = async () => {
             setLoading(true);
             try {
-                const pedidosQuery = query(
-                    collection(db, 'pedidos_completados')
-                );
-                const querySnapshot = await getDocs(pedidosQuery);
-
+                const querySnapshot = await getDocs(collection(db, 'pedidos_completados'));
                 const pedidosList = querySnapshot.docs.map(doc => {
                     const data = doc.data();
                     return {
-                        id: doc.id,
-                        ...data,
+                        id: doc.id, ...data,
                         fechaOrden: data.fechaCancelacion?.toDate() || data.fechaCompletado?.toDate(),
                         fecha: data.fecha?.toDate ? data.fecha.toDate() : new Date(data.fecha),
                         fechaCompletado: data.fechaCompletado?.toDate(),
                         fechaCancelacion: data.fechaCancelacion?.toDate()
                     };
                 });
-
-                const pedidosOrdenados = pedidosList.sort((a, b) => {
-                    if (!a.fechaOrden && !b.fechaOrden) return 0;
-                    if (!a.fechaOrden) return 1;
-                    if (!b.fechaOrden) return -1;
-                    return b.fechaOrden - a.fechaOrden;
-                });
-
+                const pedidosOrdenados = pedidosList.sort((a, b) => (b.fechaOrden || 0) - (a.fechaOrden || 0));
                 setPedidos(pedidosOrdenados);
                 setFilteredPedidos(pedidosOrdenados);
             } catch (error) {
@@ -56,85 +49,32 @@ const PedidosCompletados = () => {
         fetchPedidos();
     }, []);
 
-    // Apply filters
     useEffect(() => {
         let result = [...pedidos];
-
         if (searchTerm) {
             const term = searchTerm.toLowerCase();
-            result = result.filter(pedido =>
-            (pedido.nombre?.toLowerCase().includes(term) ||
-                pedido.email?.toLowerCase().includes(term) ||
-                pedido.dni?.toString().includes(term) ||
-                pedido.id.toLowerCase().includes(term))
-            );
+            result = result.filter(p => (p.nombre?.toLowerCase().includes(term) || p.email?.toLowerCase().includes(term) || p.dni?.toString().includes(term) || p.id.toLowerCase().includes(term)));
         }
-
-        if (minPrice) result = result.filter(pedido => pedido.total >= Number(minPrice));
-        if (maxPrice) result = result.filter(pedido => pedido.total <= Number(maxPrice));
-
-        if (startDate) result = result.filter(pedido =>
-            (pedido.fechaOrden && pedido.fechaOrden >= startDate)
-        );
-
+        if (minPrice) result = result.filter(p => (p.totalConDescuento ?? p.total) >= Number(minPrice));
+        if (maxPrice) result = result.filter(p => (p.totalConDescuento ?? p.total) <= Number(maxPrice));
+        if (startDate) result = result.filter(p => (p.fechaOrden && p.fechaOrden >= startDate));
         if (endDate) {
             const endOfDay = new Date(endDate);
             endOfDay.setHours(23, 59, 59, 999);
-            result = result.filter(pedido =>
-                (pedido.fechaOrden && pedido.fechaOrden <= endOfDay)
-            );
+            result = result.filter(p => (p.fechaOrden && p.fechaOrden <= endOfDay));
         }
-
         setFilteredPedidos(result);
     }, [pedidos, searchTerm, minPrice, maxPrice, startDate, endDate]);
-
-    // Function to move an order back to pending
-    const devolverPedido = async (pedido) => {
-        const { isConfirmed } = await Swal.fire({
-            title: '¿Devolver pedido?',
-            text: `¿Quieres devolver el pedido #${pedido.id.substring(0, 8)} a pendientes?`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Sí, devolver',
-            cancelButtonText: 'Cancelar'
-        });
-
-        if (!isConfirmed) return;
-
-        try {
-            await setDoc(doc(db, 'pedidos', pedido.id), {
-                ...pedido,
-                estado: 'Pendiente',
-                fechaCompletado: null,
-                fechaCancelacion: null,
-                canceladoPor: null,
-                motivoCancelacion: null
-            });
-
-            await deleteDoc(doc(db, 'pedidos_completados', pedido.id));
-            
-            setPedidos(prev => prev.filter(p => p.id !== pedido.id));
-
-            Swal.fire('¡Éxito!', 'Pedido devuelto a pendientes', 'success');
-        } catch (error) {
-            console.error("Error returning order:", error);
-            Swal.fire('Error', 'No se pudo devolver el pedido', 'error');
-        }
-    };
     
-    // Reset filters
     const resetFilters = () => {
-        setSearchTerm('');
-        setMinPrice('');
-        setMaxPrice('');
-        setStartDate(null);
-        setEndDate(null);
+        setSearchTerm(''); setMinPrice(''); setMaxPrice('');
+        setStartDate(null); setEndDate(null);
     };
 
     const formatCancelationInfo = (pedido) => {
         if (pedido.estado === 'Cancelado' && pedido.fechaCancelacion) {
             const cancelationDate = pedido.fechaCancelacion.toLocaleString('es-AR');
-            const canceledBy = pedido.canceladoPor === 'cliente' ? 'por el cliente' : 'por el sistema';
+            const canceledBy = pedido.canceladoPor === 'cliente' ? 'por el cliente' : 'por el admin';
             return `Cancelado ${canceledBy} el ${cancelationDate}`;
         }
         return pedido.fechaCompletado?.toLocaleString('es-AR') || 'No disponible';
@@ -143,16 +83,10 @@ const PedidosCompletados = () => {
     return (
         <div className="pedidos-container">
             <h2>Historial de Pedidos</h2>
-
             <div className="filtros-container">
-                 <div className="filtro-group">
-                    <label>Buscar (nombre, email, DNI o ID):</label>
-                    <input
-                        type="text"
-                        placeholder="Buscar..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
+                <div className="filtro-group">
+                    <label>Buscar:</label>
+                    <input type="text" placeholder="Nombre, email, DNI o ID..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                 </div>
                 <div className="filtro-group">
                     <label>Rango de precios:</label>
@@ -165,19 +99,16 @@ const PedidosCompletados = () => {
                 <div className="filtro-group">
                     <label>Rango de fechas:</label>
                     <div className="date-range">
-                        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} selectsStart startDate={startDate} endDate={endDate} placeholderText="Fecha inicio" dateFormat="dd/MM/yyyy" />
+                        <DatePicker selected={startDate} onChange={date => setStartDate(date)} selectsStart startDate={startDate} endDate={endDate} placeholderText="Fecha inicio" dateFormat="dd/MM/yyyy" />
                         <span>a</span>
-                        <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} selectsEnd startDate={startDate} endDate={endDate} minDate={startDate} placeholderText="Fecha fin" dateFormat="dd/MM/yyyy" />
+                        <DatePicker selected={endDate} onChange={date => setEndDate(date)} selectsEnd startDate={startDate} endDate={endDate} minDate={startDate} placeholderText="Fecha fin" dateFormat="dd/MM/yyyy" />
                     </div>
                 </div>
                 <button onClick={resetFilters} className="btn-reset">Limpiar Filtros</button>
             </div>
 
             {loading ? (
-                <div className="loading-spinner">
-                    <div className="spinner"></div>
-                    <p>Cargando pedidos...</p>
-                </div>
+                <div className="loading-spinner"><div className="spinner"></div><p>Cargando pedidos...</p></div>
             ) : filteredPedidos.length === 0 ? (
                 <p className="no-orders">No hay pedidos que coincidan con los filtros.</p>
             ) : (
@@ -186,9 +117,7 @@ const PedidosCompletados = () => {
                         <div key={pedido.id} className={`pedido-box ${pedido.estado.toLowerCase()} ${pedido.canceladoPor === 'cliente' ? 'cancelado-cliente' : ''}`}>
                             <div className="pedido-header">
                                 <h3>Pedido #{pedido.id}</h3>
-                                <span className={`status-badge ${pedido.estado.toLowerCase()} ${pedido.canceladoPor === 'cliente' ? 'cancelado-cliente' : ''}`}>
-                                    {pedido.estado} {pedido.canceladoPor === 'cliente' && '(Cliente)'}
-                                </span>
+                                <span className={`status-badge ${pedido.estado.toLowerCase()}`}>{pedido.estado} {pedido.canceladoPor === 'cliente' && '(Cliente)'}</span>
                             </div>
 
                             <div className="cliente-info">
@@ -196,52 +125,28 @@ const PedidosCompletados = () => {
                                 <p><strong>Email:</strong> {pedido.email}</p>
                                 <p><strong>Teléfono:</strong> {pedido.telefono}</p>
                                 <p><strong>Dirección:</strong> {pedido.direccion}</p>
-                                {pedido.indicaciones && <p><strong>Indicaciones:</strong> {pedido.indicaciones}</p>}
-                                <p><strong>DNI:</strong> {pedido.dni}</p>
                             </div>
 
                             <div className="pedido-details">
-                                <p><strong>Fecha pedido:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'No disponible'}</p>
+                                <p><strong>Fecha pedido:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'N/A'}</p>
                                 <p><strong>Fecha finalización:</strong> {formatCancelationInfo(pedido)}</p>
-                                <p><strong>Total Productos:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
+                                <p><strong>Subtotal:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
+                                {pedido.puntosDescontados > 0 && <p className="discount-detail"><strong>Descuento Puntos:</strong> -${pedido.puntosDescontados.toLocaleString('es-AR')}</p>}
+                                <p><strong>Total Final:</strong> ${(pedido.totalConDescuento ?? pedido.total).toLocaleString('es-AR')}</p>
                                 {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${pedido.costoEnvio.toLocaleString('es-AR')}</p>}
-                                <p><strong>Método pago:</strong> {pedido.metodoPago || 'No especificado'}</p>
-                                {pedido.motivoCancelacion && (
-                                    <p className="cancelation-reason">
-                                        <strong>Motivo cancelación:</strong> {pedido.motivoCancelacion}
-                                    </p>
-                                )}
+                                {pedido.motivoCancelacion && (<p className="cancelation-reason"><strong>Motivo:</strong> {pedido.motivoCancelacion}</p>)}
                             </div>
 
                             <div className="productos-list">
                                 <h4>Productos:</h4>
                                 <ul>
                                     {pedido.productos?.map((producto) => (
-                                        <li key={producto.id + (producto.variationId || '')}> {/* Unique key */}
-                                            <strong>{producto.name || producto.nombre}</strong> -
-                                            Cantidad: {producto.quantity || producto.cantidad} -
-                                            Precio: ${ (producto.price || producto.precio)?.toLocaleString('es-AR')}
-                                            {producto.hasVariations && producto.attributes && (
-                                                <span>
-                                                    {' ('}
-                                                    {Object.entries(producto.attributes).map(([key, value]) => (
-                                                        `${key}: ${value}`
-                                                    )).join(', ')}
-                                                    {')'}
-                                                </span>
-                                            )}
+                                        <li key={producto.id + (producto.variationId || '')}>
+                                            <strong>{producto.name || producto.nombre}</strong> - Cant: {producto.quantity || producto.cantidad}
                                         </li>
-                                    )) || <li>No hay productos registrados</li>}
+                                    )) || <li>No hay productos.</li>}
                                 </ul>
                             </div>
-
-                            {pedido.estado !== 'Completado' && pedido.estado !== 'Cancelado' && (
-                                 <div className="pedido-actions">
-                                     <button className="btn-desarchivar" onClick={() => devolverPedido(pedido)}>
-                                         Devolver a Pendientes
-                                     </button>
-                                 </div>
-                             )}
                         </div>
                     ))}
                 </div>
