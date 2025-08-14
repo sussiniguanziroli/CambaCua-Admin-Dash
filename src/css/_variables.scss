@@ -1,5 +1,4 @@
 // colores que se ultilizan
-
 $main-white: #F5F5F5; 
 $text-gray: #2c2c2c;
 $button-yellow: #F5B31F;
@@ -8,24 +7,18 @@ $black: black;
 $mobile-button: #2f6735;
 $azul-oscuro: #7098ee;
 
-
-
 //camba cua vet
 $azul-cambacua: #0b369c;
 $button-hover-cambacua: #1d5aea;
 $naranja-cambacua: #ff8c34;
 
-
-
 // colores de santa rita
-
 $dark-gray: #474747;
 
 //Colores imagenes de servicios:
 $rosado-diseno: #ff66c4;
 $azul-diseno: #269cb6;
-$naranja-diseno: #f38759 ;
-
+$naranja-diseno: #f38759;
 
 //Diseño y Desarrollo Web -  
 $color-amarillo: #ffce2b;
@@ -40,7 +33,6 @@ $color-amarillo: #ffce2b;
 //Experiencia y Profesionalismo  - 
 $color-naranja: #f38759;
 
-
 // Variables de colores basados en Material Design
 $primary-color: #0b369c;
 $primary-light: #2359d9;
@@ -51,6 +43,12 @@ $surface-color: #ffffff;
 $error-color: #b00020;
 $text-color: #212121;
 $subtext-color: #404040;
+$grey-light: #f8f9fa;
+$grey-medium: #dee2e6;
+$grey-dark: #6c757d;
+$success-color: #28a745;
+$danger-color: #dc3545;
+
 
 // _variables.scss (extracto)
 $color-fondo: #f8f9fa;
@@ -63,12 +61,14 @@ $color-texto-claro: #fff;
 $color-texto-placeholder: #adb5bd;
 $border-radius: 0.5rem;
 $border-radius-sm: 0.3rem;
-$shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-$shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+$box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+$box-shadow-hover: 0 4px 10px rgba(0,0,0,0.1);
 $transition-base: all 0.2s ease-in-out;
 $font-family-base: 'Segoe UI', Roboto, sans-serif;
 $font-weight-semibold: 600;
 $breakpoint-md: 768px;
+$shadow-md: #adb5bd;
+$shadow-sm: #adb5bd;
 
 // Mixin para botones base
 @mixin boton-base {

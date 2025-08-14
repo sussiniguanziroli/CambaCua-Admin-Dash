@@ -1095,7 +1095,7 @@ button.btn-completar:hover {
   padding: 1.5rem;
   border-radius: 1rem;
   margin-bottom: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: #adb5bd;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
@@ -1177,7 +1177,7 @@ button.btn-completar:hover {
 .react-datepicker {
   font-family: "Segoe UI", Roboto, sans-serif;
   border-color: #dee2e6;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: #adb5bd;
 }
 .react-datepicker__header {
   background-color: #f8f9fa;
@@ -1973,7 +1973,7 @@ button.btn-reset:hover {
   flex-grow: 1;
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #dee2e6;
   border-radius: 0.5rem;
   font-size: 1rem;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -1987,7 +1987,7 @@ button.btn-reset:hover {
 
 .user-sort-select {
   padding: 0.75rem 1rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #dee2e6;
   border-radius: 0.5rem;
   background-color: #fff;
   color: #212121;
@@ -1996,7 +1996,7 @@ button.btn-reset:hover {
   transition: all 0.3s ease;
 }
 .user-sort-select:hover {
-  border-color: rgb(198.5, 198.5, 198.5);
+  border-color: rgb(192.9827586207, 200.5, 208.0172413793);
 }
 .user-sort-select:focus {
   outline: none;
@@ -2017,13 +2017,13 @@ button.btn-reset:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #dee2e6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 .user-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 .user-card .user-avatar {
   width: 80px;
@@ -2045,7 +2045,7 @@ button.btn-reset:hover {
 }
 .user-card .user-info .user-email {
   font-size: 0.9rem;
-  color: #7f8c8d;
+  color: #6c757d;
   margin: 0.25rem 0 0.5rem 0;
 }
 .user-card .user-provider {
@@ -2054,12 +2054,12 @@ button.btn-reset:hover {
   justify-content: center;
   gap: 0.5rem;
   font-size: 0.9rem;
-  color: #7f8c8d;
+  color: #6c757d;
 }
 .user-card .user-id {
   margin-top: 1rem;
   font-size: 0.8rem;
-  color: #7f8c8d;
+  color: #6c757d;
   text-align: center;
   opacity: 0.7;
 }
@@ -2070,11 +2070,11 @@ button.btn-reset:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1050;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -2089,10 +2089,12 @@ button.btn-reset:hover {
   background: #fff;
   padding: 2rem;
   border-radius: 0.5rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  max-width: 90%;
-  max-height: 90%;
-  overflow-y: auto;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
   transform: translateY(-50px);
   transition: transform 0.3s ease;
 }
@@ -2106,42 +2108,42 @@ button.btn-reset:hover {
   right: 1rem;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   cursor: pointer;
-  color: #7f8c8d;
+  color: #6c757d;
+  transition: color 0.2s ease;
 }
 .user-modal-close-btn:hover {
   color: #0b369c;
 }
 
 .user-modal-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  overflow-y: auto;
+  padding-right: 1rem;
 }
 .user-modal-content h3.user-modal-title {
   font-size: 1.8rem;
   font-weight: bold;
   color: #021128;
   border-bottom: 2px solid #0b369c;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  margin: 0 0 1.5rem 0;
 }
 .user-modal-content .user-info-section {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  border: 1px solid #e0e0e0;
-  padding: 1rem;
+  border: 1px solid #dee2e6;
+  padding: 1.5rem;
   border-radius: 0.5rem;
   background-color: #f8f9fa;
 }
 .user-modal-content .user-info-section .user-modal-avatar {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #0b369c;
+  border: 3px solid #0b369c;
 }
 .user-modal-content .user-info-section .user-modal-details {
   flex: 1;
@@ -2153,13 +2155,65 @@ button.btn-reset:hover {
 }
 .user-modal-content .user-info-section .user-modal-details .user-modal-email {
   font-size: 1rem;
-  color: #7f8c8d;
+  color: #6c757d;
   margin: 0.25rem 0;
 }
 .user-modal-content .user-info-section .user-modal-details .user-modal-score {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #81C784;
+  color: #28a745;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.user-modal-content .points-management-section {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+}
+.user-modal-content .points-management-section h4 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #212121;
+  margin: 0 0 1rem 0;
+}
+.user-modal-content .points-management-section .points-input-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.user-modal-content .points-management-section .points-input-group input {
+  flex-grow: 1;
+  padding: 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+.user-modal-content .points-management-section .points-input-group button {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s ease;
+}
+.user-modal-content .points-management-section .points-input-group button:hover {
+  opacity: 0.85;
+}
+.user-modal-content .points-management-section .points-input-group .add-points-btn {
+  background-color: #28a745;
+}
+.user-modal-content .points-management-section .points-input-group .remove-points-btn {
+  background-color: #dc3545;
+}
+.user-modal-content .orders-section {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 .user-modal-content .orders-section h4 {
   font-size: 1.2rem;
@@ -2171,12 +2225,10 @@ button.btn-reset:hover {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-height: 300px;
-  overflow-y: auto;
 }
 .user-modal-content .orders-section .order-item {
   padding: 1rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #dee2e6;
   border-radius: 0.5rem;
   display: flex;
   justify-content: space-between;
@@ -2185,16 +2237,36 @@ button.btn-reset:hover {
   transition: all 0.2s ease;
 }
 .user-modal-content .orders-section .order-item:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-color: rgb(192.9827586207, 200.5, 208.0172413793);
 }
-.user-modal-content .orders-section .order-item .order-details .order-date {
+.user-modal-content .orders-section .order-item .order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.user-modal-content .orders-section .order-item .order-info .order-date {
   font-size: 0.9rem;
-  color: #7f8c8d;
+  color: #6c757d;
 }
-.user-modal-content .orders-section .order-item .order-details .order-id {
+.user-modal-content .orders-section .order-item .order-info .order-id {
   font-weight: 500;
 }
-.user-modal-content .orders-section .order-item .order-total {
+.user-modal-content .orders-section .order-item .order-pricing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+.user-modal-content .orders-section .order-item .order-pricing .order-total {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+.user-modal-content .orders-section .order-item .order-pricing .order-discount {
+  font-size: 0.9rem;
+  color: #28a745;
+}
+.user-modal-content .orders-section .order-item .order-pricing .order-final-total {
   font-size: 1.1rem;
   font-weight: bold;
   color: #021128;
