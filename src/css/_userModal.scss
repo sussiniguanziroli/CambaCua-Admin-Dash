@@ -30,7 +30,7 @@
   border-radius: $border-radius;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   width: 90%;
-  max-width: 800px; // Increased width
+  max-width: 800px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -60,7 +60,7 @@
 
 .user-modal-content {
   overflow-y: auto;
-  padding-right: 1rem; // space for scrollbar
+  padding-right: 1rem;
 
   h3.user-modal-title {
     font-size: 1.8rem;
@@ -168,11 +168,37 @@
     padding-top: 1.5rem;
     margin-top: 1.5rem;
 
-    h4 {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: $text-color;
+    .orders-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 1rem;
+
+      h4 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: $text-color;
+      }
+
+      .order-search-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        svg {
+          position: absolute;
+          left: 10px;
+          color: $grey-dark;
+        }
+
+        input {
+          padding: 0.5rem 0.5rem 0.5rem 2rem;
+          border: 1px solid $grey-medium;
+          border-radius: $border-radius;
+          width: 200px;
+        }
+      }
     }
 
     .order-list {
@@ -181,19 +207,27 @@
       gap: 1rem;
     }
 
-    .order-item {
-      padding: 1rem;
+    .order-item-detailed {
       border: 1px solid $grey-medium;
       border-radius: $border-radius;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       background-color: #fcfcfc;
-      transition: all 0.2s ease;
-
+      transition: box-shadow 0.2s ease;
+      
       &:hover {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        border-color: darken($grey-medium, 10%);
+      }
+
+      .order-summary-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: $grey-light;
+        }
       }
       
       .order-info {
@@ -208,27 +242,71 @@
         .order-id {
           font-weight: 500;
         }
-        // Assuming you have status-badge styles elsewhere
       }
 
       .order-pricing {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 0.25rem;
-
-        .order-total {
-          font-size: 0.9rem;
-          color: $grey-dark;
-        }
-        .order-discount {
-          font-size: 0.9rem;
-          color: $success-color;
-        }
+        text-align: right;
         .order-final-total {
           font-size: 1.1rem;
           font-weight: bold;
           color: $primary-dark;
+        }
+      }
+
+      .expand-order-btn {
+        background: none;
+        border: none;
+        font-size: 1rem;
+        color: $grey-dark;
+        margin-left: 1rem;
+        cursor: pointer;
+      }
+
+      .order-products-detailed {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+        padding: 0 1rem;
+        
+        &.expanded {
+            max-height: 500px; /* Adjust as needed */
+            padding: 1rem;
+            border-top: 1px solid $grey-medium;
+        }
+
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        .product-line {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: $border-radius-sm;
+          }
+          .product-details {
+            flex-grow: 1;
+            .product-name {
+              font-weight: 500;
+            }
+            .product-attributes {
+              font-size: 0.8rem;
+              color: $grey-dark;
+            }
+          }
+          .product-quantity {
+            color: $grey-dark;
+          }
+          .product-price {
+            font-weight: 500;
+            min-width: 70px;
+            text-align: right;
+          }
         }
       }
     }

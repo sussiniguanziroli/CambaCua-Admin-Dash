@@ -1,8 +1,7 @@
 /*
   File: PedidosCompletados.jsx
   Description: Admin panel for viewing completed and canceled orders.
-  Status: REVISED. Removed the ability to return orders to the active list
-          and restored specific styling for client-canceled orders.
+  Status: FEATURE ADDED. Admins can now filter the order history by product name.
 */
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, doc } from 'firebase/firestore';
@@ -15,6 +14,7 @@ const PedidosCompletados = () => {
     const [pedidos, setPedidos] = useState([]);
     const [filteredPedidos, setFilteredPedidos] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [productSearchTerm, setProductSearchTerm] = useState(''); // New state for product filter
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [startDate, setStartDate] = useState(null);
@@ -51,10 +51,23 @@ const PedidosCompletados = () => {
 
     useEffect(() => {
         let result = [...pedidos];
+        
+        // Filter by user details
         if (searchTerm) {
             const term = searchTerm.toLowerCase();
             result = result.filter(p => (p.nombre?.toLowerCase().includes(term) || p.email?.toLowerCase().includes(term) || p.dni?.toString().includes(term) || p.id.toLowerCase().includes(term)));
         }
+
+        // Filter by product name
+        if (productSearchTerm) {
+            const productTerm = productSearchTerm.toLowerCase();
+            result = result.filter(p => 
+                p.productos.some(producto => 
+                    producto.name?.toLowerCase().includes(productTerm)
+                )
+            );
+        }
+
         if (minPrice) result = result.filter(p => (p.totalConDescuento ?? p.total) >= Number(minPrice));
         if (maxPrice) result = result.filter(p => (p.totalConDescuento ?? p.total) <= Number(maxPrice));
         if (startDate) result = result.filter(p => (p.fechaOrden && p.fechaOrden >= startDate));
@@ -64,11 +77,15 @@ const PedidosCompletados = () => {
             result = result.filter(p => (p.fechaOrden && p.fechaOrden <= endOfDay));
         }
         setFilteredPedidos(result);
-    }, [pedidos, searchTerm, minPrice, maxPrice, startDate, endDate]);
+    }, [pedidos, searchTerm, productSearchTerm, minPrice, maxPrice, startDate, endDate]);
     
     const resetFilters = () => {
-        setSearchTerm(''); setMinPrice(''); setMaxPrice('');
-        setStartDate(null); setEndDate(null);
+        setSearchTerm('');
+        setProductSearchTerm('');
+        setMinPrice('');
+        setMaxPrice('');
+        setStartDate(null);
+        setEndDate(null);
     };
 
     const formatCancelationInfo = (pedido) => {
@@ -85,8 +102,12 @@ const PedidosCompletados = () => {
             <h2>Historial de Pedidos</h2>
             <div className="filtros-container">
                 <div className="filtro-group">
-                    <label>Buscar:</label>
+                    <label>Buscar por Cliente:</label>
                     <input type="text" placeholder="Nombre, email, DNI o ID..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                </div>
+                <div className="filtro-group">
+                    <label>Buscar por Producto:</label>
+                    <input type="text" placeholder="Nombre del producto..." value={productSearchTerm} onChange={(e) => setProductSearchTerm(e.target.value)} />
                 </div>
                 <div className="filtro-group">
                     <label>Rango de precios:</label>

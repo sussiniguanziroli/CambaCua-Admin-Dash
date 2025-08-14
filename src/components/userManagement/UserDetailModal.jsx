@@ -1,11 +1,10 @@
 /*
   File: UserDetailModal.jsx
   Description: Admin modal for viewing and managing user details.
-  Status: UPGRADED. Modal is now larger, includes a point management system,
-          and displays a more detailed order history with corrected data fetching.
+  Status: UPGRADED. Order history is now collapsible to show/hide product details.
 */
-import React, { useState, useEffect, useRef } from 'react';
-import { FaTimes, FaGift, FaPlusCircle, FaMinusCircle } from 'react-icons/fa';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { FaTimes, FaGift, FaPlusCircle, FaMinusCircle, FaSearch, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { collection, query, where, getDocs, doc, getDoc, updateDoc, increment } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import Swal from 'sweetalert2';
@@ -17,6 +16,8 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
     const [score, setScore] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [pointsToAdd, setPointsToAdd] = useState('');
+    const [orderSearchTerm, setOrderSearchTerm] = useState('');
+    const [expandedOrders, setExpandedOrders] = useState({});
 
     const formatPrice = (price) => {
         if (price !== null && price !== undefined) {
@@ -31,19 +32,24 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
         return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
     };
 
+    const toggleOrderExpansion = (orderId) => {
+        setExpandedOrders(prev => ({
+            ...prev,
+            [orderId]: !prev[orderId]
+        }));
+    };
+
     useEffect(() => {
         const fetchUserData = async () => {
             if (!user) return;
             setIsLoading(true);
             try {
-                // Fetch score from users/{uid}
                 const userRef = doc(db, 'users', user.uid);
                 const userSnap = await getDoc(userRef);
                 if (userSnap.exists()) {
                     setScore(userSnap.data().score || 0);
                 }
 
-                // Fetch orders from both collections
                 const q1 = query(collection(db, "pedidos"), where("userId", "==", user.uid));
                 const q2 = query(collection(db, "pedidos_completados"), where("userId", "==", user.uid));
                 const [pedidosSnap, completadosSnap] = await Promise.all([getDocs(q1), getDocs(q2)]);
@@ -52,7 +58,6 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
                 pedidosSnap.forEach(doc => fetchedOrders.push({ id: doc.id, ...doc.data() }));
                 completadosSnap.forEach(doc => fetchedOrders.push({ id: doc.id, ...doc.data() }));
 
-                // Sort orders by date
                 fetchedOrders.sort((a, b) => (b.fecha?.toDate() || 0) - (a.fecha?.toDate() || 0));
                 
                 setUserOrders(fetchedOrders);
@@ -103,6 +108,18 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
             }
         }
     };
+
+    const filteredOrders = useMemo(() => {
+        if (!orderSearchTerm) {
+            return userOrders;
+        }
+        const lowercasedFilter = orderSearchTerm.toLowerCase();
+        return userOrders.filter(order => 
+            order.productos.some(product => 
+                product.name.toLowerCase().includes(lowercasedFilter)
+            )
+        );
+    }, [userOrders, orderSearchTerm]);
     
     const handleClickOutside = (event) => {
         if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -163,24 +180,49 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
                     </div>
 
                     <div className="orders-section">
-                        <h4>Historial de Compras ({userOrders.length})</h4>
+                        <div className="orders-header">
+                            <h4>Historial de Compras ({filteredOrders.length})</h4>
+                            <div className="order-search-box">
+                                <FaSearch />
+                                <input 
+                                    type="text"
+                                    placeholder="Filtrar por producto..."
+                                    value={orderSearchTerm}
+                                    onChange={(e) => setOrderSearchTerm(e.target.value)}
+                                />
+                            </div>
+                        </div>
                         {isLoading ? (
                             <LoaderSpinner />
                         ) : userOrders.length > 0 ? (
                             <div className="order-list">
-                                {userOrders.map(order => (
-                                    <div key={order.id} className="order-item">
-                                        <div className="order-info">
-                                            <span className="order-date">{formatDate(order.fecha)}</span>
-                                            <p className="order-id">Pedido #{order.id.substring(0, 8)}</p>
-                                            <span className={`status-badge ${order.estado?.toLowerCase()}`}>{order.estado}</span>
+                                {filteredOrders.map(order => (
+                                    <div key={order.id} className="order-item-detailed">
+                                        <div className="order-summary-line" onClick={() => toggleOrderExpansion(order.id)}>
+                                            <div className="order-info">
+                                                <span className="order-date">{formatDate(order.fecha)}</span>
+                                                <p className="order-id">Pedido #{order.id.substring(0, 8)}</p>
+                                                <span className={`status-badge ${order.estado?.toLowerCase()}`}>{order.estado}</span>
+                                            </div>
+                                            <div className="order-pricing">
+                                                <span className="order-final-total">Total: {formatPrice(order.totalConDescuento ?? order.total)}</span>
+                                            </div>
+                                            <button className="expand-order-btn">
+                                                {expandedOrders[order.id] ? <FaChevronUp /> : <FaChevronDown />}
+                                            </button>
                                         </div>
-                                        <div className="order-pricing">
-                                            <span className="order-total">Subtotal: {formatPrice(order.total)}</span>
-                                            {order.puntosDescontados > 0 && (
-                                                <span className="order-discount">Descuento: -{formatPrice(order.puntosDescontados)}</span>
-                                            )}
-                                            <span className="order-final-total">Total: {formatPrice(order.totalConDescuento ?? order.total)}</span>
+                                        <div className={`order-products-detailed ${expandedOrders[order.id] ? 'expanded' : ''}`}>
+                                            {order.productos.map(product => (
+                                                <div key={product.id + (product.variationId || '')} className="product-line">
+                                                    <img src={product.imageUrl} alt={product.name} />
+                                                    <div className="product-details">
+                                                        <p className="product-name">{product.name}</p>
+                                                        {product.attributes && <p className="product-attributes">{Object.values(product.attributes).join(' | ')}</p>}
+                                                    </div>
+                                                    <p className="product-quantity">x{product.quantity}</p>
+                                                    <p className="product-price">{formatPrice(product.price)}</p>
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
                                 ))}
