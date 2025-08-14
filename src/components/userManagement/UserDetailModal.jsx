@@ -1,8 +1,3 @@
-/*
-  File: UserDetailModal.jsx
-  Description: Admin modal for viewing and managing user details.
-  Status: UPGRADED. Order history is now collapsible to show/hide product details.
-*/
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { FaTimes, FaGift, FaPlusCircle, FaMinusCircle, FaSearch, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { collection, query, where, getDocs, doc, getDoc, updateDoc, increment } from 'firebase/firestore';
@@ -205,6 +200,10 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
                                                 <span className={`status-badge ${order.estado?.toLowerCase()}`}>{order.estado}</span>
                                             </div>
                                             <div className="order-pricing">
+                                                <span className="order-subtotal">Subtotal: {formatPrice(order.total)}</span>
+                                                {order.puntosDescontados > 0 && (
+                                                    <span className="order-discount">Descuento: -{formatPrice(order.puntosDescontados)}</span>
+                                                )}
                                                 <span className="order-final-total">Total: {formatPrice(order.totalConDescuento ?? order.total)}</span>
                                             </div>
                                             <button className="expand-order-btn">

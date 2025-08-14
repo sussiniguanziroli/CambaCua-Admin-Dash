@@ -245,7 +245,23 @@
       }
 
       .order-pricing {
-        text-align: right;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.2rem;
+        min-width: 150px;
+
+        .order-subtotal {
+          font-size: 0.9rem;
+          color: $grey-dark;
+        }
+        
+        .order-discount {
+          font-size: 0.95rem;
+          color: $success-color;
+          font-weight: 500;
+        }
+
         .order-final-total {
           font-size: 1.1rem;
           font-weight: bold;
