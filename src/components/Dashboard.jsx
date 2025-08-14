@@ -4,7 +4,8 @@ import AddProduct from './AddProducts';
 import EditProduct from './EditProduct';
 import ProductList from './ProductList';
 import HandleOrders from './HandleOrders';
-import PedidosCompletados from "./PedidosCompletados"
+import PedidosCompletados from "./PedidosCompletados";
+import UserList from "../components/userManagement/UserList";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,7 +24,8 @@ const Dashboard = () => {
           <li><Link to="/admin/add-product">Agregar Producto</Link></li>
           <li><Link to="/admin/products">Ver Productos</Link></li>
           <li><Link to="/admin/orders">Gestionar Pedidos</Link></li>
-          <li><Link to="/admin/orders/complete">Historial Pedidos</Link></li> {/* Nueva opción para pedidos */}
+          <li><Link to="/admin/orders/complete">Historial Pedidos</Link></li>
+          <li><Link to="/admin/users">Ver Usuarios</Link></li>
         </ul>
       </nav>
       <div className="content">
@@ -31,8 +33,9 @@ const Dashboard = () => {
           <Route path="/admin/add-product" element={<AddProduct />} />
           <Route path="/admin/products" element={<ProductList />} />
           <Route path="/admin/edit-product/:id" element={<EditProduct />} />
-          <Route path="/admin/orders" element={<HandleOrders />} /> {/* Nueva ruta para gestionar pedidos */}
+          <Route path="/admin/orders" element={<HandleOrders />} />
           <Route path="/admin/orders/complete" element={<PedidosCompletados />} />
+          <Route path="/admin/users" element={<UserList />} />
         </Routes>
       </div>
     </div>
