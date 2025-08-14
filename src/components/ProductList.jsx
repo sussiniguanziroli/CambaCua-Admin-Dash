@@ -285,6 +285,60 @@ const ProductList = () => {
         }
     };
 
+    const handleBulkStatusChange = async (newStatus) => {
+        if (selectedProductIds.size === 0) {
+            Swal.fire("Nada Seleccionado", "Por favor, selecciona al menos un producto.", "info");
+            return;
+        }
+
+        const actionText = newStatus ? 'activar' : 'desactivar';
+        const result = await Swal.fire({
+            title: `¿${actionText.charAt(0).toUpperCase() + actionText.slice(1)} ${selectedProductIds.size} productos?`,
+            text: `Los productos seleccionados se van a ${actionText}.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: newStatus ? '#28a745' : '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: `Sí, ${actionText}`,
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!result.isConfirmed) return;
+
+        setIsBulkUpdating(true);
+        const batch = writeBatch(db);
+        const currentDate = new Date();
+
+        for (const productId of selectedProductIds) {
+            const product = productos.find(p => p.id === productId);
+            if (!product) continue;
+
+            const productRef = doc(db, "productos", productId);
+            const updates = { activo: newStatus, updatedAt: currentDate };
+
+            if (product.hasVariations && Array.isArray(product.variationsList)) {
+                updates.variationsList = product.variationsList.map(v => ({
+                    ...v,
+                    activo: newStatus,
+                    updatedAt: currentDate
+                }));
+            }
+            batch.update(productRef, updates);
+        }
+
+        try {
+            await batch.commit();
+            Swal.fire('Actualizado', `${selectedProductIds.size} productos han sido actualizados.`, 'success');
+            setSelectedProductIds(new Set());
+            await fetchProducts();
+        } catch (error) {
+            console.error(`Error al ${actionText} masivamente:`, error);
+            Swal.fire('Error', `Ocurrió un problema al ${actionText} los productos.`, 'error');
+        } finally {
+            setIsBulkUpdating(false);
+        }
+    };
+
 
     const toggleProductActive = async (producto) => {
         const productRef = doc(db, 'productos', producto.id);
@@ -548,6 +602,20 @@ const ProductList = () => {
                             style={{ padding: '8px 15px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                         >
                             {isBulkUpdating ? <LoaderSpinner size="small-inline" /> : 'Aplicar Cambios'}
+                        </button>
+                        <button
+                            onClick={() => handleBulkStatusChange(true)}
+                            disabled={isBulkUpdating}
+                            style={{ padding: '8px 15px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        >
+                            {isBulkUpdating ? <LoaderSpinner size="small-inline" /> : 'Activar'}
+                        </button>
+                        <button
+                            onClick={() => handleBulkStatusChange(false)}
+                            disabled={isBulkUpdating}
+                            style={{ padding: '8px 15px', backgroundColor: '#ffc107', color: 'black', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        >
+                            {isBulkUpdating ? <LoaderSpinner size="small-inline" /> : 'Desactivar'}
                         </button>
                         <button
                             onClick={() => setSelectedProductIds(new Set())}
