@@ -2353,6 +2353,192 @@ button.btn-reset:hover {
   text-align: right;
 }
 
+.promos-admin-container {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+.promos-admin-container h1 {
+  font-size: 2rem;
+  color: #021128;
+  border-bottom: 2px solid #0b369c;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.promo-panel {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.promo-panel h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #212121;
+}
+.promo-panel .promo-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.promo-panel .promo-controls select,
+.promo-panel .promo-controls input {
+  padding: 0.75rem;
+  border-radius: 0.3rem;
+  border: 1px solid #dee2e6;
+  font-size: 1rem;
+}
+.promo-panel .promo-controls input[type=number] {
+  width: 150px;
+}
+.promo-panel .promo-controls button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.3rem;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.promo-panel .promo-controls button.btn-apply {
+  background-color: #28a745;
+}
+.promo-panel .promo-controls button.btn-apply:hover {
+  background-color: rgb(30.1449275362, 125.8550724638, 52);
+}
+.promo-panel .promo-controls button.btn-remove {
+  background-color: #dc3545;
+}
+.promo-panel .promo-controls button.btn-remove:hover {
+  background-color: rgb(189.2151898734, 32.7848101266, 47.7721518987);
+}
+.promo-panel .promo-controls button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.product-list-header {
+  margin: 1.5rem 0;
+}
+.product-list-header button {
+  padding: 0.5rem 1rem;
+  background-color: #0b369c;
+  color: #fff;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+.product-list-header button:hover {
+  background-color: #021128;
+}
+
+.product-list-promo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+.product-list-promo .product-item-promo {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+.product-list-promo .product-item-promo.selected {
+  border-color: #0b369c;
+  box-shadow: 0 4px 12px rgba(11, 54, 156, 0.2);
+}
+.product-list-promo .product-item-promo:hover {
+  border-color: rgb(29.874251497, 91.9281437126, 239.125748503);
+}
+.product-list-promo .product-item-promo input[type=checkbox] {
+  margin-right: 1rem;
+  transform: scale(1.2);
+  pointer-events: none;
+}
+.product-list-promo .product-item-promo img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 0.3rem;
+  margin-right: 1rem;
+}
+.product-list-promo .product-item-promo .product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.product-list-promo .product-item-promo .product-info .product-name {
+  font-weight: 500;
+  color: #212121;
+}
+.product-list-promo .product-item-promo .product-info .promo-badge, .product-list-promo .product-item-promo .product-info .no-promo-badge {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+  text-align: center;
+  width: fit-content;
+}
+.product-list-promo .product-item-promo .product-info .promo-badge {
+  background-color: rgb(154.5579710145, 230.9420289855, 172);
+  color: rgb(25.2173913043, 105.2826086957, 43.5);
+}
+.product-list-promo .product-item-promo .product-info .no-promo-badge {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+
+.filter-container {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #dee2e6;
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group-search {
+  flex-grow: 1;
+}
+
+.filter-select, .filter-input {
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  border: 1px solid #dee2e6;
+}
+
+.btn-clear-filters {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
 * {
   margin: 0;
   padding: 0;
