@@ -1,25 +1,31 @@
-/*
-  File: PedidosCompletados.jsx
-  Description: Admin panel for viewing completed and canceled orders.
-  Status: FEATURE ADDED. Admins can now filter the order history by product name.
-*/
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2';
+import { FaTags, FaGift } from 'react-icons/fa';
 
 const PedidosCompletados = () => {
     const [pedidos, setPedidos] = useState([]);
     const [filteredPedidos, setFilteredPedidos] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [productSearchTerm, setProductSearchTerm] = useState(''); // New state for product filter
+    const [productSearchTerm, setProductSearchTerm] = useState('');
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    const getPromoDescription = (item) => {
+        if (!item.promocion) return null;
+        switch (item.promocion.type) {
+            case 'percentage_discount': return `${item.promocion.value}% OFF`;
+            case '2x1': return `2x1`;
+            case 'second_unit_discount': return `${item.promocion.value}% 2da U.`;
+            default: return "Promo";
+        }
+    };
 
     useEffect(() => {
         const fetchPedidos = async () => {
@@ -52,20 +58,14 @@ const PedidosCompletados = () => {
     useEffect(() => {
         let result = [...pedidos];
         
-        // Filter by user details
         if (searchTerm) {
             const term = searchTerm.toLowerCase();
             result = result.filter(p => (p.nombre?.toLowerCase().includes(term) || p.email?.toLowerCase().includes(term) || p.dni?.toString().includes(term) || p.id.toLowerCase().includes(term)));
         }
 
-        // Filter by product name
         if (productSearchTerm) {
             const productTerm = productSearchTerm.toLowerCase();
-            result = result.filter(p => 
-                p.productos.some(producto => 
-                    producto.name?.toLowerCase().includes(productTerm)
-                )
-            );
+            result = result.filter(p => p.productos.some(producto => producto.name?.toLowerCase().includes(productTerm)));
         }
 
         if (minPrice) result = result.filter(p => (p.totalConDescuento ?? p.total) >= Number(minPrice));
@@ -91,7 +91,7 @@ const PedidosCompletados = () => {
     const formatCancelationInfo = (pedido) => {
         if (pedido.estado === 'Cancelado' && pedido.fechaCancelacion) {
             const cancelationDate = pedido.fechaCancelacion.toLocaleString('es-AR');
-            const canceledBy = pedido.canceladoPor === 'cliente' ? 'por el cliente' : 'por el admin';
+            const canceledBy = pedido.canceladoPor === 'cliente' ? 'por el cliente' : 'por admin';
             return `Cancelado ${canceledBy} el ${cancelationDate}`;
         }
         return pedido.fechaCompletado?.toLocaleString('es-AR') || 'No disponible';
@@ -137,7 +137,7 @@ const PedidosCompletados = () => {
                     {filteredPedidos.map(pedido => (
                         <div key={pedido.id} className={`pedido-box ${pedido.estado.toLowerCase()} ${pedido.canceladoPor === 'cliente' ? 'cancelado-cliente' : ''}`}>
                             <div className="pedido-header">
-                                <h3>Pedido #{pedido.id}</h3>
+                                <h3>Pedido #{pedido.id.substring(0, 8)}...</h3>
                                 <span className={`status-badge ${pedido.estado.toLowerCase()}`}>{pedido.estado} {pedido.canceladoPor === 'cliente' && '(Cliente)'}</span>
                             </div>
 
@@ -151,9 +151,10 @@ const PedidosCompletados = () => {
                             <div className="pedido-details">
                                 <p><strong>Fecha pedido:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'N/A'}</p>
                                 <p><strong>Fecha finalización:</strong> {formatCancelationInfo(pedido)}</p>
-                                <p><strong>Subtotal:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
-                                {pedido.puntosDescontados > 0 && <p className="discount-detail"><strong>Descuento Puntos:</strong> -${pedido.puntosDescontados.toLocaleString('es-AR')}</p>}
-                                <p><strong>Total Final:</strong> ${(pedido.totalConDescuento ?? pedido.total).toLocaleString('es-AR')}</p>
+                                <p><strong>Subtotal:</strong> ${pedido.subtotal?.toLocaleString('es-AR')}</p>
+                                {pedido.descuentoPromociones > 0 && <p className="discount-detail promo-discount"><FaTags /><strong> Promociones:</strong> -${pedido.descuentoPromociones.toLocaleString('es-AR')}</p>}
+                                {pedido.puntosDescontados > 0 && <p className="discount-detail points-discount"><FaGift /><strong> Puntos:</strong> -${pedido.puntosDescontados.toLocaleString('es-AR')}</p>}
+                                <p className="final-total"><strong>Total Final:</strong> ${(pedido.totalConDescuento ?? pedido.total).toLocaleString('es-AR')}</p>
                                 {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${pedido.costoEnvio.toLocaleString('es-AR')}</p>}
                                 {pedido.motivoCancelacion && (<p className="cancelation-reason"><strong>Motivo:</strong> {pedido.motivoCancelacion}</p>)}
                             </div>
@@ -161,11 +162,21 @@ const PedidosCompletados = () => {
                             <div className="productos-list">
                                 <h4>Productos:</h4>
                                 <ul>
-                                    {pedido.productos?.map((producto) => (
-                                        <li key={producto.id + (producto.variationId || '')}>
-                                            <strong>{producto.name || producto.nombre}</strong> - Cant: {producto.quantity || producto.cantidad}
-                                        </li>
-                                    )) || <li>No hay productos.</li>}
+                                    {pedido.productos?.map((producto) => {
+                                        const promoDesc = getPromoDescription(producto);
+                                        return (
+                                            <li key={producto.id + (producto.variationId || '')}>
+                                                <div className="product-main-info">
+                                                    <strong>{producto.name || producto.nombre}</strong>
+                                                    {promoDesc && <span className="promo-badge-admin">{promoDesc}</span>}
+                                                </div>
+                                                <div className="product-sub-info">
+                                                    <span>Cant: {producto.quantity || producto.cantidad}</span>
+                                                </div>
+                                                {producto.hasVariations && producto.attributes && (<span className="product-variation-details">({Object.entries(producto.attributes).map(([k, v]) => `${k}: ${v}`).join(', ')})</span>)}
+                                            </li>
+                                        )
+                                    }) || <li>No hay productos.</li>}
                                 </ul>
                             </div>
                         </div>

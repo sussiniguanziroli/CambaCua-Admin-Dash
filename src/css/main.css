@@ -891,7 +891,7 @@ button[type=submit]:focus {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 1.8rem;
   padding: 1.5rem 0;
 }
@@ -930,6 +930,31 @@ button[type=submit]:focus {
   font-weight: 600;
 }
 
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.scheduled-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #f0f9ff;
+  color: #0284c7;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.3rem 0.7rem;
+  border-radius: 1rem;
+}
+
 .pedido-box.cancelado {
   border-left: 5px solid #e74c3c;
   background-color: rgba(231, 76, 60, 0.03);
@@ -952,15 +977,44 @@ button[type=submit]:focus {
   background-color: #3498db;
   color: white;
 }
+.status-badge.pagado {
+  background-color: #f39c12;
+  color: white;
+}
 .status-badge.cancelado {
   background-color: #e74c3c;
   color: white;
 }
 
+.pedido-details .discount-detail {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pedido-details .discount-detail.promo-discount {
+  color: #e67e22;
+}
+.pedido-details .discount-detail.points-discount {
+  color: #2ecc71;
+}
+.pedido-details .final-total {
+  font-weight: 700;
+  font-size: 1.05rem;
+  border-top: 1px dashed #ccc;
+  padding-top: 0.6rem;
+  margin-top: 0.6rem;
+}
+
 .productos-list {
-  padding-left: 0;
+  padding: 0;
   margin: 1rem 0;
   list-style-type: none;
+}
+.productos-list h4 {
+  font-size: 1.1rem;
+  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  margin-bottom: 0.8rem;
 }
 .productos-list li {
   margin-bottom: 0.6rem;
@@ -970,9 +1024,36 @@ button[type=submit]:focus {
   font-size: 0.92rem;
   border-left: 3px solid rgb(95.3179916318, 173.9790794979, 226.6820083682);
 }
+.productos-list li .product-main-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
 .productos-list li strong {
   color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
   font-weight: 600;
+}
+.productos-list li .promo-badge-admin {
+  background-color: #e67e22;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+.productos-list li .product-sub-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #555;
+}
+.productos-list li .product-variation-details {
+  display: block;
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 0.3rem;
+  font-style: italic;
 }
 
 .pedido-actions {
@@ -984,7 +1065,7 @@ button[type=submit]:focus {
 }
 .pedido-actions button {
   flex: 1;
-  min-width: 140px;
+  min-width: 120px;
 }
 
 button {
@@ -1013,6 +1094,12 @@ button:disabled {
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+button.btn-pendiente {
+  background-color: #8e44ad;
+}
+button.btn-pendiente:hover {
+  background-color: rgb(117.9601659751, 56.487966805, 143.712033195);
 }
 button.btn-cancelar {
   background-color: #e74c3c;
@@ -1242,7 +1329,7 @@ button.btn-completar:hover {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 1.8rem;
   padding: 1.5rem 0;
 }
@@ -1283,11 +1370,11 @@ button.btn-completar:hover {
   font-weight: 600;
 }
 
-.pedido-box.archived {
+.pedido-box.completado {
   border-left: 5px solid #2ecc71;
   background-color: rgba(46, 204, 113, 0.03);
 }
-.pedido-box.archived h3 {
+.pedido-box.completado h3 {
   color: #2ecc71;
 }
 .pedido-box.cancelado {
@@ -1297,18 +1384,12 @@ button.btn-completar:hover {
 .pedido-box.cancelado h3 {
   color: #e74c3c;
 }
-.pedido-box.cancelado:not(.cancelado-cliente) .btn-desarchivar {
-  display: flex;
-}
 .pedido-box.cancelado-cliente {
   border-left: 5px solid #f39c12;
   background-color: rgba(243, 156, 18, 0.03);
 }
 .pedido-box.cancelado-cliente h3 {
   color: #f39c12;
-}
-.pedido-box.cancelado-cliente .pedido-actions {
-  display: none;
 }
 
 .status-badge {
@@ -1325,20 +1406,33 @@ button.btn-completar:hover {
   background-color: #2ecc71;
   color: white;
 }
-.status-badge.pendiente {
-  background-color: #3498db;
-  color: white;
-}
 .status-badge.cancelado {
   background-color: #e74c3c;
   color: white;
 }
-.status-badge.cancelado.cancelado-cliente {
-  background-color: #f39c12;
+
+.pedido-details .discount-detail {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pedido-details .discount-detail.promo-discount {
+  color: #e67e22;
+}
+.pedido-details .discount-detail.points-discount {
+  color: #2ecc71;
+}
+.pedido-details .final-total {
+  font-weight: 700;
+  font-size: 1.05rem;
+  border-top: 1px dashed #ccc;
+  padding-top: 0.6rem;
+  margin-top: 0.6rem;
 }
 
 .productos-list {
-  padding-left: 0;
+  padding: 0;
   margin: 1rem 0;
   list-style-type: none;
 }
@@ -1356,31 +1450,36 @@ button.btn-completar:hover {
   font-size: 0.92rem;
   border-left: 3px solid rgb(95.3179916318, 173.9790794979, 226.6820083682);
 }
+.productos-list li .product-main-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
 .productos-list li strong {
   color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
   font-weight: 600;
 }
-
-.cancelation-info {
-  margin-top: 1rem;
-  padding: 0.8rem;
-  background-color: #fff5f5;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-  border-left: 3px solid #e74c3c;
+.productos-list li .promo-badge-admin {
+  background-color: #e67e22;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
 }
-.cancelation-info p {
-  margin: 0.3rem 0;
+.productos-list li .product-sub-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #555;
 }
-.cancelation-info p strong {
-  color: #e74c3c;
-}
-.cancelation-info.client-cancel {
-  background-color: #fffaf0;
-  border-left-color: #f39c12;
-}
-.cancelation-info.client-cancel strong {
-  color: #f39c12;
+.productos-list li .product-variation-details {
+  display: block;
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 0.3rem;
+  font-style: italic;
 }
 
 .cancelation-reason {
@@ -1393,95 +1492,6 @@ button.btn-completar:hover {
 }
 .cancelation-reason strong {
   color: #e74c3c;
-}
-
-.pedido-actions {
-  margin-top: auto;
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding-top: 1.5rem;
-}
-.pedido-actions button {
-  flex: 1;
-  min-width: 140px;
-}
-
-button {
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  border-radius: 1rem;
-  padding: 0.8rem 1.2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-button:hover {
-  background-color: rgb(95.3179916318, 173.9790794979, 226.6820083682);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-button:disabled {
-  background-color: #bdc3c7;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-button.btn-cancelar {
-  background-color: #e74c3c;
-}
-button.btn-cancelar:hover {
-  background-color: rgb(222.7808219178, 45.698630137, 27.4191780822);
-}
-button.btn-pagado {
-  background-color: #f39c12;
-}
-button.btn-pagado:hover {
-  background-color: rgb(209.5879518072, 132.6506024096, 10.6120481928);
-}
-button.btn-completar {
-  background-color: #2ecc71;
-}
-button.btn-completar:hover {
-  background-color: rgb(38.4928, 170.7072, 94.5584);
-}
-button.btn-desarchivar {
-  background-color: #9b59b6;
-  position: relative;
-}
-button.btn-desarchivar:hover:not(:disabled) {
-  background-color: rgb(133.8820083682, 70.3121338912, 159.8878661088);
-  transform: translateY(-2px);
-}
-button.btn-desarchivar:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-button.btn-desarchivar:disabled::after {
-  content: "No disponible para completados";
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
-  color: white;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  white-space: nowrap;
-}
-button.btn-reset {
-  background-color: #7f8c8d;
-}
-button.btn-reset:hover {
-  background-color: rgb(107.0280991736, 119.2330578512, 120.1719008264);
 }
 
 .filtros-container {
@@ -1533,7 +1543,22 @@ button.btn-reset:hover {
   font-weight: 500;
 }
 
-.pedido-mensaje, .no-orders {
+button.btn-reset {
+  background-color: #7f8c8d;
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+button.btn-reset:hover {
+  background-color: rgb(107.0280991736, 119.2330578512, 120.1719008264);
+}
+
+.no-orders {
   text-align: center;
   padding: 3rem;
   color: #7f8c8d;
@@ -1587,12 +1612,6 @@ button.btn-reset:hover {
     grid-template-columns: 1fr;
     padding: 1.2rem;
     gap: 1.2rem;
-  }
-  .pedido-actions {
-    flex-direction: column;
-  }
-  .pedido-actions button {
-    width: 100%;
   }
 }
 @keyframes fadeInModal {

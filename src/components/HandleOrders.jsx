@@ -1,18 +1,22 @@
-/*
-  File: HandleOrders.jsx
-  Description: Admin panel for managing active orders.
-  Status: FEATURE ADDED. Now displays point discounts and correctly
-          refunds points to the user if an admin cancels an order.
-*/
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, doc, deleteDoc, setDoc, writeBatch, increment, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import Swal from 'sweetalert2';
-import { FaClock } from 'react-icons/fa';
+import { FaClock, FaTags, FaGift } from 'react-icons/fa';
 
 const HandleOrders = () => {
     const [pedidos, setPedidos] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const getPromoDescription = (item) => {
+        if (!item.promocion) return null;
+        switch (item.promocion.type) {
+            case 'percentage_discount': return `${item.promocion.value}% OFF`;
+            case '2x1': return `2x1`;
+            case 'second_unit_discount': return `${item.promocion.value}% 2da U.`;
+            default: return "Promo";
+        }
+    };
 
     useEffect(() => {
         const fetchPedidos = async () => {
@@ -28,7 +32,7 @@ const HandleOrders = () => {
                 pedidosList.sort((a, b) => {
                     if (a.programado && !b.programado) return -1;
                     if (!a.programado && b.programado) return 1;
-                    return b.fecha - a.fecha;
+                    return (b.fecha || 0) - (a.fecha || 0);
                 });
 
                 setPedidos(pedidosList);
@@ -110,19 +114,19 @@ const HandleOrders = () => {
                 }
                 for (const item of pedido.productos) {
                     const productRef = doc(db, 'productos', item.id);
-                    const productSnap = await getDoc(productRef); // Required for stock restoration
+                    const productSnap = await getDoc(productRef);
                     if (productSnap.exists()) {
                         const productData = productSnap.data();
                         if (productData.hasVariations && item.variationId) {
                             const newVariationsList = productData.variationsList.map(v => v.id === item.variationId ? { ...v, stock: (v.stock || 0) + item.quantity } : v);
                             batch.update(productRef, { variationsList: newVariationsList });
                         } else {
-                            batch.update(productRef, { stock: (productData.stock || 0) + item.quantity });
+                            batch.update(productRef, { stock: increment(item.quantity) });
                         }
                     }
                 }
                 const completadoRef = doc(db, 'pedidos_completados', id);
-                batch.set(completadoRef, { ...pedido, estado: 'Cancelado', fechaCancelacion: new Date() });
+                batch.set(completadoRef, { ...pedido, estado: 'Cancelado', canceladoPor: 'admin', fechaCancelacion: new Date() });
                 batch.delete(pedidoRef);
             }
             
@@ -153,7 +157,7 @@ const HandleOrders = () => {
                     {pedidos.map(pedido => (
                         <div key={pedido.id} className={`pedido-box ${pedido.estado.toLowerCase()}`}>
                             <div className="pedido-header">
-                                <h3>Pedido #{pedido.id}</h3>
+                                <h3>Pedido #{pedido.id.substring(0, 8)}...</h3>
                                 <div className="status-container">
                                     {pedido.programado && (<span className="scheduled-indicator" title="Pedido programado"><FaClock /> Programado</span>)}
                                     <span className={`status-badge ${pedido.estado.toLowerCase()}`}>{pedido.estado}</span>
@@ -171,9 +175,10 @@ const HandleOrders = () => {
 
                             <div className="pedido-details">
                                 <p><strong>Fecha:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'N/A'}</p>
-                                <p><strong>Subtotal:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
-                                {pedido.puntosDescontados > 0 && <p className="discount-detail"><strong>Descuento Puntos:</strong> -${pedido.puntosDescontados.toLocaleString('es-AR')}</p>}
-                                <p><strong>Total Productos:</strong> ${ (pedido.totalConDescuento ?? pedido.total).toLocaleString('es-AR')}</p>
+                                <p><strong>Subtotal:</strong> ${pedido.subtotal?.toLocaleString('es-AR')}</p>
+                                {pedido.descuentoPromociones > 0 && <p className="discount-detail promo-discount"><FaTags /><strong> Promociones:</strong> -${pedido.descuentoPromociones.toLocaleString('es-AR')}</p>}
+                                {pedido.puntosDescontados > 0 && <p className="discount-detail points-discount"><FaGift /><strong> Puntos:</strong> -${pedido.puntosDescontados.toLocaleString('es-AR')}</p>}
+                                <p className="final-total"><strong>Total Productos:</strong> ${ (pedido.totalConDescuento ?? pedido.total).toLocaleString('es-AR')}</p>
                                 {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${pedido.costoEnvio.toLocaleString('es-AR')}</p>}
                                 <p><strong>Método de pago:</strong> {pedido.metodoPago || 'N/A'}</p>
                             </div>
@@ -181,14 +186,22 @@ const HandleOrders = () => {
                             <div className="productos-list">
                                 <h4>Productos:</h4>
                                 <ul>
-                                    {pedido.productos?.map((producto) => (
-                                        <li key={producto.id + (producto.variationId || '')}>
-                                            <strong>{producto.name || producto.nombre}</strong> - 
-                                            Cant: {producto.quantity || producto.cantidad} - 
-                                            Precio: ${ (producto.price || producto.precio)?.toLocaleString('es-AR')}
-                                            {producto.hasVariations && producto.attributes && (<span>{' ('}{Object.entries(producto.attributes).map(([k, v]) => `${k}: ${v}`).join(', ')}{')'}</span>)}
-                                        </li>
-                                    )) || <li>No hay productos.</li>}
+                                    {pedido.productos?.map((producto) => {
+                                        const promoDesc = getPromoDescription(producto);
+                                        return (
+                                            <li key={producto.id + (producto.variationId || '')}>
+                                                <div className="product-main-info">
+                                                    <strong>{producto.name || producto.nombre}</strong>
+                                                    {promoDesc && <span className="promo-badge-admin">{promoDesc}</span>}
+                                                </div>
+                                                <div className="product-sub-info">
+                                                    <span>Cant: {producto.quantity || producto.cantidad}</span>
+                                                    <span>Precio: ${ (producto.price || producto.precio)?.toLocaleString('es-AR')}</span>
+                                                </div>
+                                                {producto.hasVariations && producto.attributes && (<span className="product-variation-details">({Object.entries(producto.attributes).map(([k, v]) => `${k}: ${v}`).join(', ')})</span>)}
+                                            </li>
+                                        )
+                                    }) || <li>No hay productos.</li>}
                                 </ul>
                             </div>
 

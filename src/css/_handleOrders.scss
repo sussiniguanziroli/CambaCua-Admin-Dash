@@ -1,4 +1,3 @@
-// Variables (compartidas)
 $primary-color: #3498db;
 $primary-light: lighten($primary-color, 10%);
 $primary-dark: darken($primary-color, 15%);
@@ -6,12 +5,12 @@ $error-color: #e74c3c;
 $success-color: #2ecc71;
 $warning-color: #f39c12;
 $cancel-color: #e74c3c;
-$client-cancel-color: #f39c12;
+$promo-color: #e67e22;
+$points-color: #2ecc71;
 $border-radius: 1rem;
 $box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 $transition: all 0.3s ease;
 
-// Estilos base específicos para HandleOrders
 .pedidos-container {
   padding: 2rem;
   max-width: 1400px;
@@ -38,10 +37,9 @@ $transition: all 0.3s ease;
   }
 }
 
-// Grid y tarjetas específicas
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 1.8rem;
   padding: 1.5rem 0;
 }
@@ -84,19 +82,39 @@ $transition: all 0.3s ease;
   }
 }
 
-// Estados específicos para HandleOrders
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.status-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.scheduled-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: #f0f9ff;
+    color: #0284c7;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
+    border-radius: 1rem;
+}
+
 .pedido-box {
   &.cancelado {
     border-left: 5px solid $cancel-color;
     background-color: rgba($cancel-color, 0.03);
-    
-    h3 {
-      color: $cancel-color;
-    }
+    h3 { color: $cancel-color; }
   }
 }
 
-// Badges de estado específicos
 .status-badge {
   padding: 0.4rem 1rem;
   border-radius: 20px;
@@ -107,22 +125,39 @@ $transition: all 0.3s ease;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   
-  &.pendiente {
-    background-color: $primary-color;
-    color: white;
-  }
-  
-  &.cancelado {
-    background-color: $cancel-color;
-    color: white;
-  }
+  &.pendiente { background-color: $primary-color; color: white; }
+  &.pagado { background-color: $warning-color; color: white; }
+  &.cancelado { background-color: $cancel-color; color: white; }
 }
 
-// Lista de productos específica
+.pedido-details {
+    .discount-detail {
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        &.promo-discount { color: $promo-color; }
+        &.points-discount { color: $points-color; }
+    }
+    .final-total {
+        font-weight: 700;
+        font-size: 1.05rem;
+        border-top: 1px dashed #ccc;
+        padding-top: 0.6rem;
+        margin-top: 0.6rem;
+    }
+}
+
 .productos-list {
-  padding-left: 0;
+  padding: 0;
   margin: 1rem 0;
   list-style-type: none;
+  
+  h4 {
+      font-size: 1.1rem;
+      color: $primary-dark;
+      margin-bottom: 0.8rem;
+  }
   
   li {
     margin-bottom: 0.6rem;
@@ -131,15 +166,45 @@ $transition: all 0.3s ease;
     border-radius: 0.5rem;
     font-size: 0.92rem;
     border-left: 3px solid $primary-light;
-    
+
+    .product-main-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.3rem;
+    }
+
     strong {
       color: $primary-dark;
       font-weight: 600;
     }
+
+    .promo-badge-admin {
+        background-color: $promo-color;
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+    }
+    
+    .product-sub-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: #555;
+    }
+
+    .product-variation-details {
+        display: block;
+        font-size: 0.8rem;
+        color: #777;
+        margin-top: 0.3rem;
+        font-style: italic;
+    }
   }
 }
 
-// Acciones específicas
 .pedido-actions {
   margin-top: auto;
   display: flex;
@@ -149,11 +214,10 @@ $transition: all 0.3s ease;
   
   button {
     flex: 1;
-    min-width: 140px;
+    min-width: 120px;
   }
 }
 
-// Botones específicos
 button {
   background-color: $primary-color;
   color: #fff;
@@ -183,32 +247,12 @@ button {
     box-shadow: none;
   }
 
-  &.btn-cancelar {
-    background-color: $error-color;
-    
-    &:hover {
-      background-color: darken($error-color, 8%);
-    }
-  }
-
-  &.btn-pagado {
-    background-color: $warning-color;
-    
-    &:hover {
-      background-color: darken($warning-color, 8%);
-    }
-  }
-
-  &.btn-completar {
-    background-color: $success-color;
-    
-    &:hover {
-      background-color: darken($success-color, 8%);
-    }
-  }
+  &.btn-pendiente { background-color: #8e44ad; &:hover { background-color: darken(#8e44ad, 8%); }}
+  &.btn-cancelar { background-color: $error-color; &:hover { background-color: darken($error-color, 8%); }}
+  &.btn-pagado { background-color: $warning-color; &:hover { background-color: darken($warning-color, 8%); }}
+  &.btn-completar { background-color: $success-color; &:hover { background-color: darken($success-color, 8%); }}
 }
 
-// Mensajes de estado específicos
 .no-orders {
   text-align: center;
   padding: 3rem;
@@ -219,7 +263,6 @@ button {
   border-radius: $border-radius;
 }
 
-// Loading spinner específico
 .loading-spinner {
   display: flex;
   flex-direction: column;
@@ -243,32 +286,22 @@ button {
   }
 }
 
-// Animaciones
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-// Responsive específico
 @media (max-width: 768px) {
   .pedidos-container {
     padding: 1.5rem;
-    
-    h2 {
-      font-size: 1.8rem;
-    }
+    h2 { font-size: 1.8rem; }
   }
-  
   .grid-container {
     grid-template-columns: 1fr;
     gap: 1.2rem;
   }
-  
   .pedido-actions {
     flex-direction: column;
-    
-    button {
-      width: 100%;
-    }
+    button { width: 100%; }
   }
 }
