@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getAllUsers } from '../../services/userService';
 import UserListItem from './UserListItem';
-import UserDetailModal from '../userManagement/UserDetailModal'; // Import the new modal component
-
+import UserDetailModal from '../userManagement/UserDetailModal';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('newest');
-
-  // State for the modal
+  const [roleFilter, setRoleFilter] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -30,37 +28,30 @@ const UserList = () => {
     const lowercasedFilter = searchTerm.toLowerCase();
     let sortedUsers = [...users];
 
-    // Sorting logic based on sortOrder state
     if (sortOrder === 'newest') {
-      sortedUsers.sort((a, b) => {
-        // Ensure createdAt exists and is a valid Timestamp before comparing
-        const dateA = a.createdAt?.toMillis() || 0;
-        const dateB = b.createdAt?.toMillis() || 0;
-        return dateB - dateA;
-      });
+      sortedUsers.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
     } else {
-      sortedUsers.sort((a, b) => {
-        // Ensure createdAt exists and is a valid Timestamp before comparing
-        const dateA = a.createdAt?.toMillis() || 0;
-        const dateB = b.createdAt?.toMillis() || 0;
-        return dateA - dateB;
-      });
+      sortedUsers.sort((a, b) => (a.createdAt?.toMillis() || 0) - (b.createdAt?.toMillis() || 0));
     }
 
-    const filtered = sortedUsers.filter(user =>
-      user.nombre.toLowerCase().includes(lowercasedFilter) ||
-      user.email.toLowerCase().includes(lowercasedFilter)
-    );
-    setFilteredUsers(filtered);
-  }, [searchTerm, users, sortOrder]);
+    const filtered = sortedUsers.filter(user => {
+      const matchesSearch = user.nombre.toLowerCase().includes(lowercasedFilter) ||
+                            user.email.toLowerCase().includes(lowercasedFilter);
+      
+      const userRole = user.role || 'baseCustomer';
+      const matchesRole = roleFilter === 'all' || userRole === roleFilter;
 
-  // Handler to open the modal
+      return matchesSearch && matchesRole;
+    });
+
+    setFilteredUsers(filtered);
+  }, [searchTerm, users, sortOrder, roleFilter]);
+
   const handleUserClick = (user) => {
     setSelectedUser(user);
     setIsModalOpen(true);
   };
 
-  // Handler to close the modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
@@ -77,6 +68,15 @@ const UserList = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="user-search-input"
         />
+        <select
+          value={roleFilter}
+          onChange={(e) => setRoleFilter(e.target.value)}
+          className="user-sort-select"
+        >
+          <option value="all">Todos los Roles</option>
+          <option value="baseCustomer">Cliente Base</option>
+          <option value="convenioCustomer">Convenio</option>
+        </select>
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
@@ -98,7 +98,6 @@ const UserList = () => {
         )}
       </div>
 
-      {/* The modal is rendered here, but only when isModalOpen is true */}
       {selectedUser && (
         <UserDetailModal
           user={selectedUser}

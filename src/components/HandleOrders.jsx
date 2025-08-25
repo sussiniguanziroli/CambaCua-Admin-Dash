@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, getDocs, doc, deleteDoc, setDoc, writeBatch, increment, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import Swal from 'sweetalert2';
-import { FaClock, FaTags, FaGift } from 'react-icons/fa';
+import { FaClock, FaTags, FaGift, FaHandshake } from 'react-icons/fa';
 
 const HandleOrders = () => {
     const [pedidos, setPedidos] = useState([]);
@@ -175,10 +175,11 @@ const HandleOrders = () => {
 
                             <div className="pedido-details">
                                 <p><strong>Fecha:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'N/A'}</p>
-                                <p><strong>Subtotal:</strong> ${pedido.subtotal?.toLocaleString('es-AR')}</p>
+                                <p><strong>Subtotal:</strong> ${pedido.subtotalBruto?.toLocaleString('es-AR')}</p>
                                 {pedido.descuentoPromociones > 0 && <p className="discount-detail promo-discount"><FaTags /><strong> Promociones:</strong> -${pedido.descuentoPromociones.toLocaleString('es-AR')}</p>}
+                                {pedido.descuentoConvenio > 0 && <p className="discount-detail convenio-discount"><FaHandshake /><strong> Convenio:</strong> -${pedido.descuentoConvenio.toLocaleString('es-AR')}</p>}
                                 {pedido.puntosDescontados > 0 && <p className="discount-detail points-discount"><FaGift /><strong> Puntos:</strong> -${pedido.puntosDescontados.toLocaleString('es-AR')}</p>}
-                                <p className="final-total"><strong>Total Productos:</strong> ${ (pedido.totalConDescuento ?? pedido.total).toLocaleString('es-AR')}</p>
+                                <p className="final-total"><strong>Total a Pagar:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
                                 {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${pedido.costoEnvio.toLocaleString('es-AR')}</p>}
                                 <p><strong>Método de pago:</strong> {pedido.metodoPago || 'N/A'}</p>
                             </div>

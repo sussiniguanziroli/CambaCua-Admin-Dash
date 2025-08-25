@@ -4,7 +4,7 @@ import { db } from '../firebase/config';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2';
-import { FaTags, FaGift } from 'react-icons/fa';
+import { FaTags, FaGift, FaHandshake } from 'react-icons/fa';
 
 const PedidosCompletados = () => {
     const [pedidos, setPedidos] = useState([]);
@@ -68,8 +68,8 @@ const PedidosCompletados = () => {
             result = result.filter(p => p.productos.some(producto => producto.name?.toLowerCase().includes(productTerm)));
         }
 
-        if (minPrice) result = result.filter(p => (p.totalConDescuento ?? p.total) >= Number(minPrice));
-        if (maxPrice) result = result.filter(p => (p.totalConDescuento ?? p.total) <= Number(maxPrice));
+        if (minPrice) result = result.filter(p => p.total >= Number(minPrice));
+        if (maxPrice) result = result.filter(p => p.total <= Number(maxPrice));
         if (startDate) result = result.filter(p => (p.fechaOrden && p.fechaOrden >= startDate));
         if (endDate) {
             const endOfDay = new Date(endDate);
@@ -151,10 +151,11 @@ const PedidosCompletados = () => {
                             <div className="pedido-details">
                                 <p><strong>Fecha pedido:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'N/A'}</p>
                                 <p><strong>Fecha finalización:</strong> {formatCancelationInfo(pedido)}</p>
-                                <p><strong>Subtotal:</strong> ${pedido.subtotal?.toLocaleString('es-AR')}</p>
+                                <p><strong>Subtotal:</strong> ${pedido.subtotalBruto?.toLocaleString('es-AR')}</p>
                                 {pedido.descuentoPromociones > 0 && <p className="discount-detail promo-discount"><FaTags /><strong> Promociones:</strong> -${pedido.descuentoPromociones.toLocaleString('es-AR')}</p>}
+                                {pedido.descuentoConvenio > 0 && <p className="discount-detail convenio-discount"><FaHandshake /><strong> Convenio:</strong> -${pedido.descuentoConvenio.toLocaleString('es-AR')}</p>}
                                 {pedido.puntosDescontados > 0 && <p className="discount-detail points-discount"><FaGift /><strong> Puntos:</strong> -${pedido.puntosDescontados.toLocaleString('es-AR')}</p>}
-                                <p className="final-total"><strong>Total Final:</strong> ${(pedido.totalConDescuento ?? pedido.total).toLocaleString('es-AR')}</p>
+                                <p className="final-total"><strong>Total Final:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
                                 {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${pedido.costoEnvio.toLocaleString('es-AR')}</p>}
                                 {pedido.motivoCancelacion && (<p className="cancelation-reason"><strong>Motivo:</strong> {pedido.motivoCancelacion}</p>)}
                             </div>

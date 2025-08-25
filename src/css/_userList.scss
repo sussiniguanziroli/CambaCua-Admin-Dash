@@ -79,6 +79,7 @@
     border: 1px solid $grey-medium;
     box-shadow: $box-shadow;
     transition: all 0.3s ease;
+    cursor: pointer;
     
     &:hover {
         transform: translateY(-2px);
@@ -120,9 +121,28 @@
       font-size: 0.9rem;
       color: $grey-dark;
     }
+
+    .user-role-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: $border-radius-sm;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-top: 1rem;
+      color: #fff;
+
+      &.baseCustomer {
+        background-color: $grey-dark;
+      }
+      &.convenioCustomer {
+        background-color: $primary-color;
+      }
+    }
     
     .user-id {
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       font-size: 0.8rem;
       color: $grey-dark;
       text-align: center;

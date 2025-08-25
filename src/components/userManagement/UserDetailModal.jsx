@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { FaTimes, FaGift, FaPlusCircle, FaMinusCircle, FaSearch, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaTimes, FaGift, FaPlusCircle, FaMinusCircle, FaSearch, FaChevronDown, FaChevronUp, FaUserTag, FaTags, FaHandshake } from 'react-icons/fa';
 import { collection, query, where, getDocs, doc, getDoc, updateDoc, increment } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import Swal from 'sweetalert2';
@@ -9,6 +9,7 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
     const modalRef = useRef();
     const [userOrders, setUserOrders] = useState([]);
     const [score, setScore] = useState(0);
+    const [role, setRole] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [pointsToAdd, setPointsToAdd] = useState('');
     const [orderSearchTerm, setOrderSearchTerm] = useState('');
@@ -43,6 +44,7 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
                 const userSnap = await getDoc(userRef);
                 if (userSnap.exists()) {
                     setScore(userSnap.data().score || 0);
+                    setRole(userSnap.data().role || 'baseCustomer');
                 }
 
                 const q1 = query(collection(db, "pedidos"), where("userId", "==", user.uid));
@@ -104,6 +106,29 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
         }
     };
 
+    const handleRoleChange = async (newRole) => {
+        const { isConfirmed } = await Swal.fire({
+            title: 'Confirmar Cambio de Rol',
+            text: `¿Estás seguro de que quieres cambiar el rol de ${user.nombre} a "${newRole}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cambiar rol',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (isConfirmed) {
+            try {
+                const userRef = doc(db, 'users', user.uid);
+                await updateDoc(userRef, { role: newRole });
+                setRole(newRole);
+                Swal.fire('¡Actualizado!', 'El rol del usuario ha sido actualizado.', 'success');
+            } catch (error) {
+                console.error("Error updating user role:", error);
+                Swal.fire('Error', 'No se pudo actualizar el rol del usuario.', 'error');
+            }
+        }
+    };
+
     const filteredOrders = useMemo(() => {
         if (!orderSearchTerm) {
             return userOrders;
@@ -156,6 +181,25 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
                         </div>
                     </div>
 
+                    <div className="role-management-section">
+                        <h4><FaUserTag /> Rol del Usuario</h4>
+                        <div className="role-display">
+                            <span>Rol Actual:</span>
+                            <span className={`role-badge ${role}`}>{role === 'convenioCustomer' ? 'Convenio' : 'Cliente Base'}</span>
+                        </div>
+                        <div className="role-actions">
+                            {role !== 'convenioCustomer' ? (
+                                <button className="role-change-btn assign" onClick={() => handleRoleChange('convenioCustomer')}>
+                                    Asignar Rol Convenio
+                                </button>
+                            ) : (
+                                <button className="role-change-btn revoke" onClick={() => handleRoleChange('baseCustomer')}>
+                                    Revocar Rol Convenio
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
                     <div className="points-management-section">
                         <h4>Gestionar Puntos</h4>
                         <div className="points-input-group">
@@ -200,11 +244,7 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
                                                 <span className={`status-badge ${order.estado?.toLowerCase()}`}>{order.estado}</span>
                                             </div>
                                             <div className="order-pricing">
-                                                <span className="order-subtotal">Subtotal: {formatPrice(order.total)}</span>
-                                                {order.puntosDescontados > 0 && (
-                                                    <span className="order-discount">Descuento: -{formatPrice(order.puntosDescontados)}</span>
-                                                )}
-                                                <span className="order-final-total">Total: {formatPrice(order.totalConDescuento ?? order.total)}</span>
+                                                <span className="order-final-total">Total: {formatPrice(order.total)}</span>
                                             </div>
                                             <button className="expand-order-btn">
                                                 {expandedOrders[order.id] ? <FaChevronUp /> : <FaChevronDown />}
@@ -222,6 +262,18 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
                                                     <p className="product-price">{formatPrice(product.price)}</p>
                                                 </div>
                                             ))}
+                                            <div className="order-financial-summary">
+                                                <span className="order-subtotal">Subtotal: {formatPrice(order.subtotalBruto)}</span>
+                                                {order.descuentoPromociones > 0 && (
+                                                    <span className="order-discount promo"><FaTags /> Promos: -{formatPrice(order.descuentoPromociones)}</span>
+                                                )}
+                                                {order.descuentoConvenio > 0 && (
+                                                    <span className="order-discount convenio"><FaHandshake /> Convenio: -{formatPrice(order.descuentoConvenio)}</span>
+                                                )}
+                                                {order.puntosDescontados > 0 && (
+                                                    <span className="order-discount points"><FaGift /> Puntos: -{formatPrice(order.puntosDescontados)}</span>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 ))}

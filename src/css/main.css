@@ -2039,6 +2039,7 @@ button.btn-reset:hover {
   border: 1px solid #dee2e6;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 .user-card:hover {
   transform: translateY(-2px);
@@ -2075,8 +2076,25 @@ button.btn-reset:hover {
   font-size: 0.9rem;
   color: #6c757d;
 }
-.user-card .user-id {
+.user-card .user-role-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   margin-top: 1rem;
+  color: #fff;
+}
+.user-card .user-role-badge.baseCustomer {
+  background-color: #6c757d;
+}
+.user-card .user-role-badge.convenioCustomer {
+  background-color: #0b369c;
+}
+.user-card .user-id {
+  margin-top: 0.5rem;
   font-size: 0.8rem;
   color: #6c757d;
   text-align: center;
@@ -2184,6 +2202,61 @@ button.btn-reset:hover {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+.user-modal-content .role-management-section {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+}
+.user-modal-content .role-management-section h4 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #212121;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.user-modal-content .role-management-section .role-display {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.user-modal-content .role-management-section .role-display .role-badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.3rem;
+  font-weight: 500;
+  color: #fff;
+}
+.user-modal-content .role-management-section .role-display .role-badge.baseCustomer {
+  background-color: #6c757d;
+}
+.user-modal-content .role-management-section .role-display .role-badge.convenioCustomer {
+  background-color: #0b369c;
+}
+.user-modal-content .role-management-section .role-actions .role-change-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+.user-modal-content .role-management-section .role-actions .role-change-btn.assign {
+  background-color: #0b369c;
+  color: #fff;
+}
+.user-modal-content .role-management-section .role-actions .role-change-btn.assign:hover {
+  background-color: rgb(7.6407185629, 37.5089820359, 108.3592814371);
+}
+.user-modal-content .role-management-section .role-actions .role-change-btn.revoke {
+  background-color: #dc3545;
+  color: #fff;
+}
+.user-modal-content .role-management-section .role-actions .role-change-btn.revoke:hover {
+  background-color: rgb(189.2151898734, 32.7848101266, 47.7721518987);
 }
 .user-modal-content .points-management-section {
   border-top: 1px solid #dee2e6;
@@ -2306,19 +2379,11 @@ button.btn-reset:hover {
   gap: 0.2rem;
   min-width: 150px;
 }
-.user-modal-content .orders-section .order-item-detailed .order-pricing .order-subtotal {
-  font-size: 0.9rem;
-  color: #6c757d;
-}
-.user-modal-content .orders-section .order-item-detailed .order-pricing .order-discount {
-  font-size: 0.95rem;
-  color: #28a745;
-  font-weight: 500;
-}
 .user-modal-content .orders-section .order-item-detailed .order-pricing .order-final-total {
   font-size: 1.1rem;
   font-weight: bold;
   color: #021128;
+  margin-top: 0.25rem;
 }
 .user-modal-content .orders-section .order-item-detailed .expand-order-btn {
   background: none;
@@ -2338,7 +2403,7 @@ button.btn-reset:hover {
   gap: 0.75rem;
 }
 .user-modal-content .orders-section .order-item-detailed .order-products-detailed.expanded {
-  max-height: 500px; /* Adjust as needed */
+  max-height: 500px;
   padding: 1rem;
   border-top: 1px solid #dee2e6;
 }
@@ -2370,6 +2435,35 @@ button.btn-reset:hover {
   font-weight: 500;
   min-width: 70px;
   text-align: right;
+}
+.user-modal-content .orders-section .order-item-detailed .order-products-detailed .order-financial-summary {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+.user-modal-content .orders-section .order-item-detailed .order-products-detailed .order-financial-summary .order-subtotal {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+.user-modal-content .orders-section .order-item-detailed .order-products-detailed .order-financial-summary .order-discount {
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.user-modal-content .orders-section .order-item-detailed .order-products-detailed .order-financial-summary .order-discount.promo {
+  color: #e67e22;
+}
+.user-modal-content .orders-section .order-item-detailed .order-products-detailed .order-financial-summary .order-discount.convenio {
+  color: #0b369c;
+}
+.user-modal-content .orders-section .order-item-detailed .order-products-detailed .order-financial-summary .order-discount.points {
+  color: #28a745;
 }
 
 .promos-admin-container {
