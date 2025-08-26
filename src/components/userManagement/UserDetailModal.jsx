@@ -5,7 +5,7 @@ import { db } from '../../firebase/config';
 import Swal from 'sweetalert2';
 import LoaderSpinner from '../utils/LoaderSpinner';
 
-const UserDetailModal = ({ user, isOpen, onClose }) => {
+const UserDetailModal = ({ user, isOpen, onClose, onUserUpdate }) => {
     const modalRef = useRef();
     const [userOrders, setUserOrders] = useState([]);
     const [score, setScore] = useState(0);
@@ -96,7 +96,9 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
                 await updateDoc(userRef, {
                     score: increment(points)
                 });
-                setScore(prevScore => prevScore + points);
+                const newScore = score + points;
+                setScore(newScore);
+                onUserUpdate({ uid: user.uid, score: newScore });
                 setPointsToAdd('');
                 Swal.fire('¡Éxito!', `Se han ${actionText === 'añadir' ? 'añadido' : 'quitado'} ${absPoints} puntos.`, 'success');
             } catch (error) {
@@ -121,6 +123,7 @@ const UserDetailModal = ({ user, isOpen, onClose }) => {
                 const userRef = doc(db, 'users', user.uid);
                 await updateDoc(userRef, { role: newRole });
                 setRole(newRole);
+                onUserUpdate({ uid: user.uid, role: newRole });
                 Swal.fire('¡Actualizado!', 'El rol del usuario ha sido actualizado.', 'success');
             } catch (error) {
                 console.error("Error updating user role:", error);

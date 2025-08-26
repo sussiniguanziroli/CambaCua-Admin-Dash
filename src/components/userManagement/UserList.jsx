@@ -57,6 +57,14 @@ const UserList = () => {
     setSelectedUser(null);
   };
 
+  const handleUserUpdate = (updatedUser) => {
+    setUsers(prevUsers => 
+      prevUsers.map(user => 
+        user.uid === updatedUser.uid ? { ...user, ...updatedUser } : user
+      )
+    );
+  };
+
   return (
     <div className="user-list-container">
       <h2 className="user-list-title">Lista de Usuarios</h2>
@@ -103,6 +111,7 @@ const UserList = () => {
           user={selectedUser}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
+          onUserUpdate={handleUserUpdate}
         />
       )}
     </div>
