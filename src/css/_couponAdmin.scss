@@ -1,0 +1,392 @@
+@import "./variables";
+
+.coupon-admin-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+
+    h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: $primary-dark;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .view-switcher {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid $grey-medium;
+            background-color: $grey-light;
+            border-radius: $border-radius * 0.6;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: $text-secondary;
+            transition: all 0.3s ease;
+
+            &.active {
+                background-color: $primary-color;
+                color: #fff;
+                border-color: $primary-color;
+            }
+
+            &:hover:not(.active) {
+                background-color: darken($grey-light, 5%);
+            }
+        }
+    }
+
+    .coupon-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+
+            @media (min-width: 576px) {
+                flex-direction: row;
+                gap: 1rem;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            flex: 1;
+
+            label {
+                font-size: 0.9rem;
+                font-weight: 500;
+                color: $text-secondary;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            input[type="date"] {
+                padding: 0.7rem 0.9rem;
+                border: 1px solid $grey-medium;
+                border-radius: $border-radius * 0.6;
+                font-size: 1rem;
+                width: 100%;
+                box-sizing: border-box;
+
+                &:focus {
+                    border-color: $primary-color;
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+                }
+            }
+
+            .date-input-wrapper {
+                position: relative;
+                display: flex;
+                align-items: center;
+
+                svg {
+                    position: absolute;
+                    left: 12px;
+                    color: $grey-dark;
+                    pointer-events: none;
+                }
+
+                input[type="date"] {
+                    padding-left: 2.5rem;
+                }
+            }
+        }
+
+        .submit-btn {
+            padding: 0.8rem 1.5rem;
+            margin-top: 1rem;
+            background-color: $primary-color;
+            color: white;
+            border: none;
+            border-radius: $border-radius * 0.6;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: $transition;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            align-self: flex-start;
+
+            &:hover {
+                background-color: $primary-dark;
+            }
+
+            &:disabled {
+                background-color: $grey-medium;
+                color: $grey-dark;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .generated-coupons-display {
+        margin-top: 2rem;
+        border-top: 1px solid $grey-medium;
+        padding-top: 1.5rem;
+
+        h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: $text-color;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            border: 1px solid $grey-medium;
+            border-radius: $border-radius * 0.6;
+            resize: vertical;
+            background-color: $grey-light;
+        }
+
+        button {
+            margin-top: 1rem;
+            padding: 0.6rem 1.2rem;
+            background-color: $success-color;
+            color: #fff;
+            border: none;
+            border-radius: $border-radius * 0.6;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            &:hover {
+                background-color: darken($success-color, 10%);
+            }
+        }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid $grey-medium;
+            vertical-align: middle;
+        }
+
+        th {
+            font-weight: 600;
+            color: $text-secondary;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        
+        tbody tr:not(.batch-details-row):hover {
+            background-color: $grey-light;
+        }
+
+        .actions-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .details-btn {
+            background: none;
+            border: 1px solid $grey-medium;
+            color: $text-secondary;
+            padding: 0.4rem 0.8rem;
+            border-radius: $border-radius * 0.5;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            
+            &:hover {
+                background-color: $grey-medium;
+                border-color: darken($grey-medium, 10%);
+            }
+        }
+        
+        .toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.2rem;
+            display: flex;
+            align-items: center;
+
+            &.active { color: $success-color; }
+            &.inactive { color: $grey-dark; }
+            &:disabled { color: $grey-medium; cursor: not-allowed; }
+
+            &:hover:not(:disabled) {
+                opacity: 0.7;
+            }
+        }
+        
+        .status-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            
+            &.active {
+                background-color: lighten($success-color, 35%);
+                color: darken($success-color, 15%);
+            }
+            &.inactive {
+                background-color: $grey-light;
+                color: $grey-dark;
+            }
+            &.expired {
+                background-color: lighten($error-color, 20%);
+                color: darken($error-color, 25%);
+            }
+        }
+    }
+
+    .batch-details-row td {
+        padding: 0;
+        background-color: #f9fafb;
+        border-bottom: 1px solid darken($grey-medium, 10%);
+    }
+
+    .batch-details-content {
+        padding: 1.5rem;
+        
+        h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-item {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: $border-radius;
+            border: 1px solid $grey-medium;
+            text-align: center;
+
+            &.claimed { border-left: 4px solid $success-color; }
+            &.unclaimed { border-left: 4px solid $warning-color; }
+
+            .stat-value {
+                display: block;
+                font-size: 2.2rem;
+                font-weight: bold;
+                color: $primary-dark;
+            }
+            .stat-label {
+                font-size: 0.9rem;
+                color: $text-secondary;
+            }
+        }
+
+        .coupon-codes-section {
+            h4 { border-top: 1px solid $grey-medium; padding-top: 1.5rem; }
+
+            .coupon-codes-list {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                max-height: 250px;
+                overflow-y: auto;
+                background-color: #fff;
+                padding: 1rem;
+                border-radius: $border-radius-sm;
+                border: 1px solid $grey-medium;
+                margin-bottom: 1rem;
+            }
+
+            .coupon-code-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 0.75rem;
+                background-color: $grey-light;
+                border-radius: 4px;
+
+                .coupon-code-text {
+                    font-family: 'Courier New', Courier, monospace;
+                    font-weight: bold;
+                    color: $text-color;
+                }
+
+                .coupon-status-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.3rem;
+                    font-size: 0.8rem;
+                    font-weight: 500;
+                    padding: 0.2rem 0.6rem;
+                    border-radius: 12px;
+                    
+                    &.available {
+                        background-color: lighten($warning-color, 30%);
+                        color: darken($warning-color, 25%);
+                    }
+                    &.claimed {
+                        background-color: lighten($success-color, 35%);
+                        color: darken($success-color, 15%);
+                    }
+                }
+
+                .copy-code-btn {
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    color: $grey-dark;
+                    font-size: 1rem;
+                    &:hover { color: $primary-color; }
+                }
+            }
+            .copy-all-btn {
+                margin-top: 1rem;
+                padding: 0.6rem 1.2rem;
+                background-color: $primary-color;
+                color: #fff;
+                border: none;
+                border-radius: $border-radius * 0.6;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                &:hover {
+                    background-color: $primary-dark;
+                }
+            }
+        }
+    }
+}

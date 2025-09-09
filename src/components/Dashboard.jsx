@@ -7,6 +7,7 @@ import HandleOrders from './HandleOrders';
 import PedidosCompletados from "./PedidosCompletados";
 import UserList from "../components/userManagement/UserList";
 import PromosAdmin from './PromosAdmin';
+import CouponAdmin from './CouponAdmin';
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,6 +29,7 @@ const Dashboard = () => {
           <li><Link to="/admin/orders/complete">Historial Pedidos</Link></li>
           <li><Link to="/admin/users">Ver Usuarios</Link></li>
           <li><Link to="/admin/promociones">Cambiar Promociones</Link></li>
+          <li><Link to="/admin/coupons">Admin Cupones</Link></li>          
         </ul>
       </nav>
       <div className="content">
@@ -39,6 +41,7 @@ const Dashboard = () => {
           <Route path="/admin/orders/complete" element={<PedidosCompletados />} />
           <Route path="/admin/users" element={<UserList />} />
           <Route path="/admin/promociones" element={<PromosAdmin />} />
+          <Route path="/admin/coupons" element={<CouponAdmin />} />
         </Routes>
       </div>
     </div>
