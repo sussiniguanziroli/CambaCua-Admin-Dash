@@ -21,10 +21,11 @@ const EditPresential = () => {
     const [isDataLoading, setIsDataLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const fetchCategories = useCallback(async () => {
+    const fetchCategories = useCallback(async (tipoParam) => {
         setIsCatLoading(true);
         try {
-            const snapshot = await getDocs(collection(db, 'categories'));
+            const collectionName = tipoParam === 'producto' ? 'categories' : 'services_categories';
+            const snapshot = await getDocs(collection(db, collectionName));
             const categoriesData = snapshot.docs.map(doc => ({
                 adress: doc.data().adress,
                 subcategorias: doc.data().subcategorias || []
@@ -39,7 +40,7 @@ const EditPresential = () => {
         }
     }, []);
 
-    const fetchItemData = useCallback(async (categories) => {
+    const fetchItemData = useCallback(async () => {
         setIsDataLoading(true);
         try {
             const itemRef = doc(db, 'productos_presenciales', id);
@@ -53,7 +54,8 @@ const EditPresential = () => {
                 setPrice(data.price.toString());
                 setCategory(data.category);
                 setSubcat(data.subcat || '');
-                
+
+                const categories = await fetchCategories(data.tipo);
                 const selectedCat = categories.find(cat => cat.adress === data.category);
                 if (selectedCat) {
                     setSubcategoriasDb(selectedCat.subcategorias);
@@ -67,13 +69,11 @@ const EditPresential = () => {
         } finally {
             setIsDataLoading(false);
         }
-    }, [id, navigate]);
+    }, [id, navigate, fetchCategories]);
 
     useEffect(() => {
-        fetchCategories().then(categoriesData => {
-            fetchItemData(categoriesData);
-        });
-    }, [fetchCategories, fetchItemData]);
+        fetchItemData();
+    }, [fetchItemData]);
     
     const handleCategoriaChange = (e) => {
         const selectedAdress = e.target.value;
@@ -170,4 +170,3 @@ const EditPresential = () => {
 };
 
 export default EditPresential;
-

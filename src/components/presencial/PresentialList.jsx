@@ -3,14 +3,15 @@ import { db } from '../../firebase/config';
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { FaPlus, FaFilter, FaTimes, FaEdit, FaTrash, FaBox, FaHandHoldingMedical } from 'react-icons/fa';
+import { FaPlus, FaTimes, FaEdit, FaTrash, FaBox, FaHandHoldingMedical } from 'react-icons/fa';
 
 const PresentialList = () => {
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [categories, setCategories] = useState([]);
+    const [productCategories, setProductCategories] = useState([]);
+    const [serviceCategories, setServiceCategories] = useState([]);
 
     const [filters, setFilters] = useState({
         text: '',
@@ -28,12 +29,16 @@ const PresentialList = () => {
                 ...docSnap.data(),
             }));
 
-            const categoriesSnapshot = await getDocs(collection(db, 'categories'));
-            const categoriesData = categoriesSnapshot.docs.map(docSnap => docSnap.data().adress);
+            const prodCatsSnap = await getDocs(collection(db, 'categories'));
+            const prodCats = prodCatsSnap.docs.map(docSnap => docSnap.data().adress);
+
+            const servCatsSnap = await getDocs(collection(db, 'services_categories'));
+            const servCats = servCatsSnap.docs.map(docSnap => docSnap.data().adress);
 
             setItems(itemsData);
             setFilteredItems(itemsData);
-            setCategories(['todas', ...categoriesData]);
+            setProductCategories(prodCats);
+            setServiceCategories(servCats);
         } catch (err) {
             setError('No se pudieron cargar los datos.');
             Swal.fire({ icon: 'error', title: 'Error de Carga', text: 'No se pudieron cargar los items o categorías.' });
@@ -121,7 +126,9 @@ const PresentialList = () => {
                  <div className="filter-group">
                     <label htmlFor="category-filter">Categoría</label>
                     <select id="category-filter" name="category" value={filters.category} onChange={handleFilterChange}>
-                        {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                        <option value="todas">Todas</option>
+                        {(filters.tipo === 'servicio' ? serviceCategories : productCategories)
+                            .map(cat => <option key={cat} value={cat}>{cat}</option>)}
                     </select>
                 </div>
                 <button className="btn btn-secondary" onClick={clearFilters}><FaTimes/> Limpiar</button>
@@ -161,4 +168,3 @@ const PresentialList = () => {
 };
 
 export default PresentialList;
-

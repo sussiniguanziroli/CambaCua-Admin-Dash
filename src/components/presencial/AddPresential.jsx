@@ -23,7 +23,8 @@ const AddPresential = () => {
         const fetchCategories = async () => {
             setIsCatLoading(true);
             try {
-                const snapshot = await getDocs(collection(db, 'categories'));
+                const collectionName = tipo === 'producto' ? 'categories' : 'services_categories';
+                const snapshot = await getDocs(collection(db, collectionName));
                 const categoriesData = snapshot.docs.map(doc => ({
                     adress: doc.data().adress,
                     subcategorias: doc.data().subcategorias || []
@@ -36,7 +37,7 @@ const AddPresential = () => {
             }
         };
         fetchCategories();
-    }, []);
+    }, [tipo]);
 
     const handleCategoriaChange = (e) => {
         const selectedAdress = e.target.value;
@@ -138,4 +139,3 @@ const AddPresential = () => {
 };
 
 export default AddPresential;
-
