@@ -1,0 +1,284 @@
+$primary-color: #3498db;
+$primary-dark: #2980b9;
+$error-color: #e74c3c;
+$grey-light: #f8f9fa;
+$grey-medium: #e0e0e0;
+$grey-dark: #7f8c8d;
+$text-color: #34495e;
+$border-radius: 8px;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+$transition: all 0.3s ease;
+
+.presential-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    h1 {
+        color: $primary-dark;
+        margin: 0;
+    }
+}
+
+.btn {
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: $transition;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+
+    &.btn-primary {
+        background-color: $primary-color;
+        color: white;
+        &:hover { background-color: $primary-dark; }
+    }
+    &.btn-secondary {
+        background-color: $grey-medium;
+        color: $text-color;
+        &:hover { background-color: darken($grey-medium, 10%); }
+    }
+     &.btn-edit {
+        background-color: #f39c12;
+        color: white;
+        padding: 0.5rem;
+        font-size: 1rem;
+        &:hover { background-color: darken(#f39c12, 10%); }
+    }
+    &.btn-delete {
+        background-color: $error-color;
+        color: white;
+        padding: 0.5rem;
+        font-size: 1rem;
+        &:hover { background-color: darken($error-color, 10%); }
+    }
+}
+
+.filter-bar {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        flex: 1 1 180px;
+
+        label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: $grey-dark;
+        }
+        
+        input, select {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid $grey-medium;
+            border-radius: $border-radius * 0.75;
+            font-size: 0.9rem;
+            &:focus {
+                outline: none;
+                border-color: $primary-color;
+                box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+            }
+        }
+    }
+}
+
+.presential-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.presential-card {
+    background-color: #fff;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    border-left: 5px solid $primary-color;
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        h3 {
+            margin: 0;
+            color: $text-color;
+        }
+    }
+    
+    .type-badge {
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        &.producto {
+            background-color: lighten($primary-color, 35%);
+            color: $primary-dark;
+        }
+        &.servicio {
+            background-color: lighten(#2ecc71, 35%);
+            color: darken(#2ecc71, 15%);
+        }
+    }
+    
+    .card-description {
+        color: lighten($text-color, 20%);
+        font-size: 0.95rem;
+        flex-grow: 1;
+        margin-bottom: 1.5rem;
+    }
+    
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid $grey-light;
+    }
+
+    .card-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        .price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: $primary-dark;
+        }
+        .category {
+            font-size: 0.8rem;
+            color: $grey-dark;
+        }
+    }
+
+    .card-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+}
+
+.loading-message, .error-message, .no-results-message {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.1rem;
+    color: $grey-dark;
+}
+
+.presential-form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background-color: #fff;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: $primary-dark;
+    }
+
+    .presential-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+            font-weight: 500;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            padding: 0.8rem;
+            border-radius: $border-radius * 0.75;
+            border: 1px solid $grey-medium;
+            font-size: 1rem;
+            &:focus {
+                outline: none;
+                border-color: $primary-color;
+                box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+            }
+        }
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+    }
+    
+    .form-row {
+        display: flex;
+        gap: 1.5rem;
+        > .form-group {
+            flex: 1;
+        }
+    }
+
+    .radio-group {
+        display: flex;
+        gap: 2rem;
+        padding: 0.5rem;
+        label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+    }
+
+    .btn-submit {
+        padding: 0.9rem;
+        font-size: 1rem;
+        font-weight: 600;
+        background-color: $primary-color;
+        color: white;
+        border: none;
+        border-radius: $border-radius * 0.75;
+        cursor: pointer;
+        transition: $transition;
+        &:hover {
+            background-color: $primary-dark;
+        }
+        &:disabled {
+            background-color: $grey-medium;
+            cursor: not-allowed;
+        }
+    }
+}
+
