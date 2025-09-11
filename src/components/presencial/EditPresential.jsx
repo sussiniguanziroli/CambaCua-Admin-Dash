@@ -13,6 +13,7 @@ const EditPresential = () => {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
+    const [categoryName, setCategoryName] = useState('');
     const [subcat, setSubcat] = useState('');
     
     const [categoriasDb, setCategoriasDb] = useState([]);
@@ -28,6 +29,7 @@ const EditPresential = () => {
             const snapshot = await getDocs(collection(db, collectionName));
             const categoriesData = snapshot.docs.map(doc => ({
                 adress: doc.data().adress,
+                nombre: doc.data().nombre,
                 subcategorias: doc.data().subcategorias || []
             }));
             setCategoriasDb(categoriesData);
@@ -53,6 +55,7 @@ const EditPresential = () => {
                 setDescription(data.description);
                 setPrice(data.price.toString());
                 setCategory(data.category);
+                setCategoryName(data.categoryName || '');
                 setSubcat(data.subcat || '');
 
                 const categories = await fetchCategories(data.tipo);
@@ -79,6 +82,7 @@ const EditPresential = () => {
         const selectedAdress = e.target.value;
         const selectedCat = categoriasDb.find(cat => cat.adress === selectedAdress);
         setCategory(selectedAdress);
+        setCategoryName(selectedCat ? selectedCat.nombre : '');
         setSubcategoriasDb(selectedCat ? selectedCat.subcategorias : []);
         setSubcat('');
     };
@@ -92,7 +96,8 @@ const EditPresential = () => {
                 name: name.trim(),
                 description: description.trim(),
                 price: parseFloat(price),
-                category,
+                category, // adress
+                categoryName, // nombre
                 subcat
             });
             Swal.fire({ title: "Item Actualizado", icon: "success" });
@@ -146,7 +151,7 @@ const EditPresential = () => {
                         <label htmlFor="category">Categoría</label>
                         <select id="category" value={category} onChange={handleCategoriaChange} required disabled={isCatLoading}>
                             <option value="">{isCatLoading ? 'Cargando...' : 'Seleccionar Categoría'}</option>
-                            {categoriasDb.map(cat => <option key={cat.adress} value={cat.adress}>{cat.adress}</option>)}
+                            {categoriasDb.map(cat => <option key={cat.adress} value={cat.adress}>{cat.nombre}</option>)}
                         </select>
                     </div>
 

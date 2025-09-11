@@ -30,10 +30,16 @@ const PresentialList = () => {
             }));
 
             const prodCatsSnap = await getDocs(collection(db, 'categories'));
-            const prodCats = prodCatsSnap.docs.map(docSnap => docSnap.data().adress);
+            const prodCats = prodCatsSnap.docs.map(docSnap => ({
+                adress: docSnap.data().adress,
+                nombre: docSnap.data().nombre
+            }));
 
             const servCatsSnap = await getDocs(collection(db, 'services_categories'));
-            const servCats = servCatsSnap.docs.map(docSnap => docSnap.data().adress);
+            const servCats = servCatsSnap.docs.map(docSnap => ({
+                adress: docSnap.data().adress,
+                nombre: docSnap.data().nombre
+            }));
 
             setItems(itemsData);
             setFilteredItems(itemsData);
@@ -101,6 +107,16 @@ const PresentialList = () => {
         }
     };
 
+    const resolveCategoryName = (item) => {
+        if (item.tipo === 'producto') {
+            const cat = productCategories.find(c => c.adress === item.category);
+            return cat ? cat.nombre : item.category;
+        } else {
+            const cat = serviceCategories.find(c => c.adress === item.category);
+            return cat ? cat.nombre : item.category;
+        }
+    };
+
     return (
         <div className="presential-container">
             <div className="page-header">
@@ -128,7 +144,7 @@ const PresentialList = () => {
                     <select id="category-filter" name="category" value={filters.category} onChange={handleFilterChange}>
                         <option value="todas">Todas</option>
                         {(filters.tipo === 'servicio' ? serviceCategories : productCategories)
-                            .map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                            .map(cat => <option key={cat.adress} value={cat.adress}>{cat.nombre}</option>)}
                     </select>
                 </div>
                 <button className="btn btn-secondary" onClick={clearFilters}><FaTimes/> Limpiar</button>
@@ -150,7 +166,7 @@ const PresentialList = () => {
                            <div className="card-footer">
                                 <div className="card-info">
                                     <span className="price">${item.price.toLocaleString('es-AR')}</span>
-                                    <span className="category">{item.category} {item.subcat && `> ${item.subcat}`}</span>
+                                    <span className="category">{resolveCategoryName(item)} {item.subcat && `> ${item.subcat}`}</span>
                                 </div>
                                 <div className="card-actions">
                                     <Link to={`/admin/edit-presential/${item.id}`} className="btn btn-edit"><FaEdit/></Link>

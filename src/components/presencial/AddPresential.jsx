@@ -12,6 +12,7 @@ const AddPresential = () => {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
+    const [categoryName, setCategoryName] = useState('');
     const [subcat, setSubcat] = useState('');
 
     const [categoriasDb, setCategoriasDb] = useState([]);
@@ -27,6 +28,7 @@ const AddPresential = () => {
                 const snapshot = await getDocs(collection(db, collectionName));
                 const categoriesData = snapshot.docs.map(doc => ({
                     adress: doc.data().adress,
+                    nombre: doc.data().nombre,
                     subcategorias: doc.data().subcategorias || []
                 }));
                 setCategoriasDb(categoriesData);
@@ -43,6 +45,7 @@ const AddPresential = () => {
         const selectedAdress = e.target.value;
         const selectedCat = categoriasDb.find(cat => cat.adress === selectedAdress);
         setCategory(selectedAdress);
+        setCategoryName(selectedCat ? selectedCat.nombre : '');
         setSubcategoriasDb(selectedCat ? selectedCat.subcategorias : []);
         setSubcat('');
     };
@@ -61,7 +64,8 @@ const AddPresential = () => {
                 name: name.trim(),
                 description: description.trim(),
                 price: parseFloat(price),
-                category,
+                category, // adress
+                categoryName, // nombre
                 subcat
             });
             Swal.fire({
@@ -115,7 +119,7 @@ const AddPresential = () => {
                         <label htmlFor="category">Categoría</label>
                         <select id="category" value={category} onChange={handleCategoriaChange} required disabled={isCatLoading}>
                             <option value="">{isCatLoading ? 'Cargando...' : 'Seleccionar Categoría'}</option>
-                            {categoriasDb.map(cat => <option key={cat.adress} value={cat.adress}>{cat.adress}</option>)}
+                            {categoriasDb.map(cat => <option key={cat.adress} value={cat.adress}>{cat.nombre}</option>)}
                         </select>
                     </div>
 
