@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../../firebase/config';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
+
+
 const SeleccionarPaciente = ({ onPatientSelected, prevStep, tutor }) => {
     const [patients, setPatients] = useState([]);
     const [selectedPatient, setSelectedPatient] = useState(null);
@@ -11,13 +13,20 @@ const SeleccionarPaciente = ({ onPatientSelected, prevStep, tutor }) => {
         if (tutor?.id) {
             const fetchPatients = async () => {
                 setIsLoading(true);
-                const patientsQuery = query(collection(db, 'patients'), where("tutorId", "==", tutor.id));
-                const patientsSnapshot = await getDocs(patientsQuery);
-                const patientsList = patientsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                setPatients(patientsList);
-                setIsLoading(false);
+                try {
+                    const patientsQuery = query(collection(db, 'pacientes'), where("tutorId", "==", tutor.id));
+                    const patientsSnapshot = await getDocs(patientsQuery);
+                    const patientsList = patientsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    setPatients(patientsList);
+                } catch(error) {
+                    console.error("Error fetching patients: ", error);
+                } finally {
+                    setIsLoading(false);
+                }
             };
             fetchPatients();
+        } else {
+            setPatients([]);
         }
     }, [tutor]);
 
@@ -35,7 +44,7 @@ const SeleccionarPaciente = ({ onPatientSelected, prevStep, tutor }) => {
                             onClick={() => setSelectedPatient(patient)} 
                             className={selectedPatient?.id === patient.id ? 'selected' : ''}
                         >
-                            {patient.name}
+                            {patient.name} ({patient.species})
                         </li>
                     )) : <p>Este tutor no tiene pacientes registrados.</p>}
                 </ul>

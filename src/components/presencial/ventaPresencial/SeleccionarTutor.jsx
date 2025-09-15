@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../../firebase/config';
 import { collection, getDocs } from 'firebase/firestore';
 
+
 const SeleccionarTutor = ({ onTutorSelected }) => {
     const [tutors, setTutors] = useState([]);
     const [selectedTutor, setSelectedTutor] = useState(null);
@@ -11,11 +12,16 @@ const SeleccionarTutor = ({ onTutorSelected }) => {
     useEffect(() => {
         const fetchTutors = async () => {
             setIsLoading(true);
-            const tutorsCollection = collection(db, 'users');
-            const tutorsSnapshot = await getDocs(tutorsCollection);
-            const tutorsList = tutorsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setTutors(tutorsList);
-            setIsLoading(false);
+            try {
+                const tutorsCollection = collection(db, 'tutores');
+                const tutorsSnapshot = await getDocs(tutorsCollection);
+                const tutorsList = tutorsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setTutors(tutorsList);
+            } catch (error) {
+                console.error("Error fetching tutors:", error);
+            } finally {
+                setIsLoading(false);
+            }
         };
         fetchTutors();
     }, []);
@@ -43,7 +49,7 @@ const SeleccionarTutor = ({ onTutorSelected }) => {
                             onClick={() => setSelectedTutor(tutor)} 
                             className={selectedTutor?.id === tutor.id ? 'selected' : ''}
                         >
-                            {tutor.name} <span>({tutor.email})</span>
+                            {tutor.name} <span>({tutor.email || 'Sin email'})</span>
                         </li>
                     ))}
                 </ul>
