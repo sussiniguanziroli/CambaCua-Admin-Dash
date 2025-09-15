@@ -1,0 +1,133 @@
+// _sharedStyles.scss
+
+// Variables
+$primary-color: #3498db;
+$primary-dark: #2980b9;
+$secondary-color: #95a5a6;
+$success-color: #2ecc71;
+$error-color: #e74c3c;
+$border-color: #e0e0e0;
+$text-color: #34495e;
+$grey-dark: #7f8c8d;
+$background-light: #f8f9fa;
+$border-radius: 8px;
+
+// Mixins
+@mixin step-container {
+    h2 {
+        text-align: center;
+        color: $primary-dark;
+        margin-bottom: 1.5rem;
+    }
+}
+
+@mixin search-input {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    font-size: 1rem;
+}
+
+@mixin selection-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+}
+
+@mixin selection-list-item {
+    padding: 1rem;
+    border-bottom: 1px solid $border-color;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        background-color: $background-light;
+    }
+
+    &.selected {
+        background-color: lighten($primary-color, 35%);
+        font-weight: bold;
+    }
+}
+
+@mixin navigator-buttons {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+    button {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: $border-radius;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        background-color: $primary-color;
+        color: white;
+
+        &:disabled {
+            background-color: $border-color;
+            cursor: not-allowed;
+        }
+    }
+
+    .btn-secondary {
+        background-color: $secondary-color;
+    }
+
+    .btn-confirm {
+        background-color: $success-color;
+    }
+}
+
+// Reusable Components
+.sale-summary-box {
+    background-color: $background-light;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    padding: 1.5rem;
+    margin: 2rem 0;
+
+    h4 {
+        margin-top: 0;
+        border-bottom: 1px solid $border-color;
+        padding-bottom: 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1rem 0;
+        li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+        }
+    }
+    
+    .summary-row, .summary-total {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.6rem 0;
+        border-top: 1px solid $border-color;
+    }
+    
+    .summary-total {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: $primary-dark;
+    }
+}
+

@@ -1,0 +1,41 @@
+// _metodoPago.scss
+
+@import 'sharedStyles';
+
+.metodo-pago {
+    @include step-container;
+
+    .payment-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .payment-option-btn {
+        padding: 1.5rem 1rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        border: 2px solid $border-color;
+        background-color: #fff;
+        border-radius: $border-radius;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: $primary-color;
+            color: $primary-color;
+        }
+
+        &.selected {
+            background-color: $primary-color;
+            border-color: $primary-color;
+            color: white;
+            transform: scale(1.05);
+        }
+    }
+
+    .navigator-buttons {
+        @include navigator-buttons;
+    }
+}

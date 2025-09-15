@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from './firebase/config';
-import Login from './components/Login';
-import './css/main.css';
-import Dashboard from './components/Dashboard';
-import { BrowserRouter as Router } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "./firebase/config";
+import Login from "./components/Login";
+import "./css/main.css";
+import Dashboard from "./components/Dashboard";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -20,20 +20,27 @@ function App() {
   }, []);
 
   const handleLogout = () => {
-    signOut(auth).then(() => {
-      setUser(null);
-    }).catch((error) => {
-      console.error('Error al cerrar sesión:', error);
-    });
+    signOut(auth)
+      .then(() => {
+        setUser(null);
+      })
+      .catch((error) => {
+        console.error("Error al cerrar sesión:", error);
+      });
   };
 
   if (loading) {
-    return <div className="loading-container">Cargando...</div>;
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Cargando...</p>
+      </div>
+    );
   }
 
   return (
     <Router>
-      <div className='app-container'>
+      <div className="app-container">
         {user ? (
           <Dashboard user={user} handleLogout={handleLogout} />
         ) : (
@@ -45,4 +52,3 @@ function App() {
 }
 
 export default App;
-

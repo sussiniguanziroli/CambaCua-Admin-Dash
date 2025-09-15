@@ -17,6 +17,14 @@
 @import "./promosAdmin";
 @import "./couponAdmin";
 @import '../css/presencial/presential';
+@import './presencial/addPresential';
+@import './presencial/editPresential';
+@import "./presencial/sharedStyles";
+@import './presencial/metodoPago';
+@import './presencial/seleccionarPaciente';
+@import './presencial/seleccionarProducto';
+@import './presencial/seleccionarTutor';
+@import './presencial/venderNavigator';
 
 * {
     margin: 0;

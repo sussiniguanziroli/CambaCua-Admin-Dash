@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../../firebase/config';
-import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, writeBatch } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { FaPlus, FaTimes, FaEdit, FaTrash, FaBox, FaHandHoldingMedical } from 'react-icons/fa';
+
+const ITEMS_PER_PAGE = 7;
 
 const PresentialList = () => {
     const [items, setItems] = useState([]);
@@ -18,6 +20,14 @@ const PresentialList = () => {
         tipo: 'todos',
         category: 'todas',
     });
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [currentViewItems, setCurrentViewItems] = useState([]);
+    
+    const [selectedItemIds, setSelectedItemIds] = useState(new Set());
+    const [priceModifier, setPriceModifier] = useState('');
+    const [isBulkUpdating, setIsBulkUpdating] = useState(false);
 
     const fetchItemsAndCategories = useCallback(async () => {
         setIsLoading(true);
@@ -42,7 +52,6 @@ const PresentialList = () => {
             }));
 
             setItems(itemsData);
-            setFilteredItems(itemsData);
             setProductCategories(prodCats);
             setServiceCategories(servCats);
         } catch (err) {
@@ -57,22 +66,13 @@ const PresentialList = () => {
         fetchItemsAndCategories();
     }, [fetchItemsAndCategories]);
     
-    const handleFilterChange = (e) => {
-        const { name, value } = e.target;
-        setFilters(prev => ({ ...prev, [name]: value }));
-    };
-    
-    const clearFilters = () => {
-        setFilters({ text: '', tipo: 'todos', category: 'todas' });
-    };
-
     useEffect(() => {
         let tempItems = [...items];
         if (filters.text) {
             const lowerText = filters.text.toLowerCase();
             tempItems = tempItems.filter(item =>
-                item.name.toLowerCase().includes(lowerText) ||
-                item.description.toLowerCase().includes(lowerText)
+                (item.name && item.name.toLowerCase().includes(lowerText)) ||
+                (item.description && item.description.toLowerCase().includes(lowerText))
             );
         }
         if (filters.tipo !== 'todos') {
@@ -82,7 +82,193 @@ const PresentialList = () => {
             tempItems = tempItems.filter(item => item.category === filters.category);
         }
         setFilteredItems(tempItems);
+        setCurrentPage(1);
     }, [filters, items]);
+
+    useEffect(() => {
+        const newTotalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
+        setTotalPages(newTotalPages);
+        if (currentPage > newTotalPages && newTotalPages > 0) {
+            setCurrentPage(newTotalPages);
+        } else if (newTotalPages === 0 && currentPage !== 1) {
+            setCurrentPage(1);
+        }
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        setCurrentViewItems(filteredItems.slice(startIndex, endIndex));
+    }, [filteredItems, currentPage]);
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'tipo') {
+            setFilters(prev => ({
+                ...prev,
+                tipo: value,
+                category: 'todas'
+            }));
+        } else {
+            setFilters(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
+    };
+    
+    const clearFilters = () => {
+        setFilters({ text: '', tipo: 'todos', category: 'todas' });
+    };
+    
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        }
+    };
+    
+    const handleItemSelect = (itemId) => {
+        setSelectedItemIds(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(itemId)) {
+                newSet.delete(itemId);
+            } else {
+                newSet.add(itemId);
+            }
+            return newSet;
+        });
+    };
+
+    const handleSelectAllVisible = () => {
+        const allVisibleIds = new Set(currentViewItems.map(p => p.id));
+        const allVisibleSelected = currentViewItems.every(p => selectedItemIds.has(p.id));
+
+        if (allVisibleSelected && currentViewItems.length > 0) {
+            setSelectedItemIds(prev => {
+                const newSet = new Set(prev);
+                allVisibleIds.forEach(id => newSet.delete(id));
+                return newSet;
+            });
+        } else {
+            setSelectedItemIds(prev => new Set([...prev, ...allVisibleIds]));
+        }
+    };
+    
+    const parseModifier = (value, modifier) => {
+        modifier = String(modifier).replace(',', '.').trim();
+        const numValue = parseFloat(value);
+        if (isNaN(numValue)) throw new Error("Valor base inválido.");
+        if (modifier.startsWith('*')) {
+            const factor = parseFloat(modifier.substring(1));
+            if (isNaN(factor)) throw new Error("Factor de multiplicación inválido.");
+            return numValue * factor;
+        } else if (modifier.startsWith('+')) {
+            const addition = parseFloat(modifier.substring(1));
+            if (isNaN(addition)) throw new Error("Valor de suma inválido.");
+            return numValue + addition;
+        } else if (modifier.startsWith('-')) {
+            const subtraction = parseFloat(modifier.substring(1));
+            if (isNaN(subtraction)) throw new Error("Valor de resta inválido.");
+            return numValue - subtraction;
+        } else if (modifier.startsWith('=')) {
+            const directValue = parseFloat(modifier.substring(1));
+            if (isNaN(directValue)) throw new Error("Valor directo inválido.");
+            return directValue;
+        } else if (modifier === '') {
+            return numValue;
+        }
+        throw new Error("Modificador no reconocido. Usar *, +, -, = seguido de un número.");
+    };
+
+    const handleApplyBulkPriceUpdate = async () => {
+        if (selectedItemIds.size === 0 || !priceModifier) {
+            Swal.fire("Faltan Datos", "Selecciona al menos un item e ingresa un modificador de precio.", "info");
+            return;
+        }
+
+        const result = await Swal.fire({
+            title: `¿Actualizar ${selectedItemIds.size} items?`,
+            html: `Se aplicará el modificador de precio: <b>${priceModifier}</b>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, actualizar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!result.isConfirmed) return;
+
+        setIsBulkUpdating(true);
+        const batch = writeBatch(db);
+        let errorOccurred = false;
+
+        for (const itemId of selectedItemIds) {
+            const item = items.find(p => p.id === itemId);
+            if (!item) continue;
+
+            try {
+                const newPrice = parseModifier(item.price, priceModifier);
+                if (isNaN(newPrice)) throw new Error(`Cálculo de precio inválido para ${item.name}`);
+                const finalPrice = Math.max(0, parseFloat(newPrice.toFixed(2)));
+                const itemRef = doc(db, "productos_presenciales", itemId);
+                batch.update(itemRef, { price: finalPrice });
+            } catch (error) {
+                errorOccurred = true;
+                Swal.fire('Error en Modificador', error.message, 'error');
+                break;
+            }
+        }
+
+        if (errorOccurred) {
+            setIsBulkUpdating(false);
+            return;
+        }
+
+        try {
+            await batch.commit();
+            Swal.fire('Actualizado', `${selectedItemIds.size} items actualizados.`, 'success');
+            setSelectedItemIds(new Set());
+            setPriceModifier('');
+            await fetchItemsAndCategories();
+        } catch (error) {
+            Swal.fire('Error de Actualización', 'No se pudieron actualizar los items.', 'error');
+        } finally {
+            setIsBulkUpdating(false);
+        }
+    };
+    
+    const handleBulkDelete = async () => {
+        if (selectedItemIds.size === 0) {
+            Swal.fire("Nada Seleccionado", "Por favor, selecciona al menos un item.", "info");
+            return;
+        }
+        
+        const result = await Swal.fire({
+            title: `¿Eliminar ${selectedItemIds.size} items?`,
+            text: "Esta acción no se puede deshacer.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#E57373',
+            confirmButtonText: 'Sí, eliminar seleccionados',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!result.isConfirmed) return;
+
+        setIsBulkUpdating(true);
+        const batch = writeBatch(db);
+        selectedItemIds.forEach(itemId => {
+            const itemRef = doc(db, "productos_presenciales", itemId);
+            batch.delete(itemRef);
+        });
+
+        try {
+            await batch.commit();
+            Swal.fire('Eliminados', `${selectedItemIds.size} items han sido eliminados.`, 'success');
+            setSelectedItemIds(new Set());
+            await fetchItemsAndCategories();
+        } catch (error) {
+            Swal.fire('Error', 'Ocurrió un problema al eliminar los items.', 'error');
+        } finally {
+            setIsBulkUpdating(false);
+        }
+    };
 
     const deleteItem = async (itemToDelete) => {
         const result = await Swal.fire({
@@ -108,22 +294,16 @@ const PresentialList = () => {
     };
 
     const resolveCategoryName = (item) => {
-        if (item.tipo === 'producto') {
-            const cat = productCategories.find(c => c.adress === item.category);
-            return cat ? cat.nombre : item.category;
-        } else {
-            const cat = serviceCategories.find(c => c.adress === item.category);
-            return cat ? cat.nombre : item.category;
-        }
+        const categories = item.tipo === 'producto' ? productCategories : serviceCategories;
+        const cat = categories.find(c => c.adress === item.category);
+        return cat ? cat.nombre : item.category;
     };
 
     return (
         <div className="presential-container">
             <div className="page-header">
                 <h1>Items de Venta Presencial</h1>
-                <Link to="/admin/add-presential" className="btn btn-primary">
-                    <FaPlus /> Agregar Nuevo Item
-                </Link>
+                <Link to="/admin/add-presential" className="btn btn-primary"><FaPlus /> Agregar Nuevo Item</Link>
             </div>
             
             <div className="filter-bar">
@@ -141,7 +321,7 @@ const PresentialList = () => {
                 </div>
                  <div className="filter-group">
                     <label htmlFor="category-filter">Categoría</label>
-                    <select id="category-filter" name="category" value={filters.category} onChange={handleFilterChange}>
+                    <select id="category-filter" name="category" value={filters.category} onChange={handleFilterChange} disabled={filters.tipo === 'todos'}>
                         <option value="todas">Todas</option>
                         {(filters.tipo === 'servicio' ? serviceCategories : productCategories)
                             .map(cat => <option key={cat.adress} value={cat.adress}>{cat.nombre}</option>)}
@@ -150,37 +330,85 @@ const PresentialList = () => {
                 <button className="btn btn-secondary" onClick={clearFilters}><FaTimes/> Limpiar</button>
             </div>
 
+            {selectedItemIds.size > 0 && (
+                <div className="bulk-action-panel">
+                    <h4>Acciones Masivas ({selectedItemIds.size} seleccionados)</h4>
+                    <div className="bulk-actions-controls">
+                        <div className="form-group">
+                            <label htmlFor="priceModifier">Modificar Precio:</label>
+                            <input
+                                type="text"
+                                id="priceModifier"
+                                value={priceModifier}
+                                onChange={(e) => setPriceModifier(e.target.value)}
+                                placeholder="Ej: *1.1, +5, =50"
+                            />
+                        </div>
+                        <button onClick={handleApplyBulkPriceUpdate} disabled={isBulkUpdating} className="btn btn-success">Aplicar Precios</button>
+                        <button onClick={handleBulkDelete} disabled={isBulkUpdating} className="btn btn-danger">Eliminar</button>
+                        <button onClick={() => setSelectedItemIds(new Set())} className="btn btn-secondary">Deseleccionar</button>
+                    </div>
+                </div>
+            )}
+            
+            {!isLoading && !error && items.length > 0 && (
+                 <div className="controls-container">
+                    <div className="item-count">{filteredItems.length} item(s) encontrado(s)</div>
+                     <button onClick={handleSelectAllVisible} className="btn btn-primary">
+                        {currentViewItems.every(p => selectedItemIds.has(p.id)) && currentViewItems.length > 0 ? "Deseleccionar Visibles" : "Seleccionar Visibles"}
+                    </button>
+                </div>
+            )}
+
             {isLoading && <p className="loading-message">Cargando items...</p>}
             {error && <p className="error-message">{error}</p>}
             {!isLoading && !error && (
-                <div className="presential-list">
-                    {filteredItems.length > 0 ? filteredItems.map(item => (
-                        <div key={item.id} className="presential-card">
-                           <div className="card-header">
-                               <span className={`type-badge ${item.tipo}`}>
-                                {item.tipo === 'producto' ? <FaBox/> : <FaHandHoldingMedical/>} {item.tipo}
-                               </span>
-                               <h3>{item.name}</h3>
-                           </div>
-                           <p className="card-description">{item.description}</p>
-                           <div className="card-footer">
-                                <div className="card-info">
-                                    <span className="price">${item.price.toLocaleString('es-AR')}</span>
-                                    <span className="category">{resolveCategoryName(item)} {item.subcat && `> ${item.subcat}`}</span>
-                                </div>
-                                <div className="card-actions">
-                                    <Link to={`/admin/edit-presential/${item.id}`} className="btn btn-edit"><FaEdit/></Link>
-                                    <button onClick={() => deleteItem(item)} className="btn btn-delete"><FaTrash/></button>
-                                </div>
-                           </div>
+                <>
+                    <div className="presential-list">
+                        {currentViewItems.length > 0 ? currentViewItems.map(item => (
+                            <div key={item.id} className={`presential-card ${selectedItemIds.has(item.id) ? 'selected' : ''}`}>
+                               <div className="card-header">
+                                   <div className="item-selector" onClick={(e) => e.stopPropagation()}>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedItemIds.has(item.id)}
+                                            onChange={() => handleItemSelect(item.id)}
+                                        />
+                                   </div>
+                                   <span className={`type-badge ${item.tipo}`}>
+                                    {item.tipo === 'producto' ? <FaBox/> : <FaHandHoldingMedical/>} {item.tipo}
+                                   </span>
+                                   <h3>{item.name}</h3>
+                               </div>
+                               <p className="card-description">{item.description}</p>
+                               <div className="card-footer">
+                                    <div className="card-info">
+                                        <span className="price">${item.price ? item.price.toLocaleString('es-AR') : 'N/A'}</span>
+                                        <span className="category">{resolveCategoryName(item)} {item.subcat && `> ${item.subcat}`}</span>
+                                    </div>
+                                    <div className="card-actions">
+                                        <Link to={`/admin/edit-presential/${item.id}`} className="btn btn-edit"><FaEdit/></Link>
+                                        <button onClick={() => deleteItem(item)} className="btn btn-delete"><FaTrash/></button>
+                                    </div>
+                               </div>
+                            </div>
+                        )) : (
+                            <p className="no-results-message">No se encontraron items que coincidan con los filtros.</p>
+                        )}
+                    </div>
+
+                    {totalPages > 1 && (
+                        <div className="pagination-controls">
+                            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>Anterior</button>
+                            <span>Página {currentPage} de {totalPages}</span>
+                            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>Siguiente</button>
                         </div>
-                    )) : (
-                        <p className="no-results-message">No se encontraron items que coincidan con los filtros.</p>
                     )}
-                </div>
+                </>
             )}
         </div>
     );
 };
 
 export default PresentialList;
+

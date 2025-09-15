@@ -117,19 +117,7 @@ const EditPresential = () => {
         <div className="presential-form-container">
             <h2>Editar Item Presencial</h2>
             <form onSubmit={handleSubmit} className="presential-form">
-                <div className="form-group">
-                    <label>Tipo de Item</label>
-                    <div className="radio-group">
-                        <label>
-                            <input type="radio" value="producto" checked={tipo === 'producto'} onChange={(e) => setTipo(e.target.value)} />
-                            Producto
-                        </label>
-                        <label>
-                            <input type="radio" value="servicio" checked={tipo === 'servicio'} onChange={(e) => setTipo(e.target.value)} />
-                            Servicio
-                        </label>
-                    </div>
-                </div>
+                
 
                 <div className="form-group">
                     <label htmlFor="name">Nombre</label>

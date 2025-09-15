@@ -12,11 +12,19 @@ import CouponAdmin from './CouponAdmin';
 import PresentialList from './presencial/PresentialList';
 import AddPresential from './presencial/AddPresential';
 import EditPresential from './presencial/EditPresential';
+import VenderNavigator from './presencial/ventaPresencial/VenderNavigator';
+import VerTutores from './presencial/adminTutores/VerTutores';
+import AddTutor from './presencial/adminTutores/AddTutor';
+import EditTutor from './presencial/adminTutores/EditTutor';
+import VerPacientes from './presencial/adminPacientes/VerPacientes';
+import AddPaciente from './presencial/adminPacientes/AddPaciente';
+import EditPaciente from './presencial/adminPacientes/EditPaciente';
+
 
 import {
     FaStore, FaShoppingCart, FaUsers, FaTag, FaTicketAlt,
     FaPlus, FaListUl, FaHistory, FaHeartbeat, FaStethoscope,
-    FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt
+    FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt, FaMoneyCheckAlt, FaUserMd
 } from 'react-icons/fa';
 
 const Dashboard = ({ user, handleLogout }) => {
@@ -55,7 +63,7 @@ const Dashboard = ({ user, handleLogout }) => {
 
     const menuCategories = [
         {
-            name: 'Ventas y Pedidos',
+            name: 'Pedidos Online',
             icon: <FaShoppingCart />,
             items: [
                 { path: '/admin/orders', label: 'Gestionar Pedidos', icon: <FaListUl /> },
@@ -73,6 +81,13 @@ const Dashboard = ({ user, handleLogout }) => {
         },
         {
             name: 'Venta Presencial',
+            icon: <FaMoneyCheckAlt />,
+            items: [
+                 { path: '/admin/vender', label: 'Vender', icon: <FaMoneyCheckAlt /> },
+            ]
+        },
+        {
+            name: 'Items Presenciales',
             icon: <FaBuilding />,
             items: [
                 { path: '/admin/presential', label: 'Items Presenciales', icon: <FaListUl /> },
@@ -83,7 +98,9 @@ const Dashboard = ({ user, handleLogout }) => {
             name: 'Gestión Clínica',
             icon: <FaHeartbeat />,
             items: [
-                 { path: '/admin/patients', label: 'Pacientes', icon: <FaStethoscope />, disabled: true },
+                 { path: '/admin/tutores', label: 'Ver Tutores', icon: <FaUserMd /> },
+                 { path: '/admin/pacientes', label: 'Ver Pacientes', icon: <FaStethoscope /> },
+                
             ]
         },
         {
@@ -161,6 +178,13 @@ const Dashboard = ({ user, handleLogout }) => {
                         <Route path="/admin/presential" element={<PresentialList />} />
                         <Route path="/admin/add-presential" element={<AddPresential />} />
                         <Route path="/admin/edit-presential/:id" element={<EditPresential />} />
+                        <Route path="/admin/vender" element={<VenderNavigator />} />
+                        <Route path="/admin/tutores" element={<VerTutores />} />
+                        <Route path="/admin/add-tutor" element={<AddTutor />} />
+                        <Route path="/admin/edit-tutor/:id" element={<EditTutor />} />
+                        <Route path="/admin/pacientes" element={<VerPacientes />} />
+                        <Route path="/admin/add-paciente" element={<AddPaciente />} />
+                        <Route path="/admin/edit-paciente/:id" element={<EditPaciente />} />
                     </Routes>
                 </main>
             </div>
@@ -169,3 +193,4 @@ const Dashboard = ({ user, handleLogout }) => {
 };
 
 export default Dashboard;
+
