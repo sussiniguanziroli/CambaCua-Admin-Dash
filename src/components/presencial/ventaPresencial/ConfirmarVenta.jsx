@@ -7,7 +7,12 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting }) => {
             <div className="sale-summary-box">
                 <h4>Resumen del Pedido</h4>
                 <ul>
-                    {saleData.products.map(p => <li key={p.cartId}><span>{p.name || p.nombre}</span> <strong>${(p.price || p.precio).toFixed(2)}</strong></li>)}
+                    {saleData.cart.map(item => (
+                        <li key={item.id}>
+                            <span>{item.quantity} x {item.name || item.nombre}</span>
+                            <strong>${(item.price * item.quantity).toFixed(2)}</strong>
+                        </li>
+                    ))}
                 </ul>
                 <div className="summary-row">
                     <span>Tutor:</span>
@@ -37,4 +42,3 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting }) => {
 };
 
 export default ConfirmarVenta;
-

@@ -25,6 +25,11 @@
 @import './presencial/seleccionarProducto';
 @import './presencial/seleccionarTutor';
 @import './presencial/venderNavigator';
+@import './adminClinica/linkUserModal';
+@import './adminClinica/tutorDetailModal';
+@import './adminClinica/verTutores';
+@import './adminVentas/cajaDiaria';
+@import './adminVentas/resumenSemanal';
 
 * {
     margin: 0;

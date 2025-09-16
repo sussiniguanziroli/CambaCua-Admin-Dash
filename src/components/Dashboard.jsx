@@ -24,8 +24,12 @@ import EditPaciente from './presencial/adminPacientes/EditPaciente';
 import {
     FaStore, FaShoppingCart, FaUsers, FaTag, FaTicketAlt,
     FaPlus, FaListUl, FaHistory, FaHeartbeat, FaStethoscope,
-    FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt, FaMoneyCheckAlt, FaUserMd
+    FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt, FaMoneyCheckAlt, FaUserMd,
+    FaCashRegister,
+    FaChartBar
 } from 'react-icons/fa';
+import ResumenSemanal from './administracion/ResumenSemanal';
+import CajaDiaria from './administracion/CajaDiaria';
 
 const Dashboard = ({ user, handleLogout }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768);
@@ -109,6 +113,8 @@ const Dashboard = ({ user, handleLogout }) => {
             items: [
                 { path: '/admin/users', label: 'Ver Usuarios', icon: <FaUsers /> },
                 { path: '/admin/coupons', label: 'Admin Cupones', icon: <FaTicketAlt /> },
+                { path: '/admin/caja-diaria', label: 'Caja Diaria', icon: <FaCashRegister /> }, // New Link
+                { path: '/admin/resumen-semanal', label: 'Resumen Semanal', icon: <FaChartBar /> } // New Link
             ]
         }
     ];
@@ -185,6 +191,8 @@ const Dashboard = ({ user, handleLogout }) => {
                         <Route path="/admin/pacientes" element={<VerPacientes />} />
                         <Route path="/admin/add-paciente" element={<AddPaciente />} />
                         <Route path="/admin/edit-paciente/:id" element={<EditPaciente />} />
+                        <Route path="/admin/caja-diaria" element={<CajaDiaria />} />
+                        <Route path="/admin/resumen-semanal" element={<ResumenSemanal />} />
                     </Routes>
                 </main>
             </div>

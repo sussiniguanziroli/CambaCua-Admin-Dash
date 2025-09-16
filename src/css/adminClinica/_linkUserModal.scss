@@ -1,0 +1,92 @@
+// Styles for the Link User Modal
+.link-user-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); // Slightly darker overlay
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001; // Higher z-index to appear on top
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s;
+
+    &.open {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.link-user-modal {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+
+    .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: transparent;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #7f8c8d;
+        &:hover { color: #34495e; }
+    }
+
+    h3 {
+        margin-top: 0;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.75rem;
+        margin: 1rem 0;
+        border: 1px solid #bdc3c7;
+        border-radius: 6px;
+    }
+
+    .selection-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 250px;
+        overflow-y: auto;
+        border: 1px solid #ecf0f1;
+        border-radius: 6px;
+
+        li {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid #ecf0f1;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:hover {
+                background-color: #f9f9f9;
+            }
+
+            &.selected {
+                background-color: #e7f3ff;
+                color: #2980b9;
+                font-weight: 500;
+            }
+        }
+    }
+    
+    .navigator-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1.5rem;
+    }
+}

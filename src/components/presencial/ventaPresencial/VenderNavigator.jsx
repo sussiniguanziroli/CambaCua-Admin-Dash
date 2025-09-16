@@ -13,7 +13,7 @@ import ResumenVenta from './ResumenVenta';
 const VenderNavigator = () => {
     const [step, setStep] = useState(1);
     const [saleData, setSaleData] = useState({
-        products: [],
+        cart: [],
         tutor: null,
         patient: null,
         paymentMethod: '',
@@ -29,7 +29,7 @@ const VenderNavigator = () => {
     };
 
     const handleSelectTutor = (tutor) => {
-        updateSaleData({ tutor, patient: null, products: [], total: 0 });
+        updateSaleData({ tutor, patient: null, cart: [], total: 0 });
         nextStep();
     };
 
@@ -38,8 +38,8 @@ const VenderNavigator = () => {
         nextStep();
     };
     
-    const handleSelectProducts = (products, total) => {
-        updateSaleData({ products, total });
+    const handleSelectProducts = (cart, total) => {
+        updateSaleData({ cart, total });
         nextStep();
     };
 
@@ -51,16 +51,25 @@ const VenderNavigator = () => {
     const handleConfirmSale = async () => {
         setIsSubmitting(true);
         try {
-            await addDoc(collection(db, 'ventas_presenciales'), {
-                ...saleData,
+            const finalSaleData = {
                 createdAt: serverTimestamp(),
                 tutorInfo: saleData.tutor ? { id: saleData.tutor.id, name: saleData.tutor.name } : null,
                 patientInfo: saleData.patient ? { id: saleData.patient.id, name: saleData.patient.name } : null,
-            });
+                paymentMethod: saleData.paymentMethod,
+                total: saleData.total,
+                items: saleData.cart.map(item => ({
+                    id: item.id,
+                    name: item.name || item.nombre,
+                    price: item.price,
+                    quantity: item.quantity,
+                    source: item.source,
+                })),
+            };
+
+            await addDoc(collection(db, 'ventas_presenciales'), finalSaleData);
             nextStep();
         } catch (error) {
             Swal.fire('Error', 'No se pudo registrar la venta.', 'error');
-            console.error("Error al guardar la venta: ", error);
         } finally {
             setIsSubmitting(false);
         }
@@ -69,7 +78,7 @@ const VenderNavigator = () => {
     const handleReset = () => {
         setStep(1);
         setSaleData({
-            products: [],
+            cart: [],
             tutor: null,
             patient: null,
             paymentMethod: '',
@@ -84,7 +93,7 @@ const VenderNavigator = () => {
             case 2:
                 return <SeleccionarPaciente onPatientSelected={handleSelectPatient} prevStep={prevStep} tutor={saleData.tutor} />;
             case 3:
-                return <SeleccionarProducto onProductsSelected={handleSelectProducts} prevStep={prevStep} initialCart={saleData.products} saleData={saleData} />;
+                return <SeleccionarProducto onProductsSelected={handleSelectProducts} prevStep={prevStep} initialCart={saleData.cart} saleData={saleData} />;
             case 4:
                 return <MetodoPago onPaymentMethodSelected={handleSelectPaymentMethod} prevStep={prevStep} />;
             case 5:
@@ -109,4 +118,3 @@ const VenderNavigator = () => {
 };
 
 export default VenderNavigator;
-
