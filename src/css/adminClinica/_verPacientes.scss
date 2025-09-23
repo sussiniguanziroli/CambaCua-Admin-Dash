@@ -1,25 +1,24 @@
 // --- Variable Definitions ---
-$primary-color: #3498db;
-$primary-dark: #2980b9;
+$primary-color: #5DADE2;
+$primary-dark: #3498DB;
 $text-color: #3c4858;
 $text-light: #8492a6;
 $border-color: #e0e6ed;
 $white-color: #fff;
-$error-color: #e74c3c;
 $shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 $transition-speed: 0.3s;
 $border-radius: 12px;
 
-// --- Main Grid for Tutor Cards ---
-.tutor-cards-grid {
+// --- Main Grid for Paciente Cards ---
+.paciente-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
     margin-top: 1rem;
 }
 
-// --- Modern Tutor Card Style ---
-.tutor-card {
+// --- Modern Paciente Card Style ---
+.paciente-card {
     background: $white-color;
     border-radius: $border-radius;
     box-shadow: $shadow;
@@ -36,16 +35,16 @@ $border-radius: 12px;
 }
 
 // --- Card Header Section ---
-.tutor-card-header {
+.paciente-card-header {
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 1.5rem;
 
-    .tutor-avatar {
+    .paciente-avatar {
         font-size: 2rem;
         color: $primary-color;
-        background-color: lighten($primary-color, 38%);
+        background-color: lighten($primary-color, 30%);
         border-radius: 50%;
         width: 50px;
         height: 50px;
@@ -55,64 +54,37 @@ $border-radius: 12px;
         flex-shrink: 0;
     }
 
-    .tutor-info {
+    .paciente-info {
         overflow: hidden;
-        .tutor-name {
+        .paciente-name {
             font-weight: 600;
             font-size: 1.2rem;
             color: $text-color;
             margin: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
-        .tutor-contact {
+        .paciente-breed {
             font-size: 0.9rem;
             color: $text-light;
             margin: 0.2rem 0 0 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
     }
 }
 
-// --- Card Body for Info Chips ---
-.tutor-card-body {
+// --- Card Body for Tutor Link ---
+.paciente-card-body {
     padding: 0 1.5rem 1.5rem 1.5rem;
-    display: flex;
-    gap: 0.75rem;
-    
-    .info-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        background-color: #f1f3f5;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
+    .tutor-link {
+        color: $text-color;
         font-weight: 500;
-        color: $text-light;
-
-        svg {
-            color: $primary-color;
-        }
-    }
-
-    .balance {
-        color: $primary-dark;
-        &.deudor {
-            background-color: lighten($error-color, 30%);
-            color: $error-color;
-            font-weight: 600;
-        }
+        margin: 0;
     }
 }
 
 // --- Card Actions Footer ---
-.tutor-card-actions {
+.paciente-card-actions {
     border-top: 1px solid $border-color;
     padding: 1rem 1.5rem;
+    margin-top: auto;
     display: flex;
     justify-content: flex-end;
     gap: 0.75rem;

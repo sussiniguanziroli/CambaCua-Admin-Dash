@@ -32,17 +32,17 @@ const SeleccionarTutor = ({ onTutorSelected }) => {
     );
 
     return (
-        <div className="seleccionar-tutor">
+        <div className="venta-step-container venta-selection-container">
             <h2>Paso 1: Seleccionar Tutor</h2>
             <input
                 type="text"
                 placeholder="Buscar por nombre o email..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
+                className="venta-search-input"
             />
             {isLoading ? <p>Cargando tutores...</p> : (
-                <ul className="selection-list">
+                <ul className="venta-selection-list">
                     {filteredTutors.map(tutor => (
                         <li 
                             key={tutor.id} 
@@ -54,12 +54,11 @@ const SeleccionarTutor = ({ onTutorSelected }) => {
                     ))}
                 </ul>
             )}
-            <div className="navigator-buttons" style={{ justifyContent: 'flex-end' }}>
-                <button onClick={() => onTutorSelected(selectedTutor)} disabled={!selectedTutor}>Siguiente</button>
+            <div className="venta-navigator-buttons" style={{ justifyContent: 'flex-end' }}>
+                <button onClick={() => onTutorSelected(selectedTutor)} className="btn btn-primary" disabled={!selectedTutor}>Siguiente</button>
             </div>
         </div>
     );
 };
 
 export default SeleccionarTutor;
-

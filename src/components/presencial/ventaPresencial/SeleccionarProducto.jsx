@@ -16,8 +16,8 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     const [filters, setFilters] = useState({
         text: '',
         category: 'todas',
-        status: 'true',
-        tipo: 'todos'
+        status: 'true', // For online products
+        tipo: 'todos'     // For presential items
     });
     const [sort, setSort] = useState('name-asc');
 
@@ -46,7 +46,13 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     }, [fetchData]);
 
     const handleFilterChange = (e) => {
-        setFilters(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        const { name, value } = e.target;
+        setFilters(prev => ({ 
+            ...prev, 
+            [name]: value,
+            // Reset category if type changes in presential view
+            category: (name === 'tipo' && viewMode === 'presential') ? 'todas' : prev.category
+        }));
     };
 
     const clearFilters = () => {
@@ -66,16 +72,16 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         if (viewMode === 'online') {
             if (filters.status) tempItems = tempItems.filter(p => p.activo === (filters.status === 'true'));
             if (filters.category !== 'todas') tempItems = tempItems.filter(p => p.categoryAdress === filters.category);
-        } else {
+        } else { // presential
             if (filters.tipo !== 'todos') tempItems = tempItems.filter(p => p.tipo === filters.tipo);
             if (filters.category !== 'todas') tempItems = tempItems.filter(p => p.category === filters.category);
         }
 
         tempItems.sort((a, b) => {
-            const nameA = (a.name || a.nombre).toLowerCase();
-            const nameB = (b.name || b.nombre).toLowerCase();
-            const priceA = a.price ?? a.precio;
-            const priceB = b.price ?? b.precio;
+            const nameA = (a.name || a.nombre || '').toLowerCase();
+            const nameB = (b.name || b.nombre || '').toLowerCase();
+            const priceA = a.price ?? a.precio ?? 0;
+            const priceB = b.price ?? b.precio ?? 0;
 
             switch (sort) {
                 case 'name-asc': return nameA.localeCompare(nameB);
@@ -90,92 +96,114 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
 
     const total = useMemo(() => cart.reduce((sum, item) => sum + (item.price * item.quantity), 0), [cart]);
 
-    const updateCart = (newCart) => {
-        setCart(newCart);
-    };
-
     const addToCart = (item) => {
         const price = item.price ?? item.precio;
         const existingItem = cart.find(cartItem => cartItem.id === item.id);
         if (existingItem) {
-            updateCart(cart.map(cartItem => cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem));
+            changeQuantity(item.id, existingItem.quantity + 1);
         } else {
-            updateCart([...cart, { ...item, price, quantity: 1 }]);
+            setCart(prevCart => [...prevCart, { ...item, price, quantity: 1 }]);
         }
     };
     
     const changeQuantity = (itemId, newQuantity) => {
         if (newQuantity < 1) {
-            updateCart(cart.filter(item => item.id !== itemId));
+            setCart(prevCart => prevCart.filter(item => item.id !== itemId));
         } else {
-            updateCart(cart.map(item => item.id === itemId ? { ...item, quantity: newQuantity } : item));
+            setCart(prevCart => prevCart.map(item => item.id === itemId ? { ...item, quantity: newQuantity } : item));
         }
     };
 
     return (
-        <div className="seleccionar-producto">
+        <div className="venta-step-container venta-product-selection-container">
             <h2>Paso 3: Seleccionar Items</h2>
-            <div className="sale-context-info">
+            <div className="venta-context-info">
                 <span><strong>Tutor:</strong> {saleData.tutor?.name || 'N/A'}</span>
                 <span><strong>Paciente:</strong> {saleData.patient?.name || 'N/A'}</span>
             </div>
 
-            <div className="content-layout">
-                <div className="items-list-container">
-                    <div className="view-mode-selector">
+            <div className="venta-product-layout">
+                <div className="venta-product-list">
+                     <div className="venta-view-switcher">
                         <button onClick={() => setViewMode('presential')} className={viewMode === 'presential' ? 'active' : ''}>Items Presenciales</button>
                         <button onClick={() => setViewMode('online')} className={viewMode === 'online' ? 'active' : ''}>Productos Online</button>
                     </div>
-                    <div className="filter-bar">
-                        <input type="text" name="text" placeholder="Buscar por nombre..." value={filters.text} onChange={handleFilterChange} />
+                    <div className="venta-filters">
+                        <input className="filter-input" type="text" name="text" placeholder="Buscar por nombre..." value={filters.text} onChange={handleFilterChange} />
                         {viewMode === 'presential' ? (
                             <>
-                                <select name="tipo" value={filters.tipo} onChange={handleFilterChange}><option value="todos">Todos los Tipos</option><option value="producto">Producto</option><option value="servicio">Servicio</option></select>
-                                <select name="category" value={filters.category} onChange={handleFilterChange} disabled={filters.tipo === 'todos'}><option value="todas">Todas las Categorías</option>{(filters.tipo === 'servicio' ? serviceCategories : categories).map(c => <option key={c.adress} value={c.adress}>{c.nombre}</option>)}</select>
+                                <select className="filter-select" name="tipo" value={filters.tipo} onChange={handleFilterChange}>
+                                    <option value="todos">Todos los Tipos</option>
+                                    <option value="producto">Producto</option>
+                                    <option value="servicio">Servicio</option>
+                                </select>
+                                <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange} disabled={filters.tipo === 'todos'}>
+                                    <option value="todas">Todas las Categorías</option>
+                                    {(filters.tipo === 'servicio' ? serviceCategories : categories).map(c => <option key={c.adress} value={c.adress}>{c.nombre}</option>)}
+                                </select>
                             </>
                         ) : (
                             <>
-                                <select name="category" value={filters.category} onChange={handleFilterChange}><option value="todas">Categorías Online</option>{categories.map(c => <option key={c.adress} value={c.adress}>{c.nombre}</option>)}</select>
-                                <select name="status" value={filters.status} onChange={handleFilterChange}><option value="true">Activos</option><option value="false">Inactivos</option></select>
+                                <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}>
+                                    <option value="todas">Categorías Online</option>
+                                    {categories.map(c => <option key={c.adress} value={c.adress}>{c.nombre}</option>)}
+                                </select>
+                                <select className="filter-select" name="status" value={filters.status} onChange={handleFilterChange}>
+                                    <option value="true">Activos</option>
+                                    <option value="false">Inactivos</option>
+                                </select>
                             </>
                         )}
-                        <select name="sort" value={sort} onChange={(e) => setSort(e.target.value)}><option value="name-asc">Nombre (A-Z)</option><option value="name-desc">Nombre (Z-A)</option><option value="price-asc">Precio (Menor)</option><option value="price-desc">Precio (Mayor)</option></select>
-                        <button onClick={clearFilters} className="btn-secondary">Limpiar</button>
+                        <select className="filter-select" name="sort" value={sort} onChange={(e) => setSort(e.target.value)}>
+                            <option value="name-asc">Nombre (A-Z)</option>
+                            <option value="name-desc">Nombre (Z-A)</option>
+                            <option value="price-asc">Precio (Menor)</option>
+                            <option value="price-desc">Precio (Mayor)</option>
+                        </select>
+                        <button onClick={clearFilters} className="btn btn-secondary">Limpiar</button>
                     </div>
-                    <div className="items-list">
+                    <div className="venta-items-grid">
                         {isLoading ? <p>Cargando...</p> : filteredAndSortedData.map(item => (
-                            <div key={item.id} className="item-card" onClick={() => addToCart(item)}>
-                                <div className="item-info"><span>{item.name || item.nombre}</span><strong>${(item.price ?? item.precio).toFixed(2)}</strong></div>
+                            <div key={item.id} className="venta-item-card" onClick={() => addToCart(item)}>
+                                <div className="item-info">
+                                    <span className="item-name">{item.name || item.nombre}</span>
+                                    <strong className="item-price">${(item.price ?? item.precio).toFixed(2)}</strong>
+                                </div>
                                 <button className="add-button">+</button>
                             </div>
                         ))}
                     </div>
                 </div>
-                <div className="cart-summary">
+
+                <div className="venta-cart-summary">
                     <h3>Carrito</h3>
-                    <div className="cart-items">
-                        {cart.length === 0 ? <p>El carrito está vacío.</p> : cart.map(item => (
-                            <div key={item.id} className="cart-item">
-                                <span>{item.name || item.nombre}</span>
-                                <div className="quantity-controls">
+                    <div className="venta-cart-items">
+                        {cart.length === 0 ? <p className="empty-cart-message">El carrito está vacío.</p> : cart.map(item => (
+                            <div key={item.id} className="venta-cart-item">
+                                <span className="cart-item-name">{item.name || item.nombre}</span>
+                                <div className="venta-quantity-controls">
                                     <button onClick={() => changeQuantity(item.id, item.quantity - 1)}>-</button>
                                     <span>{item.quantity}</span>
                                     <button onClick={() => changeQuantity(item.id, item.quantity + 1)}>+</button>
                                 </div>
-                                <strong>${(item.price * item.quantity).toFixed(2)}</strong>
+                                <strong className="cart-item-price">${(item.price * item.quantity).toFixed(2)}</strong>
                             </div>
                         ))}
                     </div>
-                    <div className="cart-total"><h4>Total: ${total.toFixed(2)}</h4></div>
+                    <div className="venta-cart-total">
+                        <span>Total</span>
+                        <strong>${total.toFixed(2)}</strong>
+                    </div>
                 </div>
             </div>
             
-            <div className="navigator-buttons">
-                <button onClick={prevStep} className="btn-secondary">Anterior</button>
-                <button onClick={() => onProductsSelected(cart, total)} disabled={cart.length === 0}>Siguiente</button>
+            <div className="venta-navigator-buttons">
+                <button onClick={prevStep} className="btn btn-secondary">Anterior</button>
+                <button onClick={() => onProductsSelected(cart, total)} className="btn btn-primary" disabled={cart.length === 0}>Siguiente</button>
             </div>
         </div>
     );
 };
 
 export default SeleccionarProducto;
+

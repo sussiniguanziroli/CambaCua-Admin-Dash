@@ -1,26 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
-const MetodoPago = ({ onPaymentMethodSelected, prevStep }) => {
-    const [paymentMethod, setPaymentMethod] = useState('');
+const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
+    const [payments, setPayments] = useState([]);
+    
     const paymentOptions = ['Efectivo', 'Tarjeta de Débito', 'Tarjeta de Crédito', 'Transferencia'];
 
+    const totalPaid = useMemo(() => {
+        return payments.reduce((acc, p) => acc + parseFloat(p.amount || 0), 0);
+    }, [payments]);
+
+    const remainingBalance = useMemo(() => {
+        return saleData.total - totalPaid;
+    }, [saleData.total, totalPaid]);
+
+    const addPaymentMethod = (method) => {
+        // Prevent adding the same method twice, except for cash
+        if (payments.some(p => p.method === method) && method !== 'Efectivo') return;
+
+        setPayments(prev => [...prev, {
+            id: Date.now(), // simple unique id for the list
+            method: method,
+            amount: method === 'Efectivo' ? '' : remainingBalance > 0 ? remainingBalance.toFixed(2) : ''
+        }]);
+    };
+
+    const updatePaymentAmount = (id, amount) => {
+        setPayments(prev => prev.map(p => p.id === id ? { ...p, amount } : p));
+    };
+    
+    const removePayment = (id) => {
+        setPayments(prev => prev.filter(p => p.id !== id));
+    };
+
+    const handleNext = () => {
+        const finalPayments = payments.filter(p => parseFloat(p.amount) > 0);
+        const debt = saleData.total - finalPayments.reduce((acc, p) => acc + parseFloat(p.amount), 0);
+        onPaymentSelected(finalPayments, debt);
+    };
+
     return (
-        <div className="metodo-pago">
-            <h2>Paso 4: Seleccionar Método de Pago</h2>
-            <div className="payment-options">
-                {paymentOptions.map(option => (
-                    <button 
-                        key={option} 
-                        onClick={() => setPaymentMethod(option)}
-                        className={`payment-option-btn ${paymentMethod === option ? 'selected' : ''}`}
-                    >
-                        {option}
-                    </button>
-                ))}
+        <div className="venta-step-container venta-payment-container">
+            <h2>Paso 4: Método de Pago</h2>
+            <div className="venta-payment-layout">
+                <div className="venta-payment-options">
+                    <h4>Agregar Método de Pago</h4>
+                    <div className="venta-payment-buttons">
+                        {paymentOptions.map(option => (
+                            <button key={option} type="button" onClick={() => addPaymentMethod(option)}>
+                                {option}
+                            </button>
+                        ))}
+                    </div>
+                    {payments.length > 0 && (
+                        <div className="venta-added-payments">
+                            <h4>Pagos Registrados</h4>
+                            {payments.map(payment => (
+                                <div key={payment.id} className="venta-payment-input-group">
+                                    <label>{payment.method}</label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        value={payment.amount}
+                                        onChange={(e) => updatePaymentAmount(payment.id, e.target.value)}
+                                    />
+                                    <button className="remove-payment-btn" onClick={() => removePayment(payment.id)}>&times;</button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                <div className="venta-payment-summary">
+                    <h3>Resumen</h3>
+                    <div className="summary-row">
+                        <span>Total de la Venta:</span>
+                        <strong>${saleData.total.toFixed(2)}</strong>
+                    </div>
+                    <div className="summary-row">
+                        <span>Total Abonado:</span>
+                        <strong>${totalPaid.toFixed(2)}</strong>
+                    </div>
+                    <div className={`summary-row remaining ${remainingBalance > 0 ? 'debt' : ''}`}>
+                        <span>Saldo Restante:</span>
+                        <strong>${remainingBalance.toFixed(2)}</strong>
+                    </div>
+                    {remainingBalance > 0 && (
+                         <div className="debt-info">
+                            Este saldo se agregará a la cuenta corriente del tutor.
+                        </div>
+                    )}
+                </div>
             </div>
-            <div className="navigator-buttons">
-                <button onClick={prevStep} className="btn-secondary">Anterior</button>
-                <button onClick={() => onPaymentMethodSelected(paymentMethod)} disabled={!paymentMethod}>Siguiente</button>
+            <div className="venta-navigator-buttons">
+                <button type="button" onClick={prevStep} className="btn btn-secondary">Anterior</button>
+                <button type="button" onClick={handleNext} className="btn btn-primary" disabled={totalPaid > saleData.total}>
+                    {remainingBalance > 0 ? 'Confirmar y Dejar Saldo' : 'Siguiente'}
+                </button>
             </div>
         </div>
     );

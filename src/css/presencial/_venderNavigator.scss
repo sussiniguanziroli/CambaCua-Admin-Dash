@@ -1,38 +1,207 @@
-// _venderNavigator.scss
+// _venta.scss - Master stylesheet for the entire selling process
 
-$primary-color: #3498db;
-$primary-dark: #2980b9;
-$grey-light: #f8f9fa;
-$grey-medium: #e0e0e0;
-$text-color: #34495e;
-$border-radius: 8px;
+// --- Import Shared Variables & Mixins ---
+@import 'sharedStyles'; 
 
-.vender-navigator-container {
+// --- Main Navigator Container ---
+.venta-navigator-container {
     padding: 1.5rem;
-    background-color: $grey-light;
+    background-color: $background-light;
     border-radius: $border-radius;
     max-width: 1200px;
     margin: 1rem auto;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 
-    .step-indicator {
+    .venta-step-indicator {
         height: 8px;
-        background-color: $grey-medium;
+        background-color: $border-color;
         border-radius: 4px;
         margin-bottom: 2rem;
         overflow: hidden;
 
-        .step-indicator-bar {
+        .venta-step-indicator-bar {
             height: 100%;
-            background-color: $primary-color;
+            background: linear-gradient(90deg, $primary-color, lighten($primary-color, 15%));
             border-radius: 4px;
             transition: width 0.4s ease-in-out;
         }
     }
 
-    .step-content {
+    .venta-step-content {
         background-color: #fff;
-        padding: 2rem;
+        padding: 2.5rem;
         border-radius: $border-radius;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: 1px solid $border-color;
+    }
+}
+
+
+// --- General Step Styling ---
+.venta-step-container {
+    max-width: 900px;
+    margin: 0 auto;
+
+    h2 {
+        text-align: center;
+        color: $primary-dark;
+        margin-bottom: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .venta-navigator-buttons {
+        margin-top: 2.5rem;
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+}
+
+// --- Step 1 & 2: Tutor/Paciente Selection ---
+.venta-selection-container {
+    .venta-search-input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        margin-bottom: 1.5rem;
+        &:focus { outline: none; border-color: $primary-color; }
+    }
+    
+    .venta-selection-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+
+        li {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid $border-color;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            
+            span { color: $grey-dark; }
+
+            &:last-child { border-bottom: none; }
+            &:hover { background-color: $background-light; }
+            &.selected { background-color: lighten($primary-color, 35%); color: $primary-dark; }
+        }
+    }
+    
+    .venta-context-info { // For Paciente step
+        padding: 1rem;
+        background-color: $background-light;
+        border-radius: $border-radius;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+    }
+}
+
+// --- Step 3: Product Selection (Responsive) ---
+.venta-product-selection-container {
+    .venta-product-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+
+        @media (max-width: 992px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .venta-product-list, .venta-cart-summary {
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        padding: 1.5rem;
+        background-color: #fff;
+    }
+
+    .venta-cart-summary {
+        background-color: $background-light;
+        h3 {
+            text-align: center;
+            margin-top: 0;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid $border-color;
+        }
+        .venta-cart-items {
+            max-height: 400px; overflow-y: auto;
+        }
+        .venta-cart-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid $border-color;
+        }
+        .venta-quantity-controls {
+            display: flex; align-items: center; gap: 0.5rem;
+            button { width: 24px; height: 24px; border-radius: 50%; border: 1px solid $border-color; cursor: pointer; }
+        }
+        .venta-cart-total {
+            margin-top: 1rem; padding-top: 1rem; border-top: 1px solid $border-color;
+            text-align: right; font-size: 1.5rem; font-weight: bold;
+        }
+    }
+    
+     .venta-item-card {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 0.8rem; border: 1px solid $border-color; border-radius: $border-radius;
+        margin-bottom: 0.5rem; cursor: pointer;
+        .add-button { background-color: $success-color; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 1.2rem; }
+    }
+}
+
+
+// --- Step 4: Payment Method ---
+.venta-payment-container {
+    .venta-payment-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+        
+        .venta-payment-btn {
+            padding: 1.5rem 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 2px solid $border-color;
+            background-color: #fff;
+            border-radius: $border-radius;
+            transition: all 0.2s ease;
+
+            &.selected {
+                background-color: $primary-color;
+                border-color: $primary-dark;
+                color: white;
+                transform: translateY(-5px);
+                box-shadow: $shadow;
+            }
+        }
+    }
+}
+
+// --- Resumen Venta ---
+.venta-resumen-container {
+    text-align: center;
+    .success-icon {
+        font-size: 4rem;
+        color: $success-color;
+        line-height: 1;
+        margin-bottom: 1rem;
+    }
+    .venta-summary-box {
+        text-align: left;
+        max-width: 500px;
+        margin: 2rem auto;
     }
 }

@@ -32,6 +32,8 @@ import ResumenSemanal from './administracion/ResumenSemanal';
 import CajaDiaria from './administracion/CajaDiaria';
 import { FaBookBookmark } from 'react-icons/fa6';
 import Agenda from './presencial/agenda/Agenda';
+import TutorProfile from './presencial/adminTutores/TutorProfile';
+import PacienteProfile from './presencial/adminPacientes/PacienteProfile';
 
 const Dashboard = ({ user, handleLogout }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768);
@@ -191,9 +193,11 @@ const Dashboard = ({ user, handleLogout }) => {
                         <Route path="/admin/tutores" element={<VerTutores />} />
                         <Route path="/admin/add-tutor" element={<AddTutor />} />
                         <Route path="/admin/edit-tutor/:id" element={<EditTutor />} />
+                        <Route path="/admin/tutor-profile/:id" element={<TutorProfile />} /> 
                         <Route path="/admin/pacientes" element={<VerPacientes />} />
                         <Route path="/admin/add-paciente" element={<AddPaciente />} />
                         <Route path="/admin/edit-paciente/:id" element={<EditPaciente />} />
+                        <Route path="/admin/paciente-profile/:id" element={<PacienteProfile />} />
                         <Route path="/admin/caja-diaria" element={<CajaDiaria />} />
                         <Route path="/admin/resumen-semanal" element={<ResumenSemanal />} />
                         <Route path="/admin/agenda" element={<Agenda />} />

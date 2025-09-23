@@ -20,15 +20,19 @@
 @import './presencial/addPresential';
 @import './presencial/editPresential';
 @import "./presencial/sharedStyles";
-@import './presencial/metodoPago';
-@import './presencial/seleccionarPaciente';
-@import './presencial/seleccionarProducto';
-@import './presencial/seleccionarTutor';
 @import './presencial/venderNavigator';
+@import './presencial/seleccionarProducto';
+@import './presencial/metodoPago';
+@import './presencial/confirmarVenta';
 @import './adminClinica/linkUserModal';
-@import './adminClinica/tutorDetailModal';
+@import './adminClinica/tutorProfile';
 @import './adminClinica/verTutores';
 @import './adminClinica/agenda';
+@import './adminClinica/pacienteProfile';
+@import './adminClinica/verPacientes';
+@import './adminClinica/verPacientes';
+@import './adminClinica/pacientesForms';
+@import './adminClinica/tutoresForms';
 @import './adminVentas/cajaDiaria';
 @import './adminVentas/resumenSemanal';
 
