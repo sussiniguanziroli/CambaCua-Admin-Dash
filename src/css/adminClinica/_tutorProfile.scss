@@ -149,3 +149,70 @@ $border-radius: 12px;
         }
     }
 }
+
+.tutor-balance-card {
+    h3 { margin: 0 0 0.5rem 0; color: $grey-dark; font-weight: 500; }
+    .balance-amount {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: $success-color;
+        &.deudor { color: $error-color; }
+    }
+}
+
+.tutor-transactions-list {
+    .transaction-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid $border-color;
+        transition: background-color 0.2s ease;
+
+        &:last-child { border-bottom: none; }
+        &:hover { background-color: $background-light; }
+
+        .transaction-info {
+            .date { display: block; color: $grey-dark; font-size: 0.9rem; }
+            .type { font-weight: 500; }
+        }
+        .transaction-amount {
+            font-weight: 600;
+            font-size: 1.1rem;
+            .debit { color: $error-color; }
+            .credit { color: $success-color; }
+        }
+    }
+}
+
+// Payment Modal Styles
+.payment-modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6); display: flex;
+    justify-content: center; align-items: center; z-index: 1050;
+    backdrop-filter: blur(4px);
+}
+
+.payment-modal {
+    background: #fff; padding: 2.5rem; border-radius: $border-radius;
+    width: 90%; max-width: 500px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+
+    .close-btn { 
+        position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: $grey-dark;
+        &:hover { color: $text-color; }
+    }
+    h3 { margin-top: 0; color: $primary-dark; }
+    form { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem; }
+    .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem; }
+    .form-group {
+        label { font-weight: 500; margin-bottom: 0.5rem; display: block; }
+        input, select { 
+            width: 100%; padding: 0.8rem; font-size: 1rem;
+            border-radius: $border-radius * 0.75; 
+            border: 1px solid $border-color; 
+            &:focus { outline: none; border-color: $primary-color; box-shadow: 0 0 0 3px lighten($primary-color, 35%);}
+        }
+    }
+}
