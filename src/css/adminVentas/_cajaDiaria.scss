@@ -22,6 +22,22 @@
         box-shadow: $shadow;
     }
 
+    .caja-filters {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+
+        select {
+            padding: 0.6rem 1rem;
+            border-radius: $border-radius;
+            border: 1px solid $border-color;
+            background: #fff;
+            box-shadow: $shadow;
+            cursor: pointer;
+            font-weight: 500;
+        }
+    }
+
     .caja-summary-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

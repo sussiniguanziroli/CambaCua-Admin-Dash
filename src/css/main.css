@@ -5767,6 +5767,20 @@ button.btn-reset:hover {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
+.caja-diaria-container .caja-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.caja-diaria-container .caja-filters select {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  font-weight: 500;
+}
 .caja-diaria-container .caja-summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
