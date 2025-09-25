@@ -3220,7 +3220,7 @@ button.btn-reset:hover {
   margin: 0;
 }
 
-.btn, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
+.btn, .btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
   padding: 0.7rem 1.2rem;
   border: none;
   border-radius: 8px;
@@ -3233,50 +3233,50 @@ button.btn-reset:hover {
   gap: 0.5rem;
   text-decoration: none;
 }
-.btn.btn-primary, .agenda-container .week-navigator .btn-primary.today-btn, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .venta-payment-container .venta-payment-buttons button.btn-primary, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm {
+.btn.btn-primary, .btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-edit-note, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note.btn-suministrado, .agenda-container .week-navigator .btn-primary.today-btn, .agenda-container .week-navigator .today-btn.btn-suministrado, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-edit-note, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-confirm.btn-edit-note, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .venta-payment-container .venta-payment-buttons button.btn-primary, .venta-payment-container .venta-payment-buttons button.btn-suministrado, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm {
   background-color: #3498db;
   color: white;
 }
-.btn.btn-primary:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-primary:hover, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm:hover {
+.btn.btn-primary:hover, .btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-edit-note:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note.btn-suministrado:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .agenda-container .week-navigator .today-btn.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-edit-note:hover, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-confirm.btn-edit-note:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-primary:hover, .venta-payment-container .venta-payment-buttons button.btn-suministrado:hover, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm:hover {
   background-color: #2980b9;
 }
-.btn.btn-secondary, .agenda-container .week-navigator .btn-secondary.today-btn, .venta-payment-container .venta-payment-buttons button.btn-secondary {
+.btn.btn-secondary, .btn-secondary.btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .agenda-container .week-navigator .btn-secondary.today-btn, .venta-payment-container .venta-payment-buttons button.btn-secondary {
   background-color: #e0e0e0;
   color: #34495e;
 }
-.btn.btn-secondary:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-secondary:hover {
+.btn.btn-secondary:hover, .btn-secondary.btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-secondary:hover {
   background-color: rgb(198.5, 198.5, 198.5);
 }
-.btn.btn-success, .agenda-container .week-navigator .btn-success.today-btn, .venta-payment-container .venta-payment-buttons button.btn-success {
+.btn.btn-success, .btn-success.btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-edit-note, .agenda-container .week-navigator .btn-success.today-btn, .venta-payment-container .venta-payment-buttons button.btn-success {
   background-color: #2ecc71;
   color: white;
 }
-.btn.btn-success:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-success:hover {
+.btn.btn-success:hover, .btn-success.btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-edit-note:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-success:hover {
   background-color: rgb(36.616, 162.384, 89.948);
 }
-.btn.btn-danger, .agenda-container .week-navigator .btn-danger.today-btn, .venta-payment-container .venta-payment-buttons button.btn-danger {
+.btn.btn-danger, .btn-danger.btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-edit-note, .agenda-container .week-navigator .btn-danger.today-btn, .venta-payment-container .venta-payment-buttons button.btn-danger {
   background-color: #e74c3c;
   color: white;
 }
-.btn.btn-danger:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-danger:hover {
+.btn.btn-danger:hover, .btn-danger.btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-edit-note:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-danger:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
-.btn.btn-edit, .agenda-container .week-navigator .btn-edit.today-btn, .venta-payment-container .venta-payment-buttons button.btn-edit {
+.btn.btn-edit, .btn-edit.btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-edit-note, .agenda-container .week-navigator .btn-edit.today-btn, .venta-payment-container .venta-payment-buttons button.btn-edit {
   background-color: #f39c12;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-edit:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-edit:hover {
+.btn.btn-edit:hover, .btn-edit.btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-edit-note:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-edit:hover {
   background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
 }
-.btn.btn-delete, .agenda-container .week-navigator .btn-delete.today-btn, .venta-payment-container .venta-payment-buttons button.btn-delete {
+.btn.btn-delete, .btn-delete.btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-edit-note, .agenda-container .week-navigator .btn-delete.today-btn, .venta-payment-container .venta-payment-buttons button.btn-delete {
   background-color: #e74c3c;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-delete:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-delete:hover {
+.btn.btn-delete:hover, .btn-delete.btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-edit-note:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-delete:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
 
@@ -4226,6 +4226,131 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
+.programar-vencimientos-container h2 {
+  text-align: center;
+  color: #2980b9;
+  margin-bottom: 1.5rem;
+}
+.programar-vencimientos-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #2980b9;
+}
+.programar-vencimientos-container .step-subtitle {
+  text-align: center;
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+.programar-vencimientos-container .vencimientos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.programar-vencimientos-container .vencimiento-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 1rem 1.25rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+.programar-vencimientos-container .vencimiento-item .item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.programar-vencimientos-container .vencimiento-item .item-info .item-name {
+  font-weight: 600;
+}
+.programar-vencimientos-container .vencimiento-item .item-info .item-desc {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+.programar-vencimientos-container .vencimiento-item .item-schedule-input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.programar-vencimientos-container .vencimiento-item .item-schedule-input input {
+  width: 80px;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+.programar-vencimientos-container .vencimiento-item .item-schedule-input label {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+.programar-vencimientos-container .no-items-message {
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  margin-top: 1rem;
+}
+.programar-vencimientos-container .navigator-buttons {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.programar-vencimientos-container .navigator-buttons button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: #3498db;
+  color: white;
+}
+.programar-vencimientos-container .navigator-buttons button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+.programar-vencimientos-container .navigator-buttons .btn-secondary, .programar-vencimientos-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .clinical-history-list .clinical-entry-card .entry-header .programar-vencimientos-container .navigator-buttons .btn-edit-note {
+  background-color: #95a5a6;
+}
+.programar-vencimientos-container .navigator-buttons .btn-confirm {
+  background-color: #2ecc71;
+}
+
+.sale-summary-box {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.sale-summary-box h4 {
+  margin-top: 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+.sale-summary-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+.sale-summary-box ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+.sale-summary-box .summary-row, .sale-summary-box .summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-top: 1px solid #e0e0e0;
+}
+.sale-summary-box .summary-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2980b9;
+}
+
 .venta-payment-container h2 {
   text-align: center;
   color: #2980b9;
@@ -4496,7 +4621,7 @@ button.btn-reset:hover {
   background-color: #e0e0e0;
   cursor: not-allowed;
 }
-.confirmar-venta-container .navigator-buttons .btn-secondary {
+.confirmar-venta-container .navigator-buttons .btn-secondary, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-edit-note {
   background-color: #95a5a6;
 }
 .confirmar-venta-container .navigator-buttons .btn-confirm {
@@ -4955,7 +5080,7 @@ button.btn-reset:hover {
   gap: 0.75rem;
 }
 
-.btn, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
+.btn, .btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: 600;
@@ -4966,30 +5091,30 @@ button.btn-reset:hover {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.btn:disabled, .agenda-container .week-navigator .today-btn:disabled, .venta-payment-container .venta-payment-buttons button:disabled {
+.btn:disabled, .btn-suministrado:disabled, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:disabled, .agenda-container .week-navigator .today-btn:disabled, .venta-payment-container .venta-payment-buttons button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-.btn:hover, .agenda-container .week-navigator .today-btn:hover, .venta-payment-container .venta-payment-buttons button:hover {
+.btn:hover, .btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:hover, .agenda-container .week-navigator .today-btn:hover, .venta-payment-container .venta-payment-buttons button:hover {
   background-color: #f1f3f5;
 }
 
-.btn-primary, .confirmar-venta-container .navigator-buttons .btn-confirm {
+.btn-primary, .btn-suministrado, .confirmar-venta-container .navigator-buttons .btn-confirm {
   background-color: #3498db;
   border-color: #3498db;
   color: #fff;
 }
-.btn-primary:hover, .confirmar-venta-container .navigator-buttons .btn-confirm:hover {
+.btn-primary:hover, .btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .btn-confirm:hover {
   background-color: #2980b9;
   border-color: #2980b9;
 }
 
-.btn-secondary {
+.btn-secondary, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note {
   background-color: #6c757d;
   border-color: #6c757d;
   color: #fff;
 }
-.btn-secondary:hover {
+.btn-secondary:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:hover {
   background-color: #5a6268;
   border-color: #5a6268;
 }
@@ -5030,15 +5155,15 @@ button.btn-reset:hover {
   padding: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.agenda-container .view-switcher .btn, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button {
+.agenda-container .view-switcher .btn, .agenda-container .view-switcher .btn-suministrado, .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-edit-note, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button {
   border: none;
   padding: 8px 16px;
 }
-.agenda-container .view-switcher .btn:not(.btn-primary), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary), .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary), .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary) {
+.agenda-container .view-switcher .btn:not(.btn-primary):not(.btn-suministrado), .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):not(.btn-suministrado), .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:not(.btn-primary):not(.btn-suministrado), .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-edit-note:not(.btn-primary):not(.btn-suministrado), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):not(.btn-suministrado), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):not(.btn-suministrado), .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary):not(.btn-suministrado), .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary):not(.btn-suministrado) {
   background-color: transparent;
   color: #8492a6;
 }
-.agenda-container .view-switcher .btn:not(.btn-primary):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):hover, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary):hover, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary):hover {
+.agenda-container .view-switcher .btn:not(.btn-primary):not(.btn-suministrado):hover, .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):not(.btn-suministrado):hover, .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:not(.btn-primary):not(.btn-suministrado):hover, .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-edit-note:not(.btn-primary):not(.btn-suministrado):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):not(.btn-suministrado):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):not(.btn-suministrado):hover, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary):not(.btn-suministrado):hover, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary):not(.btn-suministrado):hover {
   background-color: #f8f9fa;
 }
 .agenda-container .week-navigator {
@@ -5282,129 +5407,402 @@ button.btn-reset:hover {
   gap: 1rem;
 }
 
-.paciente-profile .profile-header .profile-avatar {
-  background-color: rgb(222.7696335079, 238.6858638743, 249.2303664921);
-  color: #5DADE2;
+.btn, .btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .venta-payment-container .venta-payment-buttons button, .agenda-container .week-navigator .today-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-primary, .btn-suministrado, .confirmar-venta-container .navigator-buttons .btn-confirm {
+  background-color: #3498db;
+  border-color: #3498db;
+  color: #fff;
+}
+.btn-primary:hover, .btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .btn-confirm:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+}
+
+.btn-secondary, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note {
+  background-color: #8492a6;
+  border-color: #8492a6;
+  color: #fff;
+}
+.btn-secondary:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:hover {
+  background-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
+  border-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
+}
+
+.profile-container.paciente-profile {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.profile-header {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.profile-header .profile-avatar {
+  font-size: 3rem;
+  color: #3498db;
+  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.profile-header .profile-info {
+  flex-grow: 1;
+}
+.profile-header .profile-info h1, .profile-header .profile-info p {
+  margin: 0;
+}
+.profile-header .profile-info h1 {
+  font-size: 2rem;
+  color: #3c4858;
+}
+.profile-header .profile-info p {
+  color: #8492a6;
+  font-size: 1.1rem;
+}
+.profile-header .profile-info p a {
+  color: #3498db;
+  text-decoration: none;
+}
+.profile-header .profile-info p a:hover {
+  text-decoration: underline;
+}
+.profile-header .profile-actions {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
 }
 
 .details-bar {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  padding: 1.5rem;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   margin-bottom: 2rem;
 }
-
-.detail-chip {
-  background-color: #f8f9fa;
-  padding: 0.75rem 1.25rem;
-  border-radius: 25px;
-  font-size: 0.95rem;
-  color: #3c4858;
-}
-.detail-chip strong {
-  color: #8492a6;
-  margin-right: 0.5rem;
-}
-
-.clinical-entry-card {
-  padding: 1.5rem;
+.details-bar .detail-chip {
+  background-color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
   border: 1px solid #e0e6ed;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-  background-color: #fdfdff;
 }
-.clinical-entry-card:last-child {
-  margin-bottom: 0;
-}
-.clinical-entry-card .entry-date {
-  font-weight: 600;
-  color: #3498DB;
-  margin-bottom: 1rem;
-  display: block;
-}
-.clinical-entry-card p {
-  margin: 0.5rem 0;
-  line-height: 1.6;
-}
-.clinical-entry-card p strong {
-  color: #3c4858;
+.details-bar .detail-chip strong {
+  color: #2980b9;
 }
 
-.paciente-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.paciente-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.profile-nav {
   display: flex;
-  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e0e6ed;
+}
+.profile-nav button {
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #8492a6;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-top: 4px solid #5DADE2;
+  font-size: 1rem;
 }
-.paciente-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+.profile-nav button:hover {
+  color: #3498db;
+}
+.profile-nav button.active {
+  color: #2980b9;
+  border-bottom-color: #2980b9;
 }
 
-.paciente-card-header {
+.profile-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  min-height: 400px;
+}
+
+.history-controls {
   display: flex;
-  align-items: center;
   gap: 1rem;
-  padding: 1.5rem;
+  margin-bottom: 2rem;
 }
-.paciente-card-header .paciente-avatar {
-  font-size: 2rem;
-  color: #5DADE2;
-  background-color: rgb(222.7696335079, 238.6858638743, 249.2303664921);
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
+.history-controls input, .history-controls select {
+  padding: 0.75rem;
+  border: 1px solid #e0e6ed;
+  border-radius: 9px;
+  font-size: 1rem;
+}
+.history-controls input {
+  flex-grow: 1;
+}
+
+.clinical-history-list .clinical-entry-card {
+  border: 1px solid #e0e6ed;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+.clinical-history-list .clinical-entry-card .entry-header {
+  background-color: #f8f9fa;
+  padding: 1rem 1.5rem;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  border-bottom: 1px solid #e0e6ed;
 }
-.paciente-card-header .paciente-info {
-  overflow: hidden;
+.clinical-history-list .clinical-entry-card .entry-header .header-info .entry-date {
+  display: block;
+  color: #8492a6;
+  font-size: 0.9rem;
 }
-.paciente-card-header .paciente-info .paciente-name {
+.clinical-history-list .clinical-entry-card .entry-header .header-info .entry-reason {
   font-weight: 600;
   font-size: 1.2rem;
   color: #3c4858;
-  margin: 0;
 }
-.paciente-card-header .paciente-info .paciente-breed {
+.clinical-history-list .clinical-entry-card .entry-header .btn-edit-note {
+  padding: 6px 12px;
   font-size: 0.9rem;
-  color: #8492a6;
-  margin: 0.2rem 0 0 0;
+}
+.clinical-history-list .clinical-entry-card .entry-body {
+  padding: 1.5rem;
+}
+.clinical-history-list .clinical-entry-card .entry-body p {
+  margin: 0 0 0.8rem 0;
+}
+.clinical-history-list .clinical-entry-card .entry-body p strong {
+  color: #2980b9;
 }
 
-.paciente-card-body {
-  padding: 0 1.5rem 1.5rem 1.5rem;
+.cita-card {
+  padding: 1.5rem;
+  border: 1px solid #e0e6ed;
+  border-radius: 12px;
+  margin-bottom: 1rem;
 }
-.paciente-card-body .tutor-link {
-  color: #3c4858;
-  font-weight: 500;
+.cita-card p {
+  margin: 0 0 0.5rem 0;
+}
+.cita-card p strong {
+  color: #2980b9;
+}
+
+.agenda-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.agenda-modal-content {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+}
+.agenda-modal-content .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.agenda-modal-content .modal-header h3 {
   margin: 0;
 }
-
-.paciente-card-actions {
-  border-top: 1px solid #e0e6ed;
-  padding: 1rem 1.5rem;
-  margin-top: auto;
+.agenda-modal-content .modal-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.agenda-modal-content .form-group {
+  margin-bottom: 1.5rem;
+}
+.agenda-modal-content .form-group label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.agenda-modal-content .form-group input, .agenda-modal-content .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e6ed;
+  border-radius: 9px;
+}
+.agenda-modal-content .form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.agenda-modal-content .modal-footer {
+  margin-top: 2rem;
   display: flex;
   justify-content: flex-end;
-  gap: 0.75rem;
+  gap: 1rem;
+}
+
+.custom-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  color: #fff;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.custom-alert.alert-success {
+  background-color: #2ecc71;
+}
+.custom-alert.alert-error {
+  background-color: #e74c3c;
+}
+.custom-alert button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.vencimientos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.vencimientos-list .vencimiento-card {
+  border: 1px solid #e0e6ed;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.vencimientos-list .vencimiento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.vencimientos-list .vencimiento-card .vencimiento-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.vencimientos-list .vencimiento-card .vencimiento-info .vencimiento-product {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #3c4858;
+}
+.vencimientos-list .vencimiento-card .vencimiento-info .vencimiento-tutor {
+  font-size: 0.9rem;
+  color: #8492a6;
+}
+.vencimientos-list .vencimiento-card .vencimiento-date {
+  text-align: right;
+}
+.vencimientos-list .vencimiento-card .vencimiento-date span {
+  display: block;
+  font-size: 0.85rem;
+  color: #8492a6;
+}
+.vencimientos-list .vencimiento-card .vencimiento-date strong {
+  font-size: 1rem;
+  color: #3c4858;
+}
+.vencimientos-list .vencimiento-card.overdue {
+  border-color: #e74c3c;
+  background-color: white;
+}
+.vencimientos-list .vencimiento-card.overdue .vencimiento-product {
+  color: #c0392b;
+}
+.vencimientos-list .vencimiento-card.soon {
+  border-color: #f39c12;
+  background-color: rgb(254.0602409639, 247.2469879518, 236.4397590361);
+}
+.vencimientos-list .vencimiento-card.soon .vencimiento-product {
+  color: #d35400;
+}
+.vencimientos-list .vencimiento-card.pending {
+  border-color: #f1c40f;
+  background-color: rgb(252.2440944882, 243.3858267717, 207.7559055118);
+}
+.vencimientos-list .vencimiento-card.pending .vencimiento-product {
+  color: #b7950b;
+}
+.vencimientos-list .vencimiento-card.supplied {
+  border-color: #27ae60;
+  background-color: rgb(220.6901408451, 247.3098591549, 231.9295774648);
+}
+.vencimientos-list .vencimiento-card.supplied .vencimiento-product {
+  color: #1e8449;
+}
+
+.btn-suministrado {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+
+.vencimiento-card .badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 12px;
+  color: white;
+  text-transform: uppercase;
+}
+
+.vencimiento-card.overdue .badge {
+  background-color: #e74c3c;
+}
+
+.vencimiento-card.soon .badge {
+  background-color: #f39c12;
+}
+
+.vencimiento-card.pending .badge {
+  background-color: #f1c40f;
+  color: #1e8449;
+}
+
+.vencimiento-card.supplied .badge {
+  background-color: #27ae60;
 }
 
 .paciente-cards-grid {
