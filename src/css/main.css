@@ -6157,7 +6157,7 @@ button.btn-reset:hover {
   display: block;
   margin-bottom: 0.5rem;
 }
-.agenda-modal-content .form-group input, .agenda-modal-content .form-group textarea {
+.agenda-modal-content .form-group input, .agenda-modal-content .form-group textarea, .agenda-modal-content .form-group select {
   width: 100%;
   padding: 12px;
   border: 1px solid #e0e0e0;
@@ -6169,13 +6169,14 @@ button.btn-reset:hover {
   min-height: 100px;
 }
 .agenda-modal-content .modal-footer {
-  margin-top: 2rem;
+  margin-top: auto;
   padding-top: 1.5rem;
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
   border-top: 1px solid #e0e0e0;
 }
+
 .agenda-modal-content .file-preview-list {
   display: flex;
   flex-wrap: wrap;
@@ -6263,6 +6264,122 @@ button.btn-reset:hover {
   text-align: center;
   margin-top: 0.5rem;
   word-break: break-all;
+}
+
+.agenda-modal-content.expanded {
+  max-width: 900px;
+}
+
+.vencimiento-form-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.vencimiento-product-selector, .vencimiento-details-section {
+  display: flex;
+  flex-direction: column;
+}
+.vencimiento-product-selector h4, .vencimiento-details-section h4 {
+  margin-top: 0;
+  color: #2980b9;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.vencimiento-details-section .modal-footer {
+  margin-top: auto;
+}
+
+.vencimiento-view-switcher {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 1rem;
+}
+.vencimiento-view-switcher button {
+  flex-grow: 1;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  color: #576677;
+}
+.vencimiento-view-switcher button.active {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.vencimiento-filters {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.vencimiento-filters input, .vencimiento-filters select {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.vencimiento-items-grid {
+  flex-grow: 1;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.vencimiento-item-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.vencimiento-item-card:last-child {
+  border-bottom: none;
+}
+.vencimiento-item-card:hover {
+  background-color: #f8f9fa;
+}
+.vencimiento-item-card.selected {
+  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  border-left: 3px solid #3498db;
+  font-weight: bold;
+}
+.vencimiento-item-card .item-name {
+  font-weight: 500;
+}
+.vencimiento-item-card .item-price {
+  font-weight: 600;
+  color: #2980b9;
+}
+
+.selected-product-display {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+.selected-product-display strong {
+  color: #2980b9;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.selected-product-display p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #34495e;
 }
 
 .custom-alert {
