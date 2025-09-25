@@ -3,7 +3,7 @@ import { db } from '../../../firebase/config';
 import { collection, getDocs } from 'firebase/firestore';
 
 
-const SeleccionarTutor = ({ onTutorSelected }) => {
+const SeleccionarTutor = ({ onTutorSelected, onGenericSelected }) => {
     const [tutors, setTutors] = useState([]);
     const [selectedTutor, setSelectedTutor] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
@@ -54,7 +54,8 @@ const SeleccionarTutor = ({ onTutorSelected }) => {
                     ))}
                 </ul>
             )}
-            <div className="venta-navigator-buttons" style={{ justifyContent: 'flex-end' }}>
+            <div className="venta-navigator-buttons">
+                <button onClick={onGenericSelected} className="btn btn-secondary">Vender a Cliente Genérico</button>
                 <button onClick={() => onTutorSelected(selectedTutor)} className="btn btn-primary" disabled={!selectedTutor}>Siguiente</button>
             </div>
         </div>

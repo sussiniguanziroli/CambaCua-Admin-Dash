@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
 const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
     const [payments, setPayments] = useState([]);
@@ -14,11 +14,9 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
     }, [saleData.total, totalPaid]);
 
     const addPaymentMethod = (method) => {
-        // Prevent adding the same method twice, except for cash
         if (payments.some(p => p.method === method) && method !== 'Efectivo') return;
-
         setPayments(prev => [...prev, {
-            id: Date.now(), // simple unique id for the list
+            id: Date.now(),
             method: method,
             amount: method === 'Efectivo' ? '' : remainingBalance > 0 ? remainingBalance.toFixed(2) : ''
         }]);
@@ -37,6 +35,8 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
         const debt = saleData.total - finalPayments.reduce((acc, p) => acc + parseFloat(p.amount), 0);
         onPaymentSelected(finalPayments, debt);
     };
+
+    const isGenericAndHasDebt = !saleData.tutor && remainingBalance > 0;
 
     return (
         <div className="venta-step-container venta-payment-container">
@@ -57,13 +57,7 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
                             {payments.map(payment => (
                                 <div key={payment.id} className="venta-payment-input-group">
                                     <label>{payment.method}</label>
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        placeholder="0.00"
-                                        value={payment.amount}
-                                        onChange={(e) => updatePaymentAmount(payment.id, e.target.value)}
-                                    />
+                                    <input type="number" step="0.01" placeholder="0.00" value={payment.amount} onChange={(e) => updatePaymentAmount(payment.id, e.target.value)} />
                                     <button className="remove-payment-btn" onClick={() => removePayment(payment.id)}>&times;</button>
                                 </div>
                             ))}
@@ -72,29 +66,17 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
                 </div>
                 <div className="venta-payment-summary">
                     <h3>Resumen</h3>
-                    <div className="summary-row">
-                        <span>Total de la Venta:</span>
-                        <strong>${saleData.total.toFixed(2)}</strong>
-                    </div>
-                    <div className="summary-row">
-                        <span>Total Abonado:</span>
-                        <strong>${totalPaid.toFixed(2)}</strong>
-                    </div>
-                    <div className={`summary-row remaining ${remainingBalance > 0 ? 'debt' : ''}`}>
-                        <span>Saldo Restante:</span>
-                        <strong>${remainingBalance.toFixed(2)}</strong>
-                    </div>
-                    {remainingBalance > 0 && (
-                         <div className="debt-info">
-                            Este saldo se agregará a la cuenta corriente del tutor.
-                        </div>
-                    )}
+                    <div className="summary-row"><span>Total de la Venta:</span><strong>${saleData.total.toFixed(2)}</strong></div>
+                    <div className="summary-row"><span>Total Abonado:</span><strong>${totalPaid.toFixed(2)}</strong></div>
+                    <div className={`summary-row remaining ${remainingBalance > 0 ? 'debt' : ''}`}><span>Saldo Restante:</span><strong>${remainingBalance.toFixed(2)}</strong></div>
+                    {remainingBalance > 0 && saleData.tutor && (<div className="debt-info">Este saldo se agregará a la cuenta corriente del tutor.</div>)}
+                    {isGenericAndHasDebt && (<div className="debt-error">Las ventas a clientes genéricos deben abonarse en su totalidad.</div>)}
                 </div>
             </div>
             <div className="venta-navigator-buttons">
                 <button type="button" onClick={prevStep} className="btn btn-secondary">Anterior</button>
-                <button type="button" onClick={handleNext} className="btn btn-primary" disabled={totalPaid > saleData.total}>
-                    {remainingBalance > 0 ? 'Confirmar y Dejar Saldo' : 'Siguiente'}
+                <button type="button" onClick={handleNext} className="btn btn-primary" disabled={totalPaid > saleData.total || isGenericAndHasDebt}>
+                    {remainingBalance > 0 && saleData.tutor ? 'Confirmar y Dejar Saldo' : 'Siguiente'}
                 </button>
             </div>
         </div>
@@ -102,4 +84,3 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
 };
 
 export default MetodoPago;
-

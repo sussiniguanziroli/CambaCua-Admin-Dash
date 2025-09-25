@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Routes, Route, useLocation, Navigate } from 'react-router-dom';
-
 import AddProduct from './AddProducts';
 import EditProduct from './EditProduct';
 import ProductList from './ProductList';
@@ -19,25 +18,22 @@ import EditTutor from './presencial/adminTutores/EditTutor';
 import VerPacientes from './presencial/adminPacientes/VerPacientes';
 import AddPaciente from './presencial/adminPacientes/AddPaciente';
 import EditPaciente from './presencial/adminPacientes/EditPaciente';
-
-
-import {
-    FaStore, FaShoppingCart, FaUsers, FaTag, FaTicketAlt,
-    FaPlus, FaListUl, FaHistory, FaHeartbeat, FaStethoscope,
-    FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt, FaMoneyCheckAlt, FaUserMd,
-    FaCashRegister,
-    FaChartBar
-} from 'react-icons/fa';
+import { FaStore, FaShoppingCart, FaUsers, FaTag, FaTicketAlt, FaPlus, FaListUl, FaHistory, FaHeartbeat, FaStethoscope, FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt, FaMoneyCheckAlt, FaUserMd, FaCashRegister, FaChartBar } from 'react-icons/fa';
 import ResumenSemanal from './administracion/ResumenSemanal';
 import CajaDiaria from './administracion/CajaDiaria';
-import { FaBookBookmark } from 'react-icons/fa6';
+import { FaBookBookmark, FaUserDoctor } from 'react-icons/fa6';
 import Agenda from './presencial/agenda/Agenda';
 import TutorProfile from './presencial/adminTutores/TutorProfile';
 import PacienteProfile from './presencial/adminPacientes/PacienteProfile';
+import { RiCalendarScheduleFill } from 'react-icons/ri';
+import MonitorVencimientos from './presencial/agenda/MonitorVencimientos';
+import MonitorClinica from './presencial/agenda/MonitorClinica';
+import { MdDashboard } from 'react-icons/md';
+import ClinicDashboard from './administracion/ClinicalDashboard';
 
 const Dashboard = ({ user, handleLogout }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768);
-    const [openCategory, setOpenCategory] = useState('Ventas y Pedidos');
+    const [openCategory, setOpenCategory] = useState('Administración');
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const profileRef = useRef(null);
     const location = useLocation();
@@ -71,6 +67,28 @@ const Dashboard = ({ user, handleLogout }) => {
 
     const menuCategories = [
         {
+            name: 'Administración',
+            icon: <FaUsers />,
+            items: [
+                { path: '/admin/main-dashboard', label: 'Monitor General', icon: <MdDashboard /> },
+                { path: '/admin/users', label: 'Ver Usuarios', icon: <FaUsers /> },
+                { path: '/admin/coupons', label: 'Admin Cupones', icon: <FaTicketAlt /> },
+                { path: '/admin/caja-diaria', label: 'Caja Diaria', icon: <FaCashRegister /> },
+                { path: '/admin/resumen-semanal', label: 'Resumen Semanal', icon: <FaChartBar /> },
+            ]
+        },
+        {
+            name: 'Gestión Clínica',
+            icon: <FaHeartbeat />,
+            items: [
+                 { path: '/admin/tutores', label: 'Ver Tutores', icon: <FaUserMd /> },
+                 { path: '/admin/pacientes', label: 'Ver Pacientes', icon: <FaStethoscope /> },
+                 { path: '/admin/agenda', label: 'Agenda', icon: <FaBookBookmark /> },
+                 { path: '/admin/monitor-vencimientos', label: 'Monitor Vencimientos', icon:<RiCalendarScheduleFill /> },
+                 { path: '/admin/monitor-clinica', label: 'Monitor H. Clínica', icon:<FaUserDoctor />}
+            ]
+        },
+        {
             name: 'Pedidos Online',
             icon: <FaShoppingCart />,
             items: [
@@ -98,53 +116,20 @@ const Dashboard = ({ user, handleLogout }) => {
             name: 'Items Presenciales',
             icon: <FaBuilding />,
             items: [
-                { path: '/admin/presential', label: 'Items Presenciales', icon: <FaListUl /> },
+                { path: '/admin/presential-list', label: 'Items Presenciales', icon: <FaListUl /> },
                 { path: '/admin/add-presential', label: 'Agregar Item Presencial', icon: <FaPlus /> },
             ]
         },
-        {
-            name: 'Gestión Clínica',
-            icon: <FaHeartbeat />,
-            items: [
-                 { path: '/admin/tutores', label: 'Ver Tutores', icon: <FaUserMd /> },
-                 { path: '/admin/pacientes', label: 'Ver Pacientes', icon: <FaStethoscope /> },
-                 { path: '/admin/agenda', label: 'Agenda', icon: <FaBookBookmark /> },
-                
-            ]
-        },
-        {
-            name: 'Administración',
-            icon: <FaUsers />,
-            items: [
-                { path: '/admin/users', label: 'Ver Usuarios', icon: <FaUsers /> },
-                { path: '/admin/coupons', label: 'Admin Cupones', icon: <FaTicketAlt /> },
-                { path: '/admin/caja-diaria', label: 'Caja Diaria', icon: <FaCashRegister /> }, // New Link
-                { path: '/admin/resumen-semanal', label: 'Resumen Semanal', icon: <FaChartBar /> } // New Link
-            ]
-        }
     ];
 
     return (
         <div className={`dashboard-container ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
             <div className="header-bar">
-                <button className="sidebar-toggle-button" onClick={toggleSidebar}>
-                    {isSidebarOpen ? <FaTimes /> : <FaBars />}
-                </button>
+                <button className="sidebar-toggle-button" onClick={toggleSidebar}>{isSidebarOpen ? <FaTimes /> : <FaBars />}</button>
                 <div className="header-title">Admin Panel</div>
                 <div className="user-profile" ref={profileRef}>
-                    <button onClick={toggleProfile} className="profile-button">
-                        <FaUserCircle />
-                        <span className="user-email-display">{user.email}</span>
-                        <FaChevronDown />
-                    </button>
-                    {isProfileOpen && (
-                        <div className="profile-dropdown">
-                            <div className="dropdown-email">{user.email}</div>
-                            <button onClick={handleLogout} className="logout-button">
-                                <FaSignOutAlt /> Cerrar Sesión
-                            </button>
-                        </div>
-                    )}
+                    <button onClick={toggleProfile} className="profile-button"><FaUserCircle /><span className="user-email-display">{user.email}</span><FaChevronDown /></button>
+                    {isProfileOpen && (<div className="profile-dropdown"><div className="dropdown-email">{user.email}</div><button onClick={handleLogout} className="logout-button"><FaSignOutAlt /> Cerrar Sesión</button></div>)}
                 </div>
             </div>
             <div className="dashboard-body">
@@ -152,24 +137,9 @@ const Dashboard = ({ user, handleLogout }) => {
                     <ul className="sidebar-menu">
                         {menuCategories.map(category => (
                             <li key={category.name} className={`menu-category ${openCategory === category.name ? 'open' : ''}`}>
-                                <div className="category-header" onClick={() => toggleCategory(category.name)}>
-                                    <span className="category-icon">{category.icon}</span>
-                                    <span className="category-name">{category.name}</span>
-                                    <FaChevronDown className="category-arrow" />
-                                </div>
+                                <div className="category-header" onClick={() => toggleCategory(category.name)}><span className="category-icon">{category.icon}</span><span className="category-name">{category.name}</span><FaChevronDown className="category-arrow" /></div>
                                 <ul className="submenu">
-                                    {category.items.map(item => (
-                                        <li key={item.path}>
-                                            <NavLink
-                                                to={item.path}
-                                                className={({ isActive }) => `${isActive ? 'active-link' : ''} ${item.disabled ? 'disabled-link' : ''}`}
-                                                onClick={(e) => item.disabled && e.preventDefault()}
-                                            >
-                                                <span className="item-icon">{item.icon}</span>
-                                                {item.label}
-                                            </NavLink>
-                                        </li>
-                                    ))}
+                                    {category.items.map(item => (<li key={item.path}><NavLink to={item.path} className={({ isActive }) => `${isActive ? 'active-link' : ''} ${item.disabled ? 'disabled-link' : ''}`} onClick={(e) => item.disabled && e.preventDefault()}><span className="item-icon">{item.icon}</span>{item.label}</NavLink></li>))}
                                 </ul>
                             </li>
                         ))}
@@ -177,7 +147,7 @@ const Dashboard = ({ user, handleLogout }) => {
                 </nav>
                 <main className="content">
                     <Routes>
-                        <Route path="/" element={<Navigate to="/admin/orders" replace />} />
+                        <Route path="/" element={<Navigate to="/admin/main-dashboard" replace />} />
                         <Route path="/admin/add-product" element={<AddProduct />} />
                         <Route path="/admin/products" element={<ProductList />} />
                         <Route path="/admin/edit-product/:id" element={<EditProduct />} />
@@ -186,7 +156,7 @@ const Dashboard = ({ user, handleLogout }) => {
                         <Route path="/admin/users" element={<UserList />} />
                         <Route path="/admin/promociones" element={<PromosAdmin />} />
                         <Route path="/admin/coupons" element={<CouponAdmin />} />
-                        <Route path="/admin/presential" element={<PresentialList />} />
+                        <Route path="/admin/presential-list" element={<PresentialList />} />
                         <Route path="/admin/add-presential" element={<AddPresential />} />
                         <Route path="/admin/edit-presential/:id" element={<EditPresential />} />
                         <Route path="/admin/vender" element={<VenderNavigator />} />
@@ -201,6 +171,9 @@ const Dashboard = ({ user, handleLogout }) => {
                         <Route path="/admin/caja-diaria" element={<CajaDiaria />} />
                         <Route path="/admin/resumen-semanal" element={<ResumenSemanal />} />
                         <Route path="/admin/agenda" element={<Agenda />} />
+                        <Route path="/admin/monitor-vencimientos" element={<MonitorVencimientos />} />
+                        <Route path="/admin/monitor-clinica" element={<MonitorClinica />} />
+                        <Route path="/admin/main-dashboard" element={<ClinicDashboard />} />
                     </Routes>
                 </main>
             </div>
@@ -209,4 +182,3 @@ const Dashboard = ({ user, handleLogout }) => {
 };
 
 export default Dashboard;
-

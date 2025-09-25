@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../../firebase/config';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
-const SeleccionarPaciente = ({ onPatientSelected, prevStep, tutor }) => {
+const SeleccionarPaciente = ({ onPatientSelected, onSkipPatient, prevStep, tutor }) => {
     const [patients, setPatients] = useState([]);
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +49,7 @@ const SeleccionarPaciente = ({ onPatientSelected, prevStep, tutor }) => {
             )}
             <div className="venta-navigator-buttons">
                 <button onClick={prevStep} className="btn btn-secondary">Anterior</button>
+                <button onClick={onSkipPatient} className="btn btn-outline">Continuar sin Paciente</button>
                 <button onClick={() => onPatientSelected(selectedPatient)} className="btn btn-primary" disabled={!selectedPatient}>Siguiente</button>
             </div>
         </div>

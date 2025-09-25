@@ -20,25 +20,15 @@ const ResumenVenta = ({ saleData, onReset }) => {
                     ))}
                 </ul>
                 <div className="summary-details">
-                    <div className="summary-row"><span>Tutor:</span><strong>{saleData.tutor?.name || 'N/A'}</strong></div>
+                    <div className="summary-row"><span>Tutor:</span><strong>{saleData.tutor?.name || 'Cliente Genérico'}</strong></div>
                     <div className="summary-row"><span>Paciente:</span><strong>{saleData.patient?.name || 'N/A'}</strong></div>
-                    
                     <div className="summary-row">
                         <span>Pagos Registrados:</span>
                         <div className="payment-details">
-                            {saleData.payments.map(p => (
-                                <strong key={p.id}>{p.method}: ${parseFloat(p.amount).toFixed(2)}</strong>
-                            ))}
+                            {saleData.payments.map(p => (<strong key={p.id}>{p.method}: ${parseFloat(p.amount).toFixed(2)}</strong>))}
                         </div>
                     </div>
-                    
-                    {saleData.debt > 0 && (
-                        <div className="summary-row debt">
-                            <span>Deuda Generada:</span>
-                            <strong>-${saleData.debt.toFixed(2)}</strong>
-                        </div>
-                    )}
-
+                    {saleData.debt > 0 && (<div className="summary-row debt"><span>Deuda Generada:</span><strong>-${saleData.debt.toFixed(2)}</strong></div>)}
                     <div className="summary-total"><span>Total Pagado:</span><strong>${totalPaid.toFixed(2)}</strong></div>
                 </div>
             </div>

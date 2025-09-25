@@ -31,9 +31,13 @@
 @import './adminClinica/agenda';
 @import './adminClinica/pacienteProfile';
 @import './adminClinica/verPacientes';
+@import './adminClinica/monitorVencimientos';
+@import './adminClinica/clinicalModalStyles';
+@import './adminClinica/monitorClinica';
 @import './adminClinica/pacientesForms';
 @import './adminClinica/tutoresForms';
 @import './adminVentas/cajaDiaria';
+@import './adminVentas/clinicalDashboard';
 @import './adminVentas/resumenSemanal';
 
 * {

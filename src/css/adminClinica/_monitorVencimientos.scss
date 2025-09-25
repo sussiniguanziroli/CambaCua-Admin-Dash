@@ -1,0 +1,98 @@
+@import '../presencial/sharedStyles';
+
+.monitor-vencimientos-container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    .monitor-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        h1 { color: $primary-dark; }
+        p { font-size: 1.1rem; color: $text-light; }
+    }
+
+    .monitor-filter-bar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+        padding: 1.5rem;
+        background-color: #fff;
+        border-radius: $border-radius;
+        box-shadow: $shadow-light;
+        margin-bottom: 2rem;
+
+        input, select {
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            &:focus { outline: none; border-color: $primary-color; box-shadow: 0 0 0 3px lighten($primary-color, 35%); }
+        }
+    }
+
+    .monitor-content {
+        .no-results {
+            text-align: center;
+            font-size: 1.2rem;
+            color: $text-light;
+            padding: 3rem;
+        }
+    }
+
+    .vencimientos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .vencimiento-card {
+        background-color: #fff;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        box-shadow: $shadow-light;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-left: 5px solid;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: $shadow;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid $border-color;
+            .product-name { font-weight: 600; font-size: 1.1rem; color: $text-color; }
+            .status-badge { padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem; font-weight: 700; color: #fff; }
+        }
+
+        .card-body {
+            padding: 1rem;
+            .info-line {
+                display: flex; justify-content: space-between; margin-bottom: 0.5rem;
+                span { color: $text-light; }
+                a { font-weight: 500; text-decoration: none; color: $primary-color; &:hover { text-decoration: underline; } }
+            }
+        }
+
+        .card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem; background-color: $background-light;
+            border-top: 1px solid $border-color;
+            .date-info {
+                display: flex; flex-direction: column;
+                strong { font-size: 1rem; color: $primary-dark; }
+                small { font-size: 0.8rem; color: $success-color; font-style: italic; }
+            }
+            .action-btn { @extend .btn; @extend .btn-primary; padding: 0.5rem 1rem; font-size: 0.9rem; }
+        }
+        
+        &.vencido { border-left-color: $error-color; .status-badge { background-color: $error-color; } }
+        &.proximo { border-left-color: #f39c12; .status-badge { background-color: #f39c12; } }
+        &.pendiente { border-left-color: $primary-color; .status-badge { background-color: $primary-color; } }
+        &.suministrado { border-left-color: $success-color; .status-badge { background-color: $success-color; } .product-name { text-decoration: line-through; color: $text-light; } }
+    }
+}

@@ -5,7 +5,7 @@ import SeleccionarProducto from './SeleccionarProducto';
 import MetodoPago from './MetodoPago';
 import ConfirmarVenta from './ConfirmarVenta';
 import ResumenVenta from './ResumenVenta';
-import ProgramarVencimientos from './ProgramarVencimientos'; // Import the new step
+import ProgramarVencimientos from './ProgramarVencimientos';
 import { db } from '../../../firebase/config';
 import { collection, doc, writeBatch, arrayUnion, increment, Timestamp } from 'firebase/firestore';
 
@@ -27,8 +27,18 @@ const VenderNavigator = () => {
         nextStep();
     };
 
+    const handleGenericSale = () => {
+        updateSaleData({ tutor: null, patient: null, cart: [], total: 0, clinicalHistoryItems: [], payments: [], debt: 0 });
+        setStep(3);
+    };
+
     const handleSelectPatient = (patient) => {
         updateSaleData({ patient });
+        nextStep();
+    };
+
+    const handleSkipPatient = () => {
+        updateSaleData({ patient: null });
         nextStep();
     };
 
@@ -52,6 +62,17 @@ const VenderNavigator = () => {
         });
     };
 
+    const handleConfirmAndProceed = () => {
+        const hasItemsToSchedule = saleData.clinicalHistoryItems.length > 0;
+        const isRegisteredPatient = !!saleData.patient;
+
+        if (isRegisteredPatient && hasItemsToSchedule) {
+            nextStep();
+        } else {
+            handleConfirmSaleAndSchedule({});
+        }
+    };
+
     const handleConfirmSaleAndSchedule = async (schedule) => {
         setIsSubmitting(true);
         try {
@@ -61,7 +82,7 @@ const VenderNavigator = () => {
 
             batch.set(saleRef, {
                 createdAt: saleTimestamp,
-                tutorInfo: saleData.tutor ? { id: saleData.tutor.id, name: saleData.tutor.name } : null,
+                tutorInfo: saleData.tutor ? { id: saleData.tutor.id, name: saleData.tutor.name } : { id: 'generic', name: 'Cliente Genérico'},
                 patientInfo: saleData.patient ? { id: saleData.patient.id, name: saleData.patient.name } : null,
                 payments: saleData.payments, total: saleData.total, debt: saleData.debt,
                 items: saleData.cart.map(item => ({ id: item.id, name: item.name || item.nombre, price: item.price, quantity: item.quantity, source: item.source, tipo: item.tipo })),
@@ -79,27 +100,25 @@ const VenderNavigator = () => {
                 batch.update(tutorRef, { accountBalance: increment(saleData.debt * -1) });
             }
 
-            // --- New Logic for Vencimientos ---
             Object.keys(schedule).forEach(itemId => {
                 const days = schedule[itemId];
                 if (days > 0 && saleData.patient?.id) {
                     const item = saleData.cart.find(i => i.id === itemId);
                     const dueDate = new Date(saleTimestamp.toDate());
                     dueDate.setDate(dueDate.getDate() + days);
-
                     const vencimientoRef = doc(collection(db, `pacientes/${saleData.patient.id}/vencimientos`));
                     batch.set(vencimientoRef, {
                         productId: item.id, productName: item.name || item.nombre,
                         tutorId: saleData.tutor.id, tutorName: saleData.tutor.name,
                         pacienteId: saleData.patient.id, pacienteName: saleData.patient.name,
                         appliedDate: saleTimestamp, dueDate: Timestamp.fromDate(dueDate),
-                        status: 'pendiente', saleId: saleRef.id,
+                        status: 'pendiente', saleId: saleRef.id, supplied: false
                     });
                 }
             });
 
             await batch.commit();
-            nextStep();
+            setStep(7);
 
         } catch (error) {
             console.error("Error confirming sale:", error);
@@ -115,11 +134,11 @@ const VenderNavigator = () => {
 
     const renderStep = () => {
         switch (step) {
-            case 1: return <SeleccionarTutor onTutorSelected={handleSelectTutor} />;
-            case 2: return <SeleccionarPaciente onPatientSelected={handleSelectPatient} prevStep={prevStep} tutor={saleData.tutor} />;
-            case 3: return <SeleccionarProducto onProductsSelected={handleSelectProducts} prevStep={prevStep} initialCart={saleData.cart} saleData={saleData} />;
+            case 1: return <SeleccionarTutor onTutorSelected={handleSelectTutor} onGenericSelected={handleGenericSale} />;
+            case 2: return <SeleccionarPaciente onPatientSelected={handleSelectPatient} onSkipPatient={handleSkipPatient} prevStep={prevStep} tutor={saleData.tutor} />;
+            case 3: return <SeleccionarProducto onProductsSelected={handleSelectProducts} prevStep={saleData.tutor ? prevStep : handleReset} initialCart={saleData.cart} saleData={saleData} />;
             case 4: return <MetodoPago onPaymentSelected={handlePaymentSelected} prevStep={prevStep} saleData={saleData} />;
-            case 5: return <ConfirmarVenta saleData={saleData} onConfirm={nextStep} prevStep={prevStep} onToggleClinicalHistory={handleToggleClinicalHistoryItem} />;
+            case 5: return <ConfirmarVenta saleData={saleData} onConfirm={handleConfirmAndProceed} prevStep={prevStep} onToggleClinicalHistory={handleToggleClinicalHistoryItem} isSubmitting={isSubmitting} />;
             case 6: return <ProgramarVencimientos saleData={saleData} onConfirmAndSchedule={handleConfirmSaleAndSchedule} prevStep={prevStep} isSubmitting={isSubmitting} />;
             case 7: return <ResumenVenta saleData={saleData} onReset={handleReset} />;
             default: return <div>Paso desconocido</div>;
@@ -135,4 +154,3 @@ const VenderNavigator = () => {
 };
 
 export default VenderNavigator;
-

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { fetchDailyTransactions } from '../../services/cashFlowService'; // Import the service
+import { fetchDailyTransactions } from '../../services/cashFlowService';
 import SaleDetailModal from './SaleDetailModal';
 
-// --- SVG Icons (assuming they are defined elsewhere) ---
 const FaFileInvoiceDollar = () => <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 384 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M320 0H64C28.7 0 0 28.7 0 64v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zM192 416c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm32-160h-64c-8.8 0-16-7.2-16-16s7.2-16 16-16h64c8.8 0 16 7.2 16 16s-7.2 16-16 16zm48-96H112c-8.8 0-16-7.2-16-16s7.2-16 16-16h160c8.8 0 16 7.2 16 16s-7.2 16-16 16z"></path></svg>;
 const FaHandHoldingUsd = () => <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 576 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M528.3 22.8c-20.7-20.7-54.3-20.7-75 0L320 156.2l-32.3-32.3c-27.5-27.5-72.2-27.5-99.7 0l-112 112c-27.5 27.5-27.5 72.2 0 99.7l32.3 32.3L22.8 503.7c-20.7 20.7-20.7 54.3 0 75s54.3 20.7 75 0l133.3-133.3 32.3 32.3c27.5 27.5 72.2 27.5 99.7 0l112-112c27.5-27.5 27.5-72.2 0-99.7l-32.3-32.3L528.3 97.8c20.7-20.7 20.7-54.3 0-75zM224 288c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"></path></svg>;
 
@@ -16,7 +15,6 @@ const CajaDiaria = () => {
 
     const fetchAndSetTransactions = useCallback(async (date) => {
         setIsLoading(true);
-        // --- Logic moved to service ---
         const data = await fetchDailyTransactions(date);
         setTransactions(data);
         setIsLoading(false);
@@ -54,8 +52,7 @@ const CajaDiaria = () => {
         });
     }, [transactions, filterType, filterMethod]);
     
-    // ... the rest of the component logic (formatDate, uniqueTypes, etc.) remains the same ...
-     const formatDateForInput = (date) => {
+    const formatDateForInput = (date) => {
         const d = new Date(date);
         const offset = d.getTimezoneOffset();
         const adjustedDate = new Date(d.getTime() - (offset*60*1000));
@@ -74,7 +71,6 @@ const CajaDiaria = () => {
                 <div className="caja-date-picker">
                     <label htmlFor="sale-date">Seleccionar Fecha:</label>
                     <input type="date" id="sale-date" value={formatDateForInput(selectedDate)} onChange={e => {
-                        // This logic correctly handles timezone offsets from the date input
                         const newDate = new Date(e.target.value);
                         const offset = newDate.getTimezoneOffset() * 60000;
                         setSelectedDate(new Date(newDate.getTime() + offset));
@@ -104,10 +100,10 @@ const CajaDiaria = () => {
                     filteredTransactions.length > 0 ? (
                         <div className="caja-grid">
                             {filteredTransactions.map(trans => (
-                                <div key={trans.id} className="caja-transaction-card" onClick={() => trans.type.includes('Venta') && setSelectedTransaction(trans)}>
+                                <div key={trans.id} className="caja-transaction-card" onClick={() => setSelectedTransaction(trans)}>
                                     <div className="card-header">
                                         <span className={`type-badge ${trans.type.includes('Venta') || trans.type.includes('Pedido') ? 'venta' : 'cobro'}`}>
-                                            {trans.type === 'Venta Presencial' ? <FaFileInvoiceDollar/> : <FaHandHoldingUsd/>}
+                                            {trans.type.includes('Venta') || trans.type.includes('Pedido') ? <FaFileInvoiceDollar/> : <FaHandHoldingUsd/>}
                                             {trans.type}
                                         </span>
                                         <span className="time">{trans.createdAt.toDate().toLocaleTimeString('es-AR')}</span>
@@ -134,4 +130,3 @@ const CajaDiaria = () => {
 };
 
 export default CajaDiaria;
-

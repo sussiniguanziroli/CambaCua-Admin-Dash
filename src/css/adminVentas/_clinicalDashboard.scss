@@ -1,0 +1,144 @@
+@import '../presencial/sharedStyles';
+
+.clinic-dashboard-container {
+    padding: 2rem;
+    background-color: $background-light;
+
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        h1 { font-size: 2.5rem; color: $primary-dark; margin: 0; }
+        p { font-size: 1.2rem; color: $text-light; margin-top: 0.5rem; }
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .dashboard-widget {
+        background-color: #fff;
+        border-radius: $border-radius;
+        box-shadow: $shadow-light;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.4s ease-in-out;
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid $border-color;
+            cursor: pointer;
+            user-select: none;
+
+            .header-content {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                .widget-icon { font-size: 1.5rem; color: $primary-color; }
+                h3 { margin: 0; font-size: 1.2rem; color: $text-color; }
+            }
+            .widget-count {
+                background-color: $primary-color;
+                color: #fff;
+                font-weight: bold;
+                padding: 0.25rem 0.75rem;
+                border-radius: 15px;
+                font-size: 1rem;
+            }
+        }
+
+        .widget-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        &.widget-citas { .widget-icon { color: #3498db; } .widget-count { background-color: #3498db; }}
+        &.widget-pedidos { .widget-icon { color: #9b59b6; } .widget-count { background-color: #9b59b6; }}
+        &.widget-vencimientos { .widget-icon { color: #f39c12; } .widget-count { background-color: #f39c12; }}
+        &.widget-historial { .widget-icon { color: #1abc9c; } .widget-count { background-color: #1abc9c; }}
+        &.widget-caja { .widget-header { cursor: default; } .widget-icon { color: #2ecc71; }}
+        &.widget-atajos { .widget-header { cursor: default; }}
+
+        .widget-content-collapsed {
+            p { text-align: center; font-size: 1.1rem; color: $text-light; }
+        }
+        
+        .widget-content-expanded {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        &.expanded {
+            .widget-content-collapsed { display: none; }
+            .widget-content-expanded {
+                max-height: 400px;
+                opacity: 1;
+                overflow-y: auto;
+            }
+        }
+        
+        .list-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid $border-color;
+            text-decoration: none;
+            color: $text-color;
+            align-items: center;
+
+            &:hover { background-color: $background-light; border-radius: $border-radius * 0.5; }
+            &:last-child { border-bottom: none; }
+
+            .item-time { font-weight: 600; color: $primary-dark; }
+            .item-name { font-weight: 500; }
+            .item-extra { color: $text-light; text-align: right; }
+            .item-total { font-weight: bold; color: $primary-dark; }
+        }
+
+        .widget-link {
+            margin-top: auto;
+            padding-top: 1rem;
+            text-align: center;
+            font-weight: 600;
+            color: $primary-color;
+            text-decoration: none;
+            &:hover { text-decoration: underline; }
+        }
+        
+        .empty-message { text-align: center; color: $text-light; padding: 1rem; }
+
+        .caja-summary-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            .caja-metric {
+                display: flex; justify-content: space-between; font-size: 1.1rem;
+                strong { font-weight: 700; color: $primary-dark; }
+            }
+        }
+        
+        .atajos-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            .atajo-link {
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                gap: 0.5rem; padding: 1.5rem 1rem; background-color: $background-light;
+                border-radius: $border-radius; text-decoration: none; color: $primary-dark;
+                font-weight: 600; transition: all 0.2s ease;
+                svg { font-size: 2rem; }
+                &:hover { background-color: $primary-color; color: #fff; transform: translateY(-3px); box-shadow: $shadow; }
+            }
+        }
+    }
+}

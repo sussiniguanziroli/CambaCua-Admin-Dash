@@ -1,6 +1,7 @@
-// --- Variable Definitions ---
 $primary-color: #3498db;
 $primary-dark: #2980b9;
+$success-color: #27ae60;
+$error-color: #e74c3c;
 $text-color: #3c4858;
 $text-light: #8492a6;
 $background-color: #f8f9fa;
@@ -10,265 +11,70 @@ $shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 $transition-speed: 0.3s;
 $border-radius: 12px;
 
-// --- Reusable Button Styles ---
-.btn {
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: $border-radius * 0.75;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all $transition-speed ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
+.btn { padding: 10px 20px; font-size: 1rem; font-weight: 600; border-radius: $border-radius * 0.75; border: 1px solid transparent; cursor: pointer; transition: all $transition-speed ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
 .btn-primary { background-color: $primary-color; border-color: $primary-color; color: $white-color; &:hover { background-color: $primary-dark; border-color: $primary-dark; } }
 .btn-secondary { background-color: $text-light; border-color: $text-light; color: $white-color; &:hover { background-color: darken($text-light, 10%); border-color: darken($text-light, 10%); } }
 
-// --- Main Profile Container ---
-.profile-container.paciente-profile {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 1rem;
-}
+.profile-container.paciente-profile { max-width: 1200px; margin: 2rem auto; padding: 1rem; }
 
-// --- Profile Header ---
-.profile-header {
-    background: $white-color; padding: 2rem; border-radius: $border-radius;
-    box-shadow: $shadow; display: flex; align-items: center; gap: 2rem;
-    margin-bottom: 1.5rem; flex-wrap: wrap;
-
-    .profile-avatar {
-        font-size: 3rem; color: $primary-color; background-color: lighten($primary-color, 38%);
-        border-radius: 50%; width: 80px; height: 80px;
-        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .profile-info {
-        flex-grow: 1; h1, p { margin: 0; }
-        h1 { font-size: 2rem; color: $text-color; }
-        p { color: $text-light; font-size: 1.1rem; a { color: $primary-color; text-decoration: none; &:hover { text-decoration: underline; } } }
-    }
+.profile-header { background: $white-color; padding: 2rem; border-radius: $border-radius; box-shadow: $shadow; display: flex; align-items: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+    .profile-avatar { font-size: 3rem; color: $primary-color; background-color: lighten($primary-color, 38%); border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .profile-info { flex-grow: 1; h1, p { margin: 0; } h1 { font-size: 2rem; color: $text-color; } p { color: $text-light; font-size: 1.1rem; a { color: $primary-color; text-decoration: none; &:hover { text-decoration: underline; } } } }
     .profile-actions { display: flex; gap: 1rem; flex-shrink: 0; }
 }
 
-// --- Details Bar ---
-.details-bar {
-    display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;
-    .detail-chip {
-        background-color: $white-color; padding: 0.5rem 1rem;
-        border-radius: 20px; font-size: 0.9rem;
-        border: 1px solid $border-color;
-        strong { color: $primary-dark; }
-    }
+.details-bar { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;
+    .detail-chip { background-color: $white-color; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; border: 1px solid $border-color; strong { color: $primary-dark; } }
 }
 
-// --- Tab Navigation ---
-.profile-nav {
-    display: flex; gap: 0.5rem; margin-bottom: 2rem;
-    border-bottom: 1px solid $border-color;
-    button {
-        padding: 0.8rem 1.5rem; font-weight: 600; background: transparent;
-        border: none; border-bottom: 3px solid transparent; color: $text-light;
-        cursor: pointer; transition: all $transition-speed ease; font-size: 1rem;
-
-        &:hover { color: $primary-color; }
-        &.active { color: $primary-dark; border-bottom-color: $primary-dark; }
-    }
+.profile-nav { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid $border-color;
+    button { padding: 0.8rem 1.5rem; font-weight: 600; background: transparent; border: none; border-bottom: 3px solid transparent; color: $text-light; cursor: pointer; transition: all $transition-speed ease; font-size: 1rem; &:hover { color: $primary-color; } &.active { color: $primary-dark; border-bottom-color: $primary-dark; } }
 }
 
-// --- Tab Content Area ---
-.profile-content {
-    background: $white-color; padding: 2rem;
-    border-radius: $border-radius; box-shadow: $shadow;
-    min-height: 400px;
-}
+.profile-content { background: $white-color; padding: 2rem; border-radius: $border-radius; box-shadow: $shadow; min-height: 400px; }
 
-// --- Historia Clínica Tab ---
-.history-controls {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    
-    input, select {
-        padding: 0.75rem;
-        border: 1px solid $border-color;
-        border-radius: $border-radius * 0.75;
-        font-size: 1rem;
-    }
+.history-controls { display: flex; gap: 1rem; margin-bottom: 2rem;
+    input, select { padding: 0.75rem; border: 1px solid $border-color; border-radius: $border-radius * 0.75; font-size: 1rem; }
     input { flex-grow: 1; }
 }
 
 .clinical-history-list {
-    .clinical-entry-card {
-        border: 1px solid $border-color; border-radius: $border-radius;
-        margin-bottom: 1rem;
-        .entry-header {
-            background-color: $background-color;
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid $border-color;
-            .header-info {
-                 .entry-date { display: block; color: $text-light; font-size: 0.9rem; }
-                 .entry-reason { font-weight: 600; font-size: 1.2rem; color: $text-color; }
-            }
-            .btn-edit-note {
-                @extend .btn;
-                @extend .btn-secondary;
-                padding: 6px 12px;
-                font-size: 0.9rem;
-            }
+    .clinical-entry-card { 
+        border: 1px solid $border-color; border-radius: $border-radius; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s ease;
+        &:hover { border-color: $primary-color; box-shadow: $shadow; transform: translateY(-2px); }
+        .entry-header { background-color: $background-light; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid $border-color;
+            .header-info { .entry-date { display: block; color: $text-light; font-size: 0.9rem; } .entry-reason { font-weight: 600; font-size: 1.2rem; color: $text-color; } }
         }
-        .entry-body {
-            padding: 1.5rem;
-            p { margin: 0 0 0.8rem 0; strong { color: $primary-dark; } }
-        }
+        .entry-body { padding: 1.5rem; p { margin: 0; strong { color: $primary-dark; } } }
     }
 }
 
-// --- Citas Tab ---
-.cita-card {
-    padding: 1.5rem; border: 1px solid $border-color;
-    border-radius: $border-radius; margin-bottom: 1rem;
-    p { margin: 0 0 0.5rem 0;strong { color: $primary-dark; } }
+.cita-card { padding: 1.5rem; border: 1px solid $border-color; border-radius: $border-radius; margin-bottom: 1rem; p { margin: 0 0 0.5rem 0;strong { color: $primary-dark; } } }
+
+.vencimientos-controls { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; margin-bottom: 2rem; align-items: center;
+    input, select { padding: 0.75rem; border: 1px solid $border-color; border-radius: $border-radius * 0.75; font-size: 1rem; }
 }
 
-// --- Modals (reusing agenda styles for consistency) ---
-.agenda-modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);
-    display: flex; justify-content: center; align-items: center; z-index: 1050;
-}
-.agenda-modal-content {
-    background: $white-color; padding: 2.5rem; border-radius: $border-radius;
-    width: 90%; max-width: 600px;
-    
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;
-        h3 { margin: 0; }
-        .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
-    }
-    .form-group { margin-bottom: 1.5rem;
-        label { font-weight: 500; display: block; margin-bottom: 0.5rem; }
-        input, textarea { width: 100%; padding: 12px; border: 1px solid $border-color; border-radius: $border-radius * 0.75; }
-        textarea { resize: vertical; min-height: 100px; }
-    }
-    .modal-footer { margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem; }
-}
-
-.custom-alert {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 1rem 1.5rem;
-    border-radius: $border-radius;
-    color: $white-color;
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    &.alert-success { background-color: $success-color; }
-    &.alert-error { background-color: $error-color; }
-    button { background: none; border: none; color: $white-color; font-size: 1.5rem; cursor: pointer; }
-}
-
-// --- Vencimientos Tab ---
-.vencimientos-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    .vencimiento-card {
-        border: 1px solid $border-color;
-        border-radius: $border-radius;
-        padding: 1.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-        &:hover {
-            transform: translateY(-2px);
-            box-shadow: $shadow;
+.vencimientos-list { display: flex; flex-direction: column; gap: 1rem;
+    .vencimiento-card { border: 1px solid $border-color; border-radius: $border-radius; padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; transition: transform 0.2s ease, box-shadow 0.2s ease;
+        &:hover { transform: translateY(-2px); box-shadow: $shadow; }
+        .vencimiento-info { display: flex; flex-direction: column; gap: 0.25rem;
+            .vencimiento-product { font-weight: 600; font-size: 1.1rem; color: $text-color; display: flex; align-items: center; gap: 0.75rem; }
+            .vencimiento-tutor { font-size: 0.9rem; color: $text-light; padding-left: 2rem; }
         }
-
-        .vencimiento-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-
-            .vencimiento-product {
-                font-weight: 600;
-                font-size: 1.1rem;
-                color: $text-color;
-            }
-
-            .vencimiento-tutor {
-                font-size: 0.9rem;
-                color: $text-light;
-            }
+        .vencimiento-date { text-align: right;
+            span { display: block; font-size: 0.85rem; color: $text-light; }
+            strong { font-size: 1rem; color: $text-color; margin-bottom: 0.5rem; display: block;}
+            .supplied-date { font-style: italic; color: $success-color; font-size: 0.8rem; }
         }
-
-        .vencimiento-date {
-            text-align: right;
-            span {
-                display: block;
-                font-size: 0.85rem;
-                color: $text-light;
-            }
-            strong {
-                font-size: 1rem;
-                color: $text-color;
-            }
-        }
-
-        // --- Estados ---
-        &.overdue {
-            border-color: #e74c3c;
-            background-color: lighten(#e74c3c, 45%);
-            .vencimiento-product { color: #c0392b; }
-        }
-        &.soon {
-            border-color: #f39c12;
-            background-color: lighten(#f39c12, 45%);
-            .vencimiento-product { color: #d35400; }
-        }
-        &.pending {
-            border-color: #f1c40f;
-            background-color: lighten(#f1c40f, 40%);
-            .vencimiento-product { color: #b7950b; }
-        }
-        &.supplied {
-            border-color: #27ae60;
-            background-color: lighten(#27ae60, 50%);
-            .vencimiento-product { color: #1e8449; }
-        }
+        .badge { display: inline-block; padding: 0.25rem 0.6rem; font-size: 0.75rem; font-weight: 700; border-radius: 12px; color: $white-color; text-transform: capitalize; }
+        &.vencido { border-left: 5px solid #e74c3c; .badge { background-color: #e74c3c; } }
+        &.proximo { border-left: 5px solid #f39c12; .badge { background-color: #f39c12; } }
+        &.pendiente { border-left: 5px solid #3498db; .badge { background-color: #3498db; } }
+        &.suministrado { border-left: 5px solid $success-color; .badge { background-color: $success-color; } .vencimiento-product { color: $text-light; text-decoration: line-through;} }
     }
 }
 
-// --- Botón de marcar suministrado ---
-.btn-suministrado {
-    @extend .btn;
-    @extend .btn-primary;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
-    border-radius: $border-radius * 0.5;
+.btn-suministrado { @extend .btn; padding: 0.4rem 0.8rem; font-size: 0.85rem; border-radius: $border-radius * 0.5; background-color: $success-color; border-color: $success-color;
+    &.supplied { background-color: $text-light; border-color: $text-light; &:hover { background-color: darken($text-light, 10%); border-color: darken($text-light, 10%); } }
 }
-
-.vencimiento-card .badge {
-    display: inline-block;
-    padding: 0.25rem 0.6rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 12px;
-    color: white;
-    text-transform: uppercase;
-}
-
-.vencimiento-card.overdue .badge { background-color: #e74c3c; }
-.vencimiento-card.soon .badge { background-color: #f39c12; }
-.vencimiento-card.pending .badge { background-color: #f1c40f; color: #1e8449; }
-.vencimiento-card.supplied .badge { background-color: #27ae60; }
-

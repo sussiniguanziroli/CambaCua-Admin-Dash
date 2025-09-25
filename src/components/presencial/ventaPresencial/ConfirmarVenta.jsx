@@ -18,52 +18,27 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                             </div>
                             {item.source === 'presential' && saleData.patient && (
                                 <div className="clinical-history-toggle">
-                                    <input
-                                        type="checkbox"
-                                        id={`ch-${item.id}`}
-                                        checked={saleData.clinicalHistoryItems.includes(item.id)}
-                                        onChange={() => onToggleClinicalHistory(item.id)}
-                                    />
+                                    <input type="checkbox" id={`ch-${item.id}`} checked={saleData.clinicalHistoryItems.includes(item.id)} onChange={() => onToggleClinicalHistory(item.id)}/>
                                     <label htmlFor={`ch-${item.id}`}>Añadir a H.C.</label>
                                 </div>
                             )}
                         </li>
                     ))}
                 </ul>
-
-                {hasClinicallyRelevantItems && saleData.patient && (
-                    <p className="clinical-history-info">
-                        Seleccione los items a registrar en la historia clínica.
-                    </p>
-                )}
-
+                {hasClinicallyRelevantItems && saleData.patient && (<p className="clinical-history-info">Seleccione los items a registrar en la historia clínica.</p>)}
                 <div className="summary-details">
-                    <div className="summary-row"><span>Tutor:</span><strong>{saleData.tutor?.name || 'N/A'}</strong></div>
+                    <div className="summary-row"><span>Tutor:</span><strong>{saleData.tutor?.name || 'Cliente Genérico'}</strong></div>
                     <div className="summary-row"><span>Paciente:</span><strong>{saleData.patient?.name || 'N/A'}</strong></div>
-
                     <div className="summary-row">
                         <span>Pagos:</span>
                         <div className="payment-details">
-                            {saleData.payments.map(p => (
-                                <strong key={p.id}>{p.method}: ${parseFloat(p.amount).toFixed(2)}</strong>
-                            ))}
+                            {saleData.payments.map(p => (<strong key={p.id}>{p.method}: ${parseFloat(p.amount).toFixed(2)}</strong>))}
                         </div>
                     </div>
-
-                    {saleData.debt > 0 && (
-                        <div className="summary-row debt">
-                            <span>Deuda Generada:</span>
-                            <strong>-${saleData.debt.toFixed(2)}</strong>
-                        </div>
-                    )}
-
-                    <div className="summary-total">
-                        <span>Total Venta:</span>
-                        <strong>${saleData.total.toFixed(2)}</strong>
-                    </div>
+                    {saleData.debt > 0 && (<div className="summary-row debt"><span>Deuda Generada:</span><strong>-${saleData.debt.toFixed(2)}</strong></div>)}
+                    <div className="summary-total"><span>Total Venta:</span><strong>${saleData.total.toFixed(2)}</strong></div>
                 </div>
             </div>
-
             <div className="navigator-buttons">
                 <button onClick={prevStep} className="btn btn-secondary">Anterior</button>
                 <button onClick={onConfirm} className="btn btn-confirm" disabled={isSubmitting}>

@@ -3220,7 +3220,7 @@ button.btn-reset:hover {
   margin: 0;
 }
 
-.btn, .btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
+.btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .btn-suministrado, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
   padding: 0.7rem 1.2rem;
   border: none;
   border-radius: 8px;
@@ -3233,50 +3233,50 @@ button.btn-reset:hover {
   gap: 0.5rem;
   text-decoration: none;
 }
-.btn.btn-primary, .btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-edit-note, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note.btn-suministrado, .agenda-container .week-navigator .btn-primary.today-btn, .agenda-container .week-navigator .today-btn.btn-suministrado, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-edit-note, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-confirm.btn-edit-note, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .venta-payment-container .venta-payment-buttons button.btn-primary, .venta-payment-container .venta-payment-buttons button.btn-suministrado, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm {
+.btn.btn-primary, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .btn-primary.btn-suministrado, .agenda-container .week-navigator .btn-primary.today-btn, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .venta-payment-container .venta-payment-buttons button.btn-primary, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm {
   background-color: #3498db;
   color: white;
 }
-.btn.btn-primary:hover, .btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-edit-note:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note.btn-suministrado:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .agenda-container .week-navigator .today-btn.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-edit-note:hover, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-confirm.btn-edit-note:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-primary:hover, .venta-payment-container .venta-payment-buttons button.btn-suministrado:hover, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm:hover {
+.btn.btn-primary:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .btn-primary.btn-suministrado:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-primary:hover, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm:hover {
   background-color: #2980b9;
 }
-.btn.btn-secondary, .btn-secondary.btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .agenda-container .week-navigator .btn-secondary.today-btn, .venta-payment-container .venta-payment-buttons button.btn-secondary {
+.btn.btn-secondary, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn, .btn-secondary.btn-suministrado, .agenda-container .week-navigator .btn-secondary.today-btn, .venta-payment-container .venta-payment-buttons button.btn-secondary {
   background-color: #e0e0e0;
   color: #34495e;
 }
-.btn.btn-secondary:hover, .btn-secondary.btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-secondary:hover {
+.btn.btn-secondary:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn:hover, .btn-secondary.btn-suministrado:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-secondary:hover {
   background-color: rgb(198.5, 198.5, 198.5);
 }
-.btn.btn-success, .btn-success.btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-edit-note, .agenda-container .week-navigator .btn-success.today-btn, .venta-payment-container .venta-payment-buttons button.btn-success {
+.btn.btn-success, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn, .btn-success.btn-suministrado, .agenda-container .week-navigator .btn-success.today-btn, .venta-payment-container .venta-payment-buttons button.btn-success {
   background-color: #2ecc71;
   color: white;
 }
-.btn.btn-success:hover, .btn-success.btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-edit-note:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-success:hover {
+.btn.btn-success:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .btn-success.btn-suministrado:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-success:hover {
   background-color: rgb(36.616, 162.384, 89.948);
 }
-.btn.btn-danger, .btn-danger.btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-edit-note, .agenda-container .week-navigator .btn-danger.today-btn, .venta-payment-container .venta-payment-buttons button.btn-danger {
+.btn.btn-danger, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn, .btn-danger.btn-suministrado, .agenda-container .week-navigator .btn-danger.today-btn, .venta-payment-container .venta-payment-buttons button.btn-danger {
   background-color: #e74c3c;
   color: white;
 }
-.btn.btn-danger:hover, .btn-danger.btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-edit-note:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-danger:hover {
+.btn.btn-danger:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn:hover, .btn-danger.btn-suministrado:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-danger:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
-.btn.btn-edit, .btn-edit.btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-edit-note, .agenda-container .week-navigator .btn-edit.today-btn, .venta-payment-container .venta-payment-buttons button.btn-edit {
+.btn.btn-edit, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn, .btn-edit.btn-suministrado, .agenda-container .week-navigator .btn-edit.today-btn, .venta-payment-container .venta-payment-buttons button.btn-edit {
   background-color: #f39c12;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-edit:hover, .btn-edit.btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-edit-note:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-edit:hover {
+.btn.btn-edit:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn:hover, .btn-edit.btn-suministrado:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-edit:hover {
   background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
 }
-.btn.btn-delete, .btn-delete.btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-edit-note, .agenda-container .week-navigator .btn-delete.today-btn, .venta-payment-container .venta-payment-buttons button.btn-delete {
+.btn.btn-delete, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .btn-delete.btn-suministrado, .agenda-container .week-navigator .btn-delete.today-btn, .venta-payment-container .venta-payment-buttons button.btn-delete {
   background-color: #e74c3c;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-delete:hover, .btn-delete.btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-edit-note:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-delete:hover {
+.btn.btn-delete:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .btn-delete.btn-suministrado:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-delete:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
 
@@ -3993,33 +3993,35 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
-.venta-product-selection-container .venta-context-info {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
+.seleccionar-producto-container h2 {
   text-align: center;
+  color: #2980b9;
   margin-bottom: 2rem;
-  font-weight: 500;
-  border: 1px solid #e0e0e0;
 }
-.venta-product-selection-container .venta-product-layout {
+.seleccionar-producto-container .seleccionar-producto-layout {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: 2rem;
 }
-@media (max-width: 992px) {
-  .venta-product-selection-container .venta-product-layout {
+@media (max-width: 1024px) {
+  .seleccionar-producto-container .seleccionar-producto-layout {
     grid-template-columns: 1fr;
   }
 }
-.venta-product-selection-container .venta-product-list {
+.seleccionar-producto-container .producto-browser-panel, .seleccionar-producto-container .smart-cart-panel {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: whitesmoke;
   display: flex;
   flex-direction: column;
+  height: 70vh;
 }
-.venta-product-selection-container .venta-view-switcher {
+.seleccionar-producto-container .browser-controls {
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+.seleccionar-producto-container .venta-view-switcher {
   display: flex;
   justify-content: center;
   margin-bottom: 1.5rem;
@@ -4030,7 +4032,7 @@ button.btn-reset:hover {
   margin-left: auto;
   margin-right: auto;
 }
-.venta-product-selection-container .venta-view-switcher button {
+.seleccionar-producto-container .venta-view-switcher button {
   padding: 0.6rem 1.2rem;
   border: none;
   background-color: #fff;
@@ -4039,156 +4041,220 @@ button.btn-reset:hover {
   font-weight: 600;
   color: #7f8c8d;
 }
-.venta-product-selection-container .venta-view-switcher button.active {
+.seleccionar-producto-container .venta-view-switcher button.active {
   background-color: #3498db;
   color: #fff;
 }
-.venta-product-selection-container .venta-filters {
+.seleccionar-producto-container .venta-filters {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
 }
-.venta-product-selection-container .venta-filters .filter-input, .venta-product-selection-container .venta-filters .filter-select {
+.seleccionar-producto-container .venta-filters .filter-input, .seleccionar-producto-container .venta-filters .filter-select {
   width: 100%;
   padding: 0.8rem 1rem;
   font-size: 1rem;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
 }
-.venta-product-selection-container .venta-filters .filter-input:focus, .venta-product-selection-container .venta-filters .filter-select:focus {
+.seleccionar-producto-container .venta-filters .filter-input:focus, .seleccionar-producto-container .venta-filters .filter-select:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
 }
-.venta-product-selection-container .venta-items-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-  max-height: 450px;
-  overflow-y: auto;
-  padding: 1rem;
+.seleccionar-producto-container .producto-list {
   flex-grow: 1;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  overflow-y: auto;
+  padding: 0.5rem;
 }
-.venta-product-selection-container .venta-item-card {
+.seleccionar-producto-container .producto-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #f8f9fa;
+  transition: background-color 0.2s ease;
+}
+.seleccionar-producto-container .producto-list-item:hover {
+  background-color: #f8f9fa;
+}
+.seleccionar-producto-container .producto-list-item.in-cart {
+  background-color: rgb(230.112, 249.388, 238.286);
+}
+.seleccionar-producto-container .producto-list-item.in-cart .item-name {
+  color: #2ecc71;
+  font-weight: 600;
+}
+.seleccionar-producto-container .producto-list-item .item-details {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 1rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-  background-color: #fff;
 }
-.venta-product-selection-container .venta-item-card:hover {
-  border-color: #3498db;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transform: translateY(-3px);
-}
-.venta-product-selection-container .venta-item-card .item-info {
-  margin-bottom: 1rem;
-  flex-grow: 1;
-}
-.venta-product-selection-container .venta-item-card .item-name {
-  font-weight: 600;
+.seleccionar-producto-container .producto-list-item .item-details .item-name {
+  font-weight: 500;
   color: #34495e;
 }
-.venta-product-selection-container .venta-item-card .item-price {
-  color: #2980b9;
-  font-weight: bold;
-  display: block;
-  margin-top: 0.25rem;
+.seleccionar-producto-container .producto-list-item .item-details .item-category {
+  font-size: 0.8rem;
+  color: #576677;
 }
-.venta-product-selection-container .venta-item-card .add-button {
-  background-color: #2ecc71;
+.seleccionar-producto-container .producto-list-item .item-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.seleccionar-producto-container .producto-list-item .item-actions .item-price {
+  font-weight: 600;
+  color: #2980b9;
+}
+.seleccionar-producto-container .producto-list-item .item-actions .add-item-btn {
+  background-color: #3498db;
   color: white;
   border: none;
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   font-size: 1.5rem;
-  line-height: 35px;
-  margin: 0 auto;
+  line-height: 28px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
-.venta-product-selection-container .venta-item-card .add-button:hover {
-  background-color: rgb(36.616, 162.384, 89.948);
+.seleccionar-producto-container .producto-list-item .item-actions .add-item-btn:hover {
+  background-color: #2980b9;
 }
-.venta-product-selection-container .venta-cart-summary {
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+.seleccionar-producto-container .producto-list-item .item-actions .add-item-btn:disabled {
+  background-color: #2ecc71;
+  cursor: default;
+}
+.seleccionar-producto-container .smart-cart-panel {
   padding: 1.5rem;
+}
+.seleccionar-producto-container .smart-cart-panel h3 {
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  color: #2980b9;
+}
+.seleccionar-producto-container .smart-cart-panel .smart-cart-body {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.seleccionar-producto-container .cart-empty-state {
   display: flex;
   flex-direction: column;
-}
-.venta-product-selection-container .venta-cart-summary h3 {
-  text-align: center;
-  margin-top: 0;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e0e0e0;
-  color: #2980b9;
-}
-.venta-product-selection-container .venta-cart-summary .venta-cart-items {
-  flex-grow: 1;
-  max-height: 400px;
-  overflow-y: auto;
-  padding-right: 10px;
-}
-.venta-product-selection-container .venta-cart-summary .empty-cart-message {
-  text-align: center;
-  color: #7f8c8d;
-  padding: 2rem 0;
-}
-.venta-product-selection-container .venta-cart-summary .venta-cart-item {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 0;
-  border-bottom: 1px solid #e0e0e0;
+  justify-content: center;
+  height: 100%;
+  color: #576677;
 }
-.venta-product-selection-container .venta-cart-summary .venta-cart-item .cart-item-name {
-  font-size: 0.95rem;
+.seleccionar-producto-container .cart-empty-state svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+}
+.seleccionar-producto-container .cart-empty-state p {
+  font-size: 1.2rem;
   font-weight: 500;
+  margin: 0;
 }
-.venta-product-selection-container .venta-cart-summary .venta-cart-item .cart-item-price {
+.seleccionar-producto-container .cart-empty-state span {
+  font-size: 0.9rem;
+}
+.seleccionar-producto-container .cart-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.seleccionar-producto-container .cart-item-card {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+}
+.seleccionar-producto-container .cart-item-card .card-item-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+.seleccionar-producto-container .cart-item-card .card-item-info .card-item-name {
   font-weight: 600;
-  color: #2980b9;
+  color: #34495e;
 }
-.venta-product-selection-container .venta-cart-summary .venta-quantity-controls {
+.seleccionar-producto-container .cart-item-card .card-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.seleccionar-producto-container .cart-item-card .card-item-controls .quantity-stepper {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-}
-.venta-product-selection-container .venta-cart-summary .venta-quantity-controls button {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
-  cursor: pointer;
   background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 4px 8px;
 }
-.venta-product-selection-container .venta-cart-summary .venta-quantity-controls button:hover {
-  background-color: #f8f9fa;
+.seleccionar-producto-container .cart-item-card .card-item-controls .quantity-stepper button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background-color: #576677;
+  color: #fff;
 }
-.venta-product-selection-container .venta-cart-summary .venta-cart-total {
-  margin-top: auto;
-  padding-top: 1rem;
+.seleccionar-producto-container .cart-item-card .card-item-controls .quantity-stepper button:hover {
+  background-color: rgb(65.4611650485, 76.7475728155, 89.5388349515);
+}
+.seleccionar-producto-container .cart-item-card .card-item-controls .quantity-stepper span {
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+.seleccionar-producto-container .cart-item-card .card-item-controls .card-item-subtotal {
+  margin-left: auto;
+  font-weight: 700;
+  color: #2980b9;
+}
+.seleccionar-producto-container .cart-item-card .card-item-controls .remove-item-btn {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  cursor: pointer;
+}
+.seleccionar-producto-container .cart-item-card .card-item-controls .remove-item-btn:hover {
+  color: rgb(213.698630137, 43.8356164384, 26.301369863);
+}
+.seleccionar-producto-container .cart-summary-footer {
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
   border-top: 2px solid #e0e0e0;
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.seleccionar-producto-container .cart-summary-footer .summary-line {
+  display: flex;
   justify-content: space-between;
+}
+.seleccionar-producto-container .cart-summary-footer .summary-line.total {
   font-size: 1.5rem;
   font-weight: bold;
   color: #2980b9;
+  margin-top: 0.5rem;
+}
+.seleccionar-producto-container .seleccionar-producto-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+.seleccionar-producto-container .venta-context-info {
+  display: flex;
+  gap: 2rem;
+  font-weight: 500;
 }
 
 .sale-summary-box {
@@ -4309,7 +4375,7 @@ button.btn-reset:hover {
   background-color: #e0e0e0;
   cursor: not-allowed;
 }
-.programar-vencimientos-container .navigator-buttons .btn-secondary, .programar-vencimientos-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .clinical-history-list .clinical-entry-card .entry-header .programar-vencimientos-container .navigator-buttons .btn-edit-note {
+.programar-vencimientos-container .navigator-buttons .btn-secondary {
   background-color: #95a5a6;
 }
 .programar-vencimientos-container .navigator-buttons .btn-confirm {
@@ -4621,7 +4687,7 @@ button.btn-reset:hover {
   background-color: #e0e0e0;
   cursor: not-allowed;
 }
-.confirmar-venta-container .navigator-buttons .btn-secondary, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-edit-note {
+.confirmar-venta-container .navigator-buttons .btn-secondary {
   background-color: #95a5a6;
 }
 .confirmar-venta-container .navigator-buttons .btn-confirm {
@@ -5080,7 +5146,7 @@ button.btn-reset:hover {
   gap: 0.75rem;
 }
 
-.btn, .btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
+.btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .btn-suministrado, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: 600;
@@ -5091,30 +5157,30 @@ button.btn-reset:hover {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.btn:disabled, .btn-suministrado:disabled, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:disabled, .agenda-container .week-navigator .today-btn:disabled, .venta-payment-container .venta-payment-buttons button:disabled {
+.btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .btn-suministrado:disabled, .agenda-container .week-navigator .today-btn:disabled, .venta-payment-container .venta-payment-buttons button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-.btn:hover, .btn-suministrado:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:hover, .agenda-container .week-navigator .today-btn:hover, .venta-payment-container .venta-payment-buttons button:hover {
+.btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .btn-suministrado:hover, .agenda-container .week-navigator .today-btn:hover, .venta-payment-container .venta-payment-buttons button:hover {
   background-color: #f1f3f5;
 }
 
-.btn-primary, .btn-suministrado, .confirmar-venta-container .navigator-buttons .btn-confirm {
+.btn-primary, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .confirmar-venta-container .navigator-buttons .btn-confirm {
   background-color: #3498db;
   border-color: #3498db;
   color: #fff;
 }
-.btn-primary:hover, .btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .btn-confirm:hover {
+.btn-primary:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .confirmar-venta-container .navigator-buttons .btn-confirm:hover {
   background-color: #2980b9;
   border-color: #2980b9;
 }
 
-.btn-secondary, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note {
+.btn-secondary {
   background-color: #6c757d;
   border-color: #6c757d;
   color: #fff;
 }
-.btn-secondary:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:hover {
+.btn-secondary:hover {
   background-color: #5a6268;
   border-color: #5a6268;
 }
@@ -5155,15 +5221,15 @@ button.btn-reset:hover {
   padding: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.agenda-container .view-switcher .btn, .agenda-container .view-switcher .btn-suministrado, .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-edit-note, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button {
+.agenda-container .view-switcher .btn, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn, .agenda-container .view-switcher .btn-suministrado, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button {
   border: none;
   padding: 8px 16px;
 }
-.agenda-container .view-switcher .btn:not(.btn-primary):not(.btn-suministrado), .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):not(.btn-suministrado), .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:not(.btn-primary):not(.btn-suministrado), .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-edit-note:not(.btn-primary):not(.btn-suministrado), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):not(.btn-suministrado), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):not(.btn-suministrado), .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary):not(.btn-suministrado), .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary):not(.btn-suministrado) {
+.agenda-container .view-switcher .btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary), .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary), .agenda-container .view-switcher .btn-suministrado:not(.btn-primary), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary), .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary), .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary) {
   background-color: transparent;
   color: #8492a6;
 }
-.agenda-container .view-switcher .btn:not(.btn-primary):not(.btn-suministrado):hover, .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):not(.btn-suministrado):hover, .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:not(.btn-primary):not(.btn-suministrado):hover, .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-edit-note:not(.btn-primary):not(.btn-suministrado):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):not(.btn-suministrado):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):not(.btn-suministrado):hover, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary):not(.btn-suministrado):hover, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary):not(.btn-suministrado):hover {
+.agenda-container .view-switcher .btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary):hover, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary):hover, .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):hover, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary):hover, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary):hover {
   background-color: #f8f9fa;
 }
 .agenda-container .week-navigator {
@@ -5407,7 +5473,7 @@ button.btn-reset:hover {
   gap: 1rem;
 }
 
-.btn, .btn-suministrado, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note, .venta-payment-container .venta-payment-buttons button, .agenda-container .week-navigator .today-btn {
+.btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .btn-suministrado, .venta-payment-container .venta-payment-buttons button, .agenda-container .week-navigator .today-btn {
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: 600;
@@ -5422,22 +5488,22 @@ button.btn-reset:hover {
   gap: 0.5rem;
 }
 
-.btn-primary, .btn-suministrado, .confirmar-venta-container .navigator-buttons .btn-confirm {
+.btn-primary, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .confirmar-venta-container .navigator-buttons .btn-confirm {
   background-color: #3498db;
   border-color: #3498db;
   color: #fff;
 }
-.btn-primary:hover, .btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .btn-confirm:hover {
+.btn-primary:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .confirmar-venta-container .navigator-buttons .btn-confirm:hover {
   background-color: #2980b9;
   border-color: #2980b9;
 }
 
-.btn-secondary, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note {
+.btn-secondary {
   background-color: #8492a6;
   border-color: #8492a6;
   color: #fff;
 }
-.btn-secondary:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit-note:hover {
+.btn-secondary:hover {
   background-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
   border-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
 }
@@ -5567,6 +5633,13 @@ button.btn-reset:hover {
   border: 1px solid #e0e6ed;
   border-radius: 12px;
   margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.clinical-history-list .clinical-entry-card:hover {
+  border-color: #3498db;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 .clinical-history-list .clinical-entry-card .entry-header {
   background-color: #f8f9fa;
@@ -5586,15 +5659,11 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   color: #3c4858;
 }
-.clinical-history-list .clinical-entry-card .entry-header .btn-edit-note {
-  padding: 6px 12px;
-  font-size: 0.9rem;
-}
 .clinical-history-list .clinical-entry-card .entry-body {
   padding: 1.5rem;
 }
 .clinical-history-list .clinical-entry-card .entry-body p {
-  margin: 0 0 0.8rem 0;
+  margin: 0;
 }
 .clinical-history-list .clinical-entry-card .entry-body p strong {
   color: #2980b9;
@@ -5613,90 +5682,18 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
-.agenda-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1050;
-}
-
-.agenda-modal-content {
-  background: #fff;
-  padding: 2.5rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 600px;
-}
-.agenda-modal-content .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.vencimientos-controls {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 1rem;
   margin-bottom: 2rem;
+  align-items: center;
 }
-.agenda-modal-content .modal-header h3 {
-  margin: 0;
-}
-.agenda-modal-content .modal-header .close-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-.agenda-modal-content .form-group {
-  margin-bottom: 1.5rem;
-}
-.agenda-modal-content .form-group label {
-  font-weight: 500;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-.agenda-modal-content .form-group input, .agenda-modal-content .form-group textarea {
-  width: 100%;
-  padding: 12px;
+.vencimientos-controls input, .vencimientos-controls select {
+  padding: 0.75rem;
   border: 1px solid #e0e6ed;
   border-radius: 9px;
-}
-.agenda-modal-content .form-group textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-.agenda-modal-content .modal-footer {
-  margin-top: 2rem;
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
-
-.custom-alert {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  color: #fff;
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-.custom-alert.alert-success {
-  background-color: #2ecc71;
-}
-.custom-alert.alert-error {
-  background-color: #e74c3c;
-}
-.custom-alert button {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1.5rem;
-  cursor: pointer;
+  font-size: 1rem;
 }
 
 .vencimientos-list {
@@ -5711,6 +5708,8 @@ button.btn-reset:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .vencimientos-list .vencimiento-card:hover {
@@ -5726,10 +5725,14 @@ button.btn-reset:hover {
   font-weight: 600;
   font-size: 1.1rem;
   color: #3c4858;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 .vencimientos-list .vencimiento-card .vencimiento-info .vencimiento-tutor {
   font-size: 0.9rem;
   color: #8492a6;
+  padding-left: 2rem;
 }
 .vencimientos-list .vencimiento-card .vencimiento-date {
   text-align: right;
@@ -5742,67 +5745,66 @@ button.btn-reset:hover {
 .vencimientos-list .vencimiento-card .vencimiento-date strong {
   font-size: 1rem;
   color: #3c4858;
+  margin-bottom: 0.5rem;
+  display: block;
 }
-.vencimientos-list .vencimiento-card.overdue {
-  border-color: #e74c3c;
-  background-color: white;
+.vencimientos-list .vencimiento-card .vencimiento-date .supplied-date {
+  font-style: italic;
+  color: #27ae60;
+  font-size: 0.8rem;
 }
-.vencimientos-list .vencimiento-card.overdue .vencimiento-product {
-  color: #c0392b;
+.vencimientos-list .vencimiento-card .badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 12px;
+  color: #fff;
+  text-transform: capitalize;
 }
-.vencimientos-list .vencimiento-card.soon {
-  border-color: #f39c12;
-  background-color: rgb(254.0602409639, 247.2469879518, 236.4397590361);
+.vencimientos-list .vencimiento-card.vencido {
+  border-left: 5px solid #e74c3c;
 }
-.vencimientos-list .vencimiento-card.soon .vencimiento-product {
-  color: #d35400;
+.vencimientos-list .vencimiento-card.vencido .badge {
+  background-color: #e74c3c;
 }
-.vencimientos-list .vencimiento-card.pending {
-  border-color: #f1c40f;
-  background-color: rgb(252.2440944882, 243.3858267717, 207.7559055118);
+.vencimientos-list .vencimiento-card.proximo {
+  border-left: 5px solid #f39c12;
 }
-.vencimientos-list .vencimiento-card.pending .vencimiento-product {
-  color: #b7950b;
+.vencimientos-list .vencimiento-card.proximo .badge {
+  background-color: #f39c12;
 }
-.vencimientos-list .vencimiento-card.supplied {
-  border-color: #27ae60;
-  background-color: rgb(220.6901408451, 247.3098591549, 231.9295774648);
+.vencimientos-list .vencimiento-card.pendiente {
+  border-left: 5px solid #3498db;
 }
-.vencimientos-list .vencimiento-card.supplied .vencimiento-product {
-  color: #1e8449;
+.vencimientos-list .vencimiento-card.pendiente .badge {
+  background-color: #3498db;
+}
+.vencimientos-list .vencimiento-card.suministrado {
+  border-left: 5px solid #27ae60;
+}
+.vencimientos-list .vencimiento-card.suministrado .badge {
+  background-color: #27ae60;
+}
+.vencimientos-list .vencimiento-card.suministrado .vencimiento-product {
+  color: #8492a6;
+  text-decoration: line-through;
 }
 
 .btn-suministrado {
   padding: 0.4rem 0.8rem;
   font-size: 0.85rem;
   border-radius: 6px;
-}
-
-.vencimiento-card .badge {
-  display: inline-block;
-  padding: 0.25rem 0.6rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 12px;
-  color: white;
-  text-transform: uppercase;
-}
-
-.vencimiento-card.overdue .badge {
-  background-color: #e74c3c;
-}
-
-.vencimiento-card.soon .badge {
-  background-color: #f39c12;
-}
-
-.vencimiento-card.pending .badge {
-  background-color: #f1c40f;
-  color: #1e8449;
-}
-
-.vencimiento-card.supplied .badge {
   background-color: #27ae60;
+  border-color: #27ae60;
+}
+.btn-suministrado.supplied {
+  background-color: #8492a6;
+  border-color: #8492a6;
+}
+.btn-suministrado.supplied:hover {
+  background-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
+  border-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
 }
 
 .paciente-cards-grid {
@@ -5876,6 +5878,621 @@ button.btn-reset:hover {
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+}
+
+.sale-summary-box {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.sale-summary-box h4 {
+  margin-top: 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+.sale-summary-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+.sale-summary-box ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+.sale-summary-box .summary-row, .sale-summary-box .summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-top: 1px solid #e0e0e0;
+}
+.sale-summary-box .summary-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2980b9;
+}
+
+.monitor-vencimientos-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.monitor-vencimientos-container .monitor-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.monitor-vencimientos-container .monitor-header h1 {
+  color: #2980b9;
+}
+.monitor-vencimientos-container .monitor-header p {
+  font-size: 1.1rem;
+  color: #576677;
+}
+.monitor-vencimientos-container .monitor-filter-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: whitesmoke;
+  margin-bottom: 2rem;
+}
+.monitor-vencimientos-container .monitor-filter-bar input, .monitor-vencimientos-container .monitor-filter-bar select {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+.monitor-vencimientos-container .monitor-filter-bar input:focus, .monitor-vencimientos-container .monitor-filter-bar select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
+}
+.monitor-vencimientos-container .monitor-content .no-results {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #576677;
+  padding: 3rem;
+}
+.monitor-vencimientos-container .vencimientos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+.monitor-vencimientos-container .vencimiento-card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: whitesmoke;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 5px solid;
+}
+.monitor-vencimientos-container .vencimiento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.monitor-vencimientos-container .vencimiento-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+.monitor-vencimientos-container .vencimiento-card .card-header .product-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #34495e;
+}
+.monitor-vencimientos-container .vencimiento-card .card-header .status-badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+.monitor-vencimientos-container .vencimiento-card .card-body {
+  padding: 1rem;
+}
+.monitor-vencimientos-container .vencimiento-card .card-body .info-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.monitor-vencimientos-container .vencimiento-card .card-body .info-line span {
+  color: #576677;
+}
+.monitor-vencimientos-container .vencimiento-card .card-body .info-line a {
+  font-weight: 500;
+  text-decoration: none;
+  color: #3498db;
+}
+.monitor-vencimientos-container .vencimiento-card .card-body .info-line a:hover {
+  text-decoration: underline;
+}
+.monitor-vencimientos-container .vencimiento-card .card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+}
+.monitor-vencimientos-container .vencimiento-card .card-footer .date-info {
+  display: flex;
+  flex-direction: column;
+}
+.monitor-vencimientos-container .vencimiento-card .card-footer .date-info strong {
+  font-size: 1rem;
+  color: #2980b9;
+}
+.monitor-vencimientos-container .vencimiento-card .card-footer .date-info small {
+  font-size: 0.8rem;
+  color: #2ecc71;
+  font-style: italic;
+}
+.monitor-vencimientos-container .vencimiento-card .card-footer .action-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+.monitor-vencimientos-container .vencimiento-card.vencido {
+  border-left-color: #e74c3c;
+}
+.monitor-vencimientos-container .vencimiento-card.vencido .status-badge {
+  background-color: #e74c3c;
+}
+.monitor-vencimientos-container .vencimiento-card.proximo {
+  border-left-color: #f39c12;
+}
+.monitor-vencimientos-container .vencimiento-card.proximo .status-badge {
+  background-color: #f39c12;
+}
+.monitor-vencimientos-container .vencimiento-card.pendiente {
+  border-left-color: #3498db;
+}
+.monitor-vencimientos-container .vencimiento-card.pendiente .status-badge {
+  background-color: #3498db;
+}
+.monitor-vencimientos-container .vencimiento-card.suministrado {
+  border-left-color: #2ecc71;
+}
+.monitor-vencimientos-container .vencimiento-card.suministrado .status-badge {
+  background-color: #2ecc71;
+}
+.monitor-vencimientos-container .vencimiento-card.suministrado .product-name {
+  text-decoration: line-through;
+  color: #576677;
+}
+
+.sale-summary-box {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.sale-summary-box h4 {
+  margin-top: 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+.sale-summary-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+.sale-summary-box ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+.sale-summary-box .summary-row, .sale-summary-box .summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-top: 1px solid #e0e0e0;
+}
+.sale-summary-box .summary-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2980b9;
+}
+
+.agenda-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.agenda-modal-content {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+.agenda-modal-content .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+.agenda-modal-content .modal-header h3 {
+  margin: 0;
+  color: #2980b9;
+}
+.agenda-modal-content .modal-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #576677;
+}
+.agenda-modal-content form {
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+.agenda-modal-content .form-group {
+  margin-bottom: 1.5rem;
+}
+.agenda-modal-content .form-group label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.agenda-modal-content .form-group input, .agenda-modal-content .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+.agenda-modal-content .form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.agenda-modal-content .modal-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+.agenda-modal-content .file-preview-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.agenda-modal-content .file-preview-list .file-preview-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f8f9fa;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+}
+.agenda-modal-content .file-preview-list .file-preview-item.new {
+  border: 1px dashed #3498db;
+}
+.agenda-modal-content .file-preview-list .file-preview-item button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #e74c3c;
+  font-weight: bold;
+}
+.agenda-modal-content .upload-progress-bar {
+  height: 5px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+.agenda-modal-content .upload-progress-bar div {
+  height: 100%;
+  background-color: #2ecc71;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.view-note-modal {
+  max-width: 700px;
+}
+.view-note-modal .view-note-body {
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+.view-note-modal .view-note-body .info-section {
+  margin-bottom: 1.5rem;
+}
+.view-note-modal .view-note-body .info-section small {
+  font-size: 0.8rem;
+  color: #576677;
+  text-transform: uppercase;
+}
+.view-note-modal .view-note-body .info-section p {
+  margin: 0.25rem 0 0 0;
+  font-size: 1rem;
+  white-space: pre-wrap;
+}
+.view-note-modal .media-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.view-note-modal .media-gallery .media-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #34495e;
+}
+.view-note-modal .media-gallery .media-item .media-thumbnail {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+.view-note-modal .media-gallery .media-item .media-file-icon {
+  font-size: 3rem;
+  color: #576677;
+}
+.view-note-modal .media-gallery .media-item .media-name {
+  font-size: 0.8rem;
+  text-align: center;
+  margin-top: 0.5rem;
+  word-break: break-all;
+}
+
+.custom-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: #fff;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.custom-alert.alert-success {
+  background-color: #2ecc71;
+}
+.custom-alert.alert-error {
+  background-color: #e74c3c;
+}
+.custom-alert button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.sale-summary-box {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.sale-summary-box h4 {
+  margin-top: 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+.sale-summary-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+.sale-summary-box ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+.sale-summary-box .summary-row, .sale-summary-box .summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-top: 1px solid #e0e0e0;
+}
+.sale-summary-box .summary-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2980b9;
+}
+
+.monitor-clinica-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.monitor-clinica-container .monitor-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.monitor-clinica-container .monitor-header h1 {
+  color: #2980b9;
+}
+.monitor-clinica-container .monitor-header p {
+  font-size: 1.1rem;
+  color: #576677;
+}
+.monitor-clinica-container .monitor-filter-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: whitesmoke;
+  margin-bottom: 2rem;
+}
+.monitor-clinica-container .monitor-filter-bar input, .monitor-clinica-container .monitor-filter-bar select {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+.monitor-clinica-container .monitor-filter-bar input:focus, .monitor-clinica-container .monitor-filter-bar select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
+}
+.monitor-clinica-container .monitor-content {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: whitesmoke;
+  overflow: hidden;
+}
+.monitor-clinica-container .history-list-header, .monitor-clinica-container .history-entry-card {
+  display: grid;
+  grid-template-columns: 100px 1.5fr 1.5fr 3fr 80px;
+  gap: 1rem;
+  align-items: center;
+}
+.monitor-clinica-container .history-list-header {
+  padding: 1rem 1.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #e0e0e0;
+  font-weight: 600;
+  color: #34495e;
+}
+.monitor-clinica-container .history-list-body .no-results {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #576677;
+  padding: 3rem;
+}
+.monitor-clinica-container .history-entry-card {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.2s ease;
+}
+.monitor-clinica-container .history-entry-card:hover {
+  background-color: rgb(225.2719665272, 239.9163179916, 249.7280334728);
+}
+.monitor-clinica-container .history-entry-card .col-patient {
+  display: flex;
+  flex-direction: column;
+}
+.monitor-clinica-container .history-entry-card .col-patient a {
+  font-weight: 500;
+  text-decoration: none;
+  color: #3498db;
+}
+.monitor-clinica-container .history-entry-card .col-patient a:hover {
+  text-decoration: underline;
+}
+.monitor-clinica-container .history-entry-card .col-patient small a {
+  font-weight: 400;
+  color: #576677;
+}
+.monitor-clinica-container .history-entry-card .col-reason {
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.monitor-clinica-container .history-entry-card .col-details {
+  font-size: 0.9rem;
+  color: #576677;
+}
+.monitor-clinica-container .history-entry-card .col-details p {
+  margin: 0 0 0.5rem 0;
+}
+.monitor-clinica-container .history-entry-card .col-details p:last-child {
+  margin-bottom: 0;
+}
+.monitor-clinica-container .history-entry-card .col-details strong {
+  color: #34495e;
+}
+.monitor-clinica-container .history-entry-card .col-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+.monitor-clinica-container .history-entry-card .col-actions .action-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+.monitor-clinica-container .history-entry-card .col-actions .action-btn.view {
+  color: #3498db;
+}
+.monitor-clinica-container .history-entry-card .col-actions .action-btn.view:hover {
+  background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
+}
+.monitor-clinica-container .history-entry-card .col-actions .action-btn.edit {
+  color: #f39c12;
+}
+.monitor-clinica-container .history-entry-card .col-actions .action-btn.edit:hover {
+  background-color: rgb(251.6024096386, 226.9698795181, 187.8975903614);
+}
+.monitor-clinica-container .sale-link-btn {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 0.9rem;
+  line-height: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+.monitor-clinica-container .sale-link-btn:hover {
+  background-color: rgb(36.616, 162.384, 89.948);
+}
+@media (max-width: 992px) {
+  .monitor-clinica-container .history-list-header {
+    display: none;
+  }
+  .monitor-clinica-container .history-entry-card {
+    grid-template-columns: 1fr;
+  }
+  .monitor-clinica-container .history-entry-card .col-date, .monitor-clinica-container .history-entry-card .col-patient, .monitor-clinica-container .history-entry-card .col-reason, .monitor-clinica-container .history-entry-card .col-details {
+    border-bottom: 1px dashed #e0e0e0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .monitor-clinica-container .history-entry-card .col-actions {
+    justify-content: flex-end;
+  }
 }
 
 .paciente-form-container {
@@ -6351,6 +6968,253 @@ button.btn-reset:hover {
 }
 .sale-detail-modal .sale-detail-debt {
   color: #e74c3c;
+}
+
+.sale-summary-box {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.sale-summary-box h4 {
+  margin-top: 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+.sale-summary-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+.sale-summary-box ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+.sale-summary-box .summary-row, .sale-summary-box .summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-top: 1px solid #e0e0e0;
+}
+.sale-summary-box .summary-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2980b9;
+}
+
+.clinic-dashboard-container {
+  padding: 2rem;
+  background-color: #f8f9fa;
+}
+.clinic-dashboard-container .dashboard-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.clinic-dashboard-container .dashboard-header h1 {
+  font-size: 2.5rem;
+  color: #2980b9;
+  margin: 0;
+}
+.clinic-dashboard-container .dashboard-header p {
+  font-size: 1.2rem;
+  color: #576677;
+  margin-top: 0.5rem;
+}
+.clinic-dashboard-container .dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+.clinic-dashboard-container .dashboard-widget {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s ease-in-out;
+}
+.clinic-dashboard-container .dashboard-widget .widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  user-select: none;
+}
+.clinic-dashboard-container .dashboard-widget .widget-header .header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.clinic-dashboard-container .dashboard-widget .widget-header .header-content .widget-icon {
+  font-size: 1.5rem;
+  color: #3498db;
+}
+.clinic-dashboard-container .dashboard-widget .widget-header .header-content h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #34495e;
+}
+.clinic-dashboard-container .dashboard-widget .widget-header .widget-count {
+  background-color: #3498db;
+  color: #fff;
+  font-weight: bold;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 1rem;
+}
+.clinic-dashboard-container .dashboard-widget .widget-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.clinic-dashboard-container .dashboard-widget.widget-citas .widget-icon {
+  color: #3498db;
+}
+.clinic-dashboard-container .dashboard-widget.widget-citas .widget-count {
+  background-color: #3498db;
+}
+.clinic-dashboard-container .dashboard-widget.widget-pedidos .widget-icon {
+  color: #9b59b6;
+}
+.clinic-dashboard-container .dashboard-widget.widget-pedidos .widget-count {
+  background-color: #9b59b6;
+}
+.clinic-dashboard-container .dashboard-widget.widget-vencimientos .widget-icon {
+  color: #f39c12;
+}
+.clinic-dashboard-container .dashboard-widget.widget-vencimientos .widget-count {
+  background-color: #f39c12;
+}
+.clinic-dashboard-container .dashboard-widget.widget-historial .widget-icon {
+  color: #1abc9c;
+}
+.clinic-dashboard-container .dashboard-widget.widget-historial .widget-count {
+  background-color: #1abc9c;
+}
+.clinic-dashboard-container .dashboard-widget.widget-caja .widget-header {
+  cursor: default;
+}
+.clinic-dashboard-container .dashboard-widget.widget-caja .widget-icon {
+  color: #2ecc71;
+}
+.clinic-dashboard-container .dashboard-widget.widget-atajos .widget-header {
+  cursor: default;
+}
+.clinic-dashboard-container .dashboard-widget .widget-content-collapsed p {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #576677;
+}
+.clinic-dashboard-container .dashboard-widget .widget-content-expanded {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+.clinic-dashboard-container .dashboard-widget.expanded .widget-content-collapsed {
+  display: none;
+}
+.clinic-dashboard-container .dashboard-widget.expanded .widget-content-expanded {
+  max-height: 400px;
+  opacity: 1;
+  overflow-y: auto;
+}
+.clinic-dashboard-container .dashboard-widget .list-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  text-decoration: none;
+  color: #34495e;
+  align-items: center;
+}
+.clinic-dashboard-container .dashboard-widget .list-item:hover {
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+.clinic-dashboard-container .dashboard-widget .list-item:last-child {
+  border-bottom: none;
+}
+.clinic-dashboard-container .dashboard-widget .list-item .item-time {
+  font-weight: 600;
+  color: #2980b9;
+}
+.clinic-dashboard-container .dashboard-widget .list-item .item-name {
+  font-weight: 500;
+}
+.clinic-dashboard-container .dashboard-widget .list-item .item-extra {
+  color: #576677;
+  text-align: right;
+}
+.clinic-dashboard-container .dashboard-widget .list-item .item-total {
+  font-weight: bold;
+  color: #2980b9;
+}
+.clinic-dashboard-container .dashboard-widget .widget-link {
+  margin-top: auto;
+  padding-top: 1rem;
+  text-align: center;
+  font-weight: 600;
+  color: #3498db;
+  text-decoration: none;
+}
+.clinic-dashboard-container .dashboard-widget .widget-link:hover {
+  text-decoration: underline;
+}
+.clinic-dashboard-container .dashboard-widget .empty-message {
+  text-align: center;
+  color: #576677;
+  padding: 1rem;
+}
+.clinic-dashboard-container .dashboard-widget .caja-summary-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.clinic-dashboard-container .dashboard-widget .caja-summary-grid .caja-metric {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+}
+.clinic-dashboard-container .dashboard-widget .caja-summary-grid .caja-metric strong {
+  font-weight: 700;
+  color: #2980b9;
+}
+.clinic-dashboard-container .dashboard-widget .atajos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.clinic-dashboard-container .dashboard-widget .atajos-grid .atajo-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #2980b9;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.clinic-dashboard-container .dashboard-widget .atajos-grid .atajo-link svg {
+  font-size: 2rem;
+}
+.clinic-dashboard-container .dashboard-widget .atajos-grid .atajo-link:hover {
+  background-color: #3498db;
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .sale-summary-box {
