@@ -19,7 +19,7 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                                     <>
                                         <span className="item-quantity">{item.quantity}x</span>
                                         <span className="item-name">{item.name}</span>
-                                        <span className="item-price">${item.price.toFixed(2)}</span>
+                                        <span className="item-price">${(item.price * item.quantity).toFixed(2)}</span>
                                     </>
                                 )}
                             </div>

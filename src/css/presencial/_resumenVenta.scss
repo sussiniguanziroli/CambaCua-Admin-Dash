@@ -1,0 +1,119 @@
+@import './sharedStyles';
+
+.resumen-venta-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    text-align: center;
+
+    .resumen-header {
+        margin-bottom: 2rem;
+        .success-icon {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            background-color: lighten($success-color, 35%);
+            color: $success-color;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        h2 {
+            color: $primary-dark;
+            margin: 0;
+        }
+    }
+
+    .resumen-box {
+        background-color: #fff;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        box-shadow: $shadow-light;
+        text-align: left;
+        padding: 2rem;
+    }
+
+    .resumen-title {
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid $border-color;
+        color: $text-color;
+    }
+    
+    .resumen-section {
+        padding: 1rem 0;
+        border-bottom: 1px solid $border-color;
+        &:last-of-type {
+            border-bottom: none;
+        }
+    }
+
+    .resumen-item-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .resumen-item {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        .item-quantity {
+            color: $text-light;
+            margin-right: 0.75rem;
+        }
+        .item-name {
+            font-weight: 500;
+            color: $text-color;
+        }
+        .item-price {
+            margin-left: auto;
+            font-weight: 600;
+        }
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 0.5rem 0;
+        span {
+            color: $text-light;
+        }
+        strong {
+            color: $text-color;
+            font-weight: 600;
+        }
+        .payment-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.25rem;
+        }
+        &.surcharge strong { color: $warning-color; }
+        &.debt strong { color: $error-color; }
+    }
+
+    .resumen-total-section {
+        padding-top: 1.5rem;
+        margin-top: 1rem;
+        border-top: 2px solid $primary-dark;
+    }
+
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $primary-dark;
+    }
+
+    .resumen-actions {
+        margin-top: 2rem;
+    }
+}

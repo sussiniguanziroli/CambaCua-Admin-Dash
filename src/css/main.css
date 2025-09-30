@@ -3220,7 +3220,7 @@ button.btn-reset:hover {
   margin: 0;
 }
 
-.btn, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .btn-suministrado, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
+.btn, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .btn-suministrado, .agenda-container .week-navigator .today-btn, .metodo-pago-container .card-selector button, .metodo-pago-container .payment-buttons button {
   padding: 0.7rem 1.2rem;
   border: none;
   border-radius: 8px;
@@ -3233,50 +3233,50 @@ button.btn-reset:hover {
   gap: 0.5rem;
   text-decoration: none;
 }
-.btn.btn-primary, .recipe-modal .btn-primary.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .btn-primary.view-mode-toggle, .btn-primary.btn-delete-small, .btn-primary.btn-suministrado, .agenda-container .week-navigator .btn-primary.today-btn, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .venta-payment-container .venta-payment-buttons button.btn-primary, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm {
+.btn.btn-primary, .recipe-modal .btn-primary.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .btn-primary.view-mode-toggle, .btn-primary.btn-delete-small, .btn-primary.btn-suministrado, .agenda-container .week-navigator .btn-primary.today-btn, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .metodo-pago-container .card-selector button.btn-primary, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm, .metodo-pago-container .payment-buttons button.btn-primary, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm {
   background-color: #3498db;
   color: white;
 }
-.btn.btn-primary:hover, .recipe-modal .btn-primary.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .btn-primary.view-mode-toggle:hover, .btn-primary.btn-delete-small:hover, .btn-primary.btn-suministrado:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn:hover, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn:hover, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle:hover, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-primary:hover, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm:hover {
+.btn.btn-primary:hover, .recipe-modal .btn-primary.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .btn-primary.view-mode-toggle:hover, .btn-primary.btn-delete-small:hover, .btn-primary.btn-suministrado:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn:hover, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn:hover, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle:hover, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .metodo-pago-container .card-selector button.btn-primary:hover, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm:hover, .metodo-pago-container .payment-buttons button.btn-primary:hover, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm:hover {
   background-color: #2980b9;
 }
-.btn.btn-secondary, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn, .monitor-vencimientos-container .btn-secondary.view-mode-toggle, .btn-secondary.btn-delete-small, .btn-secondary.btn-suministrado, .agenda-container .week-navigator .btn-secondary.today-btn, .agenda-container .week-navigator .recipe-modal .today-btn.add-line-btn, .recipe-modal .agenda-container .week-navigator .today-btn.add-line-btn, .venta-payment-container .venta-payment-buttons button.btn-secondary, .venta-payment-container .venta-payment-buttons .recipe-modal button.add-line-btn, .recipe-modal .venta-payment-container .venta-payment-buttons button.add-line-btn {
+.btn.btn-secondary, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn, .monitor-vencimientos-container .btn-secondary.view-mode-toggle, .btn-secondary.btn-delete-small, .btn-secondary.btn-suministrado, .agenda-container .week-navigator .btn-secondary.today-btn, .agenda-container .week-navigator .recipe-modal .today-btn.add-line-btn, .recipe-modal .agenda-container .week-navigator .today-btn.add-line-btn, .metodo-pago-container .card-selector button.btn-secondary, .metodo-pago-container .card-selector .recipe-modal button.add-line-btn, .recipe-modal .metodo-pago-container .card-selector button.add-line-btn, .metodo-pago-container .payment-buttons button.btn-secondary, .metodo-pago-container .payment-buttons .recipe-modal button.add-line-btn, .recipe-modal .metodo-pago-container .payment-buttons button.add-line-btn {
   background-color: #e0e0e0;
   color: #34495e;
 }
-.btn.btn-secondary:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn:hover, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn:hover, .monitor-vencimientos-container .btn-secondary.view-mode-toggle:hover, .btn-secondary.btn-delete-small:hover, .btn-secondary.btn-suministrado:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-secondary:hover {
+.btn.btn-secondary:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn:hover, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn:hover, .monitor-vencimientos-container .btn-secondary.view-mode-toggle:hover, .btn-secondary.btn-delete-small:hover, .btn-secondary.btn-suministrado:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .metodo-pago-container .card-selector button.btn-secondary:hover, .metodo-pago-container .payment-buttons button.btn-secondary:hover {
   background-color: rgb(198.5, 198.5, 198.5);
 }
-.btn.btn-success, .recipe-modal .btn-success.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn, .monitor-vencimientos-container .btn-success.view-mode-toggle, .btn-success.btn-delete-small, .btn-success.btn-suministrado, .agenda-container .week-navigator .btn-success.today-btn, .venta-payment-container .venta-payment-buttons button.btn-success {
+.btn.btn-success, .recipe-modal .btn-success.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn, .monitor-vencimientos-container .btn-success.view-mode-toggle, .btn-success.btn-delete-small, .btn-success.btn-suministrado, .agenda-container .week-navigator .btn-success.today-btn, .metodo-pago-container .card-selector button.btn-success, .metodo-pago-container .payment-buttons button.btn-success {
   background-color: #2ecc71;
   color: white;
 }
-.btn.btn-success:hover, .recipe-modal .btn-success.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .monitor-vencimientos-container .btn-success.view-mode-toggle:hover, .btn-success.btn-delete-small:hover, .btn-success.btn-suministrado:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-success:hover {
+.btn.btn-success:hover, .recipe-modal .btn-success.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .monitor-vencimientos-container .btn-success.view-mode-toggle:hover, .btn-success.btn-delete-small:hover, .btn-success.btn-suministrado:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .metodo-pago-container .card-selector button.btn-success:hover, .metodo-pago-container .payment-buttons button.btn-success:hover {
   background-color: rgb(36.616, 162.384, 89.948);
 }
-.btn.btn-danger, .recipe-modal .btn-danger.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn, .monitor-vencimientos-container .btn-danger.view-mode-toggle, .btn-danger.btn-delete-small, .btn-danger.btn-suministrado, .agenda-container .week-navigator .btn-danger.today-btn, .venta-payment-container .venta-payment-buttons button.btn-danger {
+.btn.btn-danger, .recipe-modal .btn-danger.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn, .monitor-vencimientos-container .btn-danger.view-mode-toggle, .btn-danger.btn-delete-small, .btn-danger.btn-suministrado, .agenda-container .week-navigator .btn-danger.today-btn, .metodo-pago-container .card-selector button.btn-danger, .metodo-pago-container .payment-buttons button.btn-danger {
   background-color: #e74c3c;
   color: white;
 }
-.btn.btn-danger:hover, .recipe-modal .btn-danger.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn:hover, .monitor-vencimientos-container .btn-danger.view-mode-toggle:hover, .btn-danger.btn-delete-small:hover, .btn-danger.btn-suministrado:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-danger:hover {
+.btn.btn-danger:hover, .recipe-modal .btn-danger.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn:hover, .monitor-vencimientos-container .btn-danger.view-mode-toggle:hover, .btn-danger.btn-delete-small:hover, .btn-danger.btn-suministrado:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .metodo-pago-container .card-selector button.btn-danger:hover, .metodo-pago-container .payment-buttons button.btn-danger:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
-.btn.btn-edit, .recipe-modal .btn-edit.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn, .monitor-vencimientos-container .btn-edit.view-mode-toggle, .btn-edit.btn-delete-small, .btn-edit.btn-suministrado, .agenda-container .week-navigator .btn-edit.today-btn, .venta-payment-container .venta-payment-buttons button.btn-edit {
+.btn.btn-edit, .recipe-modal .btn-edit.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn, .monitor-vencimientos-container .btn-edit.view-mode-toggle, .btn-edit.btn-delete-small, .btn-edit.btn-suministrado, .agenda-container .week-navigator .btn-edit.today-btn, .metodo-pago-container .card-selector button.btn-edit, .metodo-pago-container .payment-buttons button.btn-edit {
   background-color: #f39c12;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-edit:hover, .recipe-modal .btn-edit.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn:hover, .monitor-vencimientos-container .btn-edit.view-mode-toggle:hover, .btn-edit.btn-delete-small:hover, .btn-edit.btn-suministrado:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-edit:hover {
+.btn.btn-edit:hover, .recipe-modal .btn-edit.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn:hover, .monitor-vencimientos-container .btn-edit.view-mode-toggle:hover, .btn-edit.btn-delete-small:hover, .btn-edit.btn-suministrado:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .metodo-pago-container .card-selector button.btn-edit:hover, .metodo-pago-container .payment-buttons button.btn-edit:hover {
   background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
 }
-.btn.btn-delete, .recipe-modal .btn-delete.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .monitor-vencimientos-container .btn-delete.view-mode-toggle, .btn-delete.btn-delete-small, .btn-delete.btn-suministrado, .agenda-container .week-navigator .btn-delete.today-btn, .venta-payment-container .venta-payment-buttons button.btn-delete {
+.btn.btn-delete, .recipe-modal .btn-delete.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .monitor-vencimientos-container .btn-delete.view-mode-toggle, .btn-delete.btn-delete-small, .btn-delete.btn-suministrado, .agenda-container .week-navigator .btn-delete.today-btn, .metodo-pago-container .card-selector button.btn-delete, .metodo-pago-container .payment-buttons button.btn-delete {
   background-color: #e74c3c;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-delete:hover, .recipe-modal .btn-delete.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .monitor-vencimientos-container .btn-delete.view-mode-toggle:hover, .btn-delete.btn-delete-small:hover, .btn-delete.btn-suministrado:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-delete:hover {
+.btn.btn-delete:hover, .recipe-modal .btn-delete.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .monitor-vencimientos-container .btn-delete.view-mode-toggle:hover, .btn-delete.btn-delete-small:hover, .btn-delete.btn-suministrado:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .metodo-pago-container .card-selector button.btn-delete:hover, .metodo-pago-container .payment-buttons button.btn-delete:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
 
@@ -4411,66 +4411,81 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
-.venta-payment-container h2 {
+.metodo-pago-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.metodo-pago-container h2 {
   text-align: center;
   color: #2980b9;
   margin-bottom: 2rem;
+  font-size: 1.8rem;
 }
-.venta-payment-container .venta-payment-layout {
+.metodo-pago-container .metodo-pago-layout {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
 }
 @media (max-width: 992px) {
-  .venta-payment-container .venta-payment-layout {
+  .metodo-pago-container .metodo-pago-layout {
     grid-template-columns: 1fr;
   }
 }
-.venta-payment-container .venta-payment-options h4 {
+.metodo-pago-container .payment-options-panel h4 {
   margin-top: 0;
   color: #34495e;
   border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
 }
-.venta-payment-container .venta-payment-buttons {
-  display: flex;
-  flex-wrap: wrap;
+.metodo-pago-container .payment-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
   margin-bottom: 2rem;
 }
-.venta-payment-container .venta-payment-buttons button {
+.metodo-pago-container .payment-buttons button {
   background-color: white;
-  border-color: #e0e0e0;
-  flex-grow: 1;
+  border: 1px solid #e0e0e0;
 }
-.venta-payment-container .venta-payment-buttons button:hover {
+.metodo-pago-container .payment-buttons button:hover {
   border-color: #3498db;
   color: #3498db;
+  background-color: rgb(233.9355648536, 244.3121338912, 251.2644351464);
 }
-.venta-payment-container .venta-added-payments .venta-payment-input-group {
+.metodo-pago-container .registered-payments .payment-entry {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+.metodo-pago-container .registered-payments .payment-entry:not(:last-child) {
+  margin-bottom: 1rem;
+}
+.metodo-pago-container .payment-input-group {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
-.venta-payment-container .venta-added-payments .venta-payment-input-group label {
+.metodo-pago-container .payment-input-group label {
   font-weight: 500;
-  width: 150px;
+  min-width: 140px;
+  color: #34495e;
 }
-.venta-payment-container .venta-added-payments .venta-payment-input-group input {
+.metodo-pago-container .payment-input-group input {
   flex-grow: 1;
-  padding: 0.75rem;
+  padding: 0.8rem;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
 }
-.venta-payment-container .venta-added-payments .venta-payment-input-group input:focus {
+.metodo-pago-container .payment-input-group input:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
 }
-.venta-payment-container .venta-added-payments .venta-payment-input-group .remove-payment-btn {
+.metodo-pago-container .payment-input-group .remove-btn {
   background-color: transparent;
   border: none;
   color: #e74c3c;
@@ -4478,45 +4493,105 @@ button.btn-reset:hover {
   cursor: pointer;
   padding: 0 0.5rem;
 }
-.venta-payment-container .venta-payment-summary {
-  background-color: #f8f9fa;
+.metodo-pago-container .card-details {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.metodo-pago-container .card-selector {
+  display: flex;
+  gap: 0.5rem;
+}
+.metodo-pago-container .card-selector button {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  color: #576677;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+.metodo-pago-container .card-selector button svg {
+  margin-right: 0.5rem;
+}
+.metodo-pago-container .card-selector button.active {
+  border-color: #2980b9;
+  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  color: #2980b9;
+  font-weight: 600;
+}
+.metodo-pago-container .surcharge-info {
+  font-size: 0.9rem;
+  color: #FFB74D;
+  font-weight: 500;
+  text-align: right;
+}
+.metodo-pago-container .surcharge-info span {
+  font-weight: 600;
+}
+.metodo-pago-container .payment-summary-panel {
+  background-color: #fff;
   border-radius: 8px;
   padding: 1.5rem;
   border: 1px solid #e0e0e0;
 }
-.venta-payment-container .venta-payment-summary h3 {
+.metodo-pago-container .payment-summary-panel h3 {
   text-align: center;
   margin-top: 0;
   padding-bottom: 1rem;
   border-bottom: 1px solid #e0e0e0;
   color: #2980b9;
 }
-.venta-payment-container .venta-payment-summary .summary-row {
+.metodo-pago-container .payment-summary-panel .summary-row {
   display: flex;
   justify-content: space-between;
-  padding: 1rem 0;
-  font-size: 1.1rem;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 0.8rem 0;
+  font-size: 1rem;
+  border-bottom: 1px solid #f8f9fa;
 }
-.venta-payment-container .venta-payment-summary .summary-row:last-child {
-  border-bottom: none;
+.metodo-pago-container .payment-summary-panel .summary-row.total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-top: 2px solid #e0e0e0;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
 }
-.venta-payment-container .venta-payment-summary .summary-row.remaining {
+.metodo-pago-container .payment-summary-panel .summary-row.remaining {
   font-weight: bold;
   font-size: 1.3rem;
 }
-.venta-payment-container .venta-payment-summary .summary-row.remaining.debt {
+.metodo-pago-container .payment-summary-panel .summary-row.remaining.debt {
   color: #e74c3c;
 }
-.venta-payment-container .debt-info {
+.metodo-pago-container .payment-summary-panel .summary-row.remaining.change {
+  color: #2ecc71;
+}
+.metodo-pago-container .payment-summary-panel .summary-row.surcharge {
+  color: #FFB74D;
+}
+.metodo-pago-container .debt-info, .metodo-pago-container .debt-error {
   margin-top: 1rem;
   padding: 1rem;
   text-align: center;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+.metodo-pago-container .debt-info {
   background-color: rgb(255, 244.8876404494, 230);
   border: 1px solid rgb(255, 224.2584269663, 179);
   color: rgb(230, 136.9662921348, 0);
-  border-radius: 8px;
-  font-size: 0.9rem;
+}
+.metodo-pago-container .debt-error {
+  background-color: rgb(250.5616438356, 221.897260274, 218.9383561644);
+  border: 1px solid rgb(244.9726027397, 180.2123287671, 173.5273972603);
+  color: rgb(168.2876712329, 34.5205479452, 20.7123287671);
+}
+.metodo-pago-container .navigator-buttons {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .sale-summary-box {
@@ -4554,10 +4629,162 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
+.resumen-venta-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  text-align: center;
+}
+.resumen-venta-container .resumen-header {
+  margin-bottom: 2rem;
+}
+.resumen-venta-container .resumen-header .success-icon {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  border-radius: 50%;
+  background-color: rgb(188.496, 240.004, 210.338);
+  color: #2ecc71;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+.resumen-venta-container .resumen-header h2 {
+  color: #2980b9;
+  margin: 0;
+}
+.resumen-venta-container .resumen-box {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: whitesmoke;
+  text-align: left;
+  padding: 2rem;
+}
+.resumen-venta-container .resumen-title {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  color: #34495e;
+}
+.resumen-venta-container .resumen-section {
+  padding: 1rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+.resumen-venta-container .resumen-section:last-of-type {
+  border-bottom: none;
+}
+.resumen-venta-container .resumen-item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.resumen-venta-container .resumen-item {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+.resumen-venta-container .resumen-item .item-quantity {
+  color: #576677;
+  margin-right: 0.75rem;
+}
+.resumen-venta-container .resumen-item .item-name {
+  font-weight: 500;
+  color: #34495e;
+}
+.resumen-venta-container .resumen-item .item-price {
+  margin-left: auto;
+  font-weight: 600;
+}
+.resumen-venta-container .summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.5rem 0;
+}
+.resumen-venta-container .summary-row span {
+  color: #576677;
+}
+.resumen-venta-container .summary-row strong {
+  color: #34495e;
+  font-weight: 600;
+}
+.resumen-venta-container .summary-row .payment-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+.resumen-venta-container .summary-row.surcharge strong {
+  color: #FFB74D;
+}
+.resumen-venta-container .summary-row.debt strong {
+  color: #e74c3c;
+}
+.resumen-venta-container .resumen-total-section {
+  padding-top: 1.5rem;
+  margin-top: 1rem;
+  border-top: 2px solid #2980b9;
+}
+.resumen-venta-container .summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2980b9;
+}
+.resumen-venta-container .resumen-actions {
+  margin-top: 2rem;
+}
+
+.sale-summary-box {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.sale-summary-box h4 {
+  margin-top: 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+.sale-summary-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+.sale-summary-box ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+.sale-summary-box .summary-row, .sale-summary-box .summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-top: 1px solid #e0e0e0;
+}
+.sale-summary-box .summary-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2980b9;
+}
+
+.confirmar-venta-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
 .confirmar-venta-container h2 {
   text-align: center;
   color: #2980b9;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
 }
 .confirmar-venta-container .sale-summary-box {
   background-color: #f8f9fa;
@@ -4581,7 +4808,7 @@ button.btn-reset:hover {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-  border-bottom: 1px solid whitesmoke;
+  border-bottom: 1px solid #fff;
 }
 .confirmar-venta-container .summary-item:last-child {
   border-bottom: none;
@@ -4646,14 +4873,26 @@ button.btn-reset:hover {
   padding-top: 1.5rem;
   border-top: 1px solid #e0e0e0;
 }
-.confirmar-venta-container .summary-row, .confirmar-venta-container .summary-total {
+.confirmar-venta-container .summary-row,
+.confirmar-venta-container .summary-total {
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
   font-size: 1rem;
 }
-.confirmar-venta-container .summary-row span, .confirmar-venta-container .summary-total span {
+.confirmar-venta-container .summary-row span,
+.confirmar-venta-container .summary-total span {
   color: #7f8c8d;
+}
+.confirmar-venta-container .summary-row .payment-details,
+.confirmar-venta-container .summary-total .payment-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.confirmar-venta-container .summary-row.surcharge {
+  color: #FFB74D;
+  font-weight: 500;
 }
 .confirmar-venta-container .summary-total {
   font-size: 1.5rem;
@@ -4662,30 +4901,10 @@ button.btn-reset:hover {
   margin-top: 1rem;
 }
 .confirmar-venta-container .navigator-buttons {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-}
-.confirmar-venta-container .navigator-buttons button {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  background-color: #3498db;
-  color: white;
-}
-.confirmar-venta-container .navigator-buttons button:disabled {
-  background-color: #e0e0e0;
-  cursor: not-allowed;
-}
-.confirmar-venta-container .navigator-buttons .btn-secondary, .confirmar-venta-container .navigator-buttons .recipe-modal .add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .add-line-btn {
-  background-color: #95a5a6;
-}
-.confirmar-venta-container .navigator-buttons .btn-confirm {
-  background-color: #2ecc71;
 }
 .confirmar-venta-container .navigator-buttons .btn-confirm {
   padding: 0.8rem 1.5rem;
@@ -5140,7 +5359,7 @@ button.btn-reset:hover {
   gap: 0.75rem;
 }
 
-.btn, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .btn-suministrado, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
+.btn, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .btn-suministrado, .agenda-container .week-navigator .today-btn, .metodo-pago-container .payment-buttons button, .metodo-pago-container .card-selector button {
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: 600;
@@ -5151,11 +5370,11 @@ button.btn-reset:hover {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.btn:disabled, .recipe-modal .add-line-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .monitor-vencimientos-container .view-mode-toggle:disabled, .btn-delete-small:disabled, .btn-suministrado:disabled, .agenda-container .week-navigator .today-btn:disabled, .venta-payment-container .venta-payment-buttons button:disabled {
+.btn:disabled, .recipe-modal .add-line-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .monitor-vencimientos-container .view-mode-toggle:disabled, .btn-delete-small:disabled, .btn-suministrado:disabled, .agenda-container .week-navigator .today-btn:disabled, .metodo-pago-container .payment-buttons button:disabled, .metodo-pago-container .card-selector button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-.btn:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .view-mode-toggle:hover, .btn-delete-small:hover, .btn-suministrado:hover, .agenda-container .week-navigator .today-btn:hover, .venta-payment-container .venta-payment-buttons button:hover {
+.btn:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .view-mode-toggle:hover, .btn-delete-small:hover, .btn-suministrado:hover, .agenda-container .week-navigator .today-btn:hover, .metodo-pago-container .payment-buttons button:hover, .metodo-pago-container .card-selector button:hover {
   background-color: #f1f3f5;
 }
 
@@ -5215,15 +5434,15 @@ button.btn-reset:hover {
   padding: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.agenda-container .view-switcher .btn, .agenda-container .view-switcher .recipe-modal .add-line-btn, .recipe-modal .agenda-container .view-switcher .add-line-btn, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle, .agenda-container .view-switcher .btn-delete-small, .agenda-container .view-switcher .btn-suministrado, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button {
+.agenda-container .view-switcher .btn, .agenda-container .view-switcher .recipe-modal .add-line-btn, .recipe-modal .agenda-container .view-switcher .add-line-btn, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle, .agenda-container .view-switcher .btn-delete-small, .agenda-container .view-switcher .btn-suministrado, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .agenda-container .view-switcher button, .agenda-container .view-switcher .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .agenda-container .view-switcher button {
   border: none;
   padding: 8px 16px;
 }
-.agenda-container .view-switcher .btn:not(.btn-primary), .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary), .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary), .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary), .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary), .agenda-container .view-switcher .btn-delete-small:not(.btn-primary), .agenda-container .view-switcher .btn-suministrado:not(.btn-primary), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary), .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary), .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary) {
+.agenda-container .view-switcher .btn:not(.btn-primary), .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary), .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary), .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary), .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary), .agenda-container .view-switcher .btn-delete-small:not(.btn-primary), .agenda-container .view-switcher .btn-suministrado:not(.btn-primary), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary), .agenda-container .view-switcher .metodo-pago-container .payment-buttons button:not(.btn-primary), .metodo-pago-container .payment-buttons .agenda-container .view-switcher button:not(.btn-primary), .agenda-container .view-switcher .metodo-pago-container .card-selector button:not(.btn-primary), .metodo-pago-container .card-selector .agenda-container .view-switcher button:not(.btn-primary) {
   background-color: transparent;
   color: #8492a6;
 }
-.agenda-container .view-switcher .btn:not(.btn-primary):hover, .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary):hover, .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary):hover, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary):hover, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary):hover, .agenda-container .view-switcher .btn-delete-small:not(.btn-primary):hover, .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):hover, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary):hover, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary):hover {
+.agenda-container .view-switcher .btn:not(.btn-primary):hover, .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary):hover, .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary):hover, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary):hover, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary):hover, .agenda-container .view-switcher .btn-delete-small:not(.btn-primary):hover, .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):hover, .agenda-container .view-switcher .metodo-pago-container .payment-buttons button:not(.btn-primary):hover, .metodo-pago-container .payment-buttons .agenda-container .view-switcher button:not(.btn-primary):hover, .agenda-container .view-switcher .metodo-pago-container .card-selector button:not(.btn-primary):hover, .metodo-pago-container .card-selector .agenda-container .view-switcher button:not(.btn-primary):hover {
   background-color: #f8f9fa;
 }
 .agenda-container .week-navigator {
