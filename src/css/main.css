@@ -3220,7 +3220,7 @@ button.btn-reset:hover {
   margin: 0;
 }
 
-.btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .btn-suministrado, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
+.btn, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .btn-suministrado, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
   padding: 0.7rem 1.2rem;
   border: none;
   border-radius: 8px;
@@ -3233,50 +3233,50 @@ button.btn-reset:hover {
   gap: 0.5rem;
   text-decoration: none;
 }
-.btn.btn-primary, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .btn-primary.btn-suministrado, .agenda-container .week-navigator .btn-primary.today-btn, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .venta-payment-container .venta-payment-buttons button.btn-primary, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm {
+.btn.btn-primary, .recipe-modal .btn-primary.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .btn-primary.view-mode-toggle, .btn-primary.btn-delete-small, .btn-primary.btn-suministrado, .agenda-container .week-navigator .btn-primary.today-btn, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .venta-payment-container .venta-payment-buttons button.btn-primary, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm {
   background-color: #3498db;
   color: white;
 }
-.btn.btn-primary:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .btn-primary.btn-suministrado:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-primary:hover, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm:hover {
+.btn.btn-primary:hover, .recipe-modal .btn-primary.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .btn-primary.view-mode-toggle:hover, .btn-primary.btn-delete-small:hover, .btn-primary.btn-suministrado:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn:hover, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn:hover, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle:hover, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-primary:hover, .venta-payment-container .venta-payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .venta-payment-container .venta-payment-buttons button.btn-confirm:hover {
   background-color: #2980b9;
 }
-.btn.btn-secondary, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn, .btn-secondary.btn-suministrado, .agenda-container .week-navigator .btn-secondary.today-btn, .venta-payment-container .venta-payment-buttons button.btn-secondary {
+.btn.btn-secondary, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn, .monitor-vencimientos-container .btn-secondary.view-mode-toggle, .btn-secondary.btn-delete-small, .btn-secondary.btn-suministrado, .agenda-container .week-navigator .btn-secondary.today-btn, .agenda-container .week-navigator .recipe-modal .today-btn.add-line-btn, .recipe-modal .agenda-container .week-navigator .today-btn.add-line-btn, .venta-payment-container .venta-payment-buttons button.btn-secondary, .venta-payment-container .venta-payment-buttons .recipe-modal button.add-line-btn, .recipe-modal .venta-payment-container .venta-payment-buttons button.add-line-btn {
   background-color: #e0e0e0;
   color: #34495e;
 }
-.btn.btn-secondary:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn:hover, .btn-secondary.btn-suministrado:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-secondary:hover {
+.btn.btn-secondary:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn:hover, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn:hover, .monitor-vencimientos-container .btn-secondary.view-mode-toggle:hover, .btn-secondary.btn-delete-small:hover, .btn-secondary.btn-suministrado:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-secondary:hover {
   background-color: rgb(198.5, 198.5, 198.5);
 }
-.btn.btn-success, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn, .btn-success.btn-suministrado, .agenda-container .week-navigator .btn-success.today-btn, .venta-payment-container .venta-payment-buttons button.btn-success {
+.btn.btn-success, .recipe-modal .btn-success.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn, .monitor-vencimientos-container .btn-success.view-mode-toggle, .btn-success.btn-delete-small, .btn-success.btn-suministrado, .agenda-container .week-navigator .btn-success.today-btn, .venta-payment-container .venta-payment-buttons button.btn-success {
   background-color: #2ecc71;
   color: white;
 }
-.btn.btn-success:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .btn-success.btn-suministrado:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-success:hover {
+.btn.btn-success:hover, .recipe-modal .btn-success.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .monitor-vencimientos-container .btn-success.view-mode-toggle:hover, .btn-success.btn-delete-small:hover, .btn-success.btn-suministrado:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-success:hover {
   background-color: rgb(36.616, 162.384, 89.948);
 }
-.btn.btn-danger, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn, .btn-danger.btn-suministrado, .agenda-container .week-navigator .btn-danger.today-btn, .venta-payment-container .venta-payment-buttons button.btn-danger {
+.btn.btn-danger, .recipe-modal .btn-danger.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn, .monitor-vencimientos-container .btn-danger.view-mode-toggle, .btn-danger.btn-delete-small, .btn-danger.btn-suministrado, .agenda-container .week-navigator .btn-danger.today-btn, .venta-payment-container .venta-payment-buttons button.btn-danger {
   background-color: #e74c3c;
   color: white;
 }
-.btn.btn-danger:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn:hover, .btn-danger.btn-suministrado:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-danger:hover {
+.btn.btn-danger:hover, .recipe-modal .btn-danger.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn:hover, .monitor-vencimientos-container .btn-danger.view-mode-toggle:hover, .btn-danger.btn-delete-small:hover, .btn-danger.btn-suministrado:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-danger:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
-.btn.btn-edit, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn, .btn-edit.btn-suministrado, .agenda-container .week-navigator .btn-edit.today-btn, .venta-payment-container .venta-payment-buttons button.btn-edit {
+.btn.btn-edit, .recipe-modal .btn-edit.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn, .monitor-vencimientos-container .btn-edit.view-mode-toggle, .btn-edit.btn-delete-small, .btn-edit.btn-suministrado, .agenda-container .week-navigator .btn-edit.today-btn, .venta-payment-container .venta-payment-buttons button.btn-edit {
   background-color: #f39c12;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-edit:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn:hover, .btn-edit.btn-suministrado:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-edit:hover {
+.btn.btn-edit:hover, .recipe-modal .btn-edit.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn:hover, .monitor-vencimientos-container .btn-edit.view-mode-toggle:hover, .btn-edit.btn-delete-small:hover, .btn-edit.btn-suministrado:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-edit:hover {
   background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
 }
-.btn.btn-delete, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .btn-delete.btn-suministrado, .agenda-container .week-navigator .btn-delete.today-btn, .venta-payment-container .venta-payment-buttons button.btn-delete {
+.btn.btn-delete, .recipe-modal .btn-delete.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .monitor-vencimientos-container .btn-delete.view-mode-toggle, .btn-delete.btn-delete-small, .btn-delete.btn-suministrado, .agenda-container .week-navigator .btn-delete.today-btn, .venta-payment-container .venta-payment-buttons button.btn-delete {
   background-color: #e74c3c;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-delete:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .btn-delete.btn-suministrado:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-delete:hover {
+.btn.btn-delete:hover, .recipe-modal .btn-delete.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .monitor-vencimientos-container .btn-delete.view-mode-toggle:hover, .btn-delete.btn-delete-small:hover, .btn-delete.btn-suministrado:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .venta-payment-container .venta-payment-buttons button.btn-delete:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
 
@@ -3479,103 +3479,6 @@ button.btn-reset:hover {
   padding: 3rem;
   font-size: 1.1rem;
   color: #7f8c8d;
-}
-
-.presential-form-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2.5rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-.presential-form-container h2 {
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 2rem;
-  color: #2980b9;
-}
-.presential-form-container .presential-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-.presential-form-container .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.presential-form-container .form-group label {
-  font-weight: 500;
-  color: #34495e;
-}
-.presential-form-container .form-group input[type=text],
-.presential-form-container .form-group input[type=number],
-.presential-form-container .form-group textarea,
-.presential-form-container .form-group select {
-  padding: 0.8rem;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-  font-size: 1rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-.presential-form-container .form-group input[type=text]:focus,
-.presential-form-container .form-group input[type=number]:focus,
-.presential-form-container .form-group textarea:focus,
-.presential-form-container .form-group select:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
-}
-.presential-form-container .form-group textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-.presential-form-container .form-row {
-  display: flex;
-  gap: 1.5rem;
-}
-.presential-form-container .form-row > .form-group {
-  flex: 1;
-}
-.presential-form-container .radio-group {
-  display: flex;
-  gap: 2rem;
-  padding: 0.5rem 0;
-}
-.presential-form-container .radio-group label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  font-weight: normal;
-}
-.presential-form-container .btn-submit {
-  padding: 0.9rem;
-  margin-top: 1rem;
-  font-size: 1rem;
-  font-weight: 600;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.presential-form-container .btn-submit:hover {
-  background-color: #2980b9;
-}
-.presential-form-container .btn-submit:disabled {
-  background-color: rgb(198.5, 198.5, 198.5);
-  cursor: not-allowed;
-}
-
-.loading-message {
-  text-align: center;
-  padding: 3rem;
-  font-size: 1.1rem;
-  color: #34495e;
 }
 
 .presential-form-container {
@@ -4008,7 +3911,8 @@ button.btn-reset:hover {
     grid-template-columns: 1fr;
   }
 }
-.seleccionar-producto-container .producto-browser-panel, .seleccionar-producto-container .smart-cart-panel {
+.seleccionar-producto-container .producto-browser-panel,
+.seleccionar-producto-container .smart-cart-panel {
   background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -4050,14 +3954,16 @@ button.btn-reset:hover {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
 }
-.seleccionar-producto-container .venta-filters .filter-input, .seleccionar-producto-container .venta-filters .filter-select {
+.seleccionar-producto-container .venta-filters .filter-input,
+.seleccionar-producto-container .venta-filters .filter-select {
   width: 100%;
   padding: 0.8rem 1rem;
   font-size: 1rem;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
 }
-.seleccionar-producto-container .venta-filters .filter-input:focus, .seleccionar-producto-container .venta-filters .filter-select:focus {
+.seleccionar-producto-container .venta-filters .filter-input:focus,
+.seleccionar-producto-container .venta-filters .filter-select:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
@@ -4092,6 +3998,9 @@ button.btn-reset:hover {
 .seleccionar-producto-container .producto-list-item .item-details .item-name {
   font-weight: 500;
   color: #34495e;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .seleccionar-producto-container .producto-list-item .item-details .item-category {
   font-size: 0.8rem;
@@ -4105,6 +4014,7 @@ button.btn-reset:hover {
 .seleccionar-producto-container .producto-list-item .item-actions .item-price {
   font-weight: 600;
   color: #2980b9;
+  font-size: 0.9rem;
 }
 .seleccionar-producto-container .producto-list-item .item-actions .add-item-btn {
   background-color: #3498db;
@@ -4124,6 +4034,17 @@ button.btn-reset:hover {
 .seleccionar-producto-container .producto-list-item .item-actions .add-item-btn:disabled {
   background-color: #2ecc71;
   cursor: default;
+}
+.seleccionar-producto-container .doseable-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  color: #2980b9;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-weight: 600;
 }
 .seleccionar-producto-container .smart-cart-panel {
   padding: 1.5rem;
@@ -4179,6 +4100,10 @@ button.btn-reset:hover {
 .seleccionar-producto-container .cart-item-card .card-item-info .card-item-name {
   font-weight: 600;
   color: #34495e;
+}
+.seleccionar-producto-container .cart-item-card .card-item-info .card-item-price-unit {
+  color: #576677;
+  font-size: 0.9rem;
 }
 .seleccionar-producto-container .cart-item-card .card-item-controls {
   display: flex;
@@ -4255,6 +4180,75 @@ button.btn-reset:hover {
   display: flex;
   gap: 2rem;
   font-weight: 500;
+}
+
+.dosage-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.dosage-modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+.dosage-modal-content h3 {
+  margin-top: 0;
+  color: #2980b9;
+}
+.dosage-modal-content p {
+  color: #576677;
+  margin-bottom: 1.5rem;
+}
+.dosage-modal-content .dosage-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.dosage-modal-content .dosage-input-group input {
+  flex-grow: 1;
+  padding: 0.8rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  text-align: center;
+}
+.dosage-modal-content .dosage-input-group span {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #34495e;
+}
+.dosage-modal-content .dosage-price-preview {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+}
+.dosage-modal-content .dosage-price-preview span {
+  display: block;
+  color: #576677;
+}
+.dosage-modal-content .dosage-price-preview strong {
+  font-size: 1.5rem;
+  color: #2980b9;
+}
+.dosage-modal-content .dosage-modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 .sale-summary-box {
@@ -4375,7 +4369,7 @@ button.btn-reset:hover {
   background-color: #e0e0e0;
   cursor: not-allowed;
 }
-.programar-vencimientos-container .navigator-buttons .btn-secondary {
+.programar-vencimientos-container .navigator-buttons .btn-secondary, .programar-vencimientos-container .navigator-buttons .recipe-modal .add-line-btn, .recipe-modal .programar-vencimientos-container .navigator-buttons .add-line-btn {
   background-color: #95a5a6;
 }
 .programar-vencimientos-container .navigator-buttons .btn-confirm {
@@ -4687,7 +4681,7 @@ button.btn-reset:hover {
   background-color: #e0e0e0;
   cursor: not-allowed;
 }
-.confirmar-venta-container .navigator-buttons .btn-secondary {
+.confirmar-venta-container .navigator-buttons .btn-secondary, .confirmar-venta-container .navigator-buttons .recipe-modal .add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .add-line-btn {
   background-color: #95a5a6;
 }
 .confirmar-venta-container .navigator-buttons .btn-confirm {
@@ -5146,7 +5140,7 @@ button.btn-reset:hover {
   gap: 0.75rem;
 }
 
-.btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .btn-suministrado, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
+.btn, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .btn-suministrado, .agenda-container .week-navigator .today-btn, .venta-payment-container .venta-payment-buttons button {
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: 600;
@@ -5157,11 +5151,11 @@ button.btn-reset:hover {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .btn-suministrado:disabled, .agenda-container .week-navigator .today-btn:disabled, .venta-payment-container .venta-payment-buttons button:disabled {
+.btn:disabled, .recipe-modal .add-line-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .monitor-vencimientos-container .view-mode-toggle:disabled, .btn-delete-small:disabled, .btn-suministrado:disabled, .agenda-container .week-navigator .today-btn:disabled, .venta-payment-container .venta-payment-buttons button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-.btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .btn-suministrado:hover, .agenda-container .week-navigator .today-btn:hover, .venta-payment-container .venta-payment-buttons button:hover {
+.btn:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .view-mode-toggle:hover, .btn-delete-small:hover, .btn-suministrado:hover, .agenda-container .week-navigator .today-btn:hover, .venta-payment-container .venta-payment-buttons button:hover {
   background-color: #f1f3f5;
 }
 
@@ -5175,12 +5169,12 @@ button.btn-reset:hover {
   border-color: #2980b9;
 }
 
-.btn-secondary {
+.btn-secondary, .recipe-modal .add-line-btn {
   background-color: #6c757d;
   border-color: #6c757d;
   color: #fff;
 }
-.btn-secondary:hover {
+.btn-secondary:hover, .recipe-modal .add-line-btn:hover {
   background-color: #5a6268;
   border-color: #5a6268;
 }
@@ -5221,15 +5215,15 @@ button.btn-reset:hover {
   padding: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.agenda-container .view-switcher .btn, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn, .agenda-container .view-switcher .btn-suministrado, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button {
+.agenda-container .view-switcher .btn, .agenda-container .view-switcher .recipe-modal .add-line-btn, .recipe-modal .agenda-container .view-switcher .add-line-btn, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle, .agenda-container .view-switcher .btn-delete-small, .agenda-container .view-switcher .btn-suministrado, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button {
   border: none;
   padding: 8px 16px;
 }
-.agenda-container .view-switcher .btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary), .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary), .agenda-container .view-switcher .btn-suministrado:not(.btn-primary), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary), .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary), .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary) {
+.agenda-container .view-switcher .btn:not(.btn-primary), .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary), .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary), .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary), .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary), .agenda-container .view-switcher .btn-delete-small:not(.btn-primary), .agenda-container .view-switcher .btn-suministrado:not(.btn-primary), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary), .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary), .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary) {
   background-color: transparent;
   color: #8492a6;
 }
-.agenda-container .view-switcher .btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary):hover, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary):hover, .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):hover, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary):hover, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary):hover {
+.agenda-container .view-switcher .btn:not(.btn-primary):hover, .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary):hover, .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary):hover, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary):hover, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary):hover, .agenda-container .view-switcher .btn-delete-small:not(.btn-primary):hover, .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):hover, .agenda-container .view-switcher .venta-payment-container .venta-payment-buttons button:not(.btn-primary):hover, .venta-payment-container .venta-payment-buttons .agenda-container .view-switcher button:not(.btn-primary):hover {
   background-color: #f8f9fa;
 }
 .agenda-container .week-navigator {
@@ -5473,39 +5467,39 @@ button.btn-reset:hover {
   gap: 1rem;
 }
 
-.btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .btn-suministrado, .venta-payment-container .venta-payment-buttons button, .agenda-container .week-navigator .today-btn {
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 9px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+.sale-summary-box {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
 }
-
-.btn-primary, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .confirmar-venta-container .navigator-buttons .btn-confirm {
-  background-color: #3498db;
-  border-color: #3498db;
-  color: #fff;
+.sale-summary-box h4 {
+  margin-top: 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
 }
-.btn-primary:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .confirmar-venta-container .navigator-buttons .btn-confirm:hover {
-  background-color: #2980b9;
-  border-color: #2980b9;
+.sale-summary-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
 }
-
-.btn-secondary {
-  background-color: #8492a6;
-  border-color: #8492a6;
-  color: #fff;
+.sale-summary-box ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
 }
-.btn-secondary:hover {
-  background-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
-  border-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
+.sale-summary-box .summary-row, .sale-summary-box .summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-top: 1px solid #e0e0e0;
+}
+.sale-summary-box .summary-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2980b9;
 }
 
 .profile-container.paciente-profile {
@@ -5517,7 +5511,7 @@ button.btn-reset:hover {
 .profile-header {
   background: #fff;
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
@@ -5545,10 +5539,10 @@ button.btn-reset:hover {
 }
 .profile-header .profile-info h1 {
   font-size: 2rem;
-  color: #3c4858;
+  color: #34495e;
 }
 .profile-header .profile-info p {
-  color: #8492a6;
+  color: #576677;
   font-size: 1.1rem;
 }
 .profile-header .profile-info p a {
@@ -5575,7 +5569,7 @@ button.btn-reset:hover {
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-size: 0.9rem;
-  border: 1px solid #e0e6ed;
+  border: 1px solid #e0e0e0;
 }
 .details-bar .detail-chip strong {
   color: #2980b9;
@@ -5585,7 +5579,7 @@ button.btn-reset:hover {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 2rem;
-  border-bottom: 1px solid #e0e6ed;
+  border-bottom: 1px solid #e0e0e0;
 }
 .profile-nav button {
   padding: 0.8rem 1.5rem;
@@ -5593,9 +5587,9 @@ button.btn-reset:hover {
   background: transparent;
   border: none;
   border-bottom: 3px solid transparent;
-  color: #8492a6;
+  color: #576677;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   font-size: 1rem;
 }
 .profile-nav button:hover {
@@ -5609,29 +5603,62 @@ button.btn-reset:hover {
 .profile-content {
   background: #fff;
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   min-height: 400px;
+}
+.profile-content .no-results-message {
+  text-align: center;
+  padding: 2rem;
+  color: #576677;
 }
 
 .history-controls {
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
 .history-controls input, .history-controls select {
   padding: 0.75rem;
-  border: 1px solid #e0e6ed;
-  border-radius: 9px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
   font-size: 1rem;
 }
-.history-controls input {
+.history-controls input[type=text] {
   flex-grow: 1;
+  min-width: 200px;
+}
+
+.recipe-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.recipe-controls .filters-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+.recipe-controls .filters-group input, .recipe-controls .filters-group select {
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+.recipe-controls .filters-group input[type=text] {
+  flex-grow: 1;
+  min-width: 200px;
 }
 
 .clinical-history-list .clinical-entry-card {
-  border: 1px solid #e0e6ed;
-  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
   margin-bottom: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -5647,17 +5674,17 @@ button.btn-reset:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e0e6ed;
+  border-bottom: 1px solid #e0e0e0;
 }
 .clinical-history-list .clinical-entry-card .entry-header .header-info .entry-date {
   display: block;
-  color: #8492a6;
+  color: #576677;
   font-size: 0.9rem;
 }
 .clinical-history-list .clinical-entry-card .entry-header .header-info .entry-reason {
   font-weight: 600;
   font-size: 1.2rem;
-  color: #3c4858;
+  color: #34495e;
 }
 .clinical-history-list .clinical-entry-card .entry-body {
   padding: 1.5rem;
@@ -5671,8 +5698,8 @@ button.btn-reset:hover {
 
 .cita-card {
   padding: 1.5rem;
-  border: 1px solid #e0e6ed;
-  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
   margin-bottom: 1rem;
 }
 .cita-card p {
@@ -5691,8 +5718,8 @@ button.btn-reset:hover {
 }
 .vencimientos-controls input, .vencimientos-controls select {
   padding: 0.75rem;
-  border: 1px solid #e0e6ed;
-  border-radius: 9px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
   font-size: 1rem;
 }
 
@@ -5702,8 +5729,8 @@ button.btn-reset:hover {
   gap: 1rem;
 }
 .vencimientos-list .vencimiento-card {
-  border: 1px solid #e0e6ed;
-  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
   padding: 1.5rem;
   display: flex;
   justify-content: space-between;
@@ -5719,19 +5746,25 @@ button.btn-reset:hover {
 .vencimientos-list .vencimiento-card .vencimiento-info {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 .vencimientos-list .vencimiento-card .vencimiento-info .vencimiento-product {
   font-weight: 600;
   font-size: 1.1rem;
-  color: #3c4858;
+  color: #34495e;
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 .vencimientos-list .vencimiento-card .vencimiento-info .vencimiento-tutor {
   font-size: 0.9rem;
-  color: #8492a6;
+  color: #576677;
+  padding-left: 2rem;
+}
+.vencimientos-list .vencimiento-card .vencimiento-info .vencimiento-dosage {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #2980b9;
   padding-left: 2rem;
 }
 .vencimientos-list .vencimiento-card .vencimiento-date {
@@ -5740,17 +5773,17 @@ button.btn-reset:hover {
 .vencimientos-list .vencimiento-card .vencimiento-date span {
   display: block;
   font-size: 0.85rem;
-  color: #8492a6;
+  color: #576677;
 }
 .vencimientos-list .vencimiento-card .vencimiento-date strong {
   font-size: 1rem;
-  color: #3c4858;
+  color: #34495e;
   margin-bottom: 0.5rem;
   display: block;
 }
 .vencimientos-list .vencimiento-card .vencimiento-date .supplied-date {
   font-style: italic;
-  color: #27ae60;
+  color: #2ecc71;
   font-size: 0.8rem;
 }
 .vencimientos-list .vencimiento-card .badge {
@@ -5781,30 +5814,64 @@ button.btn-reset:hover {
   background-color: #3498db;
 }
 .vencimientos-list .vencimiento-card.suministrado {
-  border-left: 5px solid #27ae60;
+  border-left: 5px solid #2ecc71;
 }
 .vencimientos-list .vencimiento-card.suministrado .badge {
-  background-color: #27ae60;
+  background-color: #2ecc71;
 }
 .vencimientos-list .vencimiento-card.suministrado .vencimiento-product {
-  color: #8492a6;
+  color: #576677;
   text-decoration: line-through;
 }
 
 .btn-suministrado {
   padding: 0.4rem 0.8rem;
   font-size: 0.85rem;
-  border-radius: 6px;
-  background-color: #27ae60;
-  border-color: #27ae60;
+  border-radius: 4px;
+  background-color: #2ecc71;
+  border-color: #2ecc71;
 }
 .btn-suministrado.supplied {
-  background-color: #8492a6;
-  border-color: #8492a6;
+  background-color: #576677;
+  border-color: #576677;
 }
 .btn-suministrado.supplied:hover {
-  background-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
-  border-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
+  background-color: rgb(65.4611650485, 76.7475728155, 89.5388349515);
+  border-color: rgb(65.4611650485, 76.7475728155, 89.5388349515);
+}
+
+.recipe-list {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.recipe-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+.recipe-list-item span {
+  font-weight: 500;
+}
+
+.recipe-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-delete-small {
+  background-color: transparent;
+  color: #e74c3c;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+.btn-delete-small:hover {
+  background-color: rgb(250.5616438356, 221.897260274, 218.9383561644);
 }
 
 .paciente-cards-grid {
@@ -5933,13 +6000,14 @@ button.btn-reset:hover {
 }
 .monitor-vencimientos-container .monitor-filter-bar {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: 2fr 1.5fr 1fr 1fr 1.5fr auto;
   gap: 1rem;
   padding: 1.5rem;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: whitesmoke;
   margin-bottom: 2rem;
+  align-items: center;
 }
 .monitor-vencimientos-container .monitor-filter-bar input, .monitor-vencimientos-container .monitor-filter-bar select {
   padding: 0.8rem 1rem;
@@ -5952,6 +6020,17 @@ button.btn-reset:hover {
   border-color: #3498db;
   box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
 }
+.monitor-vencimientos-container .view-mode-toggle {
+  background-color: #3498db;
+  color: white;
+  padding: 0.8rem;
+  font-size: 1.2rem;
+  aspect-ratio: 1;
+  justify-self: end;
+}
+.monitor-vencimientos-container .view-mode-toggle:hover {
+  background-color: #2980b9;
+}
 .monitor-vencimientos-container .monitor-content .no-results {
   text-align: center;
   font-size: 1.2rem;
@@ -5960,39 +6039,54 @@ button.btn-reset:hover {
 }
 .monitor-vencimientos-container .vencimientos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 1.5rem;
 }
-.monitor-vencimientos-container .vencimiento-card {
+.monitor-vencimientos-container .vencimiento-card, .monitor-vencimientos-container .patient-group-card, .monitor-vencimientos-container .product-group-card {
   background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   box-shadow: whitesmoke;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   border-left: 5px solid;
+  display: flex;
+  flex-direction: column;
 }
-.monitor-vencimientos-container .vencimiento-card:hover {
+.monitor-vencimientos-container .vencimiento-card:hover, .monitor-vencimientos-container .patient-group-card:hover, .monitor-vencimientos-container .product-group-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.monitor-vencimientos-container .vencimiento-card .card-header {
+.monitor-vencimientos-container .vencimiento-card .card-header, .monitor-vencimientos-container .patient-group-card .card-header, .monitor-vencimientos-container .product-group-card .card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   padding: 1rem;
   border-bottom: 1px solid #e0e0e0;
 }
-.monitor-vencimientos-container .vencimiento-card .card-header .product-name {
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: #34495e;
-}
-.monitor-vencimientos-container .vencimiento-card .card-header .status-badge {
+.monitor-vencimientos-container .status-badge {
   padding: 0.3rem 0.6rem;
   border-radius: 15px;
   font-size: 0.8rem;
   font-weight: 700;
   color: #fff;
+}
+.monitor-vencimientos-container .status-badge.vencido {
+  background-color: #e74c3c;
+}
+.monitor-vencimientos-container .status-badge.proximo {
+  background-color: #f39c12;
+}
+.monitor-vencimientos-container .status-badge.pendiente {
+  background-color: #3498db;
+}
+.monitor-vencimientos-container .status-badge.suministrado {
+  background-color: #2ecc71;
+}
+.monitor-vencimientos-container .vencimiento-card .product-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #34495e;
+  flex-grow: 1;
 }
 .monitor-vencimientos-container .vencimiento-card .card-body {
   padding: 1rem;
@@ -6013,6 +6107,10 @@ button.btn-reset:hover {
 .monitor-vencimientos-container .vencimiento-card .card-body .info-line a:hover {
   text-decoration: underline;
 }
+.monitor-vencimientos-container .vencimiento-card .card-body .info-line.dosage strong {
+  color: #2980b9;
+  font-style: italic;
+}
 .monitor-vencimientos-container .vencimiento-card .card-footer {
   display: flex;
   justify-content: space-between;
@@ -6020,6 +6118,7 @@ button.btn-reset:hover {
   padding: 1rem;
   background-color: #f8f9fa;
   border-top: 1px solid #e0e0e0;
+  margin-top: auto;
 }
 .monitor-vencimientos-container .vencimiento-card .card-footer .date-info {
   display: flex;
@@ -6041,30 +6140,92 @@ button.btn-reset:hover {
 .monitor-vencimientos-container .vencimiento-card.vencido {
   border-left-color: #e74c3c;
 }
-.monitor-vencimientos-container .vencimiento-card.vencido .status-badge {
-  background-color: #e74c3c;
-}
 .monitor-vencimientos-container .vencimiento-card.proximo {
   border-left-color: #f39c12;
-}
-.monitor-vencimientos-container .vencimiento-card.proximo .status-badge {
-  background-color: #f39c12;
 }
 .monitor-vencimientos-container .vencimiento-card.pendiente {
   border-left-color: #3498db;
 }
-.monitor-vencimientos-container .vencimiento-card.pendiente .status-badge {
-  background-color: #3498db;
-}
 .monitor-vencimientos-container .vencimiento-card.suministrado {
   border-left-color: #2ecc71;
-}
-.monitor-vencimientos-container .vencimiento-card.suministrado .status-badge {
-  background-color: #2ecc71;
 }
 .monitor-vencimientos-container .vencimiento-card.suministrado .product-name {
   text-decoration: line-through;
   color: #576677;
+}
+.monitor-vencimientos-container .patient-group-card .group-icon, .monitor-vencimientos-container .product-group-card .group-icon {
+  font-size: 1.5rem;
+  color: #3498db;
+}
+.monitor-vencimientos-container .patient-group-card h3, .monitor-vencimientos-container .product-group-card h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.monitor-vencimientos-container .patient-group-card small a, .monitor-vencimientos-container .product-group-card small a {
+  color: #576677;
+  text-decoration: none;
+}
+.monitor-vencimientos-container .patient-group-card small a:hover, .monitor-vencimientos-container .product-group-card small a:hover {
+  text-decoration: underline;
+}
+.monitor-vencimientos-container .patient-group-card {
+  border-left-color: #9b59b6;
+}
+.monitor-vencimientos-container .patient-group-card .group-icon {
+  color: #9b59b6;
+}
+.monitor-vencimientos-container .product-group-card {
+  border-left-color: #1abc9c;
+}
+.monitor-vencimientos-container .product-group-card .group-icon {
+  color: #1abc9c;
+}
+.monitor-vencimientos-container .vencimiento-sublist {
+  padding: 0.5rem 1rem 1rem 1rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 250px;
+}
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item:last-child {
+  border-bottom: none;
+}
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-info {
+  display: flex;
+  flex-direction: column;
+}
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-info span, .monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-info a {
+  font-weight: 500;
+  text-decoration: none;
+  color: #34495e;
+}
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-info small {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #576677;
+}
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-info a:hover {
+  text-decoration: underline;
+}
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-status .status-badge {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  text-transform: capitalize;
+}
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-status strong {
+  font-weight: 600;
+  color: #2980b9;
 }
 
 .sale-summary-box {
@@ -6380,6 +6541,73 @@ button.btn-reset:hover {
   margin: 0;
   font-size: 1.1rem;
   color: #34495e;
+}
+
+.recipe-modal {
+  max-width: 800px;
+}
+.recipe-modal h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #2980b9;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+.recipe-modal .prescription-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.recipe-modal .prescription-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+.recipe-modal .prescription-item input {
+  margin-bottom: 0;
+}
+.recipe-modal .prescription-item .remove-line-btn {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+}
+.recipe-modal .prescription-item .remove-line-btn:hover {
+  background-color: rgb(250.5616438356, 221.897260274, 218.9383561644);
+}
+.recipe-modal .add-line-btn {
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  align-self: flex-start;
+}
+
+.recipe-view-modal .recipe-header-print {
+  text-align: center;
+  margin-bottom: 2rem;
+  display: none;
+}
+.recipe-view-modal .recipe-header-print h1, .recipe-view-modal .recipe-header-print p {
+  margin: 0;
+}
+.recipe-view-modal .prescription-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+.recipe-view-modal .prescription-table th, .recipe-view-modal .prescription-table td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+.recipe-view-modal .prescription-table thead {
+  background-color: #f8f9fa;
+}
+.recipe-view-modal .prescription-table thead th {
+  font-weight: 600;
 }
 
 .custom-alert {

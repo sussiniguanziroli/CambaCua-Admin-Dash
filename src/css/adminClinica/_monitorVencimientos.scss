@@ -1,98 +1,65 @@
 @import '../presencial/sharedStyles';
 
 .monitor-vencimientos-container {
-    padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-
-    .monitor-header {
-        text-align: center;
-        margin-bottom: 2rem;
-        h1 { color: $primary-dark; }
-        p { font-size: 1.1rem; color: $text-light; }
-    }
+    padding: 2rem; max-width: 1400px; margin: 0 auto;
+    .monitor-header { text-align: center; margin-bottom: 2rem; h1 { color: $primary-dark; } p { font-size: 1.1rem; color: $text-light; } }
 
     .monitor-filter-bar {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: 2fr 1.5fr 1fr 1fr 1.5fr auto;
         gap: 1rem;
-        padding: 1.5rem;
-        background-color: #fff;
-        border-radius: $border-radius;
-        box-shadow: $shadow-light;
-        margin-bottom: 2rem;
+        padding: 1.5rem; background-color: #fff; border-radius: $border-radius;
+        box-shadow: $shadow-light; margin-bottom: 2rem; align-items: center;
 
-        input, select {
-            padding: 0.8rem 1rem;
-            font-size: 1rem;
-            border: 1px solid $border-color;
-            border-radius: $border-radius;
-            &:focus { outline: none; border-color: $primary-color; box-shadow: 0 0 0 3px lighten($primary-color, 35%); }
-        }
+        input, select { padding: 0.8rem 1rem; font-size: 1rem; border: 1px solid $border-color; border-radius: $border-radius; &:focus { outline: none; border-color: $primary-color; box-shadow: 0 0 0 3px lighten($primary-color, 35%); } }
     }
 
-    .monitor-content {
-        .no-results {
-            text-align: center;
-            font-size: 1.2rem;
-            color: $text-light;
-            padding: 3rem;
-        }
+    .view-mode-toggle {
+        @extend .btn; background-color: $primary-color; color: white; padding: 0.8rem;
+        font-size: 1.2rem; aspect-ratio: 1; justify-self: end;
+        &:hover { background-color: $primary-dark; }
     }
 
-    .vencimientos-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 1.5rem;
+    .monitor-content { .no-results { text-align: center; font-size: 1.2rem; color: $text-light; padding: 3rem; } }
+    .vencimientos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem; }
+
+    .vencimiento-card, .patient-group-card, .product-group-card {
+        background-color: #fff; border: 1px solid $border-color; border-radius: $border-radius; box-shadow: $shadow-light;
+        transition: transform 0.2s ease, box-shadow 0.2s ease; border-left: 5px solid; display: flex; flex-direction: column;
+        &:hover { transform: translateY(-4px); box-shadow: $shadow; }
+        .card-header { display: flex; align-items: center; gap: 1rem; padding: 1rem; border-bottom: 1px solid $border-color; }
+    }
+
+    .status-badge { 
+        padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem; font-weight: 700; color: #fff; 
+        &.vencido { background-color: $error-color; }
+        &.proximo { background-color: #f39c12; }
+        &.pendiente { background-color: $primary-color; }
+        &.suministrado { background-color: $success-color; }
     }
 
     .vencimiento-card {
-        background-color: #fff;
-        border: 1px solid $border-color;
-        border-radius: $border-radius;
-        box-shadow: $shadow-light;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        border-left: 5px solid;
+        .product-name { font-weight: 600; font-size: 1.1rem; color: $text-color; flex-grow: 1; }
+        .card-body { padding: 1rem; .info-line { display: flex; justify-content: space-between; margin-bottom: 0.5rem; span { color: $text-light; } a { font-weight: 500; text-decoration: none; color: $primary-color; &:hover { text-decoration: underline; } } &.dosage strong { color: $primary-dark; font-style: italic; } } }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background-color: $background-light; border-top: 1px solid $border-color; margin-top: auto; .date-info { display: flex; flex-direction: column; strong { font-size: 1rem; color: $primary-dark; } small { font-size: 0.8rem; color: $success-color; font-style: italic; } } .action-btn { @extend .btn; @extend .btn-primary; padding: 0.5rem 1rem; font-size: 0.9rem; } }
+        &.vencido { border-left-color: $error-color; }
+        &.proximo { border-left-color: #f39c12; }
+        &.pendiente { border-left-color: $primary-color; }
+        &.suministrado { border-left-color: $success-color; .product-name { text-decoration: line-through; color: $text-light; } }
+    }
+    
+    .patient-group-card, .product-group-card {
+        .group-icon { font-size: 1.5rem; color: $primary-color; }
+        h3 { margin: 0; font-size: 1.2rem; }
+        small a { color: $text-light; text-decoration: none; &:hover { text-decoration: underline; } }
+    }
+    .patient-group-card { border-left-color: #9b59b6; .group-icon { color: #9b59b6; } }
+    .product-group-card { border-left-color: #1abc9c; .group-icon { color: #1abc9c; } }
 
-        &:hover {
-            transform: translateY(-4px);
-            box-shadow: $shadow;
+    .vencimiento-sublist { padding: 0.5rem 1rem 1rem 1rem; flex-grow: 1; overflow-y: auto; max-height: 250px;
+        .sublist-item { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid $background-light; &:last-child { border-bottom: none; }
+            .sublist-item-info { display: flex; flex-direction: column; span, a { font-weight: 500; text-decoration: none; color: $text-color; } small { font-size: 0.8rem; font-style: italic; color: $text-light; } a:hover { text-decoration: underline; } }
+            .sublist-item-status { display: flex; align-items: center; gap: 0.75rem; .status-badge { font-size: 0.7rem; padding: 0.2rem 0.5rem; text-transform: capitalize; } strong { font-weight: 600; color: $primary-dark; } }
         }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid $border-color;
-            .product-name { font-weight: 600; font-size: 1.1rem; color: $text-color; }
-            .status-badge { padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.8rem; font-weight: 700; color: #fff; }
-        }
-
-        .card-body {
-            padding: 1rem;
-            .info-line {
-                display: flex; justify-content: space-between; margin-bottom: 0.5rem;
-                span { color: $text-light; }
-                a { font-weight: 500; text-decoration: none; color: $primary-color; &:hover { text-decoration: underline; } }
-            }
-        }
-
-        .card-footer {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1rem; background-color: $background-light;
-            border-top: 1px solid $border-color;
-            .date-info {
-                display: flex; flex-direction: column;
-                strong { font-size: 1rem; color: $primary-dark; }
-                small { font-size: 0.8rem; color: $success-color; font-style: italic; }
-            }
-            .action-btn { @extend .btn; @extend .btn-primary; padding: 0.5rem 1rem; font-size: 0.9rem; }
-        }
-        
-        &.vencido { border-left-color: $error-color; .status-badge { background-color: $error-color; } }
-        &.proximo { border-left-color: #f39c12; .status-badge { background-color: #f39c12; } }
-        &.pendiente { border-left-color: $primary-color; .status-badge { background-color: $primary-color; } }
-        &.suministrado { border-left-color: $success-color; .status-badge { background-color: $success-color; } .product-name { text-decoration: line-through; color: $text-light; } }
     }
 }

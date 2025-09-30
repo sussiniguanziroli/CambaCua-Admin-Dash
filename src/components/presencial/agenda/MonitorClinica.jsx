@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { db } from '../../../firebase/config';
-import { collection, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collectionGroup, query, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import SaleDetailModal from '../../administracion/SaleDetailModal';
@@ -10,7 +10,6 @@ import { FaEye, FaPencilAlt } from 'react-icons/fa';
 
 const MonitorClinica = () => {
     const [flatHistory, setFlatHistory] = useState([]);
-    const [pacientes, setPacientes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [filters, setFilters] = useState({ searchTerm: '', startDate: '', endDate: '', sortOrder: 'date-desc' });
     
@@ -21,28 +20,31 @@ const MonitorClinica = () => {
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    const parseDate = (dateString) => {
-        if (!dateString || typeof dateString !== 'string') return null;
-        const parts = dateString.split('/');
-        if (parts.length !== 3) return null;
-        return new Date(parts[2], parts[1] - 1, parts[0]);
-    };
-
     const fetchData = useCallback(async () => {
         setIsLoading(true);
         try {
-            const patientsSnapshot = await getDocs(collection(db, 'pacientes'));
-            const patientsData = patientsSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-            setPacientes(patientsData);
-
-            const allHistoryEntries = [];
-            patientsData.forEach(patient => {
-                if (patient.clinicalHistory && Array.isArray(patient.clinicalHistory)) {
-                    patient.clinicalHistory.forEach((entry, index) => {
-                        allHistoryEntries.push({ ...entry, id: `${patient.id}-${index}`, pacienteId: patient.id, pacienteName: patient.name, tutorId: patient.tutorId, tutorName: patient.tutorName, parsedDate: parseDate(entry.date), originalIndex: index });
-                    });
-                }
+            const historyQuery = query(collectionGroup(db, 'clinical_history'));
+            const historySnapshot = await getDocs(historyQuery);
+            
+            const historyPromises = historySnapshot.docs.map(async (noteDoc) => {
+                const noteData = noteDoc.data();
+                const patientRef = noteDoc.ref.parent.parent;
+                const patientSnap = await getDoc(patientRef);
+                if (!patientSnap.exists()) return null;
+                const patientData = patientSnap.data();
+                
+                return {
+                    ...noteData,
+                    id: noteDoc.id,
+                    pacienteId: patientRef.id,
+                    pacienteName: patientData.name,
+                    tutorId: patientData.tutorId,
+                    tutorName: patientData.tutorName,
+                    date: noteData.createdAt.toDate().toLocaleDateString('es-AR')
+                };
             });
+
+            const allHistoryEntries = (await Promise.all(historyPromises)).filter(Boolean);
             setFlatHistory(allHistoryEntries);
         } catch (error) {
             Swal.fire('Error', 'No se pudieron cargar las historias clínicas.', 'error');
@@ -62,12 +64,8 @@ const MonitorClinica = () => {
         try {
             const saleRef = doc(db, 'ventas_presenciales', saleId);
             const saleSnap = await getDoc(saleRef);
-            if (saleSnap.exists()) {
-                setSelectedSale({ id: saleSnap.id, ...saleSnap.data(), type: 'Venta Presencial' });
-                setIsSaleModalOpen(true);
-            } else {
-                Swal.fire('No encontrado', 'No se encontró la venta asociada.', 'info');
-            }
+            if (saleSnap.exists()) { setSelectedSale({ id: saleSnap.id, ...saleSnap.data(), type: 'Venta Presencial' }); setIsSaleModalOpen(true); } 
+            else { Swal.fire('No encontrado', 'No se encontró la venta asociada.', 'info'); }
         } catch (error) { Swal.fire('Error', 'No se pudo cargar la venta.', 'error'); }
     };
     
@@ -76,18 +74,9 @@ const MonitorClinica = () => {
     const handleCloseModals = () => { setIsViewModalOpen(false); setIsEditModalOpen(false); setSelectedNote(null); };
 
     const handleSaveNote = async (formData, originalNote) => {
-        const patientToUpdate = pacientes.find(p => p.id === originalNote.pacienteId);
-        if (!patientToUpdate) {
-            Swal.fire('Error', 'No se encontró el paciente para actualizar.', 'error');
-            return;
-        }
-        
-        const updatedHistory = [...patientToUpdate.clinicalHistory];
-        updatedHistory[originalNote.originalIndex] = { ...updatedHistory[originalNote.originalIndex], ...formData };
-        
         try {
-            const patientRef = doc(db, 'pacientes', originalNote.pacienteId);
-            await updateDoc(patientRef, { clinicalHistory: updatedHistory });
+            const noteRef = doc(db, `pacientes/${originalNote.pacienteId}/clinical_history`, originalNote.id);
+            await updateDoc(noteRef, formData);
             Swal.fire('Éxito', 'Nota clínica actualizada.', 'success');
             handleCloseModals();
             await fetchData();
@@ -95,16 +84,18 @@ const MonitorClinica = () => {
     };
 
     const filteredAndSortedHistory = useMemo(() => {
-        let filtered = flatHistory.filter(entry => entry.parsedDate);
-        if (filters.startDate) { const start = new Date(filters.startDate); start.setHours(0,0,0,0); filtered = filtered.filter(entry => entry.parsedDate >= start); }
-        if (filters.endDate) { const end = new Date(filters.endDate); end.setHours(23,59,59,999); filtered = filtered.filter(entry => entry.parsedDate <= end); }
+        let filtered = flatHistory.filter(entry => entry.createdAt);
+        const parseDate = (dateString) => new Date(dateString.split('/').reverse().join('-'));
+
+        if (filters.startDate) { const start = new Date(filters.startDate); start.setHours(0,0,0,0); filtered = filtered.filter(entry => parseDate(entry.date) >= start); }
+        if (filters.endDate) { const end = new Date(filters.endDate); end.setHours(23,59,59,999); filtered = filtered.filter(entry => parseDate(entry.date) <= end); }
         if (filters.searchTerm) {
             const lowerTerm = filters.searchTerm.toLowerCase();
             filtered = filtered.filter(entry => entry.pacienteName?.toLowerCase().includes(lowerTerm) || entry.tutorName?.toLowerCase().includes(lowerTerm) || entry.reason?.toLowerCase().includes(lowerTerm) || entry.diagnosis?.toLowerCase().includes(lowerTerm) || entry.treatment?.toLowerCase().includes(lowerTerm));
         }
         filtered.sort((a, b) => {
-            if (filters.sortOrder === 'date-desc') return b.parsedDate - a.parsedDate;
-            if (filters.sortOrder === 'date-asc') return a.parsedDate - b.parsedDate;
+            if (filters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis();
+            if (filters.sortOrder === 'date-asc') return a.createdAt.toMillis() - b.createdAt.toMillis();
             if (filters.sortOrder === 'patient-asc') return (a.pacienteName || '').localeCompare(b.pacienteName || '');
             return 0;
         });
@@ -115,8 +106,7 @@ const MonitorClinica = () => {
         <div className="monitor-clinica-container">
             {isSaleModalOpen && <SaleDetailModal sale={selectedSale} onClose={() => setIsSaleModalOpen(false)} />}
             <ViewClinicalNoteModal isOpen={isViewModalOpen} onClose={handleCloseModals} onEdit={() => handleEditNote(selectedNote)} note={selectedNote} />
-            <ClinicalNoteModal isOpen={isEditModalOpen} onClose={handleCloseModals} onSave={handleSaveNote} note={selectedNote} noteIndex={selectedNote?.originalIndex} pacienteId={selectedNote?.pacienteId} />
-
+            <ClinicalNoteModal isOpen={isEditModalOpen} onClose={handleCloseModals} onSave={handleSaveNote} note={selectedNote} pacienteId={selectedNote?.pacienteId} />
             <header className="monitor-header"><h1>Monitor de Historias Clínicas</h1><p>Busca y revisa todas las entradas del historial clínico de los pacientes.</p></header>
             <div className="monitor-filter-bar">
                 <input type="text" name="searchTerm" placeholder="Buscar por paciente, tutor, motivo, diagnóstico..." value={filters.searchTerm} onChange={handleFilterChange} />

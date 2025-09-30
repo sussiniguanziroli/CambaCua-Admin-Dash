@@ -12,9 +12,18 @@ const ResumenVenta = ({ saleData, onReset }) => {
                     {saleData.cart.map(item => (
                        <li key={item.id} className="summary-item">
                             <div className="item-info">
-                                <span className="item-quantity">{item.quantity}x</span>
-                                <span className="item-name">{item.name || item.nombre}</span>
-                                <span className="item-price">${(item.price * item.quantity).toFixed(2)}</span>
+                               {item.isDoseable ? (
+                                    <>
+                                        <span className="item-name">{item.name} ({item.quantity} {item.unit})</span>
+                                        <span className="item-price">${item.price.toFixed(2)}</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="item-quantity">{item.quantity}x</span>
+                                        <span className="item-name">{item.name}</span>
+                                        <span className="item-price">${item.price.toFixed(2)}</span>
+                                    </>
+                                )}
                             </div>
                         </li>
                     ))}
@@ -22,12 +31,7 @@ const ResumenVenta = ({ saleData, onReset }) => {
                 <div className="summary-details">
                     <div className="summary-row"><span>Tutor:</span><strong>{saleData.tutor?.name || 'Cliente Genérico'}</strong></div>
                     <div className="summary-row"><span>Paciente:</span><strong>{saleData.patient?.name || 'N/A'}</strong></div>
-                    <div className="summary-row">
-                        <span>Pagos Registrados:</span>
-                        <div className="payment-details">
-                            {saleData.payments.map(p => (<strong key={p.id}>{p.method}: ${parseFloat(p.amount).toFixed(2)}</strong>))}
-                        </div>
-                    </div>
+                    <div className="summary-row"><span>Pagos Registrados:</span><div className="payment-details">{saleData.payments.map(p => (<strong key={p.id}>{p.method}: ${parseFloat(p.amount).toFixed(2)}</strong>))}</div></div>
                     {saleData.debt > 0 && (<div className="summary-row debt"><span>Deuda Generada:</span><strong>-${saleData.debt.toFixed(2)}</strong></div>)}
                     <div className="summary-total"><span>Total Pagado:</span><strong>${totalPaid.toFixed(2)}</strong></div>
                 </div>

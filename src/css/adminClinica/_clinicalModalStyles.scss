@@ -124,6 +124,29 @@
     p { margin: 0; font-size: 1.1rem; color: $text-color; }
 }
 
+// --- Recipe Modal Styles ---
+.recipe-modal {
+    max-width: 800px;
+    h4 { margin-top: 1.5rem; margin-bottom: 1rem; color: $primary-dark; border-bottom: 1px solid $border-color; padding-bottom: 0.5rem; }
+    .prescription-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .prescription-item {
+        display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 0.75rem;
+        align-items: center;
+        input { margin-bottom: 0; }
+        .remove-line-btn { background: none; border: none; color: $error-color; font-size: 1.1rem; cursor: pointer; padding: 0.5rem; border-radius: 50%; &:hover { background-color: lighten($error-color, 35%); } }
+    }
+    .add-line-btn { @extend .btn; @extend .btn-secondary; padding: 0.5rem 1rem; margin-top: 1rem; align-self: flex-start; }
+}
+
+.recipe-view-modal {
+    .recipe-header-print { text-align: center; margin-bottom: 2rem; display: none; h1, p { margin: 0; } }
+    .prescription-table {
+        width: 100%; border-collapse: collapse; margin-top: 0.5rem;
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid $border-color; }
+        thead { background-color: $background-light; th { font-weight: 600; } }
+    }
+}
+
 // --- Custom Alert Styles ---
 .custom-alert {
     position: fixed; top: 20px; right: 20px; padding: 1rem 1.5rem;
