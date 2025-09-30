@@ -445,7 +445,7 @@ const PacienteProfile = () => {
           <h1>{paciente.name}</h1>
           <p>
             Tutor:{" "}
-            <Link to={`/admin/tutores/${paciente.tutorId}`}>
+            <Link to={`/admin/tutor-profile/${paciente.tutorId}`}>
               {paciente.tutorName}
             </Link>
           </p>
