@@ -160,7 +160,7 @@ const TutorProfile = () => {
           <div className="tab-content">
             {pacientes.length > 0 ? (
               pacientes.map((p) => (
-                <div key={p.id} className="paciente-card-profile" onClick={() => navigate(`/admin/pacientes/${p.id}`)}>
+                <div key={p.id} className="paciente-card-profile" onClick={() => navigate(`/admin/paciente-profile/${p.id}`)}>
                   {p.species?.toLowerCase().includes('perro') || p.species?.toLowerCase().includes('canino') ? <FaDog /> : <FaCat />}
                   <div>
                     <p className="paciente-name">{p.name}</p>
