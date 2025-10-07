@@ -120,3 +120,28 @@ $border-radius: 8px;
     }
 }
 
+/* Estilos para pacientes fallecidos */
+.fallecido-tag {
+    background-color: #2a0303; /* Rojo */
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.paciente-card.fallecido {
+    border-left: 5px solid #450606;
+    background-color: #fff5f5; /* Un rojo muy claro */
+}
+
+.fallecido-banner {
+    background-color: #3c0707;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+

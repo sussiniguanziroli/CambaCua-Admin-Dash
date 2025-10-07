@@ -11,9 +11,8 @@ import {
 import { db } from "../../../firebase/config";
 import Swal from "sweetalert2";
 import { FaCat, FaDog, FaPlus } from "react-icons/fa";
-import { FaCarTunnel } from "react-icons/fa6";
-
-
+import { CiEdit } from "react-icons/ci";
+import { MdDeleteOutline } from "react-icons/md";
 
 const VerPacientes = () => {
   const [pacientes, setPacientes] = useState([]);
@@ -22,6 +21,7 @@ const VerPacientes = () => {
   const [filters, setFilters] = useState({
     searchTerm: "",
     sortOrder: "name_asc",
+    showFallecidos: false,
   });
   const navigate = useNavigate();
 
@@ -42,10 +42,15 @@ const VerPacientes = () => {
   }, [fetchPacientes]);
 
   useEffect(() => {
-    let filtered = [...pacientes];
+    let tempPacientes = [...pacientes];
+
+    if (!filters.showFallecidos) {
+      tempPacientes = tempPacientes.filter(p => !p.fallecido);
+    }
+
     const term = filters.searchTerm.toLowerCase();
     if (term) {
-      filtered = filtered.filter(
+      tempPacientes = tempPacientes.filter(
         (p) =>
           p.name.toLowerCase().includes(term) ||
           (p.species && p.species.toLowerCase().includes(term)) ||
@@ -53,15 +58,15 @@ const VerPacientes = () => {
           (p.chipNumber && p.chipNumber.includes(term))
       );
     }
-    filtered.sort((a, b) => {
+    
+    tempPacientes.sort((a, b) => {
       if (filters.sortOrder === "name_asc") return a.name.localeCompare(b.name);
-      if (filters.sortOrder === "name_desc")
-        return b.name.localeCompare(a.name);
-      if (filters.sortOrder === "tutor_asc")
-        return a.tutorName.localeCompare(b.tutorName);
+      if (filters.sortOrder === "name_desc") return b.name.localeCompare(a.name);
+      if (filters.sortOrder === "tutor_asc") return a.tutorName.localeCompare(b.tutorName);
       return 0;
     });
-    setFilteredPacientes(filtered);
+
+    setFilteredPacientes(tempPacientes);
   }, [filters, pacientes]);
 
   const handleDelete = async (paciente) => {
@@ -76,13 +81,11 @@ const VerPacientes = () => {
     if (result.isConfirmed) {
       try {
         await deleteDoc(doc(db, "pacientes", paciente.id));
-        const tutorRef = doc(db, "tutores", paciente.tutorId);
-        await updateDoc(tutorRef, { pacienteIds: arrayRemove(paciente.id) });
-        Swal.fire(
-          "Eliminado",
-          `${paciente.name} ha sido eliminado.`,
-          "success"
-        );
+        if (paciente.tutorId) {
+            const tutorRef = doc(db, "tutores", paciente.tutorId);
+            await updateDoc(tutorRef, { pacienteIds: arrayRemove(paciente.id) });
+        }
+        Swal.fire("Eliminado", `${paciente.name} ha sido eliminado.`, "success");
         fetchPacientes();
       } catch (error) {
         Swal.fire("Error", `No se pudo eliminar a ${paciente.name}.`, "error");
@@ -91,8 +94,8 @@ const VerPacientes = () => {
   };
 
   const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
   return (
@@ -124,6 +127,10 @@ const VerPacientes = () => {
             <option value="tutor_asc">Tutor (A-Z)</option>
           </select>
         </div>
+        <div className="filter-group" style={{ alignItems: 'center' }}>
+            <input type="checkbox" id="showFallecidos" name="showFallecidos" checked={filters.showFallecidos} onChange={handleFilterChange} />
+            <label htmlFor="showFallecidos">Mostrar fallecidos</label>
+        </div>
       </div>
       {isLoading ? (
         <p className="loading-message">Cargando...</p>
@@ -132,21 +139,18 @@ const VerPacientes = () => {
           {filteredPacientes.map((p) => (
             <div
               key={p.id}
-              className="paciente-card"
+              className={`paciente-card ${p.fallecido ? 'fallecido' : ''}`}
               onClick={() => navigate(`/admin/paciente-profile/${p.id}`)}
             >
               <div className="paciente-card-header">
                 <div className="paciente-avatar">
-                  {p.species?.toLowerCase().includes("canino") ? (
-                    <FaDog />
-                  ) : (
-                    <FaCat />
-                  )}
+                  {p.species?.toLowerCase().includes("canino") ? <FaDog /> : <FaCat />}
                 </div>
                 <div className="paciente-info">
                   <p className="paciente-name">{p.name}</p>
                   <p className="paciente-breed">{p.breed || p.species}</p>
                 </div>
+                {p.fallecido && <span className="fallecido-tag">Fallecido</span>}
               </div>
               <div className="paciente-card-body">
                 <p className="tutor-link">Tutor: {p.tutorName}</p>
@@ -157,7 +161,7 @@ const VerPacientes = () => {
                   className="btn btn-edit"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  Editar
+                  <CiEdit />
                 </Link>
                 <button
                   onClick={(e) => {
@@ -166,7 +170,7 @@ const VerPacientes = () => {
                   }}
                   className="btn btn-delete"
                 >
-                  Eliminar
+                  <MdDeleteOutline />
                 </button>
               </div>
             </div>

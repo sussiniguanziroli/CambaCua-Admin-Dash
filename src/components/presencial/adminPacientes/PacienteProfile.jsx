@@ -346,16 +346,17 @@ const PacienteProfile = () => {
   const renderRecetas = () => (
     <div className="tab-content">
       <div className="recipe-controls">
-        <button className="btn btn-primary" onClick={() => setIsCreateRecipeModalOpen(true)}>
-          + Nueva Receta
-        </button>
+        {!paciente.fallecido && (
+            <button className="btn btn-primary" onClick={() => setIsCreateRecipeModalOpen(true)}>
+                + Nueva Receta
+            </button>
+        )}
         <div className="filters-group">
           <input type="text" name="searchTerm" placeholder="Buscar por doctor o producto..." value={recipeFilters.searchTerm} onChange={handleRecipeFilterChange} />
           <input type="date" name="startDate" value={recipeFilters.startDate} onChange={handleRecipeFilterChange} />
           <input type="date" name="endDate" value={recipeFilters.endDate} onChange={handleRecipeFilterChange} />
           <select name="sortOrder" value={recipeFilters.sortOrder} onChange={handleRecipeFilterChange}>
             <option value="date-desc">Más Recientes</option>
-
             <option value="date-asc">Más Antiguas</option>
           </select>
         </div>
@@ -375,12 +376,14 @@ const PacienteProfile = () => {
                 >
                   Ver/Imprimir
                 </button>
-                <button
-                  className="btn btn-delete-small"
-                  onClick={() => handleDeleteRecipe(recipe.id)}
-                >
-                  <FaTrash />
-                </button>
+                {!paciente.fallecido && (
+                    <button
+                        className="btn btn-delete-small"
+                        onClick={() => handleDeleteRecipe(recipe.id)}
+                    >
+                        <FaTrash />
+                    </button>
+                )}
               </div>
             </div>
           ))
@@ -451,15 +454,24 @@ const PacienteProfile = () => {
           </p>
         </div>
         <div className="profile-actions">
-          <button className="btn btn-primary" onClick={handleStartSale}>Vender</button>
+          {!paciente.fallecido && <button className="btn btn-primary" onClick={handleStartSale}>Vender</button>}
           <Link to={`/admin/edit-paciente/${id}`} className="btn btn-secondary">
             Editar Paciente
           </Link>
-          <button className="btn btn-primary" onClick={handleAddNewNote}>
-            + Nota Clínica
-          </button>
+          {!paciente.fallecido && (
+            <button className="btn btn-primary" onClick={handleAddNewNote}>
+                + Nota Clínica
+            </button>
+          )}
         </div>
       </div>
+      
+      {paciente.fallecido && (
+        <div className="fallecido-banner">
+            Fallecido el {new Date(paciente.fechaFallecimiento).toLocaleDateString('es-AR', { timeZone: 'UTC' })}
+        </div>
+      )}
+
       <div className="details-bar">
         <div className="detail-chip">
           <strong>Especie:</strong> {paciente.species}
@@ -480,6 +492,11 @@ const PacienteProfile = () => {
         <div className="detail-chip">
           <strong>Chip:</strong> {paciente.chipNumber || "N/A"}
         </div>
+        {paciente.fallecido && (
+            <div className="detail-chip">
+                <strong className="fallecido-tag">FALLECIDO</strong>
+            </div>
+        )}
       </div>
       <div className="profile-nav">
         <button
@@ -519,7 +536,7 @@ const PacienteProfile = () => {
             pacienteSpecies={paciente.species}
             pacienteTutorName={paciente.tutorName}
             onAlert={setAlert}
-            onAdd={() => setIsAddVencimientoModalOpen(true)}
+            onAdd={() => !paciente.fallecido && setIsAddVencimientoModalOpen(true)}
           />
         )}
       </div>

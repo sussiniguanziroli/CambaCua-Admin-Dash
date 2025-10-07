@@ -5,6 +5,8 @@ import { db } from '../../../firebase/config';
 import Swal from 'sweetalert2';
 import { FaPlus, FaUserMd, FaDog } from 'react-icons/fa';
 import { FaUserLarge } from 'react-icons/fa6';
+import { CiEdit } from 'react-icons/ci';
+import { MdDeleteOutline } from 'react-icons/md';
 
 const VerTutores = () => {
     const [tutores, setTutores] = useState([]);
@@ -109,8 +111,8 @@ const VerTutores = () => {
                                 </div>
                              </div>
                              <div className="tutor-card-actions">
-                                 <Link to={`/admin/edit-tutor/${tutor.id}`} className="btn btn-edit" onClick={e => e.stopPropagation()}>Editar</Link>
-                                 <button onClick={(e) => { e.stopPropagation(); handleDelete(tutor.id, tutor.name); }} className="btn btn-delete">Eliminar</button>
+                                 <Link to={`/admin/edit-tutor/${tutor.id}`} className="btn btn-edit" onClick={e => e.stopPropagation()}><CiEdit /></Link>
+                                 <button onClick={(e) => { e.stopPropagation(); handleDelete(tutor.id, tutor.name); }} className="btn btn-delete"><MdDeleteOutline /></button>
                              </div>
                         </div>
                     ))}

@@ -5262,6 +5262,102 @@ button.btn-reset:hover {
   box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
 }
 
+.tutor-profile-tab-content .tutor-account-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f1f3f5;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2.5rem;
+}
+.tutor-profile-tab-content h4 {
+  color: #3c4858;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e6ed;
+}
+
+.tutor-transactions-list .transaction-item .transaction-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.tutor-transactions-list .transaction-item .transaction-info::before {
+  content: "";
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.tutor-transactions-list .transaction-item.pago .transaction-info::before {
+  background-color: #28a745;
+}
+.tutor-transactions-list .transaction-item.venta .transaction-info::before {
+  background-color: #dc3545;
+}
+
+.custom-alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+  backdrop-filter: blur(4px);
+}
+
+.custom-alert-content {
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
+  animation: alert-pop 0.3s ease-out forwards;
+}
+.custom-alert-content .icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #fff;
+}
+.custom-alert-content .icon-circle.success {
+  background-color: #28a745;
+}
+.custom-alert-content .icon-circle.error {
+  background-color: #dc3545;
+}
+.custom-alert-content h3 {
+  margin: 0 0 0.5rem 0;
+  color: #3c4858;
+}
+.custom-alert-content p {
+  margin: 0 0 2rem 0;
+  color: #8492a6;
+}
+
+@keyframes alert-pop {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 .tutor-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -7165,6 +7261,31 @@ button.btn-reset:hover {
 .paciente-form-submit-btn:disabled {
   background-color: rgb(157.8848167539, 205.8429319372, 237.6151832461);
   cursor: not-allowed;
+}
+
+/* Estilos para pacientes fallecidos */
+.fallecido-tag {
+  background-color: #2a0303; /* Rojo */
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.paciente-card.fallecido {
+  border-left: 5px solid #450606;
+  background-color: #fff5f5; /* Un rojo muy claro */
+}
+
+.fallecido-banner {
+  background-color: #3c0707;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-bottom: 1rem;
 }
 
 .tutor-form-container {

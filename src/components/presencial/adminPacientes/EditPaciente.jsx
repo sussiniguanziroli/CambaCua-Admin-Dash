@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { doc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, getDocs, deleteField } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
 import Swal from 'sweetalert2';
 
@@ -9,7 +9,7 @@ const EditPaciente = () => {
     const navigate = useNavigate();
     const [pacienteData, setPacienteData] = useState({
         name: '', species: '', breed: '', birthDate: '', gender: 'Macho',
-        weight: '', chipNumber: '', tutorName: ''
+        weight: '', chipNumber: '', tutorName: '', fallecido: false, fechaFallecimiento: ''
     });
 
     const [isLoading, setIsLoading] = useState(true);
@@ -45,7 +45,11 @@ const EditPaciente = () => {
             const pacienteSnap = await getDoc(pacienteRef);
             if (pacienteSnap.exists()) {
                 const data = pacienteSnap.data();
-                setPacienteData(data);
+                setPacienteData({
+                    ...data,
+                    fallecido: data.fallecido || false,
+                    fechaFallecimiento: data.fechaFallecimiento || ''
+                });
                 if (data.species && fetchedEspeciesData[data.species]) {
                     setRazas(fetchedEspeciesData[data.species]);
                 }
@@ -69,12 +73,16 @@ const EditPaciente = () => {
     }, [fetchEspeciesYRazas, fetchPaciente]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
+        const val = type === 'checkbox' ? checked : value;
+
         if (name === 'species') {
             setPacienteData(prev => ({ ...prev, species: value, breed: '' }));
             setRazas(especiesData[value] || []);
+        } else if (name === 'fallecido') {
+            setPacienteData(prev => ({ ...prev, fallecido: checked, fechaFallecimiento: checked ? prev.fechaFallecimiento : '' }));
         } else {
-            setPacienteData(prev => ({ ...prev, [name]: value }));
+            setPacienteData(prev => ({ ...prev, [name]: val }));
         }
     };
 
@@ -83,6 +91,14 @@ const EditPaciente = () => {
         setIsSubmitting(true);
         try {
             const { tutorName, createdAt, clinicalHistory, ...dataToUpdate } = pacienteData;
+            
+            if (dataToUpdate.fallecido) {
+                dataToUpdate.fechaFallecimiento = dataToUpdate.fechaFallecimiento || new Date().toISOString().split('T')[0];
+            } else {
+                dataToUpdate.fallecido = deleteField();
+                dataToUpdate.fechaFallecimiento = deleteField();
+            }
+
             await updateDoc(doc(db, 'pacientes', id), dataToUpdate);
             Swal.fire('Éxito', 'Paciente actualizado correctamente.', 'success');
             navigate(`/admin/paciente-profile/${id}`);
@@ -136,6 +152,18 @@ const EditPaciente = () => {
                         <div className="paciente-form-group"><label htmlFor="weight">Peso (kg)</label><input id="weight" name="weight" type="number" step="0.1" value={pacienteData.weight} onChange={handleChange} /></div>
                         <div className="paciente-form-group"><label htmlFor="chipNumber">N° de Chip</label><input id="chipNumber" name="chipNumber" type="text" value={pacienteData.chipNumber} onChange={handleChange} /></div>
                     </div>
+                    <div className="paciente-form-group">
+                        <label htmlFor="fallecido" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <input id="fallecido" name="fallecido" type="checkbox" checked={pacienteData.fallecido} onChange={handleChange} style={{ width: 'auto' }} />
+                            Marcar como fallecido
+                        </label>
+                    </div>
+                    {pacienteData.fallecido && (
+                        <div className="paciente-form-group">
+                            <label htmlFor="fechaFallecimiento">Fecha de Fallecimiento</label>
+                            <input id="fechaFallecimiento" name="fechaFallecimiento" type="date" value={pacienteData.fechaFallecimiento} onChange={handleChange} required />
+                        </div>
+                    )}
                 </fieldset>
                 <div className="paciente-form-actions">
                     <button type="submit" className="paciente-form-submit-btn" disabled={isSubmitting}>{isSubmitting ? 'Actualizando...' : 'Actualizar Paciente'}</button>

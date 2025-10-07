@@ -10,6 +10,7 @@ const AddPaciente = () => {
     const [pacienteData, setPacienteData] = useState({
         name: '', species: '', breed: '', birthDate: '', gender: 'Macho',
         weight: '', chipNumber: '', clinicalNotes: '', tutorId: '',
+        fallecido: false, fechaFallecimiento: ''
     });
 
     const [tutores, setTutores] = useState([]);
@@ -61,12 +62,16 @@ const AddPaciente = () => {
     }, [location.search]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
+        const val = type === 'checkbox' ? checked : value;
+
         if (name === 'species') {
             setPacienteData(prev => ({ ...prev, species: value, breed: '' }));
             setRazas(especiesData[value] || []);
+        } else if (name === 'fallecido') {
+            setPacienteData(prev => ({ ...prev, fallecido: checked, fechaFallecimiento: checked ? prev.fechaFallecimiento : '' }));
         } else {
-            setPacienteData(prev => ({ ...prev, [name]: value }));
+            setPacienteData(prev => ({ ...prev, [name]: val }));
         }
     };
 
@@ -94,6 +99,11 @@ const AddPaciente = () => {
                     ? [{ date: new Date().toLocaleDateString('es-AR'), reason: 'Registro inicial', diagnosis: 'N/A', treatment: pacienteData.clinicalNotes }]
                     : []
             };
+            
+            if (pacienteData.fallecido) {
+                dataToSave.fallecido = true;
+                dataToSave.fechaFallecimiento = pacienteData.fechaFallecimiento;
+            }
 
             const docRef = await addDoc(collection(db, 'pacientes'), dataToSave);
             const tutorRef = doc(db, 'tutores', pacienteData.tutorId);
@@ -149,6 +159,18 @@ const AddPaciente = () => {
                         <div className="paciente-form-group"><label htmlFor="weight">Peso (kg)</label><input id="weight" name="weight" type="number" step="0.1" value={pacienteData.weight} onChange={handleChange} /></div>
                         <div className="paciente-form-group"><label htmlFor="chipNumber">N° de Chip</label><input id="chipNumber" name="chipNumber" type="text" value={pacienteData.chipNumber} onChange={handleChange} /></div>
                     </div>
+                     <div className="paciente-form-group">
+                        <label htmlFor="fallecido" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <input id="fallecido" name="fallecido" type="checkbox" checked={pacienteData.fallecido} onChange={handleChange} style={{ width: 'auto' }} />
+                            Marcar como fallecido
+                        </label>
+                    </div>
+                    {pacienteData.fallecido && (
+                        <div className="paciente-form-group">
+                            <label htmlFor="fechaFallecimiento">Fecha de Fallecimiento</label>
+                            <input id="fechaFallecimiento" name="fechaFallecimiento" type="date" value={pacienteData.fechaFallecimiento} onChange={handleChange} required />
+                        </div>
+                    )}
                     <div className="paciente-form-group"><label htmlFor="clinicalNotes">Notas Iniciales</label><textarea id="clinicalNotes" name="clinicalNotes" rows="4" value={pacienteData.clinicalNotes} onChange={handleChange}></textarea></div>
                 </fieldset>
                 <div className="paciente-form-actions">
