@@ -8,12 +8,17 @@ const AddPaciente = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [pacienteData, setPacienteData] = useState({
-        name: '', species: '', breed: '', birthDate: '', gender: 'Macho', 
+        name: '', species: '', breed: '', birthDate: '', gender: 'Macho',
         weight: '', chipNumber: '', clinicalNotes: '', tutorId: '',
     });
+
     const [tutores, setTutores] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isLoadingTutores, setIsLoadingTutores] = useState(true);
+
+    const [especiesData, setEspeciesData] = useState({});
+    const [razas, setRazas] = useState([]);
+    const [isLoadingEspecies, setIsLoadingEspecies] = useState(true);
 
     useEffect(() => {
         const fetchTutores = async () => {
@@ -27,7 +32,26 @@ const AddPaciente = () => {
                 setIsLoadingTutores(false);
             }
         };
+
+        const fetchEspeciesYRazas = async () => {
+            setIsLoadingEspecies(true);
+            try {
+                const snapshot = await getDocs(collection(db, 'db_especies_razas'));
+                const data = {};
+                snapshot.forEach(doc => {
+                    const docData = doc.data();
+                    data[docData.especie] = docData.razas.sort();
+                });
+                setEspeciesData(data);
+            } catch (error) {
+                Swal.fire('Error', 'No se pudieron cargar las especies y razas.', 'error');
+            } finally {
+                setIsLoadingEspecies(false);
+            }
+        };
+
         fetchTutores();
+        fetchEspeciesYRazas();
 
         const params = new URLSearchParams(location.search);
         const tutorIdFromUrl = params.get('tutorId');
@@ -38,7 +62,12 @@ const AddPaciente = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setPacienteData(prev => ({ ...prev, [name]: value }));
+        if (name === 'species') {
+            setPacienteData(prev => ({ ...prev, species: value, breed: '' }));
+            setRazas(especiesData[value] || []);
+        } else {
+            setPacienteData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -61,8 +90,8 @@ const AddPaciente = () => {
                 tutorId: pacienteData.tutorId,
                 tutorName: selectedTutor.name,
                 createdAt: serverTimestamp(),
-                clinicalHistory: pacienteData.clinicalNotes 
-                    ? [{ date: new Date().toLocaleDateString('es-AR'), reason: 'Registro inicial', diagnosis: 'N/A', treatment: pacienteData.clinicalNotes }] 
+                clinicalHistory: pacienteData.clinicalNotes
+                    ? [{ date: new Date().toLocaleDateString('es-AR'), reason: 'Registro inicial', diagnosis: 'N/A', treatment: pacienteData.clinicalNotes }]
                     : []
             };
 
@@ -88,23 +117,35 @@ const AddPaciente = () => {
                     <div className="paciente-form-group">
                         <label htmlFor="tutorId">Tutor</label>
                         <select id="tutorId" name="tutorId" value={pacienteData.tutorId} onChange={handleChange} required disabled={isLoadingTutores}>
-                             <option value="">{isLoadingTutores ? 'Cargando...' : 'Seleccionar Tutor'}</option>
-                             {tutores.map(tutor => <option key={tutor.id} value={tutor.id}>{tutor.name}</option>)}
+                            <option value="">{isLoadingTutores ? 'Cargando...' : 'Seleccionar Tutor'}</option>
+                            {tutores.map(tutor => <option key={tutor.id} value={tutor.id}>{tutor.name}</option>)}
                         </select>
                     </div>
                     <div className="paciente-form-group"><label htmlFor="name">Nombre</label><input id="name" name="name" type="text" value={pacienteData.name} onChange={handleChange} required /></div>
                     <div className="paciente-form-row">
-                        <div className="paciente-form-group"><label htmlFor="species">Especie</label><input id="species" name="species" type="text" value={pacienteData.species} onChange={handleChange} required /></div>
-                        <div className="paciente-form-group"><label htmlFor="breed">Raza</label><input id="breed" name="breed" type="text" value={pacienteData.breed} onChange={handleChange} /></div>
+                        <div className="paciente-form-group">
+                            <label htmlFor="species">Especie</label>
+                            <select id="species" name="species" value={pacienteData.species} onChange={handleChange} required disabled={isLoadingEspecies}>
+                                <option value="">{isLoadingEspecies ? 'Cargando...' : 'Seleccionar Especie'}</option>
+                                {Object.keys(especiesData).map(especie => <option key={especie} value={especie}>{especie}</option>)}
+                            </select>
+                        </div>
+                        <div className="paciente-form-group">
+                            <label htmlFor="breed">Raza</label>
+                            <select id="breed" name="breed" value={pacienteData.breed} onChange={handleChange} disabled={!pacienteData.species}>
+                                <option value="">Seleccionar Raza</option>
+                                {razas.map(raza => <option key={raza} value={raza}>{raza}</option>)}
+                            </select>
+                        </div>
                     </div>
-                     <div className="paciente-form-row">
+                    <div className="paciente-form-row">
                         <div className="paciente-form-group"><label htmlFor="birthDate">Fecha de Nacimiento</label><input id="birthDate" name="birthDate" type="date" value={pacienteData.birthDate} onChange={handleChange} /></div>
                         <div className="paciente-form-group"><label htmlFor="gender">Sexo</label><select id="gender" name="gender" value={pacienteData.gender} onChange={handleChange}><option value="Macho">Macho</option><option value="Hembra">Hembra</option></select></div>
                     </div>
                 </fieldset>
                 <fieldset className="paciente-form-fieldset">
                     <legend>Datos Clínicos</legend>
-                     <div className="paciente-form-row">
+                    <div className="paciente-form-row">
                         <div className="paciente-form-group"><label htmlFor="weight">Peso (kg)</label><input id="weight" name="weight" type="number" step="0.1" value={pacienteData.weight} onChange={handleChange} /></div>
                         <div className="paciente-form-group"><label htmlFor="chipNumber">N° de Chip</label><input id="chipNumber" name="chipNumber" type="text" value={pacienteData.chipNumber} onChange={handleChange} /></div>
                     </div>
@@ -119,4 +160,3 @@ const AddPaciente = () => {
 };
 
 export default AddPaciente;
-

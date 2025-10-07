@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
 import Swal from 'sweetalert2';
 
@@ -11,16 +11,44 @@ const EditPaciente = () => {
         name: '', species: '', breed: '', birthDate: '', gender: 'Macho',
         weight: '', chipNumber: '', tutorName: ''
     });
+
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const fetchPaciente = useCallback(async () => {
+    const [especiesData, setEspeciesData] = useState({});
+    const [razas, setRazas] = useState([]);
+    const [isLoadingEspecies, setIsLoadingEspecies] = useState(true);
+
+    const fetchEspeciesYRazas = useCallback(async () => {
+        setIsLoadingEspecies(true);
+        try {
+            const snapshot = await getDocs(collection(db, 'db_especies_razas'));
+            const data = {};
+            snapshot.forEach(doc => {
+                const docData = doc.data();
+                data[docData.especie] = docData.razas.sort();
+            });
+            setEspeciesData(data);
+            return data;
+        } catch (error) {
+            Swal.fire('Error', 'No se pudieron cargar las especies y razas.', 'error');
+            return {};
+        } finally {
+            setIsLoadingEspecies(false);
+        }
+    }, []);
+
+    const fetchPaciente = useCallback(async (fetchedEspeciesData) => {
         setIsLoading(true);
         try {
             const pacienteRef = doc(db, 'pacientes', id);
             const pacienteSnap = await getDoc(pacienteRef);
             if (pacienteSnap.exists()) {
-                setPacienteData(pacienteSnap.data());
+                const data = pacienteSnap.data();
+                setPacienteData(data);
+                if (data.species && fetchedEspeciesData[data.species]) {
+                    setRazas(fetchedEspeciesData[data.species]);
+                }
             } else {
                 Swal.fire('Error', 'Paciente no encontrado.', 'error');
                 navigate('/admin/pacientes');
@@ -33,12 +61,21 @@ const EditPaciente = () => {
     }, [id, navigate]);
 
     useEffect(() => {
-        fetchPaciente();
-    }, [fetchPaciente]);
+        const loadAllData = async () => {
+            const fetchedEspeciesData = await fetchEspeciesYRazas();
+            await fetchPaciente(fetchedEspeciesData);
+        };
+        loadAllData();
+    }, [fetchEspeciesYRazas, fetchPaciente]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setPacienteData(prev => ({ ...prev, [name]: value }));
+        if (name === 'species') {
+            setPacienteData(prev => ({ ...prev, species: value, breed: '' }));
+            setRazas(especiesData[value] || []);
+        } else {
+            setPacienteData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -73,17 +110,29 @@ const EditPaciente = () => {
                         <input id="name" name="name" type="text" value={pacienteData.name} onChange={handleChange} required />
                     </div>
                     <div className="paciente-form-row">
-                        <div className="paciente-form-group"><label htmlFor="species">Especie</label><input id="species" name="species" type="text" value={pacienteData.species} onChange={handleChange} required /></div>
-                        <div className="paciente-form-group"><label htmlFor="breed">Raza</label><input id="breed" name="breed" type="text" value={pacienteData.breed} onChange={handleChange} /></div>
+                        <div className="paciente-form-group">
+                            <label htmlFor="species">Especie</label>
+                            <select id="species" name="species" value={pacienteData.species} onChange={handleChange} required disabled={isLoadingEspecies}>
+                                <option value="">{isLoadingEspecies ? 'Cargando...' : 'Seleccionar Especie'}</option>
+                                {Object.keys(especiesData).map(especie => <option key={especie} value={especie}>{especie}</option>)}
+                            </select>
+                        </div>
+                        <div className="paciente-form-group">
+                            <label htmlFor="breed">Raza</label>
+                            <select id="breed" name="breed" value={pacienteData.breed} onChange={handleChange} disabled={!pacienteData.species}>
+                                <option value="">Seleccionar Raza</option>
+                                {razas.map(raza => <option key={raza} value={raza}>{raza}</option>)}
+                            </select>
+                        </div>
                     </div>
-                     <div className="paciente-form-row">
+                    <div className="paciente-form-row">
                         <div className="paciente-form-group"><label htmlFor="birthDate">Fecha de Nacimiento</label><input id="birthDate" name="birthDate" type="date" value={pacienteData.birthDate} onChange={handleChange} /></div>
                         <div className="paciente-form-group"><label htmlFor="gender">Sexo</label><select id="gender" name="gender" value={pacienteData.gender} onChange={handleChange}><option value="Macho">Macho</option><option value="Hembra">Hembra</option></select></div>
                     </div>
                 </fieldset>
                 <fieldset className="paciente-form-fieldset">
                     <legend>Datos Clínicos</legend>
-                     <div className="paciente-form-row">
+                    <div className="paciente-form-row">
                         <div className="paciente-form-group"><label htmlFor="weight">Peso (kg)</label><input id="weight" name="weight" type="number" step="0.1" value={pacienteData.weight} onChange={handleChange} /></div>
                         <div className="paciente-form-group"><label htmlFor="chipNumber">N° de Chip</label><input id="chipNumber" name="chipNumber" type="text" value={pacienteData.chipNumber} onChange={handleChange} /></div>
                     </div>
@@ -97,4 +146,3 @@ const EditPaciente = () => {
 };
 
 export default EditPaciente;
-
