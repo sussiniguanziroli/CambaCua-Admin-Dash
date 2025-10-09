@@ -4,6 +4,7 @@ import {
   collection,
   collectionGroup,
   getDocs,
+  getDoc,
   query,
   where,
   Timestamp,
@@ -122,16 +123,20 @@ const ClinicDashboard = () => {
       );
       setCajaSummary(summary);
 
-      const historyData = historySnap.docs.map((doc) => {
-        const data = doc.data();
-        const patientRef = doc.ref.parent.parent;
-        return {
-          ...data,
-          id: doc.id,
-          pacienteId: patientRef.id,
-          date: data.createdAt.toDate().toLocaleDateString("es-AR"),
-        };
-      });
+      const historyData = await Promise.all(
+        historySnap.docs.map(async (doc) => {
+          const data = doc.data();
+          const patientRef = doc.ref.parent.parent;
+          const patientSnap = await getDoc(patientRef);
+          return {
+            ...data,
+            id: doc.id,
+            pacienteId: patientRef.id,
+            pacienteName: patientSnap.exists() ? patientSnap.data().name : undefined,
+            date: data.createdAt.toDate().toLocaleDateString("es-AR"),
+          };
+        })
+      );
       setRecentHistory(historyData);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
@@ -167,6 +172,7 @@ const ClinicDashboard = () => {
         <p>Cargando datos del panel...</p>
       ) : (
         <main className="dashboard-grid">
+          {/* Citas */}
           <div
             className={`dashboard-widget widget-citas ${
               expandedWidget === "citas" ? "expanded" : ""
@@ -183,6 +189,24 @@ const ClinicDashboard = () => {
               <span className="widget-count">{citasHoy.length}</span>
             </div>
             <div className="widget-body">
+              {/* QUICK GLANCE */}
+              <div className="widget-content-collapsed">
+                <p>
+                  {citasHoy.length === 0
+                    ? "No hay citas para hoy."
+                    : `${citasHoy.length} ${
+                        citasHoy.length === 1 ? "cita" : "citas"
+                      } para hoy${
+                        citasHoy[0]?.startTime
+                          ? ` — primera a las ${citasHoy[0].startTime.toLocaleTimeString("es-AR", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}`
+                          : ""
+                      }`}
+                </p>
+              </div>
+
               <div className="widget-content-expanded">
                 {citasHoy.length > 0 ? (
                   citasHoy.map((cita) => (
