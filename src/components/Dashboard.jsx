@@ -18,7 +18,7 @@ import EditTutor from './presencial/adminTutores/EditTutor';
 import VerPacientes from './presencial/adminPacientes/VerPacientes';
 import AddPaciente from './presencial/adminPacientes/AddPaciente';
 import EditPaciente from './presencial/adminPacientes/EditPaciente';
-import { FaStore, FaShoppingCart, FaUsers, FaTag, FaTicketAlt, FaPlus, FaListUl, FaHistory, FaHeartbeat, FaStethoscope, FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt, FaMoneyCheckAlt, FaUserMd, FaCashRegister, FaChartBar } from 'react-icons/fa';
+import { FaStore, FaShoppingCart, FaUsers, FaTag, FaTicketAlt, FaPlus, FaListUl, FaHistory, FaHeartbeat, FaStethoscope, FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt, FaMoneyCheckAlt, FaUserMd, FaCashRegister, FaChartBar, FaRegCalendarAlt } from 'react-icons/fa';
 import ResumenSemanal from './administracion/ResumenSemanal';
 import CajaDiaria from './administracion/CajaDiaria';
 import { FaBookBookmark, FaUserDoctor } from 'react-icons/fa6';
@@ -30,6 +30,12 @@ import MonitorVencimientos from './presencial/agenda/MonitorVencimientos';
 import MonitorClinica from './presencial/agenda/MonitorClinica';
 import { MdDashboard } from 'react-icons/md';
 import ClinicDashboard from './administracion/ClinicalDashboard';
+import VerPeluqueros from './presencial/adminPeluqueria/VerPeluqueros';
+import PeluqueroProfile from './presencial/adminPeluqueria/PeluqueroProfile';
+import AddPeluquero from './presencial/adminPeluqueria/AddPeluquero';
+import EditPeluquero from './presencial/adminPeluqueria/EditPeluquero';
+import AgendaPeluqueria from './presencial/adminPeluqueria/AgendaPeluqueria';
+import { PiBathtub } from 'react-icons/pi';
 
 const Dashboard = ({ user, handleLogout }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768);
@@ -120,6 +126,12 @@ const Dashboard = ({ user, handleLogout }) => {
                 { path: '/admin/add-presential', label: 'Agregar Item Presencial', icon: <FaPlus /> },
             ]
         },
+        { 
+            name: 'Peluquería', 
+            icon: <PiBathtub />, 
+            items: [ 
+                { path: '/admin/peluqueros', label: 'Ver Peluqueros', icon: <FaUsers /> }, 
+                { path: '/admin/agenda-peluqueria', label: 'Agenda Peluquería', icon: <FaRegCalendarAlt/> } ]},
     ];
 
     return (
@@ -174,6 +186,11 @@ const Dashboard = ({ user, handleLogout }) => {
                         <Route path="/admin/monitor-vencimientos" element={<MonitorVencimientos />} />
                         <Route path="/admin/monitor-clinica" element={<MonitorClinica />} />
                         <Route path="/admin/main-dashboard" element={<ClinicDashboard />} />
+                        <Route path="/admin/peluqueros" element={<VerPeluqueros />} />
+                        <Route path="/admin/peluqueros/:id" element={<PeluqueroProfile />} />
+                        <Route path="/admin/add-peluquero" element={<AddPeluquero/>} />
+                        <Route path="/admin/edit-peluquero/:id" element={<EditPeluquero />} />
+                        <Route path="/admin/agenda-peluqueria" element={<AgendaPeluqueria />} />
                     </Routes>
                 </main>
             </div>

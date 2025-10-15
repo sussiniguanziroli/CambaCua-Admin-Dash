@@ -106,6 +106,33 @@ $border-radius: 8px;
     }
 }
 
+// --- Horizontal Checkbox Group for Service Types ---
+.tutor-checkbox-group-horizontal {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    padding-top: 0.5rem;
+}
+
+.tutor-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    label {
+        color: $text-color;
+        font-weight: normal;
+        margin-bottom: 0;
+    }
+
+    input[type="checkbox"] {
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
+    }
+}
+
+
 // --- Tutor Form Actions (Submit Button) ---
 .tutor-form-actions {
     display: flex;
@@ -132,4 +159,3 @@ $border-radius: 8px;
         cursor: not-allowed;
     }
 }
-

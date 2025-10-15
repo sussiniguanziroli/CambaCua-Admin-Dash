@@ -10,6 +10,10 @@ $shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 $transition-speed: 0.3s;
 $border-radius: 12px;
 
+// --- Service-specific colors ---
+$clinical-color: #2ECC71;
+$grooming-color: #9B59B6;
+
 // --- Main Grid for Tutor Cards ---
 .tutor-cards-grid {
     display: grid;
@@ -82,6 +86,7 @@ $border-radius: 12px;
     padding: 0 1.5rem 1.5rem 1.5rem;
     display: flex;
     gap: 0.75rem;
+    flex-wrap: wrap; // Allows content to wrap to the next line
     
     .info-chip {
         display: inline-flex;
@@ -105,6 +110,39 @@ $border-radius: 12px;
             background-color: lighten($error-color, 30%);
             color: $error-color;
             font-weight: 600;
+        }
+    }
+
+    .service-chips-container {
+        display: flex;
+        gap: 0.75rem;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .service-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+
+        svg {
+            font-size: 1rem;
+        }
+
+        &.clinical {
+            background-color: lighten($clinical-color, 38%);
+            color: darken($clinical-color, 15%);
+            svg { color: darken($clinical-color, 15%); }
+        }
+
+        &.grooming {
+            background-color: lighten($grooming-color, 35%);
+            color: darken($grooming-color, 15%);
+            svg { color: darken($grooming-color, 15%); }
         }
     }
 }

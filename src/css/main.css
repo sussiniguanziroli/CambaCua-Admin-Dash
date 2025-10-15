@@ -5423,6 +5423,7 @@ button.btn-reset:hover {
   padding: 0 1.5rem 1.5rem 1.5rem;
   display: flex;
   gap: 0.75rem;
+  flex-wrap: wrap;
 }
 .tutor-card-body .info-chip {
   display: inline-flex;
@@ -5445,6 +5446,38 @@ button.btn-reset:hover {
   background-color: rgb(247.7671232877, 201.0547945205, 196.2328767123);
   color: #e74c3c;
   font-weight: 600;
+}
+.tutor-card-body .service-chips-container {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+.tutor-card-body .service-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.tutor-card-body .service-chip svg {
+  font-size: 1rem;
+}
+.tutor-card-body .service-chip.clinical {
+  background-color: rgb(200.9808, 242.8192, 218.7224);
+  color: rgb(31.924, 141.576, 78.422);
+}
+.tutor-card-body .service-chip.clinical svg {
+  color: rgb(31.924, 141.576, 78.422);
+}
+.tutor-card-body .service-chip.grooming {
+  background-color: rgb(229.6861924686, 212.9790794979, 236.5209205021);
+  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
+}
+.tutor-card-body .service-chip.grooming svg {
+  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
 }
 
 .tutor-card-actions {
@@ -6258,8 +6291,38 @@ button.btn-reset:hover {
   padding: 1rem 1.5rem;
   margin-top: auto;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 0.75rem;
+}
+.paciente-card-actions .service-type-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: auto;
+}
+.paciente-card-actions .service-type-selector svg {
+  color: #8492a6;
+  font-size: 1.2rem;
+}
+.paciente-card-actions .service-type-selector .service-type-dropdown {
+  background-color: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #3c4858;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+.paciente-card-actions .service-type-selector .service-type-dropdown:hover {
+  background-color: #f1f3f5;
+}
+.paciente-card-actions .service-type-selector .service-type-dropdown:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(222.7696335079, 238.6858638743, 249.2303664921);
 }
 
 .sale-summary-box {
@@ -7238,6 +7301,29 @@ button.btn-reset:hover {
   min-height: 100px;
 }
 
+.paciente-checkbox-group-horizontal {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding-top: 0.5rem;
+}
+
+.paciente-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.paciente-checkbox-item label {
+  color: #3c4858;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+.paciente-checkbox-item input[type=checkbox] {
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
 .paciente-form-actions {
   display: flex;
   justify-content: flex-end;
@@ -7385,6 +7471,29 @@ button.btn-reset:hover {
 .tutor-checkbox-group input[type=checkbox] {
   width: 1.2rem;
   height: 1.2rem;
+}
+
+.tutor-checkbox-group-horizontal {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding-top: 0.5rem;
+}
+
+.tutor-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tutor-checkbox-item label {
+  color: #3c4858;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+.tutor-checkbox-item input[type=checkbox] {
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
 }
 
 .tutor-form-actions {

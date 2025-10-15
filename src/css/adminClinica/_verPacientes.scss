@@ -86,6 +86,41 @@ $border-radius: 12px;
     padding: 1rem 1.5rem;
     margin-top: auto;
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     gap: 0.75rem;
+
+    .service-type-selector {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-right: auto; // Pushes this element to the far left
+
+        svg {
+            color: $text-light;
+            font-size: 1.2rem;
+        }
+
+        .service-type-dropdown {
+            background-color: transparent;
+            border: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: $text-color;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: background-color $transition-speed;
+
+            &:hover {
+                background-color: #f1f3f5;
+            }
+
+            &:focus {
+                outline: none;
+                box-shadow: 0 0 0 2px lighten($primary-color, 30%);
+            }
+        }
+    }
 }
