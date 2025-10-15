@@ -4,6 +4,32 @@ import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, Timestamp, quer
 import Swal from 'sweetalert2';
 import { FaRegCalendarAlt, FaRegClock, FaDog } from 'react-icons/fa';
 
+const GroomingAppointmentCard = ({ appointment, onClick, viewMode }) => {
+    const getCardPosition = () => {
+        if (viewMode !== 'day' || !appointment.startTime) return {};
+        const startHour = appointment.startTime.getHours();
+        const startMinute = appointment.startTime.getMinutes();
+        const top = (startHour - 8) * 60 + startMinute;
+        return { top: `${top}px`, height: '60px' }; // Default height for grooming appointments
+    };
+
+    return (
+        <div
+            className={`appointment-card view-${viewMode}`}
+            style={getCardPosition()}
+            onClick={onClick}
+        >
+            <p className="patient-name">{appointment.pacienteName}</p>
+            <p className="service-name">
+                <FaDog /> {(appointment.services && appointment.services.length > 0) ? appointment.services.map(s => s.name).join(', ') : 'Turno'}
+            </p>
+            <p className="time-range">
+                <FaRegClock /> {appointment.startTime.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
+            </p>
+        </div>
+    );
+};
+
 const GroomingAppointmentModal = ({ isOpen, onClose, selectedDate, appointmentData, onSave, onDelete }) => {
     const [formData, setFormData] = useState({ tutor: null, paciente: null, peluquero: null, date: '', startTime: '', services: [], notes: '' });
     const [tutores, setTutores] = useState([]);
@@ -169,9 +195,20 @@ const AgendaPeluqueria = () => {
                     {dateRange.map(day => (
                         <div key={day.toISOString()} className="day-column">
                             <div className={`day-header ${isToday(day) ? 'current-day' : ''}`} onClick={() => handleOpenModalForNew(day)}><span className="day-name">{day.toLocaleDateString('es-AR', { weekday: 'short' })}</span><span className="day-number">{day.getDate()}</span></div>
-                            <div className="appointments-area">{appointments.filter(a => a.startTime.toDateString() === day.toDateString()).sort((a, b) => a.startTime - b.startTime).map(app => (
-                                <div key={app.id} className="appointment-card" onClick={() => handleOpenModalForEdit(app)}><p className="patient-name">{app.pacienteName}</p><p className="service-name"><FaDog /> {(app.services && app.services.length > 0) ? app.services.map(s => s.name).join(', ') : 'Turno'}</p><p className="time-range"><FaRegClock /> {app.startTime.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}</p></div>
-                            ))}</div>
+                            <div className="appointments-area">
+                                {appointments
+                                    .filter(a => a.startTime.toDateString() === day.toDateString())
+                                    .sort((a, b) => a.startTime - b.startTime)
+                                    .map(app => (
+                                        <GroomingAppointmentCard
+                                            key={app.id}
+                                            appointment={app}
+                                            onClick={() => handleOpenModalForEdit(app)}
+                                            viewMode={viewMode}
+                                        />
+                                    ))
+                                }
+                            </div>
                         </div>
                     ))}
                 </div>

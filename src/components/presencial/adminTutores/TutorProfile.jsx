@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   doc,
@@ -12,7 +12,8 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../../firebase/config";
-import { FaDog, FaCat } from "react-icons/fa";
+import { FaDog, FaCat, FaStethoscope } from "react-icons/fa";
+import { PiBathtub } from "react-icons/pi";
 import LoaderSpinner from "../../utils/LoaderSpinner";
 
 const PaymentModal = ({ tutor, onClose, onPaymentSuccess, setAlertInfo }) => {
@@ -136,12 +137,17 @@ const TutorProfile = () => {
   const navigate = useNavigate();
   const [tutor, setTutor] = useState(null);
   const [pacientes, setPacientes] = useState([]);
-  const [citas, setCitas] = useState([]);
+  const [allAppointments, setAllAppointments] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("cuenta");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [alertInfo, setAlertInfo] = useState(null);
+  const [citasFilters, setCitasFilters] = useState({
+    startDate: "",
+    endDate: "",
+    serviceType: "todos",
+  });
 
   const fetchAllData = useCallback(async () => {
     setIsLoading(true);
@@ -160,7 +166,7 @@ const TutorProfile = () => {
       const tutorData = { id: tutorSnap.id, ...tutorSnap.data() };
       setTutor(tutorData);
 
-      const [pacientesSnap, salesSnap, paymentsSnap, citasSnap] =
+      const [pacientesSnap, salesSnap, paymentsSnap, citasSnap, groomingSnap] =
         await Promise.all([
           getDocs(
             query(collection(db, "pacientes"), where("tutorId", "==", id))
@@ -175,15 +181,34 @@ const TutorProfile = () => {
             query(collection(db, "pagos_deuda"), where("tutorId", "==", id))
           ),
           getDocs(query(collection(db, "citas"), where("tutorId", "==", id))),
+          getDocs(
+            query(
+              collection(db, "turnos_peluqueria"),
+              where("tutorId", "==", id)
+            )
+          ),
         ]);
+
       setPacientes(pacientesSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
-      setCitas(
-        citasSnap.docs.map((d) => ({
-          id: d.id,
-          ...d.data(),
-          startTime: d.data().startTime.toDate(),
-        }))
+
+      const clinicalAppointments = citasSnap.docs.map((d) => ({
+        ...d.data(),
+        id: d.id,
+        appointmentType: "clinical",
+        startTime: d.data().startTime.toDate(),
+      }));
+      const groomingAppointments = groomingSnap.docs.map((d) => ({
+        ...d.data(),
+        id: d.id,
+        appointmentType: "grooming",
+        startTime: d.data().startTime.toDate(),
+      }));
+      setAllAppointments(
+        [...clinicalAppointments, ...groomingAppointments].sort(
+          (a, b) => b.startTime - a.startTime
+        )
       );
+
       const sales = salesSnap.docs.map((d) => ({
         ...d.data(),
         id: d.id,
@@ -213,6 +238,31 @@ const TutorProfile = () => {
   useEffect(() => {
     fetchAllData();
   }, [fetchAllData]);
+
+  const handleCitasFilterChange = (e) => {
+    const { name, value } = e.target;
+    setCitasFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const filteredAppointments = useMemo(() => {
+    let filtered = [...allAppointments];
+    if (citasFilters.serviceType !== "todos") {
+      filtered = filtered.filter(
+        (a) => a.appointmentType === citasFilters.serviceType
+      );
+    }
+    if (citasFilters.startDate) {
+      const start = new Date(citasFilters.startDate);
+      start.setHours(0, 0, 0, 0);
+      filtered = filtered.filter((a) => a.startTime >= start);
+    }
+    if (citasFilters.endDate) {
+      const end = new Date(citasFilters.endDate);
+      end.setHours(23, 59, 59, 999);
+      filtered = filtered.filter((a) => a.startTime <= end);
+    }
+    return filtered;
+  }, [allAppointments, citasFilters]);
 
   const handleStartSale = () => {
     navigate("/admin/vender", {
@@ -273,27 +323,51 @@ const TutorProfile = () => {
       case "citas":
         return (
           <div className="tab-content">
-            {citas.length > 0 ? (
-              citas
-                .sort((a, b) => b.startTime - a.startTime)
-                .map((c) => (
-                  <div key={c.id} className="cita-card">
-                    <p>
-                      <strong>Paciente:</strong> {c.pacienteName}
-                    </p>
-                    <p>
-                      <strong>Fecha:</strong>{" "}
-                      {c.startTime.toLocaleString("es-AR")}
-                    </p>
-                    <p>
-                      <strong>Servicios:</strong>{" "}
-                      {c.services?.map((s) => s.nombre || s.name).join(", ") ||
-                        "N/A"}
-                    </p>
-                  </div>
-                ))
+            <div className="citas-controls">
+              <select
+                name="serviceType"
+                value={citasFilters.serviceType}
+                onChange={handleCitasFilterChange}
+              >
+                <option value="todos">Todos los Servicios</option>
+                <option value="clinical">Clínica</option>
+                <option value="grooming">Peluquería</option>
+              </select>
+              <input
+                type="date"
+                name="startDate"
+                value={citasFilters.startDate}
+                onChange={handleCitasFilterChange}
+              />
+              <input
+                type="date"
+                name="endDate"
+                value={citasFilters.endDate}
+                onChange={handleCitasFilterChange}
+              />
+            </div>
+            {filteredAppointments.length > 0 ? (
+              filteredAppointments.map((c) => (
+                <div key={c.id} className="cita-card">
+                  <p>
+                    <strong>Paciente:</strong> {c.pacienteName}
+                  </p>
+                  <p>
+                    <strong>Fecha:</strong>{" "}
+                    {c.startTime.toLocaleString("es-AR")}
+                  </p>
+                  <p>
+                    <strong>Servicios:</strong>{" "}
+                    {c.appointmentType === "clinical"
+                      ? c.services?.map((s) => s.nombre || s.name).join(", ") ||
+                        "Consulta"
+                      : c.services?.map((s) => s.name).join(", ") ||
+                        "Servicio Peluquería"}
+                  </p>
+                </div>
+              ))
             ) : (
-              <p>No hay citas.</p>
+              <p>No hay citas para los filtros seleccionados.</p>
             )}
           </div>
         );
@@ -414,6 +488,22 @@ const TutorProfile = () => {
         <div className="profile-info">
           <h1>{tutor.name}</h1>
           <p>{tutor.email}</p>
+          {tutor.serviceTypes && tutor.serviceTypes.length > 0 && (
+            <div className="service-chips-container">
+              {tutor.serviceTypes.includes("clinical") && (
+                <div className="service-chip clinical">
+                  <FaStethoscope />
+                  <span>Clínica</span>
+                </div>
+              )}
+              {tutor.serviceTypes.includes("grooming") && (
+                <div className="service-chip grooming">
+                  <PiBathtub />
+                  <span>Peluquería</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <div className="profile-actions">
           <button className="btn btn-primary" onClick={handleStartSale}>
@@ -450,7 +540,7 @@ const TutorProfile = () => {
           className={activeTab === "citas" ? "active" : ""}
           onClick={() => setActiveTab("citas")}
         >
-          Citas ({citas.length})
+          Citas
         </button>
         <button
           className={activeTab === "cuenta" ? "active" : ""}

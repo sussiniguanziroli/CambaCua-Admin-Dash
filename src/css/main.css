@@ -5033,6 +5033,37 @@ button.btn-reset:hover {
   margin: 0;
   color: #8492a6;
 }
+.profile-header .service-chips-container {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.profile-header .service-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.profile-header .service-chip svg {
+  font-size: 1rem;
+}
+.profile-header .service-chip.clinical {
+  background-color: rgb(200.9808, 242.8192, 218.7224);
+  color: rgb(31.924, 141.576, 78.422);
+}
+.profile-header .service-chip.clinical svg {
+  color: rgb(31.924, 141.576, 78.422);
+}
+.profile-header .service-chip.grooming {
+  background-color: rgb(229.6861924686, 212.9790794979, 236.5209205021);
+  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
+}
+.profile-header .service-chip.grooming svg {
+  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
+}
 .profile-header .profile-actions {
   display: flex;
   gap: 1rem;
@@ -5113,6 +5144,22 @@ button.btn-reset:hover {
 }
 .paciente-card-profile .paciente-breed {
   color: #8492a6;
+}
+
+.citas-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.citas-controls input, .citas-controls select {
+  padding: 0.75rem;
+  border: 1px solid #e0e6ed;
+  border-radius: 9px;
+  font-size: 1rem;
+}
+.citas-controls select {
+  flex-grow: 1;
 }
 
 .cita-card {
@@ -5911,6 +5958,7 @@ button.btn-reset:hover {
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
+  align-items: center;
 }
 .details-bar .detail-chip {
   background-color: #fff;
@@ -5921,6 +5969,36 @@ button.btn-reset:hover {
 }
 .details-bar .detail-chip strong {
   color: #2980b9;
+}
+.details-bar .service-chips-inline {
+  display: flex;
+  gap: 0.75rem;
+}
+.details-bar .service-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.details-bar .service-chip svg {
+  font-size: 1rem;
+}
+.details-bar .service-chip.clinical {
+  background-color: rgb(200.9808, 242.8192, 218.7224);
+  color: rgb(31.924, 141.576, 78.422);
+}
+.details-bar .service-chip.clinical svg {
+  color: rgb(31.924, 141.576, 78.422);
+}
+.details-bar .service-chip.grooming {
+  background-color: rgb(229.6861924686, 212.9790794979, 236.5209205021);
+  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
+}
+.details-bar .service-chip.grooming svg {
+  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
 }
 
 .profile-nav {
@@ -5961,19 +6039,19 @@ button.btn-reset:hover {
   color: #576677;
 }
 
-.history-controls {
+.history-controls, .citas-controls {
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
   flex-wrap: wrap;
 }
-.history-controls input, .history-controls select {
+.history-controls input, .history-controls select, .citas-controls input, .citas-controls select {
   padding: 0.75rem;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   font-size: 1rem;
 }
-.history-controls input[type=text] {
+.history-controls input[type=text], .citas-controls input[type=text] {
   flex-grow: 1;
   min-width: 200px;
 }

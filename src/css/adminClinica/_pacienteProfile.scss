@@ -1,13 +1,24 @@
 @import '../presencial/sharedStyles';
 
+// --- Service-specific colors ---
+$clinical-color: #2ECC71;
+$grooming-color: #9B59B6;
+
 .profile-container.paciente-profile { max-width: 1200px; margin: 2rem auto; padding: 1rem; }
 .profile-header { background: $white-color; padding: 2rem; border-radius: $border-radius; box-shadow: $shadow; display: flex; align-items: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap;
     .profile-avatar { font-size: 3rem; color: $primary-color; background-color: lighten($primary-color, 38%); border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .profile-info { flex-grow: 1; h1, p { margin: 0; } h1 { font-size: 2rem; color: $text-color; } p { color: $text-light; font-size: 1.1rem; a { color: $primary-color; text-decoration: none; &:hover { text-decoration: underline; } } } }
     .profile-actions { display: flex; gap: 1rem; flex-shrink: 0; }
 }
-.details-bar { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;
+.details-bar { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; align-items: center;
     .detail-chip { background-color: $white-color; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; border: 1px solid $border-color; strong { color: $primary-dark; } }
+    .service-chips-inline { display: flex; gap: 0.75rem; }
+    .service-chip {
+        display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+        svg { font-size: 1rem; }
+        &.clinical { background-color: lighten($clinical-color, 38%); color: darken($clinical-color, 15%); svg { color: darken($clinical-color, 15%); } }
+        &.grooming { background-color: lighten($grooming-color, 35%); color: darken($grooming-color, 15%); svg { color: darken($grooming-color, 15%); } }
+    }
 }
 .profile-nav { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid $border-color;
     button { padding: 0.8rem 1.5rem; font-weight: 600; background: transparent; border: none; border-bottom: 3px solid transparent; color: $text-light; cursor: pointer; transition: all 0.2s ease; font-size: 1rem; &:hover { color: $primary-color; } &.active { color: $primary-dark; border-bottom-color: $primary-dark; } }
@@ -16,52 +27,17 @@
     .no-results-message { text-align: center; padding: 2rem; color: $text-light; }
 }
 
-.history-controls { 
+.history-controls, .citas-controls { 
     display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
     input, select { padding: 0.75rem; border: 1px solid $border-color; border-radius: $border-radius * 0.75; font-size: 1rem; }
     input[type="text"] { flex-grow: 1; min-width: 200px; }
 }
-.recipe-controls {
-    display: flex; justify-content: space-between; align-items: center;
-    gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
-    .filters-group {
-        display: flex; gap: 1rem; flex-wrap: wrap; flex-grow: 1; justify-content: flex-end;
-        input, select { padding: 0.75rem; border: 1px solid $border-color; border-radius: $border-radius * 0.75; font-size: 1rem; }
-        input[type="text"] { flex-grow: 1; min-width: 200px; }
-    }
-}
-
-.clinical-history-list {
-    .clinical-entry-card { border: 1px solid $border-color; border-radius: $border-radius; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s ease;
-        &:hover { border-color: $primary-color; box-shadow: $shadow; transform: translateY(-2px); }
-        .entry-header { background-color: $background-light; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid $border-color;
-            .header-info { .entry-date { display: block; color: $text-light; font-size: 0.9rem; } .entry-reason { font-weight: 600; font-size: 1.2rem; color: $text-color; } }
-        }
-        .entry-body { padding: 1.5rem; p { margin: 0; strong { color: $primary-dark; } } }
-    }
-}
+.recipe-controls { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; .filters-group { display: flex; gap: 1rem; flex-wrap: wrap; flex-grow: 1; justify-content: flex-end; input, select { padding: 0.75rem; border: 1px solid $border-color; border-radius: $border-radius * 0.75; font-size: 1rem; } input[type="text"] { flex-grow: 1; min-width: 200px; } } }
+.clinical-history-list { .clinical-entry-card { border: 1px solid $border-color; border-radius: $border-radius; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s ease; &:hover { border-color: $primary-color; box-shadow: $shadow; transform: translateY(-2px); } .entry-header { background-color: $background-light; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid $border-color; .header-info { .entry-date { display: block; color: $text-light; font-size: 0.9rem; } .entry-reason { font-weight: 600; font-size: 1.2rem; color: $text-color; } } } .entry-body { padding: 1.5rem; p { margin: 0; strong { color: $primary-dark; } } } } }
 .cita-card { padding: 1.5rem; border: 1px solid $border-color; border-radius: $border-radius; margin-bottom: 1rem; p { margin: 0 0 0.5rem 0;strong { color: $primary-dark; } } }
-.vencimientos-controls { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; margin-bottom: 2rem; align-items: center;
-    input, select { padding: 0.75rem; border: 1px solid $border-color; border-radius: $border-radius * 0.75; font-size: 1rem; }
-}
-.vencimientos-list { display: flex; flex-direction: column; gap: 1rem;
-    .vencimiento-card { border: 1px solid $border-color; border-radius: $border-radius; padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; transition: transform 0.2s ease, box-shadow 0.2s ease;
-        &:hover { transform: translateY(-2px); box-shadow: $shadow; }
-        .vencimiento-info { display: flex; flex-direction: column; gap: 0.5rem;
-            .vencimiento-product { font-weight: 600; font-size: 1.1rem; color: $text-color; display: flex; align-items: center; gap: 0.75rem; }
-            .vencimiento-tutor { font-size: 0.9rem; color: $text-light; padding-left: 2rem; }
-            .vencimiento-dosage { font-size: 0.9rem; font-style: italic; color: $primary-dark; padding-left: 2rem; }
-        }
-        .vencimiento-date { text-align: right; span { display: block; font-size: 0.85rem; color: $text-light; } strong { font-size: 1rem; color: $text-color; margin-bottom: 0.5rem; display: block;} .supplied-date { font-style: italic; color: $success-color; font-size: 0.8rem; } }
-        .badge { display: inline-block; padding: 0.25rem 0.6rem; font-size: 0.75rem; font-weight: 700; border-radius: 12px; color: $white-color; text-transform: capitalize; }
-        &.vencido { border-left: 5px solid #e74c3c; .badge { background-color: #e74c3c; } }
-        &.proximo { border-left: 5px solid #f39c12; .badge { background-color: #f39c12; } }
-        &.pendiente { border-left: 5px solid #3498db; .badge { background-color: #3498db; } }
-        &.suministrado { border-left: 5px solid $success-color; .badge { background-color: $success-color; } .vencimiento-product { color: $text-light; text-decoration: line-through;} }
-    }
-}
+.vencimientos-controls { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; margin-bottom: 2rem; align-items: center; input, select { padding: 0.75rem; border: 1px solid $border-color; border-radius: $border-radius * 0.75; font-size: 1rem; } }
+.vencimientos-list { display: flex; flex-direction: column; gap: 1rem; .vencimiento-card { border: 1px solid $border-color; border-radius: $border-radius; padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; transition: transform 0.2s ease, box-shadow 0.2s ease; &:hover { transform: translateY(-2px); box-shadow: $shadow; } .vencimiento-info { display: flex; flex-direction: column; gap: 0.5rem; .vencimiento-product { font-weight: 600; font-size: 1.1rem; color: $text-color; display: flex; align-items: center; gap: 0.75rem; } .vencimiento-tutor { font-size: 0.9rem; color: $text-light; padding-left: 2rem; } .vencimiento-dosage { font-size: 0.9rem; font-style: italic; color: $primary-dark; padding-left: 2rem; } } .vencimiento-date { text-align: right; span { display: block; font-size: 0.85rem; color: $text-light; } strong { font-size: 1rem; color: $text-color; margin-bottom: 0.5rem; display: block;} .supplied-date { font-style: italic; color: $success-color; font-size: 0.8rem; } } .badge { display: inline-block; padding: 0.25rem 0.6rem; font-size: 0.75rem; font-weight: 700; border-radius: 12px; color: $white-color; text-transform: capitalize; } &.vencido { border-left: 5px solid #e74c3c; .badge { background-color: #e74c3c; } } &.proximo { border-left: 5px solid #f39c12; .badge { background-color: #f39c12; } } &.pendiente { border-left: 5px solid #3498db; .badge { background-color: #3498db; } } &.suministrado { border-left: 5px solid $success-color; .badge { background-color: $success-color; } .vencimiento-product { color: $text-light; text-decoration: line-through;} } } }
 .btn-suministrado { @extend .btn; padding: 0.4rem 0.8rem; font-size: 0.85rem; border-radius: $border-radius * 0.5; background-color: $success-color; border-color: $success-color; &.supplied { background-color: $text-light; border-color: $text-light; &:hover { background-color: darken($text-light, 10%); border-color: darken($text-light, 10%); } } }
-
 .recipe-list { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
 .recipe-list-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background-color: $background-light; border-radius: $border-radius; span { font-weight: 500; } }
 .recipe-actions { display: flex; gap: 0.5rem; }
