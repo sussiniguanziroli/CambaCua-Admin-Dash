@@ -5146,19 +5146,19 @@ button.btn-reset:hover {
   color: #8492a6;
 }
 
-.citas-controls {
+.citas-controls, .compras-controls {
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
   flex-wrap: wrap;
 }
-.citas-controls input, .citas-controls select {
+.citas-controls input, .citas-controls select, .compras-controls input, .compras-controls select {
   padding: 0.75rem;
   border: 1px solid #e0e6ed;
   border-radius: 9px;
   font-size: 1rem;
 }
-.citas-controls select {
+.citas-controls input[type=text], .compras-controls input[type=text] {
   flex-grow: 1;
 }
 
@@ -5175,6 +5175,56 @@ button.btn-reset:hover {
 }
 .cita-card p {
   margin: 0.25rem 0;
+}
+
+.compras-list .compra-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e0e6ed;
+  transition: background-color 0.2s ease;
+}
+.compras-list .compra-card:last-child {
+  border-bottom: none;
+}
+.compras-list .compra-card:hover {
+  background-color: #f8f9fa;
+}
+.compras-list .compra-card .compra-info {
+  display: flex;
+  flex-direction: column;
+}
+.compras-list .compra-card .compra-info .date {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+.compras-list .compra-card .compra-info .products-preview {
+  font-size: 1rem;
+  color: #3c4858;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+.compras-list .compra-card .compra-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.compras-list .compra-card .compra-actions .total {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.pagination-controls span {
+  font-weight: 500;
+  color: #8492a6;
 }
 
 .account-balance-card {
@@ -5337,10 +5387,10 @@ button.btn-reset:hover {
   height: 12px;
   border-radius: 50%;
 }
-.tutor-transactions-list .transaction-item.pago .transaction-info::before {
+.tutor-transactions-list .transaction-item.cobro-deuda .transaction-info::before {
   background-color: #28a745;
 }
-.tutor-transactions-list .transaction-item.venta .transaction-info::before {
+.tutor-transactions-list .transaction-item.venta-presencial .transaction-info::before {
   background-color: #dc3545;
 }
 
@@ -6835,52 +6885,74 @@ button.btn-reset:hover {
 .view-note-modal {
   max-width: 700px;
 }
-.view-note-modal .view-note-body {
+.view-note-modal .note-details, .view-note-modal .view-note-body {
   overflow-y: auto;
   padding-right: 1rem;
 }
-.view-note-modal .view-note-body .info-section {
+.view-note-modal .note-details .note-section, .view-note-modal .note-details .info-section, .view-note-modal .view-note-body .note-section, .view-note-modal .view-note-body .info-section {
   margin-bottom: 1.5rem;
 }
-.view-note-modal .view-note-body .info-section small {
+.view-note-modal .note-details .note-section h4, .view-note-modal .note-details .info-section h4, .view-note-modal .view-note-body .note-section h4, .view-note-modal .view-note-body .info-section h4 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #2980b9;
+}
+.view-note-modal .note-details .note-section small, .view-note-modal .note-details .info-section small, .view-note-modal .view-note-body .note-section small, .view-note-modal .view-note-body .info-section small {
   font-size: 0.8rem;
   color: #576677;
   text-transform: uppercase;
 }
-.view-note-modal .view-note-body .info-section p {
+.view-note-modal .note-details .note-section p, .view-note-modal .note-details .info-section p, .view-note-modal .view-note-body .note-section p, .view-note-modal .view-note-body .info-section p {
   margin: 0.25rem 0 0 0;
   font-size: 1rem;
   white-space: pre-wrap;
+  line-height: 1.6;
 }
 .view-note-modal .media-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 1rem;
   margin-top: 0.5rem;
 }
-.view-note-modal .media-gallery .media-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: #34495e;
-}
-.view-note-modal .media-gallery .media-item .media-thumbnail {
+.view-note-modal .media-gallery .file-thumbnail {
   width: 100%;
-  height: 80px;
+  height: 100px;
   object-fit: cover;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
+  transition: transform 0.2s ease;
 }
-.view-note-modal .media-gallery .media-item .media-file-icon {
-  font-size: 3rem;
+.view-note-modal .media-gallery .file-thumbnail:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.view-note-modal .media-gallery .file-icon-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   color: #576677;
-}
-.view-note-modal .media-gallery .media-item .media-name {
-  font-size: 0.8rem;
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 1rem;
+  height: 100px;
   text-align: center;
-  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+}
+.view-note-modal .media-gallery .file-icon-link:hover {
+  background-color: #e0e0e0;
+  color: #2980b9;
+}
+.view-note-modal .media-gallery .file-icon-link .file-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+.view-note-modal .media-gallery .file-icon-link span {
+  font-size: 0.8rem;
   word-break: break-all;
+  color: #34495e;
 }
 
 .agenda-modal-content.expanded {

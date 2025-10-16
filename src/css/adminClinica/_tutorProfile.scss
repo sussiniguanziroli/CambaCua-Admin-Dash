@@ -116,10 +116,7 @@ $grooming-color: #9B59B6;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
 
-    .detail-item {
-        span { font-size: 0.9rem; color: $text-light; display: block; margin-bottom: 0.5rem; }
-        p { font-size: 1.1rem; color: $text-color; margin: 0; font-weight: 500; }
-    }
+    .detail-item { span { font-size: 0.9rem; color: $text-light; display: block; margin-bottom: 0.5rem; } p { font-size: 1.1rem; color: $text-color; margin: 0; font-weight: 500; } }
     hr.full-width { grid-column: 1 / -1; border: none; border-top: 1px solid $border-color; margin: 0; }
 }
 
@@ -131,16 +128,54 @@ $grooming-color: #9B59B6;
     .paciente-breed { color: $text-light; }
 }
 
-.citas-controls {
+.citas-controls, .compras-controls {
     display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
     input, select { padding: 0.75rem; border: 1px solid $border-color; border-radius: $border-radius * 0.75; font-size: 1rem; }
-    select { flex-grow: 1; }
+    input[type="text"] { flex-grow: 1; }
 }
 .cita-card {
     border-bottom: 1px solid $border-color; padding: 1rem 0;
     &:first-child { padding-top: 0; }
     &:last-child { border-bottom: none; padding-bottom: 0; }
     p { margin: 0.25rem 0; }
+}
+
+.compras-list {
+    .compra-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid $border-color;
+        transition: background-color 0.2s ease;
+
+        &:last-child { border-bottom: none; }
+        &:hover { background-color: $background-light; }
+
+        .compra-info {
+            display: flex;
+            flex-direction: column;
+            .date { color: $grey-dark; font-size: 0.9rem; }
+            .products-preview { font-size: 1rem; color: $text-color; font-weight: 500; margin-top: 0.25rem; }
+        }
+
+        .compra-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            .total { font-weight: 600; font-size: 1.2rem; }
+        }
+    }
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    span { font-weight: 500; color: $text-light; }
 }
 
 
@@ -160,7 +195,7 @@ $background-light: #f1f3f5;
 
 // --- Tutor Account Tab ---
 .tutor-profile-tab-content { .tutor-account-summary { display: flex; justify-content: space-between; align-items: center; background-color: $background-light; padding: 2rem; border-radius: $border-radius; margin-bottom: 2.5rem; } h4 { color: $text-color; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid $border-color; } }
-.tutor-transactions-list { .transaction-item { .transaction-info { display: flex; align-items: center; gap: 1.5rem; &::before { content: ''; display: block; width: 12px; height: 12px; border-radius: 50%; } } &.pago .transaction-info::before { background-color: $success-color; } &.venta .transaction-info::before { background-color: $error-color; } } }
+.tutor-transactions-list { .transaction-item { .transaction-info { display: flex; align-items: center; gap: 1.5rem; &::before { content: ''; display: block; width: 12px; height: 12px; border-radius: 50%; } } &.cobro-deuda .transaction-info::before { background-color: $success-color; } &.venta-presencial .transaction-info::before { background-color: $error-color; } } }
 
 // --- Custom Alert Modal ---
 .custom-alert-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1100; backdrop-filter: blur(4px); }
