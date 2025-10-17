@@ -7,8 +7,7 @@ const ResumenVenta = ({ saleData, onReset }) => {
     const downloadPDF = async () => {
         try {
             const { jsPDF } = await import('jspdf');
-            let autoTable = null;
-            try { autoTable = (await import('jspdf-autotable')).default; } catch (e) { /* jspdf-autotable is optional */ }
+            const autoTable = (await import('jspdf-autotable')).default;
 
             const doc = new jsPDF({ unit: 'pt', format: 'a4' });
             const margin = 40;
@@ -37,14 +36,14 @@ const ResumenVenta = ({ saleData, onReset }) => {
                 it.name, 
                 `$${(it.price * (it.isDoseable ? 1 : it.quantity)).toFixed(2)}`
             ]);
-            if (items.length > 0 && autoTable) {
-                doc.autoTable({ startY: y, head: [['Cant.', 'Item', 'Subtotal']], body: items, margin: { left: margin, right: margin } });
+            if (items.length > 0) {
+                autoTable(doc, { startY: y, head: [['Cant.', 'Item', 'Subtotal']], body: items, margin: { left: margin, right: margin } });
                 y = doc.lastAutoTable.finalY + 15;
             }
             
             const payments = (saleData.payments || []).map(p => [p.method || '-', `$${parseFloat(p.amount ?? 0).toFixed(2)}`]);
-            if (payments.length > 0 && autoTable) {
-                doc.autoTable({ startY: y, head: [['Método', 'Monto Pagado']], body: payments, margin: { left: margin, right: margin } });
+            if (payments.length > 0) {
+                autoTable(doc, { startY: y, head: [['Método', 'Monto Pagado']], body: payments, margin: { left: margin, right: margin } });
                 y = doc.lastAutoTable.finalY + 15;
             }
 
