@@ -4,6 +4,63 @@ const ResumenVenta = ({ saleData, onReset }) => {
     const totalPaid = saleData.payments.reduce((sum, p) => sum + parseFloat(p.amount), 0);
     const totalSurcharges = saleData.payments.reduce((acc, p) => acc + (p.surchargeAmount || 0), 0);
 
+    const downloadPDF = async () => {
+        try {
+            const { jsPDF } = await import('jspdf');
+            let autoTable = null;
+            try { autoTable = (await import('jspdf-autotable')).default; } catch (e) { /* jspdf-autotable is optional */ }
+
+            const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+            const margin = 40;
+            let y = 60;
+
+            doc.setFontSize(22);
+            doc.text('CambaCuaVet', margin, y);
+            y += 25;
+            doc.setFontSize(16);
+            doc.text('Recibo de Venta', margin, y);
+            y += 30;
+
+            doc.setFontSize(12);
+            const meta = [
+                [`ID Venta:`, saleData.id || 'N/A'],
+                [`Cliente:`, saleData.tutor?.name || 'Cliente Genérico'],
+            ];
+            if (saleData.patient?.name) meta.push(['Paciente:', saleData.patient.name]);
+            meta.push(['Fecha:', saleData.createdAt?.toDate ? saleData.createdAt.toDate().toLocaleString('es-AR') : new Date().toLocaleString('es-AR')]);
+            
+            meta.forEach(([k, v]) => { doc.text(`${k} ${v}`, margin, y); y += 18; });
+            y += 10;
+            
+            const items = (saleData.cart || []).map(it => [
+                String(it.quantity ?? 1), 
+                it.name, 
+                `$${(it.price * (it.isDoseable ? 1 : it.quantity)).toFixed(2)}`
+            ]);
+            if (items.length > 0 && autoTable) {
+                doc.autoTable({ startY: y, head: [['Cant.', 'Item', 'Subtotal']], body: items, margin: { left: margin, right: margin } });
+                y = doc.lastAutoTable.finalY + 15;
+            }
+            
+            const payments = (saleData.payments || []).map(p => [p.method || '-', `$${parseFloat(p.amount ?? 0).toFixed(2)}`]);
+            if (payments.length > 0 && autoTable) {
+                doc.autoTable({ startY: y, head: [['Método', 'Monto Pagado']], body: payments, margin: { left: margin, right: margin } });
+                y = doc.lastAutoTable.finalY + 15;
+            }
+
+            if ((saleData.debt || 0) > 0) { doc.text(`Deuda Generada: $${saleData.debt.toFixed(2)}`, margin, y); y += 20; }
+            doc.setFontSize(14);
+            doc.text(`Total Venta: $${(totalPaid + (saleData.debt || 0)).toFixed(2)}`, margin, y);
+            
+            doc.save(`Recibo_CambaCuaVet_${saleData.id}.pdf`);
+
+        } catch (err) {
+            console.error("Error generating PDF:", err);
+            alert("No se pudo generar el PDF. Revise la consola para más detalles.");
+        }
+    };
+
+
     return (
         <div className="resumen-venta-container">
             <div className="resumen-header">
@@ -57,6 +114,7 @@ const ResumenVenta = ({ saleData, onReset }) => {
             </div>
 
             <div className="resumen-actions">
+                <button onClick={downloadPDF} className="btn btn-secondary">Descargar PDF</button>
                 <button onClick={onReset} className="btn btn-primary">Realizar Nueva Venta</button>
             </div>
         </div>

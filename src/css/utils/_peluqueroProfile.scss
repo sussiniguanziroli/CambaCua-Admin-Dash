@@ -1,0 +1,82 @@
+@import '../presencial/sharedStyles';
+
+.peluquero-profile {
+    .profile-nav {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid $border-color;
+
+        button {
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: $text-light;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            &:hover { color: $primary-color; }
+            &.active { color: $primary-dark; border-bottom-color: $primary-dark; }
+        }
+    }
+
+    .turnos-filters {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        input { padding: 0.75rem; border: 1px solid $border-color; border-radius: $border-radius * 0.75; font-size: 1rem; }
+        input[type="text"] { flex-grow: 1; }
+    }
+
+    .turnos-list, .notas-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .turno-card, .nota-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.25rem;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        transition: all 0.2s ease;
+        &:hover { border-color: $primary-color; box-shadow: $shadow; }
+    }
+
+    .turno-info {
+        p { margin: 0 0 0.5rem 0; &:last-child { margin-bottom: 0; } }
+        a { color: $primary-color; text-decoration: none; &:hover { text-decoration: underline; } }
+    }
+
+    .turno-date {
+        font-weight: 600;
+        color: $text-light;
+        white-space: nowrap;
+    }
+    
+    .notas-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        h3 { margin: 0; }
+    }
+
+    .nota-info {
+        .nota-title { font-weight: 600; font-size: 1.1rem; margin: 0 0 0.25rem 0; }
+        .nota-date { color: $text-light; font-size: 0.9rem; margin: 0; }
+    }
+    .nota-actions { display: flex; gap: 0.5rem; }
+}
+
+.view-note-modal {
+    .note-details {
+        p { white-space: pre-wrap; line-height: 1.6; }
+        .note-date { color: $text-light; margin-bottom: 1rem; }
+        .note-section h4 { margin-top: 0; margin-bottom: 0.5rem; color: $primary-dark; }
+    }
+}
