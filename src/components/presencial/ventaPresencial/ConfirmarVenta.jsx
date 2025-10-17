@@ -23,7 +23,7 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                                     </>
                                 )}
                             </div>
-                            {(item.source === 'presential' || item.isDoseable) && saleData.patient && (
+                            {saleData.patient && (
                                 <div className="clinical-history-toggle">
                                     <input type="checkbox" id={`ch-${item.id}`} checked={saleData.clinicalHistoryItems.includes(item.id)} onChange={() => onToggleClinicalHistory(item.id)}/>
                                     <label htmlFor={`ch-${item.id}`}>Añadir a H.C.</label>
