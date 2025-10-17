@@ -79,13 +79,17 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         if (filters.text) { tempItems = tempItems.filter(p => (p.name && p.name.toLowerCase().includes(lowerText)) || (p.categoryAdress && p.categoryAdress.toLowerCase().includes(lowerText)) || (p.categoria && p.categoria.toLowerCase().includes(lowerText)) || (p.subcategoria && p.subcategoria.toLowerCase().includes(lowerText))); }
         if (viewMode === 'online') { if (filters.status) tempItems = tempItems.filter(p => p.activo === (filters.status === 'true')); if (filters.category !== 'todas') tempItems = tempItems.filter(p => p.categoryAdress === filters.category);
         } else { if (filters.tipo !== 'todos') tempItems = tempItems.filter(p => p.tipo === filters.tipo); if (filters.category !== 'todas') tempItems = tempItems.filter(p => p.category === filters.category); }
-        tempItems.sort((a, b) => { const nameA = a.name || ''; const nameB = b.name || ''; const priceA = a.price || 0; const priceB = b.price || 0; switch (sort) { case 'name-asc': return nameA.localeCompare(nameB); case 'name-desc': return nameB.localeCompare(nameA); case 'price-asc': return priceA - priceB; case 'price-desc': return priceB - priceA; default: return 0; } });
+        tempItems.sort((a, b) => { const nameA = a.name || ''; const nameB = b.name || ''; const priceA = a.price || 0; const priceB = b.price || 0; switch (sort) { case 'name-asc': return nameA.localeCompare(nameB); case 'name-desc': return nameB.localeCompare(a.name); case 'price-asc': return priceA - priceB; case 'price-desc': return priceB - priceA; default: return 0; } });
         return tempItems;
     }, [filters, sort, viewMode, onlineProducts, presentialProducts]);
 
     const total = useMemo(() => cart.reduce((sum, item) => sum + item.price, 0), [cart]);
 
     const handleAddToCart = (item) => {
+        if (item.source === 'online' && (item.stock === undefined || item.stock <= 0)) {
+            Swal.fire('Sin Stock', 'Este producto no se encuentra disponible.', 'warning');
+            return;
+        }
         if (item.isDoseable) { setItemToDose(item); setIsDosageModalOpen(true);
         } else { const existingItem = cart.find(cartItem => cartItem.id === item.id); if (existingItem) { changeQuantity(item.id, existingItem.quantity + 1); } else { setCart(prevCart => [...prevCart, { ...item, quantity: 1, originalPrice: item.price }]); } }
     };
@@ -97,6 +101,14 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     };
     
     const changeQuantity = (itemId, newQuantity) => {
+        const itemInCart = cart.find(item => item.id === itemId);
+        const originalItem = onlineProducts.find(p => p.id === itemId);
+        
+        if (originalItem && originalItem.source === 'online' && newQuantity > originalItem.stock) {
+            Swal.fire('Stock Insuficiente', `Solo quedan ${originalItem.stock} unidades de este producto.`, 'warning');
+            return;
+        }
+
         if (newQuantity < 1) { removeFromCart(itemId);
         } else { setCart(prevCart => prevCart.map(item => item.id === itemId ? { ...item, price: item.originalPrice * newQuantity, quantity: newQuantity } : item)); }
     };
@@ -115,7 +127,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             <div className="seleccionar-producto-layout">
                 <div className="producto-browser-panel">
                     <div className="browser-controls"><div className="venta-view-switcher"><button onClick={() => handleViewChange('presential')} className={viewMode === 'presential' ? 'active' : ''}>Items Presenciales</button><button onClick={() => handleViewChange('online')} className={viewMode === 'online' ? 'active' : ''}>Productos Online</button></div><div className="venta-filters"><input className="filter-input" type="text" name="text" placeholder="Buscar..." value={filters.text} onChange={handleFilterChange} />{viewMode === 'presential' ? (<><select className="filter-select" name="tipo" value={filters.tipo} onChange={handleFilterChange}><option value="todos">Todos</option><option value="producto">Producto</option><option value="servicio">Servicio</option></select><select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange} disabled={filters.tipo === 'todos'}><option value="todas">Categorías</option>{(filters.tipo === 'servicio' ? serviceCategories : categories).map(c => <option key={c.adress} value={c.adress}>{c.nombre}</option>)}</select></>) : (<><select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}><option value="todas">Categorías Online</option>{categories.map(c => <option key={c.adress} value={c.adress}>{c.nombre}</option>)}</select><select className="filter-select" name="status" value={filters.status} onChange={handleFilterChange}><option value="true">Activos</option><option value="false">Inactivos</option></select></>)}<select className="filter-select" name="sort" value={sort} onChange={(e) => setSort(e.target.value)}><option value="name-asc">A-Z</option><option value="name-desc">Z-A</option><option value="price-asc">Menor Precio</option><option value="price-desc">Mayor Precio</option></select></div></div>
-                    <div className="producto-list">{isLoading ? <p>Cargando...</p> : filteredAndSortedData.map(item => { const isInCart = !item.isDoseable && cart.some(cartItem => cartItem.id === item.id); return (<div key={item.id} className={`producto-list-item ${isInCart ? 'in-cart' : ''}`}><div className="item-details"><span className="item-name">{item.name} {item.isDoseable && <span className="doseable-badge"><SyringeIcon /> ML</span>}</span><span className="item-category">{item.categoria || item.category || ''}</span></div><div className="item-actions"><span className="item-price">{item.isDoseable ? `$${(item.pricePerML || 0).toFixed(2)}/ml` : `$${(item.price || 0).toFixed(2)}`}</span><button className="add-item-btn" onClick={() => handleAddToCart(item)} disabled={isInCart}>{isInCart ? <CheckIcon/> : '+'}</button></div></div>)})}</div>
+                    <div className="producto-list">{isLoading ? <p>Cargando...</p> : filteredAndSortedData.map(item => { const isInCart = !item.isDoseable && cart.some(cartItem => cartItem.id === item.id); const isOutOfStock = item.source === 'online' && (item.stock === undefined || item.stock <= 0); return (<div key={item.id} className={`producto-list-item ${isInCart ? 'in-cart' : ''} ${isOutOfStock ? 'out-of-stock' : ''}`}><div className="item-details"><span className="item-name">{item.name} {item.isDoseable && <span className="doseable-badge"><SyringeIcon /> ML</span>}</span><span className="item-category">{item.categoria || item.category || ''}</span></div><div className="item-actions">{item.source === 'online' && (<span className={`item-stock ${item.stock <= 5 ? 'low-stock' : ''}`}>{isOutOfStock ? 'Sin Stock' : `${item.stock} u.`}</span>)}<span className="item-price">{item.isDoseable ? `$${(item.pricePerML || 0).toFixed(2)}/ml` : `$${(item.price || 0).toFixed(2)}`}</span><button className="add-item-btn" onClick={() => handleAddToCart(item)} disabled={isInCart || isOutOfStock}>{isInCart ? <CheckIcon/> : '+'}</button></div></div>)})}</div>
                 </div>
                 <div className="smart-cart-panel">
                     <h3>Carrito de Venta</h3>

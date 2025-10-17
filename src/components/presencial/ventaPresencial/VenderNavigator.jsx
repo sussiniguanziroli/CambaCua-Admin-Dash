@@ -141,10 +141,18 @@ const VenderNavigator = () => {
           price: item.price,
           quantity: item.quantity,
           source: item.source,
-          tipo: item.tipo,
+          tipo: item.tipo || null,
           isDoseable: item.isDoseable || false,
           unit: item.unit || null,
         })),
+      });
+
+      // --- Actualización de stock ---
+      saleData.cart.forEach(item => {
+          if (item.source === 'online' && !item.isDoseable) {
+              const productRef = doc(db, 'productos', item.id);
+              batch.update(productRef, { stock: increment(-item.quantity) });
+          }
       });
 
       // --- Historia clínica ---
@@ -213,6 +221,7 @@ const VenderNavigator = () => {
       });
 
       await batch.commit();
+      updateSaleData({ id: saleRef.id }); // Add this line to fix the issue
       setStep(7);
     } catch (error) {
       console.error("Error confirming sale:", error);
@@ -232,7 +241,7 @@ const VenderNavigator = () => {
       total: 0,
       clinicalHistoryItems: [],
     });
-    navigate("/admin/vender"); // 🔥 ahora funciona correctamente
+    navigate("/admin/vender");
   };
 
   // --- Renderizado de pasos ---
