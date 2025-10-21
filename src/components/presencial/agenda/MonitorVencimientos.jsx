@@ -16,6 +16,8 @@ const MonitorVencimientos = () => {
         endDate: '',
         sortOrder: 'date-asc'
     });
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
     const fetchData = useCallback(async () => {
         setIsLoading(true);
@@ -37,6 +39,7 @@ const MonitorVencimientos = () => {
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prev => ({ ...prev, [name]: value }));
+        setCurrentPage(1); // Reset page on filter change
     };
 
     const handleCycleViewMode = () => {
@@ -45,6 +48,7 @@ const MonitorVencimientos = () => {
             if (current === 'paciente') return 'producto';
             return 'vencimiento';
         });
+        setCurrentPage(1); // Reset page on view mode change
     };
 
     const toggleSupplied = async (vencimiento) => {
@@ -60,10 +64,12 @@ const MonitorVencimientos = () => {
             await updateDoc(vencRef, {
                 supplied: !isCurrentlySupplied,
                 suppliedDate: !isCurrentlySupplied ? serverTimestamp() : deleteField(),
-                status: !isCurrentlySupplied ? 'suministrado' : 'pendiente'
+                status: !isCurrentlySupplied ? 'suministrado' : 'pendiente' // Recalculate status? Simpler to just toggle supplied
             });
-            await fetchData();
-            Swal.fire('¡Éxito!', 'El estado ha sido actualizado.', 'success');
+            // Re-fetch or update local state for immediate feedback
+            setAllVencimientos(prev => prev.map(v => v.id === vencimiento.id ? {...v, supplied: !isCurrentlySupplied, suppliedDate: !isCurrentlySupplied ? new Date() : null} : v ));
+             Swal.fire('¡Éxito!', 'El estado ha sido actualizado.', 'success');
+             // No full fetchData() needed, reduces flicker
         } catch (error) { Swal.fire('Error', 'No se pudo actualizar el estado.', 'error'); }
     };
     
@@ -105,9 +111,26 @@ const MonitorVencimientos = () => {
 
         return { filteredData: filtered, groupedByPatient: Object.values(patientGroups), groupedByProduct: Object.values(productGroups) };
     }, [allVencimientos, filters]);
+    
+    // Pagination Calculations (only for 'vencimiento' view)
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItemsVencimiento = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPagesVencimiento = Math.ceil(filteredData.length / itemsPerPage);
 
     const statusLabels = { proximo: { label: 'Próximo', icon: '🔔' }, vencido: { label: 'Vencido', icon: '❗️' }, pendiente: { label: 'Pendiente', icon: '🗓️' }, suministrado: { label: 'Suministrado', icon: '✅' } };
     const ViewModeIcon = () => viewMode === 'vencimiento' ? <FaListUl /> : viewMode === 'paciente' ? <FaUserMd /> : <FaBox />;
+    
+    const renderPagination = (currentPage, totalPages, setCurrentPage) => {
+        if (totalPages <= 1) return null;
+        return (
+          <div className="pagination-controls">
+            <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>Anterior</button>
+            <span>Página {currentPage} de {totalPages}</span>
+            <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}>Siguiente</button>
+          </div>
+        );
+      };
 
     return (
         <div className="monitor-vencimientos-container">
@@ -124,9 +147,14 @@ const MonitorVencimientos = () => {
             <main className="monitor-content">
                 {isLoading ? <p>Cargando...</p> : (
                     <>
-                    {viewMode === 'vencimiento' && (<div className="vencimientos-grid">{filteredData.length > 0 ? filteredData.map(v => { const statusKey = getStatus(v); const statusInfo = statusLabels[statusKey];
-                        return (<div key={v.id} className={`vencimiento-card ${statusKey}`}><div className="card-header"><span className="product-name">{v.productName}</span><span className={`status-badge ${statusKey}`}>{statusInfo.icon} {statusInfo.label}</span></div><div className="card-body"><div className="info-line"><span>Paciente:</span><Link to={`/admin/paciente-profile/${v.pacienteId}`}>{v.pacienteName}</Link></div><div className="info-line"><span>Tutor:</span><Link to={`/admin/tutor-profile/${v.tutorId}`}>{v.tutorName}</Link></div>{v.appliedDosage && <div className="info-line dosage"><span>Dosis Anterior:</span><strong>{v.appliedDosage}</strong></div>}</div><div className="card-footer"><div className="date-info"><strong>Vence el: {v.dueDate.toLocaleDateString('es-AR')}</strong>{v.suppliedDate && <small>Suministrado: {v.suppliedDate.toLocaleDateString('es-AR')}</small>}</div>{!v.supplied && <button className="action-btn" onClick={() => toggleSupplied(v)}>Marcar Suministrado</button>}</div></div>);
-                    }) : <p className="no-results">No se encontraron vencimientos.</p>}</div>)}
+                    {viewMode === 'vencimiento' && (
+                        <>
+                            <div className="vencimientos-grid">{currentItemsVencimiento.length > 0 ? currentItemsVencimiento.map(v => { const statusKey = getStatus(v); const statusInfo = statusLabels[statusKey];
+                                return (<div key={v.id} className={`vencimiento-card ${statusKey}`}><div className="card-header"><span className="product-name">{v.productName}</span><span className={`status-badge ${statusKey}`}>{statusInfo.icon} {statusInfo.label}</span></div><div className="card-body"><div className="info-line"><span>Paciente:</span><Link to={`/admin/paciente-profile/${v.pacienteId}`}>{v.pacienteName}</Link></div><div className="info-line"><span>Tutor:</span><Link to={`/admin/tutor-profile/${v.tutorId}`}>{v.tutorName}</Link></div>{v.appliedDosage && <div className="info-line dosage"><span>Dosis Anterior:</span><strong>{v.appliedDosage}</strong></div>}</div><div className="card-footer"><div className="date-info"><strong>Vence el: {v.dueDate.toLocaleDateString('es-AR')}</strong>{v.suppliedDate && <small>Suministrado: {v.suppliedDate.toLocaleDateString('es-AR')}</small>}</div>{!v.supplied && <button className="action-btn" onClick={() => toggleSupplied(v)}>Marcar Suministrado</button>}</div></div>);
+                            }) : <p className="no-results">No se encontraron vencimientos.</p>}</div>
+                            {renderPagination(currentPage, totalPagesVencimiento, setCurrentPage)}
+                        </>
+                    )}
 
                     {viewMode === 'paciente' && (<div className="vencimientos-grid">{groupedByPatient.length > 0 ? groupedByPatient.map(group => (
                         <div key={group.info.pacienteId} className="patient-group-card"><div className="card-header"><FaUserMd className="group-icon" /><div><h3>{group.info.pacienteName}</h3><small>Tutor: <Link to={`/admin/tutor-profile/${group.info.tutorId}`}>{group.info.tutorName}</Link></small></div></div><div className="vencimiento-sublist">{group.vencimientos.map(v => { const statusKey = getStatus(v); const statusInfo = statusLabels[statusKey]; return (

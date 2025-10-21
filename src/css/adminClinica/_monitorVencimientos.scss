@@ -62,4 +62,19 @@
             .sublist-item-status { display: flex; align-items: center; gap: 0.75rem; .status-badge { font-size: 0.7rem; padding: 0.2rem 0.5rem; text-transform: capitalize; } strong { font-weight: 600; color: $primary-dark; } }
         }
     }
+    
+    // --- Pagination Controls ---
+    .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        
+        button { 
+            @extend .btn; // Reuse button styles
+            padding: 0.5rem 1rem;
+        }
+        span { font-weight: 500; color: $text-light; }
+    }
 }

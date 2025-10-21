@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, getDocs, doc, deleteDoc, updateDoc, arrayRemove, query, where } from "firebase/firestore";
 import { db } from "../../../firebase/config";
@@ -13,6 +13,8 @@ const VerPacientes = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({ searchTerm: "", sortOrder: "name_asc", showFallecidos: false, serviceType: "todos" });
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
 
   const fetchPacientes = useCallback(async () => {
     setIsLoading(true);
@@ -103,7 +105,13 @@ const VerPacientes = () => {
   const handleFilterChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFilters((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    setCurrentPage(1); // Reset page when filters change
   };
+  
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredPacientes.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredPacientes.length / itemsPerPage);
 
   return (
     <div className="presential-container">
@@ -115,31 +123,40 @@ const VerPacientes = () => {
         <div className="filter-group" style={{ alignItems: 'center', flex: '0 1 auto' }}><input type="checkbox" id="showFallecidos" name="showFallecidos" checked={filters.showFallecidos} onChange={handleFilterChange} /><label htmlFor="showFallecidos">Mostrar fallecidos</label></div>
       </div>
       {isLoading ? <p className="loading-message">Cargando...</p> : (
-        <div className="paciente-cards-grid">
-          {filteredPacientes.map((p) => (
-            <div key={p.id} className={`paciente-card ${p.fallecido ? 'fallecido' : ''}`} onClick={() => navigate(`/admin/paciente-profile/${p.id}`)}>
-              <div className="paciente-card-header">
-                <div className="paciente-avatar">{p.species?.toLowerCase().includes("canino") ? <FaDog /> : <FaCat />}</div>
-                <div className="paciente-info"><p className="paciente-name">{p.name}</p><p className="paciente-breed">{p.breed || p.species}</p></div>
-                {p.fallecido && <span className="fallecido-tag">Fallecido</span>}
-              </div>
-              <div className="paciente-card-body"><p className="tutor-link">Tutor: {p.tutorName}</p></div>
-              <div className="paciente-card-actions">
-                <Link to={`/admin/edit-paciente/${p.id}`} className="btn btn-edit" onClick={(e) => e.stopPropagation()}><CiEdit /></Link>
-                <button onClick={(e) => { e.stopPropagation(); handleDelete(p); }} className="btn btn-delete"><MdDeleteOutline /></button>
-                <div className="service-type-selector">
-                  <MdMiscellaneousServices />
-                  <select value={getServiceValue(p.serviceTypes)} onChange={(e) => handleServiceChange(p, e.target.value)} onClick={e => e.stopPropagation()} className="service-type-dropdown">
-                    <option value="none">Ninguno</option>
-                    <option value="clinical">Clínica</option>
-                    <option value="grooming">Peluquería</option>
-                    <option value="both">Ambos</option>
-                  </select>
+        <>
+          <div className="paciente-cards-grid">
+            {currentItems.map((p) => (
+              <div key={p.id} className={`paciente-card ${p.fallecido ? 'fallecido' : ''}`} onClick={() => navigate(`/admin/paciente-profile/${p.id}`)}>
+                <div className="paciente-card-header">
+                  <div className="paciente-avatar">{p.species?.toLowerCase().includes("canino") ? <FaDog /> : <FaCat />}</div>
+                  <div className="paciente-info"><p className="paciente-name">{p.name}</p><p className="paciente-breed">{p.breed || p.species}</p></div>
+                  {p.fallecido && <span className="fallecido-tag">Fallecido</span>}
+                </div>
+                <div className="paciente-card-body"><p className="tutor-link">Tutor: {p.tutorName}</p></div>
+                <div className="paciente-card-actions">
+                  <Link to={`/admin/edit-paciente/${p.id}`} className="btn btn-edit" onClick={(e) => e.stopPropagation()}><CiEdit /></Link>
+                  <button onClick={(e) => { e.stopPropagation(); handleDelete(p); }} className="btn btn-delete"><MdDeleteOutline /></button>
+                  <div className="service-type-selector">
+                    <MdMiscellaneousServices />
+                    <select value={getServiceValue(p.serviceTypes)} onChange={(e) => handleServiceChange(p, e.target.value)} onClick={e => e.stopPropagation()} className="service-type-dropdown">
+                      <option value="none">Ninguno</option>
+                      <option value="clinical">Clínica</option>
+                      <option value="grooming">Peluquería</option>
+                      <option value="both">Ambos</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+           {totalPages > 1 && (
+                <div className="pagination-controls">
+                    <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>Anterior</button>
+                    <span>Página {currentPage} de {totalPages}</span>
+                    <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}>Siguiente</button>
+                </div>
+            )}
+        </>
       )}
     </div>
   );

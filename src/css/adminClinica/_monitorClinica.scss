@@ -112,4 +112,20 @@
             .col-actions { justify-content: flex-end; }
         }
     }
+    
+    // --- Pagination Controls ---
+    .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-bottom: 1rem; // Add some padding inside the content box
+        
+        button { 
+            @extend .btn; // Reuse button styles
+            padding: 0.5rem 1rem;
+        }
+        span { font-weight: 500; color: $text-light; }
+    }
 }

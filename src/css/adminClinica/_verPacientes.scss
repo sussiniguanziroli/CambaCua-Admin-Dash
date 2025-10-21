@@ -124,3 +124,18 @@ $border-radius: 12px;
         }
     }
 }
+
+// --- Pagination Controls ---
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    
+    button { 
+        @extend .btn; // Reuse button styles
+        padding: 0.5rem 1rem;
+    }
+    span { font-weight: 500; color: $text-light; }
+}

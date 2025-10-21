@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
@@ -15,6 +15,8 @@ const VerTutores = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [filters, setFilters] = useState({ searchTerm: '', sortOrder: 'name_asc', serviceType: 'todos' });
     const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 12;
 
     const fetchTutores = useCallback(async () => {
         setIsLoading(true);
@@ -64,7 +66,13 @@ const VerTutores = () => {
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prev => ({ ...prev, [name]: value }));
+        setCurrentPage(1); // Reset page when filters change
     };
+    
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredTutores.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredTutores.length / itemsPerPage);
 
     return (
         <div className="presential-container">
@@ -75,30 +83,39 @@ const VerTutores = () => {
                 <div className="filter-group"><label htmlFor="serviceType">Filtrar por Servicio</label><select id="serviceType" name="serviceType" value={filters.serviceType} onChange={handleFilterChange}><option value="todos">Todos</option><option value="clinical">Clínica</option><option value="grooming">Peluquería</option><option value="both">Ambos</option></select></div>
             </div>
             {isLoading ? <p className="loading-message">Cargando...</p> : (
-                <div className="tutor-cards-grid">
-                    {filteredTutores.map(tutor => (
-                        <div key={tutor.id} className="tutor-card" onClick={() => navigate(`/admin/tutor-profile/${tutor.id}`)}>
-                             <div className="tutor-card-header">
-                                <div className="tutor-avatar"><FaUserLarge /></div>
-                                <div className="tutor-info"><p className="tutor-name">{tutor.name}</p><p className="tutor-contact">{tutor.phone || tutor.email || 'Sin contacto'}</p></div>
-                             </div>
-                             <div className="tutor-card-body">
-                                <div className="info-chip"><FaDog /><span>{tutor.pacienteIds?.length || 0} Pacientes</span></div>
-                                <div className={`info-chip balance ${tutor.accountBalance < 0 ? 'deudor' : ''}`}><span>${tutor.accountBalance?.toFixed(2) || '0.00'}</span></div>
-                                {(tutor.serviceTypes && tutor.serviceTypes.length > 0) && (
-                                    <div className="service-chips-container">
-                                        {tutor.serviceTypes.includes('clinical') && <div className="service-chip clinical"><FaStethoscope /><span>Clínica</span></div>}
-                                        {tutor.serviceTypes.includes('grooming') && <div className="service-chip grooming"><PiBathtub /><span>Peluquería</span></div>}
-                                    </div>
-                                )}
-                             </div>
-                             <div className="tutor-card-actions">
-                                 <Link to={`/admin/edit-tutor/${tutor.id}`} className="btn btn-edit" onClick={e => e.stopPropagation()}><CiEdit /></Link>
-                                 <button onClick={(e) => { e.stopPropagation(); handleDelete(tutor.id, tutor.name); }} className="btn btn-delete"><MdDeleteOutline /></button>
-                             </div>
+                <>
+                    <div className="tutor-cards-grid">
+                        {currentItems.map(tutor => (
+                            <div key={tutor.id} className="tutor-card" onClick={() => navigate(`/admin/tutor-profile/${tutor.id}`)}>
+                                <div className="tutor-card-header">
+                                    <div className="tutor-avatar"><FaUserLarge /></div>
+                                    <div className="tutor-info"><p className="tutor-name">{tutor.name}</p><p className="tutor-contact">{tutor.phone || tutor.email || 'Sin contacto'}</p></div>
+                                </div>
+                                <div className="tutor-card-body">
+                                    <div className="info-chip"><FaDog /><span>{tutor.pacientesIds?.length || 0} Pacientes</span></div>
+                                    <div className={`info-chip balance ${tutor.accountBalance < 0 ? 'deudor' : ''}`}><span>${tutor.accountBalance?.toFixed(2) || '0.00'}</span></div>
+                                    {(tutor.serviceTypes && tutor.serviceTypes.length > 0) && (
+                                        <div className="service-chips-container">
+                                            {tutor.serviceTypes.includes('clinical') && <div className="service-chip clinical"><FaStethoscope /><span>Clínica</span></div>}
+                                            {tutor.serviceTypes.includes('grooming') && <div className="service-chip grooming"><PiBathtub /><span>Peluquería</span></div>}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="tutor-card-actions">
+                                    <Link to={`/admin/edit-tutor/${tutor.id}`} className="btn btn-edit" onClick={e => e.stopPropagation()}><CiEdit /></Link>
+                                    <button onClick={(e) => { e.stopPropagation(); handleDelete(tutor.id, tutor.name); }} className="btn btn-delete"><MdDeleteOutline /></button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    {totalPages > 1 && (
+                        <div className="pagination-controls">
+                            <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>Anterior</button>
+                            <span>Página {currentPage} de {totalPages}</span>
+                            <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages}>Siguiente</button>
                         </div>
-                    ))}
-                </div>
+                    )}
+                </>
             )}
         </div>
     );
