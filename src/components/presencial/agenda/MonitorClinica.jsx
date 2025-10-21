@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { db } from '../../../firebase/config';
-import { collectionGroup, query, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collectionGroup, query, getDocs, doc, getDoc, updateDoc, collection, where, documentId, orderBy, limit, startAfter } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import SaleDetailModal from '../../administracion/SaleDetailModal';
@@ -8,9 +8,77 @@ import ViewClinicalNoteModal from '../adminPacientes/ViewClinicalNoteModal';
 import ClinicalNoteModal from '../adminPacientes/ClinicalNoteModal';
 import { FaEye, FaPencilAlt } from 'react-icons/fa';
 
+const ITEMS_PER_PAGE = 25;
+
+const fetchClinicalHistoryPage = async (filters, lastVisibleDoc = null) => {
+    const notesQueryConstraints = [
+        orderBy('createdAt', 'desc'),
+        limit(ITEMS_PER_PAGE)
+    ];
+
+    if (filters.startDate) {
+        notesQueryConstraints.push(where('createdAt', '>=', new Date(filters.startDate)));
+    }
+    if (filters.endDate) {
+        const end = new Date(filters.endDate);
+        end.setHours(23, 59, 59, 999);
+        notesQueryConstraints.push(where('createdAt', '<=', end));
+    }
+
+    if (lastVisibleDoc) {
+        notesQueryConstraints.push(startAfter(lastVisibleDoc));
+    }
+
+    const notesQuery = query(collectionGroup(db, 'clinical_history'), ...notesQueryConstraints);
+    const notesSnapshot = await getDocs(notesQuery);
+
+    const clinicalNotes = notesSnapshot.docs.map(d => ({ ...d.data(), id: d.id, pacienteId: d.ref.parent.parent.id }));
+    const newLastVisibleDoc = notesSnapshot.docs[notesSnapshot.docs.length - 1];
+    
+    if (clinicalNotes.length === 0) {
+        return { combinedData: [], lastDoc: newLastVisibleDoc, hasMore: false };
+    }
+
+    const patientIds = [...new Set(clinicalNotes.map(note => note.pacienteId).filter(Boolean))];
+
+    if (patientIds.length === 0) {
+        const combinedData = clinicalNotes.map(note => ({
+            ...note,
+            date: note.createdAt.toDate().toLocaleDateString('es-AR')
+        }));
+        return { combinedData, lastDoc: newLastVisibleDoc, hasMore: clinicalNotes.length === ITEMS_PER_PAGE };
+    }
+    
+    const patientsQuery = query(collection(db, 'pacientes'), where(documentId(), 'in', patientIds));
+    const patientsSnapshot = await getDocs(patientsQuery);
+
+    const patientsMap = new Map();
+    patientsSnapshot.docs.forEach(doc => {
+        patientsMap.set(doc.id, doc.data());
+    });
+
+    const combinedData = clinicalNotes.map(note => {
+        const patientData = patientsMap.get(note.pacienteId) || {};
+        return {
+            ...note,
+            pacienteName: patientData.name || 'N/A',
+            tutorId: patientData.tutorId || 'N/A',
+            tutorName: patientData.tutorName || 'N/A',
+            date: note.createdAt.toDate().toLocaleDateString('es-AR')
+        };
+    });
+
+    return { combinedData, lastDoc: newLastVisibleDoc, hasMore: clinicalNotes.length === ITEMS_PER_PAGE };
+};
+
+
 const MonitorClinica = () => {
-    const [flatHistory, setFlatHistory] = useState([]);
+    const [historyEntries, setHistoryEntries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const [lastVisibleDoc, setLastVisibleDoc] = useState(null);
+    const [hasMore, setHasMore] = useState(true);
+    
     const [filters, setFilters] = useState({ searchTerm: '', startDate: '', endDate: '', sortOrder: 'date-desc' });
     
     const [selectedSale, setSelectedSale] = useState(null);
@@ -20,44 +88,39 @@ const MonitorClinica = () => {
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    const fetchData = useCallback(async () => {
-        setIsLoading(true);
-        try {
-            const historyQuery = query(collectionGroup(db, 'clinical_history'));
-            const historySnapshot = await getDocs(historyQuery);
-            
-            const historyPromises = historySnapshot.docs.map(async (noteDoc) => {
-                const noteData = noteDoc.data();
-                const patientRef = noteDoc.ref.parent.parent;
-                const patientSnap = await getDoc(patientRef);
-                if (!patientSnap.exists()) return null;
-                const patientData = patientSnap.data();
-                
-                return {
-                    ...noteData,
-                    id: noteDoc.id,
-                    pacienteId: patientRef.id,
-                    pacienteName: patientData.name,
-                    tutorId: patientData.tutorId,
-                    tutorName: patientData.tutorName,
-                    date: noteData.createdAt.toDate().toLocaleDateString('es-AR')
-                };
-            });
+    const loadEntries = useCallback(async (currentFilters, lastDoc = null) => {
+        if (lastDoc) setIsLoadingMore(true);
+        else setIsLoading(true);
 
-            const allHistoryEntries = (await Promise.all(historyPromises)).filter(Boolean);
-            setFlatHistory(allHistoryEntries);
+        try {
+            const { combinedData, lastDoc: newLastDoc, hasMore: newHasMore } = await fetchClinicalHistoryPage(currentFilters, lastDoc);
+            setHistoryEntries(prev => lastDoc ? [...prev, ...combinedData] : combinedData);
+            setLastVisibleDoc(newLastDoc);
+            setHasMore(newHasMore);
         } catch (error) {
             Swal.fire('Error', 'No se pudieron cargar las historias clínicas.', 'error');
         } finally {
             setIsLoading(false);
+            setIsLoadingMore(false);
         }
     }, []);
 
-    useEffect(() => { fetchData(); }, [fetchData]);
+    useEffect(() => {
+        setHistoryEntries([]);
+        setLastVisibleDoc(null);
+        setHasMore(true);
+        loadEntries(filters, null);
+    }, [filters.startDate, filters.endDate, loadEntries]);
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prev => ({ ...prev, [name]: value }));
+    };
+    
+    const handleLoadMore = () => {
+        if (hasMore && !isLoadingMore) {
+            loadEntries(filters, lastVisibleDoc);
+        }
     };
 
     const handleViewSale = async (saleId) => {
@@ -77,22 +140,20 @@ const MonitorClinica = () => {
         try {
             const noteRef = doc(db, `pacientes/${originalNote.pacienteId}/clinical_history`, originalNote.id);
             await updateDoc(noteRef, formData);
+            setHistoryEntries(prev => prev.map(entry => entry.id === originalNote.id ? { ...entry, ...formData } : entry));
             Swal.fire('Éxito', 'Nota clínica actualizada.', 'success');
             handleCloseModals();
-            await fetchData();
         } catch (error) { Swal.fire('Error', 'No se pudo guardar la nota.', 'error'); }
     };
 
     const filteredAndSortedHistory = useMemo(() => {
-        let filtered = flatHistory.filter(entry => entry.createdAt);
-        const parseDate = (dateString) => new Date(dateString.split('/').reverse().join('-'));
-
-        if (filters.startDate) { const start = new Date(filters.startDate); start.setHours(0,0,0,0); filtered = filtered.filter(entry => parseDate(entry.date) >= start); }
-        if (filters.endDate) { const end = new Date(filters.endDate); end.setHours(23,59,59,999); filtered = filtered.filter(entry => parseDate(entry.date) <= end); }
+        let filtered = [...historyEntries];
+        
         if (filters.searchTerm) {
             const lowerTerm = filters.searchTerm.toLowerCase();
             filtered = filtered.filter(entry => entry.pacienteName?.toLowerCase().includes(lowerTerm) || entry.tutorName?.toLowerCase().includes(lowerTerm) || entry.reason?.toLowerCase().includes(lowerTerm) || entry.diagnosis?.toLowerCase().includes(lowerTerm) || entry.treatment?.toLowerCase().includes(lowerTerm));
         }
+
         filtered.sort((a, b) => {
             if (filters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis();
             if (filters.sortOrder === 'date-asc') return a.createdAt.toMillis() - b.createdAt.toMillis();
@@ -100,7 +161,7 @@ const MonitorClinica = () => {
             return 0;
         });
         return filtered;
-    }, [flatHistory, filters]);
+    }, [historyEntries, filters.searchTerm, filters.sortOrder]);
 
     return (
         <div className="monitor-clinica-container">
@@ -109,7 +170,7 @@ const MonitorClinica = () => {
             <ClinicalNoteModal isOpen={isEditModalOpen} onClose={handleCloseModals} onSave={handleSaveNote} note={selectedNote} pacienteId={selectedNote?.pacienteId} />
             <header className="monitor-header"><h1>Monitor de Historias Clínicas</h1><p>Busca y revisa todas las entradas del historial clínico de los pacientes.</p></header>
             <div className="monitor-filter-bar">
-                <input type="text" name="searchTerm" placeholder="Buscar por paciente, tutor, motivo, diagnóstico..." value={filters.searchTerm} onChange={handleFilterChange} />
+                <input type="text" name="searchTerm" placeholder="Buscar en resultados cargados..." value={filters.searchTerm} onChange={handleFilterChange} />
                 <input type="date" name="startDate" value={filters.startDate} onChange={handleFilterChange} />
                 <input type="date" name="endDate" value={filters.endDate} onChange={handleFilterChange} />
                 <select name="sortOrder" value={filters.sortOrder} onChange={handleFilterChange}><option value="date-desc">Más Recientes</option><option value="date-asc">Más Antiguas</option><option value="patient-asc">Paciente (A-Z)</option></select>
@@ -127,6 +188,12 @@ const MonitorClinica = () => {
                                 <div className="col-actions"><button className="action-btn view" onClick={() => handleViewNote(entry)}><FaEye /></button><button className="action-btn edit" onClick={() => handleEditNote(entry)}><FaPencilAlt /></button></div>
                             </div>
                         )) : <p className="no-results">No se encontraron entradas con los filtros actuales.</p>}
+                    </div>
+                )}
+                {isLoadingMore && <p>Cargando más...</p>}
+                {!isLoading && hasMore && (
+                    <div className="load-more-container">
+                        <button onClick={handleLoadMore} disabled={isLoadingMore}>Cargar Más</button>
                     </div>
                 )}
             </main>

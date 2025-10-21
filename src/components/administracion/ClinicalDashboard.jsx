@@ -370,7 +370,7 @@ const ClinicDashboard = () => {
                   <FaUserFriends />
                   <span>Ver Tutores</span>
                 </Link>
-                <Link to="/admin/paciente-profile" className="atajo-link">
+                <Link to="/admin/pacientes" className="atajo-link">
                   <FaPaw />
                   <span>Ver Pacientes</span>
                 </Link>

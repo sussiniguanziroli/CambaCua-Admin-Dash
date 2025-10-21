@@ -40,7 +40,6 @@ const PacienteProfile = () => {
   const [groomingNotesCurrentPage, setGroomingNotesCurrentPage] = useState(1);
   const [recipesCurrentPage, setRecipesCurrentPage] = useState(1);
   const [citasCurrentPage, setCitasCurrentPage] = useState(1);
-  const [vencimientosCurrentPage, setVencimientosCurrentPage] = useState(1);
 
   const [historyFilters, setHistoryFilters] = useState({ searchTerm: '', startDate: '', endDate: '', sortOrder: 'date-desc' });
   const [recipeFilters, setRecipeFilters] = useState({ searchTerm: '', startDate: '', endDate: '', sortOrder: 'date-desc' });
@@ -156,13 +155,16 @@ const PacienteProfile = () => {
   };
   
   const renderVencimientos = () => {
-    const totalPages = Math.ceil(vencimientos.length / itemsPerPage);
-    const currentItems = vencimientos.slice((vencimientosCurrentPage - 1) * itemsPerPage, vencimientosCurrentPage * itemsPerPage);
     return (
-      <div className="tab-content">
-        <VencimientosManager vencimientos={currentItems} setVencimientos={setVencimientos} pacienteId={id} pacienteSpecies={paciente.species} pacienteTutorName={paciente.tutorName} onAlert={setAlert} onAdd={() => !paciente.fallecido && setIsAddVencimientoModalOpen(true)} />
-        {renderPagination(vencimientosCurrentPage, totalPages, setVencimientosCurrentPage)}
-      </div>
+      <VencimientosManager 
+        vencimientos={vencimientos} 
+        setVencimientos={setVencimientos} 
+        pacienteId={id} 
+        pacienteSpecies={paciente.species} 
+        pacienteTutorName={paciente.tutorName} 
+        onAlert={setAlert} 
+        onAdd={() => !paciente.fallecido && setIsAddVencimientoModalOpen(true)} 
+      />
     );
   };
 

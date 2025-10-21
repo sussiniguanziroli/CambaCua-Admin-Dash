@@ -5510,6 +5510,9 @@ button.btn-reset:hover {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.tutor-card-header .tutor-info .tutor-name .link-class {
+  color: #3c4858;
+}
 .tutor-card-header .tutor-info .tutor-contact {
   font-size: 0.9rem;
   color: #8492a6;
@@ -6429,6 +6432,9 @@ button.btn-reset:hover {
   color: #3c4858;
   margin: 0;
 }
+.paciente-card-header .paciente-info .paciente-name .link-class {
+  color: #1c2d43;
+}
 .paciente-card-header .paciente-info .paciente-breed {
   font-size: 0.9rem;
   color: #8492a6;
@@ -6442,6 +6448,9 @@ button.btn-reset:hover {
   color: #3c4858;
   font-weight: 500;
   margin: 0;
+}
+.paciente-card-body .tutor-link .link-class {
+  color: #1c2d43;
 }
 
 .paciente-card-actions {
@@ -6560,13 +6569,15 @@ button.btn-reset:hover {
   margin-bottom: 2rem;
   align-items: center;
 }
-.monitor-vencimientos-container .monitor-filter-bar input, .monitor-vencimientos-container .monitor-filter-bar select {
+.monitor-vencimientos-container .monitor-filter-bar input,
+.monitor-vencimientos-container .monitor-filter-bar select {
   padding: 0.8rem 1rem;
   font-size: 1rem;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
 }
-.monitor-vencimientos-container .monitor-filter-bar input:focus, .monitor-vencimientos-container .monitor-filter-bar select:focus {
+.monitor-vencimientos-container .monitor-filter-bar input:focus,
+.monitor-vencimientos-container .monitor-filter-bar select:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
@@ -6593,7 +6604,9 @@ button.btn-reset:hover {
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 1.5rem;
 }
-.monitor-vencimientos-container .vencimiento-card, .monitor-vencimientos-container .patient-group-card, .monitor-vencimientos-container .product-group-card {
+.monitor-vencimientos-container .vencimiento-card,
+.monitor-vencimientos-container .patient-group-card,
+.monitor-vencimientos-container .product-group-card {
   background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -6603,11 +6616,15 @@ button.btn-reset:hover {
   display: flex;
   flex-direction: column;
 }
-.monitor-vencimientos-container .vencimiento-card:hover, .monitor-vencimientos-container .patient-group-card:hover, .monitor-vencimientos-container .product-group-card:hover {
+.monitor-vencimientos-container .vencimiento-card:hover,
+.monitor-vencimientos-container .patient-group-card:hover,
+.monitor-vencimientos-container .product-group-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.monitor-vencimientos-container .vencimiento-card .card-header, .monitor-vencimientos-container .patient-group-card .card-header, .monitor-vencimientos-container .product-group-card .card-header {
+.monitor-vencimientos-container .vencimiento-card .card-header,
+.monitor-vencimientos-container .patient-group-card .card-header,
+.monitor-vencimientos-container .product-group-card .card-header {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -6704,19 +6721,27 @@ button.btn-reset:hover {
   text-decoration: line-through;
   color: #576677;
 }
-.monitor-vencimientos-container .patient-group-card .group-icon, .monitor-vencimientos-container .product-group-card .group-icon {
+.monitor-vencimientos-container .patient-group-card .group-icon,
+.monitor-vencimientos-container .product-group-card .group-icon {
   font-size: 1.5rem;
   color: #3498db;
 }
-.monitor-vencimientos-container .patient-group-card h3, .monitor-vencimientos-container .product-group-card h3 {
+.monitor-vencimientos-container .patient-group-card .link-class,
+.monitor-vencimientos-container .product-group-card .link-class {
+  color: #4c255c;
+}
+.monitor-vencimientos-container .patient-group-card h3,
+.monitor-vencimientos-container .product-group-card h3 {
   margin: 0;
   font-size: 1.2rem;
 }
-.monitor-vencimientos-container .patient-group-card small a, .monitor-vencimientos-container .product-group-card small a {
+.monitor-vencimientos-container .patient-group-card small a,
+.monitor-vencimientos-container .product-group-card small a {
   color: #576677;
   text-decoration: none;
 }
-.monitor-vencimientos-container .patient-group-card small a:hover, .monitor-vencimientos-container .product-group-card small a:hover {
+.monitor-vencimientos-container .patient-group-card small a:hover,
+.monitor-vencimientos-container .product-group-card small a:hover {
   text-decoration: underline;
 }
 .monitor-vencimientos-container .patient-group-card {
@@ -6751,7 +6776,8 @@ button.btn-reset:hover {
   display: flex;
   flex-direction: column;
 }
-.monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-info span, .monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-info a {
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-info span,
+.monitor-vencimientos-container .vencimiento-sublist .sublist-item .sublist-item-info a {
   font-weight: 500;
   text-decoration: none;
   color: #34495e;
