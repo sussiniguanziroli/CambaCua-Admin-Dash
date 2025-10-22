@@ -9,6 +9,11 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
 
+    // New states for date calculation
+    const [dateInputMode, setDateInputMode] = useState('picker'); // 'picker' or 'days'
+    const [daysAmount, setDaysAmount] = useState('');
+    const [calculatedDate, setCalculatedDate] = useState('');
+
     const [onlineProducts, setOnlineProducts] = useState([]);
     const [presentialProducts, setPresentialProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -31,6 +36,32 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
     }, [isOpen]);
 
     useEffect(() => { fetchData(); }, [fetchData]);
+
+    // Calculate date when days amount changes
+    useEffect(() => {
+        if (dateInputMode === 'days' && daysAmount) {
+            const days = parseInt(daysAmount);
+            if (!isNaN(days) && days > 0) {
+                const today = new Date();
+                const futureDate = new Date(today);
+                futureDate.setDate(today.getDate() + days);
+                const formattedDate = futureDate.toISOString().split('T')[0];
+                setCalculatedDate(formattedDate);
+                setDueDate(formattedDate);
+            } else {
+                setCalculatedDate('');
+                setDueDate('');
+            }
+        }
+    }, [daysAmount, dateInputMode]);
+
+    // Handle date input mode change
+    const handleDateModeChange = (mode) => {
+        setDateInputMode(mode);
+        setDueDate('');
+        setDaysAmount('');
+        setCalculatedDate('');
+    };
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -79,6 +110,9 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
     const handleClose = () => {
         setSelectedProduct(null); setDueDate(''); setDosage('');
         setFilters({ text: '', tipo: 'todos', category: 'todas', status: 'true' });
+        setDateInputMode('picker');
+        setDaysAmount('');
+        setCalculatedDate('');
         setError(''); onClose();
     };
 
@@ -103,7 +137,68 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                                 <input id="dosage" type="number" value={dosage} onChange={(e) => setDosage(e.target.value)} placeholder="Ej: 0.4" required min="0.1" step="0.1" />
                             </div>
                         )}
-                        <div className="form-group"><label htmlFor="dueDate">Próximo Vencimiento</label><input id="dueDate" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required /></div>
+                        
+                        {/* Date Input Mode Selector */}
+                        <div className="form-group">
+                            <label>Método de Fecha</label>
+                            <div className="date-mode-selector">
+                                <button 
+                                    type="button" 
+                                    className={`mode-btn ${dateInputMode === 'picker' ? 'active' : ''}`}
+                                    onClick={() => handleDateModeChange('picker')}
+                                >
+                                    Seleccionar Fecha
+                                </button>
+                                <button 
+                                    type="button" 
+                                    className={`mode-btn ${dateInputMode === 'days' ? 'active' : ''}`}
+                                    onClick={() => handleDateModeChange('days')}
+                                >
+                                    Calcular por Días
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Conditional Date Input */}
+                        {dateInputMode === 'picker' ? (
+                            <div className="form-group">
+                                <label htmlFor="dueDate">Próximo Vencimiento</label>
+                                <input 
+                                    id="dueDate" 
+                                    type="date" 
+                                    value={dueDate} 
+                                    onChange={(e) => setDueDate(e.target.value)} 
+                                    required 
+                                />
+                            </div>
+                        ) : (
+                            <>
+                                <div className="form-group">
+                                    <label htmlFor="daysAmount">Cantidad de Días</label>
+                                    <input 
+                                        id="daysAmount" 
+                                        type="number" 
+                                        value={daysAmount} 
+                                        onChange={(e) => setDaysAmount(e.target.value)} 
+                                        placeholder="Ej: 30, 90, 365"
+                                        min="1"
+                                        required
+                                    />
+                                </div>
+                                {calculatedDate && (
+                                    <div className="calculated-date-display">
+                                        <strong>Fecha Calculada:</strong>
+                                        <p>{new Date(calculatedDate).toLocaleDateString('es-AR', { 
+                                            weekday: 'long', 
+                                            year: 'numeric', 
+                                            month: 'long', 
+                                            day: 'numeric' 
+                                        })}</p>
+                                    </div>
+                                )}
+                            </>
+                        )}
+
                         {error && <p className="error-message">{error}</p>}
                         <div className="modal-footer"><button type="button" className="btn btn-secondary" onClick={handleClose}>Cancelar</button><button type="submit" className="btn btn-primary" disabled={isSubmitting || !selectedProduct}>{isSubmitting ? 'Guardando...' : 'Guardar'}</button></div>
                     </div>
