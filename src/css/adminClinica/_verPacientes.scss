@@ -15,6 +15,11 @@ $border-radius: 12px;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
     margin-top: 1rem;
+
+    @media (max-width: 480px) {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
 }
 
 // --- Modern Paciente Card Style ---
@@ -41,6 +46,10 @@ $border-radius: 12px;
     gap: 1rem;
     padding: 1.5rem;
 
+    @media (max-width: 480px) {
+        padding: 1rem;
+    }
+
     .paciente-avatar {
         font-size: 2rem;
         color: $primary-color;
@@ -52,6 +61,12 @@ $border-radius: 12px;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+
+        @media (max-width: 480px) {
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+        }
     }
 
     .paciente-info {
@@ -76,6 +91,11 @@ $border-radius: 12px;
 // --- Card Body for Tutor Link ---
 .paciente-card-body {
     padding: 0 1.5rem 1.5rem 1.5rem;
+    
+    @media (max-width: 480px) {
+        padding: 0 1rem 1rem 1rem;
+    }
+
     .tutor-link {
         color: $text-color;
         font-weight: 500;
@@ -96,11 +116,25 @@ $border-radius: 12px;
     justify-content: flex-end;
     gap: 0.75rem;
 
+    @media (max-width: 576px) {
+        padding: 1rem;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
     .service-type-selector {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         margin-right: auto; // Pushes this element to the far left
+
+        @media (max-width: 576px) {
+            margin-right: 0;
+            flex-basis: 100%;
+            order: -1; // Moves it to the "top" when wrapped
+            padding-bottom: 0.5rem;
+            justify-content: center;
+        }
 
         svg {
             color: $text-light;
@@ -143,5 +177,18 @@ $border-radius: 12px;
         @extend .btn; // Reuse button styles
         padding: 0.5rem 1rem;
     }
-    span { font-weight: 500; color: $text-light; }
+    span { 
+        font-weight: 500; 
+        color: $text-light; 
+        @media (max-width: 480px) {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        gap: 0.5rem;
+        button {
+            padding: 0.5rem 0.75rem;
+        }
+    }
 }

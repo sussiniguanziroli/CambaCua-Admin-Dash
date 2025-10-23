@@ -20,6 +20,10 @@ $grooming-color: #9B59B6;
     max-width: 1200px;
     margin: 0 auto;
     padding: 1rem;
+
+    @media (max-width: 768px) {
+        padding: 0.5rem;
+    }
 }
 
 // --- Profile Header ---
@@ -33,6 +37,14 @@ $grooming-color: #9B59B6;
     gap: 2rem;
     margin-bottom: 2rem;
 
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
     .profile-avatar {
         font-size: 4rem;
         color: $primary-color;
@@ -43,11 +55,23 @@ $grooming-color: #9B59B6;
         display: flex;
         align-items: center;
         justify-content: center;
+
+        @media (max-width: 768px) {
+            width: 80px;
+            height: 80px;
+            font-size: 3rem;
+        }
     }
 
     .profile-info {
         flex-grow: 1;
-        h1 { margin: 0 0 0.25rem 0; color: $text-color; }
+        h1 { 
+            margin: 0 0 0.25rem 0; 
+            color: $text-color; 
+            @media (max-width: 768px) {
+                font-size: 1.8rem;
+            }
+        }
         p { margin: 0; color: $text-light; }
     }
     
@@ -55,6 +79,7 @@ $grooming-color: #9B59B6;
         display: flex;
         gap: 0.75rem;
         margin-top: 1rem;
+        flex-wrap: wrap;
     }
     .service-chip {
         display: inline-flex;
@@ -74,6 +99,18 @@ $grooming-color: #9B59B6;
     .profile-actions {
         display: flex;
         gap: 1rem;
+        
+        @media (max-width: 768px) {
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .btn {
+            @media (max-width: 768px) {
+                flex-grow: 1;
+                text-align: center;
+            }
+        }
     }
 }
 
@@ -82,6 +119,13 @@ $grooming-color: #9B59B6;
     display: flex;
     gap: 0.5rem;
     margin-bottom: 2rem;
+
+    @media (max-width: 768px) {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
 
     button {
         padding: 0.8rem 1.5rem;
@@ -93,10 +137,16 @@ $grooming-color: #9B59B6;
         color: $text-light;
         cursor: pointer;
         transition: all $transition-speed ease;
+        flex-shrink: 0; // Prevents shrinking in scroll container
 
         &.active, &:hover {
             color: $primary-dark;
             border-bottom-color: $primary-dark;
+        }
+
+        @media (max-width: 768px) {
+            padding: 0.8rem 1rem;
+            font-size: 0.9rem;
         }
     }
 }
@@ -108,6 +158,10 @@ $grooming-color: #9B59B6;
     border-radius: $border-radius;
     box-shadow: $shadow;
     min-height: 300px;
+
+    @media (max-width: 768px) {
+        padding: 1.5rem;
+    }
 }
 
 // --- Specific Tab Content Styles ---
@@ -116,7 +170,15 @@ $grooming-color: #9B59B6;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
 
-    .detail-item { span { font-size: 0.9rem; color: $text-light; display: block; margin-bottom: 0.5rem; } p { font-size: 1.1rem; color: $text-color; margin: 0; font-weight: 500; } }
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .detail-item { 
+        span { font-size: 0.9rem; color: $text-light; display: block; margin-bottom: 0.5rem; } 
+        p { font-size: 1.1rem; color: $text-color; margin: 0; font-weight: 500; word-break: break-word; } 
+    }
     hr.full-width { grid-column: 1 / -1; border: none; border-top: 1px solid $border-color; margin: 0; }
 }
 
@@ -130,8 +192,22 @@ $grooming-color: #9B59B6;
 
 .citas-controls, .compras-controls {
     display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
-    input, select { padding: 0.75rem; border: 1px solid $border-color; border-radius: $border-radius * 0.75; font-size: 1rem; }
-    input[type="text"] { flex-grow: 1; }
+    input, select { 
+        padding: 0.75rem; 
+        border: 1px solid $border-color; 
+        border-radius: $border-radius * 0.75; 
+        font-size: 1rem; 
+        
+        @media (max-width: 768px) {
+            width: 100%;
+        }
+    }
+    input[type="text"] { 
+        flex-grow: 1; 
+        @media (max-width: 768px) {
+            flex-grow: 0;
+        }
+    }
 }
 .cita-card {
     border-bottom: 1px solid $border-color; padding: 1rem 0;
@@ -152,6 +228,13 @@ $grooming-color: #9B59B6;
         &:last-child { border-bottom: none; }
         &:hover { background-color: $background-light; }
 
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+
         .compra-info {
             display: flex;
             flex-direction: column;
@@ -164,6 +247,11 @@ $grooming-color: #9B59B6;
             align-items: center;
             gap: 1.5rem;
             .total { font-weight: 600; font-size: 1.2rem; }
+
+            @media (max-width: 768px) {
+                width: 100%;
+                justify-content: space-between;
+            }
         }
     }
 }
@@ -176,16 +264,13 @@ $grooming-color: #9B59B6;
     margin-top: 2rem;
 
     span { font-weight: 500; color: $text-light; }
+
+    @media (max-width: 768px) {
+        gap: 0.5rem;
+        span { font-size: 0.9rem; }
+    }
 }
 
-
-.account-balance-card { text-align: center; h3 { color: $text-light; } .balance-amount { font-size: 3rem; font-weight: 700; color: $success-color; &.deudor { color: $error-color; } } }
-.tutor-balance-card { h3 { margin: 0 0 0.5rem 0; color: $grey-dark; font-weight: 500; } .balance-amount { font-size: 2.5rem; font-weight: 700; color: $success-color; &.deudor { color: $error-color; } } }
-.tutor-transactions-list { .transaction-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid $border-color; transition: background-color 0.2s ease; &:last-child { border-bottom: none; } &:hover { background-color: $background-light; } .transaction-info { .date { display: block; color: $grey-dark; font-size: 0.9rem; } .type { font-weight: 500; } } .transaction-amount { font-weight: 600; font-size: 1.1rem; .debit { color: $error-color; } .credit { color: $success-color; } } } }
-
-// Payment Modal Styles
-.payment-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1050; backdrop-filter: blur(4px); }
-.payment-modal { background: #fff; padding: 2.5rem; border-radius: $border-radius; width: 90%; max-width: 500px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); .close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: $grey-dark; &:hover { color: $text-color; } } h3 { margin-top: 0; color: $primary-dark; } form { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem; } .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem; } .form-group { label { font-weight: 500; margin-bottom: 0.5rem; display: block; } input, select { width: 100%; padding: 0.8rem; font-size: 1rem; border-radius: $border-radius * 0.75; border: 1px solid $border-color; &:focus { outline: none; border-color: $primary-color; box-shadow: 0 0 0 3px lighten($primary-color, 35%);} } } }
 
 // --- Color Definitions for Account ---
 $success-color: #28a745;
@@ -193,11 +278,91 @@ $error-color: #dc3545;
 $grey-dark: #6c757d;
 $background-light: #f1f3f5;
 
+
+.account-balance-card { text-align: center; h3 { color: $text-light; } .balance-amount { font-size: 3rem; font-weight: 700; color: $success-color; &.deudor { color: $error-color; } } }
+.tutor-balance-card { 
+    h3 { margin: 0 0 0.5rem 0; color: $grey-dark; font-weight: 500; } 
+    .balance-amount { 
+        font-size: 2.5rem; 
+        font-weight: 700; 
+        color: $success-color; 
+        &.deudor { color: $error-color; } 
+        @media (max-width: 768px) {
+            font-size: 2.2rem;
+        }
+    } 
+    @media (max-width: 768px) {
+        text-align: center;
+    }
+}
+.tutor-transactions-list { .transaction-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid $border-color; transition: background-color 0.2s ease; &:last-child { border-bottom: none; } &:hover { background-color: $background-light; } .transaction-info { .date { display: block; color: $grey-dark; font-size: 0.9rem; } .type { font-weight: 500; } } .transaction-amount { font-weight: 600; font-size: 1.1rem; .debit { color: $error-color; } .credit { color: $success-color; } }
+    
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1rem 0;
+
+        .transaction-amount {
+            align-self: flex-end;
+            font-size: 1rem;
+        }
+    }
+} }
+
+// Payment Modal Styles
+.payment-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1050; backdrop-filter: blur(4px); }
+.payment-modal { background: #fff; padding: 2.5rem; border-radius: $border-radius; width: 90%; max-width: 500px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+    
+    @media (max-width: 768px) {
+        padding: 1.5rem;
+        padding-top: 2.5rem;
+    }
+    
+    .close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: $grey-dark; &:hover { color: $text-color; } } h3 { margin-top: 0; color: $primary-dark; } form { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem; } .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem; } .form-group { label { font-weight: 500; margin-bottom: 0.5rem; display: block; } input, select { width: 100%; padding: 0.8rem; font-size: 1rem; border-radius: $border-radius * 0.75; border: 1px solid $border-color; &:focus { outline: none; border-color: $primary-color; box-shadow: 0 0 0 3px lighten($primary-color, 35%);} } } }
+
 // --- Tutor Account Tab ---
-.tutor-profile-tab-content { .tutor-account-summary { display: flex; justify-content: space-between; align-items: center; background-color: $background-light; padding: 2rem; border-radius: $border-radius; margin-bottom: 2.5rem; } h4 { color: $text-color; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid $border-color; } }
-.tutor-transactions-list { .transaction-item { .transaction-info { display: flex; align-items: center; gap: 1.5rem; &::before { content: ''; display: block; width: 12px; height: 12px; border-radius: 50%; } } &.cobro-deuda .transaction-info::before { background-color: $success-color; } &.venta-presencial .transaction-info::before { background-color: $error-color; } } }
+.tutor-profile-tab-content { 
+    .tutor-account-summary { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        background-color: $background-light; 
+        padding: 2rem; 
+        border-radius: $border-radius; 
+        margin-bottom: 2.5rem; 
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            @media (max-width: 768px) {
+                text-align: center;
+            }
+        }
+    } 
+    h4 { color: $text-color; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid $border-color; } 
+}
+.tutor-transactions-list { .transaction-item { .transaction-info { display: flex; align-items: center; gap: 1.5rem; 
+    
+    @media (max-width: 768px) {
+        gap: 1rem;
+    }
+    
+    &::before { content: ''; display: block; width: 12px; height: 12px; border-radius: 50%; } } &.cobro-deuda .transaction-info::before { background-color: $success-color; } &.venta-presencial .transaction-info::before { background-color: $error-color; } } }
 
 // --- Custom Alert Modal ---
 .custom-alert-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1100; backdrop-filter: blur(4px); }
-.custom-alert-content { background: $white-color; padding: 2rem 2.5rem; border-radius: $border-radius; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transform: scale(0.95); animation: alert-pop 0.3s ease-out forwards; .icon-circle { width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 1.5rem auto; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: $white-color; &.success { background-color: $success-color; } &.error { background-color: $error-color; } } h3 { margin: 0 0 0.5rem 0; color: $text-color; } p { margin: 0 0 2rem 0; color: $text-light; } }
+.custom-alert-content { background: $white-color; padding: 2rem 2.5rem; border-radius: $border-radius; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transform: scale(0.95); animation: alert-pop 0.3s ease-out forwards; 
+    
+    @media (max-width: 768px) {
+        padding: 2rem 1.5rem;
+    }
+    
+    .icon-circle { width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 1.5rem auto; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: $white-color; &.success { background-color: $success-color; } &.error { background-color: $error-color; } } h3 { margin: 0 0 0.5rem 0; color: $text-color; } p { margin: 0 0 2rem 0; color: $text-light; } }
 @keyframes alert-pop { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
