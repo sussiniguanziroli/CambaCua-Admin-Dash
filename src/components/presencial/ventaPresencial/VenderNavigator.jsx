@@ -123,6 +123,9 @@ const VenderNavigator = () => {
       const batch = writeBatch(db);
       const saleRef = doc(collection(db, "ventas_presenciales"));
       const saleTimestamp = Timestamp.now();
+      
+      const totalSubtotal = saleData.cart.reduce((sum, item) => sum + (item.priceBeforeDiscount || item.price), 0);
+      const totalDiscount = saleData.cart.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
 
       batch.set(saleRef, {
         createdAt: saleTimestamp,
@@ -133,17 +136,24 @@ const VenderNavigator = () => {
           ? { id: saleData.patient.id, name: saleData.patient.name }
           : null,
         payments: saleData.payments,
+        subtotal: totalSubtotal,
+        discount: totalDiscount,
         total: saleData.total,
         debt: saleData.debt,
         items: saleData.cart.map((item) => ({
           id: item.id,
           name: item.name,
-          price: item.price,
           quantity: item.quantity,
           source: item.source,
           tipo: item.tipo || null,
           isDoseable: item.isDoseable || false,
           unit: item.unit || null,
+          originalPrice: item.originalPrice,
+          priceBeforeDiscount: item.priceBeforeDiscount,
+          discountType: item.discountType || null,
+          discountValue: item.discountValue || 0,
+          discountAmount: item.discountAmount || 0,
+          price: item.price, // Precio final del item (subtotal con descuento)
         })),
       });
 
@@ -221,7 +231,12 @@ const VenderNavigator = () => {
       });
 
       await batch.commit();
-      updateSaleData({ id: saleRef.id }); // Add this line to fix the issue
+      updateSaleData({ 
+        id: saleRef.id, 
+        createdAt: saleTimestamp,
+        subtotal: totalSubtotal,
+        discount: totalDiscount
+      });
       setStep(7);
     } catch (error) {
       console.error("Error confirming sale:", error);

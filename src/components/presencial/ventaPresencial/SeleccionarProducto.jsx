@@ -149,7 +149,12 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         return tempItems;
     }, [filters, sort, viewMode, onlineProducts, presentialProducts]);
 
-    const total = useMemo(() => cart.reduce((sum, item) => sum + item.price, 0), [cart]);
+    const cartSummary = useMemo(() => {
+        const subtotal = cart.reduce((sum, item) => sum + item.priceBeforeDiscount, 0);
+        const totalDiscount = cart.reduce((sum, item) => sum + item.discountAmount, 0);
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        return { subtotal, totalDiscount, total };
+    }, [cart]);
 
     const handleAddToCart = (item) => {
         if (item.source === 'online' && (item.stock === undefined || item.stock <= 0)) {
@@ -168,7 +173,12 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 setCart(prevCart => [...prevCart, { 
                     ...item, 
                     quantity: 1, 
-                    originalPrice: item.price 
+                    originalPrice: item.price,
+                    priceBeforeDiscount: item.price,
+                    price: item.price,
+                    discountType: null,
+                    discountValue: 0,
+                    discountAmount: 0,
                 }]); 
             } 
         }
@@ -178,11 +188,15 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         const finalPrice = dose * itemToDose.pricePerML;
         setCart(prev => [...prev, { 
             ...itemToDose, 
-            quantity: dose, 
-            price: finalPrice, 
+            quantity: dose,
             unit: 'ml', 
             id: `${itemToDose.id}-${Date.now()}`,
-            originalPrice: itemToDose.pricePerML
+            originalPrice: itemToDose.pricePerML,
+            priceBeforeDiscount: finalPrice,
+            price: finalPrice, 
+            discountType: null,
+            discountValue: 0,
+            discountAmount: 0,
         }]);
         setIsDosageModalOpen(false); 
         setItemToDose(null);
@@ -190,7 +204,9 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     
     const changeQuantity = (itemId, newQuantity) => {
         const itemInCart = cart.find(item => item.id === itemId);
-        const originalItem = onlineProducts.find(p => p.id === itemId);
+        if (!itemInCart) return;
+
+        const originalItem = onlineProducts.find(p => p.id === itemId) || presentialProducts.find(p => p.id === itemId);
         
         if (originalItem && originalItem.source === 'online' && newQuantity > originalItem.stock) {
             Swal.fire('Stock Insuficiente', `Solo quedan ${originalItem.stock} unidades de este producto.`, 'warning');
@@ -200,11 +216,28 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         if (newQuantity < 1) { 
             removeFromCart(itemId);
         } else { 
-            setCart(prevCart => prevCart.map(item => 
-                item.id === itemId 
-                    ? { ...item, price: item.originalPrice * newQuantity, quantity: newQuantity } 
-                    : item
-            )); 
+            setCart(prevCart => prevCart.map(item => {
+                if (item.id !== itemId) return item;
+
+                const newPriceBeforeDiscount = item.originalPrice * newQuantity;
+                let newDiscountAmount = 0;
+
+                if (item.discountType === 'percentage') {
+                    newDiscountAmount = newPriceBeforeDiscount * (item.discountValue / 100);
+                } else if (item.discountType === 'fixed') {
+                    newDiscountAmount = item.discountValue;
+                }
+                
+                const newFinalPrice = newPriceBeforeDiscount - newDiscountAmount;
+
+                return { 
+                    ...item, 
+                    quantity: newQuantity,
+                    priceBeforeDiscount: newPriceBeforeDiscount,
+                    discountAmount: newDiscountAmount,
+                    price: newFinalPrice
+                };
+            })); 
         }
     };
 
@@ -215,45 +248,42 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         setIsPriceModalOpen(true);
     };
 
-    const handleUpdateCartPrice = (itemId, newUnitPrice, newTotal) => {
+    const recalculatePrice = (item, newUnitBasePrice) => {
+        const priceBeforeDiscount = newUnitBasePrice * item.quantity;
+        let discountAmount = 0;
+
+        if (item.discountType === 'percentage') {
+            discountAmount = priceBeforeDiscount * (item.discountValue / 100);
+        } else if (item.discountType === 'fixed') {
+            discountAmount = item.discountValue;
+        }
+        
+        const price = priceBeforeDiscount - discountAmount;
+        
+        return {
+            ...item,
+            originalPrice: newUnitBasePrice,
+            priceBeforeDiscount,
+            discountAmount,
+            price
+        };
+    };
+
+    const handleUpdateCartPrice = (itemId, newUnitPrice) => {
         setCart(prevCart => prevCart.map(item => {
             if (item.id === itemId) {
-                if (item.isDoseable) {
-                    return {
-                        ...item,
-                        pricePerML: newUnitPrice,
-                        originalPrice: newUnitPrice,
-                        price: newTotal
-                    };
-                } else {
-                    return {
-                        ...item,
-                        originalPrice: newUnitPrice,
-                        price: newTotal
-                    };
-                }
+                const priceField = item.isDoseable ? 'pricePerML' : 'originalPrice';
+                return recalculatePrice({ ...item, [priceField]: newUnitPrice }, newUnitPrice);
             }
             return item;
         }));
     };
 
-    const handleUpdateProductPrice = (itemId, newUnitPrice, newTotal) => {
+    const handleUpdateProductPrice = (itemId, newUnitPrice) => {
         setCart(prevCart => prevCart.map(item => {
             if (item.id === itemId) {
-                if (item.isDoseable) {
-                    return {
-                        ...item,
-                        pricePerML: newUnitPrice,
-                        originalPrice: newUnitPrice,
-                        price: newTotal
-                    };
-                } else {
-                    return {
-                        ...item,
-                        originalPrice: newUnitPrice,
-                        price: newTotal
-                    };
-                }
+                const priceField = item.isDoseable ? 'pricePerML' : 'originalPrice';
+                return recalculatePrice({ ...item, [priceField]: newUnitPrice }, newUnitPrice);
             }
             return item;
         }));
@@ -264,7 +294,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                     if (p.isDoseable) {
                         return { ...p, pricePerML: newUnitPrice };
                     } else {
-                        return { ...p, price: newUnitPrice };
+                        return { ...p, price: newUnitPrice, precio: newUnitPrice };
                     }
                 }
                 return p;
@@ -272,6 +302,31 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
 
         setOnlineProducts(prev => updateProductList(prev));
         setPresentialProducts(prev => updateProductList(prev));
+    };
+
+    const handleApplyDiscount = (itemId, discountType, discountValue) => {
+        setCart(prevCart => prevCart.map(item => {
+            if (item.id !== itemId) return item;
+
+            let newDiscountAmount = 0;
+            if (discountType === 'percentage') {
+                newDiscountAmount = item.priceBeforeDiscount * (discountValue / 100);
+            } else if (discountType === 'fixed') {
+                newDiscountAmount = discountValue;
+            } else {
+                newDiscountAmount = 0;
+            }
+            
+            const newFinalPrice = item.priceBeforeDiscount - newDiscountAmount;
+
+            return {
+                ...item,
+                discountType: discountType,
+                discountValue: discountValue,
+                discountAmount: newDiscountAmount,
+                price: newFinalPrice
+            };
+        }));
     };
     
     const CheckIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>;
@@ -293,6 +348,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 item={itemToEditPrice}
                 onUpdateCartPrice={handleUpdateCartPrice}
                 onUpdateProductPrice={handleUpdateProductPrice}
+                onApplyDiscount={handleApplyDiscount}
             />
             <h2>Paso 3: Seleccionar Items</h2>
             <div className="seleccionar-producto-layout">
@@ -393,6 +449,12 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                                                 }
                                             </span>
                                         </div>
+                                        {item.discountAmount > 0 && (
+                                            <div className="card-item-discount-info">
+                                                <span>Precio original: ${item.priceBeforeDiscount.toFixed(2)}</span>
+                                                <span>Descuento: -${item.discountAmount.toFixed(2)}</span>
+                                            </div>
+                                        )}
                                         <div className="card-item-controls">
                                             {!item.isDoseable && (
                                                 <div className="quantity-stepper">
@@ -402,9 +464,9 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                                                 </div>
                                             )}
                                             <span 
-                                                className="card-item-subtotal clickable-price" 
+                                                className={`card-item-subtotal clickable-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}
                                                 onClick={() => handleOpenPriceModal(item)}
-                                                title="Click para modificar precio"
+                                                title="Click para modificar precio/descuento"
                                             >
                                                 ${(item.price).toFixed(2)}
                                             </span>
@@ -421,11 +483,15 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                         <div className="cart-summary-footer">
                             <div className="summary-line">
                                 <span>Subtotal</span>
-                                <span>${total.toFixed(2)}</span>
+                                <span>${cartSummary.subtotal.toFixed(2)}</span>
+                            </div>
+                            <div className="summary-line discount">
+                                <span>Descuentos</span>
+                                <span>-${cartSummary.totalDiscount.toFixed(2)}</span>
                             </div>
                             <div className="summary-line total">
                                 <span>Total</span>
-                                <strong>${total.toFixed(2)}</strong>
+                                <strong>${cartSummary.total.toFixed(2)}</strong>
                             </div>
                         </div>
                     )}
@@ -439,7 +505,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 <div className="navigator-buttons">
                     <button onClick={prevStep} className="btn btn-secondary">Anterior</button>
                     <button 
-                        onClick={() => onProductsSelected(cart.map(({originalPrice, ...rest}) => rest), total)} 
+                        onClick={() => onProductsSelected(cart.map(({...rest}) => rest), cartSummary.total)} 
                         className="btn btn-primary" 
                         disabled={cart.length === 0}
                     >

@@ -74,6 +74,41 @@
     }
 }
 
+// --- NUEVOS ESTILOS PARA TABS ---
+.modal-tabs {
+    display: flex;
+    border-bottom: 2px solid $border-color;
+    margin-bottom: 1.5rem;
+
+    .tab-btn {
+        flex: 1;
+        padding: 0.8rem 1rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $text-light;
+        transition: all 0.2s ease;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px; // Alinea con el borde del contenedor
+
+        &.active {
+            color: $primary-color;
+            border-bottom-color: $primary-color;
+        }
+
+        &:hover:not(.active) {
+            background-color: $background-light;
+        }
+    }
+}
+
+.tab-content {
+    animation: fadeIn 0.3s ease; // Pequeña animación para el cambio de tab
+}
+// --- FIN ESTILOS TABS ---
+
 .precio-current {
     display: flex;
     justify-content: space-between;
@@ -93,6 +128,42 @@
         color: $primary-dark;
     }
 }
+
+// --- NUEVOS ESTILOS PARA FORM DE DESCUENTO ---
+.discount-type-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+
+    label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1rem;
+        border: 2px solid $border-color;
+        border-radius: $border-radius;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        text-align: center;
+
+        input {
+            margin-right: 0.25rem;
+        }
+
+        &:hover {
+            background-color: $background-light;
+        }
+
+        input:checked + span { // Asumiendo que el texto está en un span
+            font-weight: 600;
+        }
+    }
+}
+// --- FIN ESTILOS FORM DESCUENTO ---
+
 
 .precio-input-group {
     margin-bottom: 1.5rem;
@@ -154,6 +225,12 @@
 
         &:first-child {
             color: $text-light;
+        }
+
+        // --- ESTILO AGREGADO PARA DESCUENTO ---
+        &.discount {
+            color: $success-color; // Asumiendo $success-color de sharedStyles
+            font-weight: 600;
         }
 
         &.new {

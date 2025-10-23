@@ -1,6 +1,10 @@
 import React from 'react';
 
 const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleClinicalHistory }) => {
+    
+    const subtotal = saleData.cart.reduce((sum, item) => sum + (item.priceBeforeDiscount || item.price), 0);
+    const totalDiscount = saleData.cart.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
+
     return (
         <div className="confirmar-venta-container">
             <h2>Paso 5: Confirmar Venta</h2>
@@ -10,18 +14,25 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                     {saleData.cart.map(item => (
                         <li key={item.id} className="summary-item">
                             <div className="item-info">
-                                {item.isDoseable ? (
-                                    <>
+                                <div className="item-name-details">
+                                    {item.isDoseable ? (
                                         <span className="item-name">{item.name} ({item.quantity} {item.unit})</span>
-                                        <span className="item-price">${item.price.toFixed(2)}</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span className="item-quantity">{item.quantity}x</span>
-                                        <span className="item-name">{item.name}</span>
-                                        <span className="item-price">${(item.price * item.quantity).toFixed(2)}</span>
-                                    </>
-                                )}
+                                    ) : (
+                                        <>
+                                            <span className="item-quantity">{item.quantity}x</span>
+                                            <span className="item-name">{item.name}</span>
+                                        </>
+                                    )}
+                                    {item.discountAmount > 0 && (
+                                        <div className="item-discount-info">
+                                            <span>Orig: ${item.priceBeforeDiscount.toFixed(2)}</span>
+                                            <span>Dto: -${item.discountAmount.toFixed(2)}</span>
+                                        </div>
+                                    )}
+                                </div>
+                                <span className={`item-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}>
+                                    ${item.price.toFixed(2)}
+                                </span>
                             </div>
                             {saleData.patient && (
                                 <div className="clinical-history-toggle">
@@ -36,6 +47,8 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                 <div className="summary-details">
                     <div className="summary-row"><span>Tutor:</span><strong>{saleData.tutor?.name || 'Cliente Genérico'}</strong></div>
                     <div className="summary-row"><span>Paciente:</span><strong>{saleData.patient?.name || 'N/A'}</strong></div>
+                    <div className="summary-row"><span>Subtotal:</span><strong>${subtotal.toFixed(2)}</strong></div>
+                    {totalDiscount > 0 && (<div className="summary-row discount"><span>Descuentos:</span><strong>-${totalDiscount.toFixed(2)}</strong></div>)}
                     <div className="summary-row"><span>Pagos:</span><div className="payment-details">{saleData.payments.map(p => (<strong key={p.id}>{p.method}: ${parseFloat(p.amount).toFixed(2)}</strong>))}</div></div>
                     {saleData.debt > 0 && (<div className="summary-row debt"><span>Deuda Generada:</span><strong>-${saleData.debt.toFixed(2)}</strong></div>)}
                     <div className="summary-total"><span>Total Venta:</span><strong>${saleData.total.toFixed(2)}</strong></div>

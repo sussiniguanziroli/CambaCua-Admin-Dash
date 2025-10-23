@@ -1,0 +1,203 @@
+@import '../presencial/sharedStyles';
+
+.sale-detail-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.sale-detail-modal {
+    background: #fff;
+    padding: 2rem;
+    border-radius: $border-radius;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    animation: slideUp 0.3s ease;
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        color: $primary-dark;
+        text-align: center;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.sale-detail-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: $text-light;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: $text-color;
+    }
+}
+
+.sale-detail-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid $border-color;
+
+    &:last-of-type {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    p {
+        display: flex;
+        justify-content: space-between;
+        margin: 0.5rem 0;
+
+        span { color: $text-light; }
+        strong { color: $text-color; }
+    }
+
+    h4 {
+        margin: 0 0 1rem 0;
+        color: $primary-dark;
+    }
+}
+
+.sale-detail-item-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    li {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        
+        .item-name-details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .item-name {
+            font-weight: 500;
+        }
+        
+        .item-discount-info {
+            font-size: 0.8rem;
+            color: $text-light;
+            background: $background-light;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+            max-width: 200px;
+            
+            span:first-child {
+                text-decoration: line-through;
+            }
+            span:last-child {
+                color: $success-color;
+                font-weight: 600;
+            }
+        }
+        
+        .item-price {
+            margin-left: auto;
+            font-weight: 600;
+            font-size: 1rem;
+            padding-left: 1rem;
+            
+            &.is-discounted {
+                color: $success-color;
+            }
+        }
+
+        span {
+            color: $text-color;
+            font-weight: 500;
+        }
+        strong {
+            color: $text-color;
+            font-weight: 600;
+            flex-shrink: 0;
+            padding-left: 1rem;
+        }
+    }
+}
+
+.sale-detail-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid $primary-dark;
+    text-align: right;
+    
+    .sale-detail-row,
+    .sale-detail-debt {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        
+        span { color: $text-light; }
+        strong { font-weight: 600; }
+
+        &.discount strong {
+            color: $success-color;
+        }
+        &.debt strong {
+            color: $error-color;
+        }
+    }
+
+    .sale-detail-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $primary-dark;
+        margin-top: 0.5rem;
+    }
+}
+
+.sale-detail-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    .btn, .btn-primary {
+        flex: 1;
+        padding: 0.75rem 1rem;
+    }
+}

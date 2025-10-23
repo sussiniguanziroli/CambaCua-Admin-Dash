@@ -27,7 +27,9 @@ const CajaDiaria = () => {
     const summary = useMemo(() => {
         return transactions.reduce((acc, trans) => {
             if (trans.type === 'Venta Presencial' || trans.type === 'Pedido Online') {
-                acc.totalVendido += trans.total;
+                // Usamos trans.subtotal (nuevo) o trans.total (antiguo)
+                acc.subtotalVendido += trans.subtotal || trans.total;
+                acc.totalDescuentos += trans.discount || 0;
                 acc.deudaGenerada += trans.debt || 0;
                 (trans.payments || []).forEach(p => {
                     acc.metodos[p.method] = (acc.metodos[p.method] || 0) + parseFloat(p.amount);
@@ -37,7 +39,7 @@ const CajaDiaria = () => {
                 acc.metodos[trans.paymentMethod] = (acc.metodos[trans.paymentMethod] || 0) + trans.amount;
             }
             return acc;
-        }, { totalVendido: 0, deudaGenerada: 0, deudaCobrada: 0, metodos: {} });
+        }, { subtotalVendido: 0, totalDescuentos: 0, deudaGenerada: 0, deudaCobrada: 0, metodos: {} });
     }, [transactions]);
 
     const totalEnCaja = useMemo(() => {
@@ -87,7 +89,10 @@ const CajaDiaria = () => {
             </div>
             <div className="caja-summary-grid">
                 <div className="caja-summary-card total-caja"><span>Total en Caja</span><strong>${totalEnCaja.toFixed(2)}</strong></div>
-                <div className="caja-summary-card"><span>Total Vendido</span><strong>${summary.totalVendido.toFixed(2)}</strong></div>
+                <div className="caja-summary-card"><span>Subtotal Vendido</span><strong>${summary.subtotalVendido.toFixed(2)}</strong></div>
+                {summary.totalDescuentos > 0 && (
+                    <div className="caja-summary-card descuentos"><span>Descuentos</span><strong>-${summary.totalDescuentos.toFixed(2)}</strong></div>
+                )}
                 <div className="caja-summary-card deuda-cobrada"><span>Cobranza de Deuda</span><strong>${summary.deudaCobrada.toFixed(2)}</strong></div>
                 <div className="caja-summary-card deuda-generada"><span>Deuda Generada</span><strong>${summary.deudaGenerada.toFixed(2)}</strong></div>
                 {Object.entries(summary.metodos).map(([method, total]) => (

@@ -61,19 +61,59 @@
 
     .resumen-item {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         font-size: 1rem;
+        
+        .item-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            flex-grow: 1;
+        }
+        
+        .item-name-details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
         .item-quantity {
             color: $text-light;
-            margin-right: 0.75rem;
+            margin-right: 0.25rem;
         }
         .item-name {
             font-weight: 500;
             color: $text-color;
         }
+        
+        .item-discount-info {
+            font-size: 0.8rem;
+            color: $text-light;
+            background: $background-light;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+            max-width: 200px;
+            
+            span:first-child {
+                text-decoration: line-through;
+            }
+            span:last-child {
+                color: $success-color;
+                font-weight: 600;
+            }
+        }
+        
         .item-price {
             margin-left: auto;
             font-weight: 600;
+            font-size: 1.1rem;
+            
+            &.is-discounted {
+                color: $success-color;
+            }
         }
     }
 
@@ -97,6 +137,10 @@
         }
         &.surcharge strong { color: $warning-color; }
         &.debt strong { color: $error-color; }
+        &.discount strong { 
+            color: $success-color; 
+            font-weight: 600;
+        }
     }
 
     .resumen-total-section {

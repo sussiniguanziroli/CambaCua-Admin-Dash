@@ -46,7 +46,16 @@ const SaleDetailModal = ({ sale, onClose }) => {
         doc.setFontSize(14);
         doc.text(`Monto Cobrado: $${(sale.amount || 0).toFixed(2)}`, margin, y);
       } else {
-        const items = (sale.items || []).map(it => [String(it.quantity ?? 1), it.name, `$${((it.price ?? 0) * (it.quantity ?? 1)).toFixed(2)}`]);
+        const items = (sale.items || []).map(it => {
+            const quantity = it.isDoseable ? `${it.quantity} ${it.unit}` : String(it.quantity ?? 1);
+            let name = it.name;
+            if (it.discountAmount > 0) {
+                name += ` (Dto: -$${it.discountAmount.toFixed(2)})`;
+            }
+            const price = `$${it.price.toFixed(2)}`; // 'price' es el subtotal final del item
+            return [quantity, name, price];
+        });
+
         if (items.length > 0) {
           autoTable(doc, { startY: y, head: [['Cant.', 'Item', 'Subtotal']], body: items, margin: { left: margin, right: margin } });
           y = doc.lastAutoTable.finalY + 15;
@@ -58,7 +67,15 @@ const SaleDetailModal = ({ sale, onClose }) => {
           y = doc.lastAutoTable.finalY + 15;
         }
 
+        doc.setFontSize(12);
+        if (sale.subtotal) {
+            doc.text(`Subtotal: $${(sale.subtotal || 0).toFixed(2)}`, margin, y); y += 20;
+            if ((sale.discount || 0) > 0) {
+                doc.text(`Descuentos: -$${(sale.discount || 0).toFixed(2)}`, margin, y); y += 20;
+            }
+        }
         if ((sale.debt || 0) > 0) { doc.text(`Deuda Generada: $${sale.debt.toFixed(2)}`, margin, y); y += 20; }
+        
         doc.setFontSize(14);
         doc.text(`Total Venta: $${(sale.total ?? 0).toFixed(2)}`, margin, y);
       }
@@ -76,7 +93,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
   };
 
   const buildPrintableHtml = () => {
-    const style = `<style>body{font-family:Arial,sans-serif;padding:20px;color:#111}h1{font-size:24px;margin:0}h2{font-size:18px;margin-top:2rem;border-bottom:1px solid #ccc;padding-bottom:5px}h3{margin-top:1.5rem}table{width:100%;border-collapse:collapse;margin-bottom:12px}th,td{text-align:left;padding:6px;border-bottom:1px solid #ddd}.total{font-weight:700;font-size:1.2rem;margin-top:1.5rem}</style>`;
+    const style = `<style>body{font-family:Arial,sans-serif;padding:20px;color:#111}h1{font-size:24px;margin:0}h2{font-size:18px;margin-top:2rem;border-bottom:1px solid #ccc;padding-bottom:5px}h3{margin-top:1.5rem}table{width:100%;border-collapse:collapse;margin-bottom:12px}th,td{text-align:left;padding:6px;border-bottom:1px solid #ddd}.total-summary p{margin:4px 0;text-align:right}.total-summary .total{font-weight:700;font-size:1.2rem;margin-top:1.5rem}</style>`;
     
     let content;
     if (isDebtPayment) {
@@ -85,18 +102,32 @@ const SaleDetailModal = ({ sale, onClose }) => {
             <table><thead><tr><th>Método</th><th>Monto</th></tr></thead><tbody>
                 <tr><td>${sale.paymentMethod}</td><td>$${(sale.amount || 0).toFixed(2)}</td></tr>
             </tbody></table>
-            <p class="total">Monto Cobrado: $${(sale.amount || 0).toFixed(2)}</p>
+            <div class="total-summary"><p class="total">Monto Cobrado: $${(sale.amount || 0).toFixed(2)}</p></div>
         `;
     } else {
-        const itemsHtml = (sale.items || []).map(it => `<tr><td>${it.quantity ?? 1}</td><td>${it.name}</td><td>$${((it.price ?? 0) * (it.quantity ?? 1)).toFixed(2)}</td></tr>`).join('') || '<tr><td colspan="3">No hay items</td></tr>';
+        const itemsHtml = (sale.items || []).map(it => {
+            const quantity = it.isDoseable ? `${it.quantity} ${it.unit}` : String(it.quantity ?? 1);
+            let name = it.name;
+            if (it.discountAmount > 0) {
+                name += `<br><small>(Orig: $${it.priceBeforeDiscount.toFixed(2)}, Dto: -$${it.discountAmount.toFixed(2)})</small>`;
+            }
+            return `<tr><td>${quantity}</td><td>${name}</td><td>$${(it.price ?? 0).toFixed(2)}</td></tr>`;
+        }).join('') || '<tr><td colspan="3">No hay items</td></tr>';
+
         const paymentsHtml = (sale.payments || []).map(p => `<tr><td>${p.method}</td><td>$${parseFloat(p.amount ?? 0).toFixed(2)}</td></tr>`).join('') || '<tr><td colspan="2">No hay pagos</td></tr>';
+        
         content = `
             <h3>Items</h3>
             <table><thead><tr><th>Cant.</th><th>Item</th><th>Subtotal</th></tr></thead><tbody>${itemsHtml}</tbody></table>
             <h3>Pagos</h3>
             <table><thead><tr><th>Método</th><th>Monto</th></tr></thead><tbody>${paymentsHtml}</tbody></table>
-            ${(sale.debt || 0) > 0 ? `<p class="total">Deuda Generada: $${sale.debt.toFixed(2)}</p>` : ''}
-            <p class="total">Total Venta: $${(sale.total ?? 0).toFixed(2)}</p>
+            
+            <div class="total-summary">
+                ${sale.subtotal ? `<p>Subtotal: $${(sale.subtotal || 0).toFixed(2)}</p>` : ''}
+                ${(sale.discount || 0) > 0 ? `<p>Descuentos: -$${(sale.discount || 0).toFixed(2)}</p>` : ''}
+                ${(sale.debt || 0) > 0 ? `<p>Deuda Generada: $${sale.debt.toFixed(2)}</p>` : ''}
+                <p class="total">Total Venta: $${(sale.total ?? 0).toFixed(2)}</p>
+            </div>
         `;
     }
     
@@ -112,6 +143,9 @@ const SaleDetailModal = ({ sale, onClose }) => {
     </body></html>`;
   };
 
+  const subtotal = sale.subtotal || sale.total;
+  const totalDiscount = sale.discount || 0;
+
   return (
     <div className="sale-detail-modal-overlay">
       <div className="sale-detail-modal" ref={printableRef} role="dialog" aria-modal="true">
@@ -126,7 +160,26 @@ const SaleDetailModal = ({ sale, onClose }) => {
           <div className="sale-detail-section">
             <h4>Items</h4>
             <ul className="sale-detail-item-list">
-              {(sale.items || []).map((item, index) => (<li key={item.id || index}><span>{item.quantity ?? 1} x {item.name}</span><strong>${((item.price ?? 0) * (item.quantity ?? 1)).toFixed(2)}</strong></li>))}
+              {(sale.items || []).map((item, index) => (
+                <li key={item.id || index}>
+                    <div className="item-name-details">
+                        {item.isDoseable ? (
+                            <span className="item-name">{item.name} ({item.quantity} {item.unit})</span>
+                        ) : (
+                            <span className="item-name">{item.quantity ?? 1} x {item.name}</span>
+                        )}
+                        {item.discountAmount > 0 && (
+                            <div className="item-discount-info">
+                                <span>Orig: ${item.priceBeforeDiscount.toFixed(2)}</span>
+                                <span>Dto: -${item.discountAmount.toFixed(2)}</span>
+                            </div>
+                        )}
+                    </div>
+                    <strong className={`item-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}>
+                        ${(item.price ?? 0).toFixed(2)}
+                    </strong>
+                </li>
+              ))}
             </ul>
           </div>
         )}
@@ -147,12 +200,18 @@ const SaleDetailModal = ({ sale, onClose }) => {
             <p className="sale-detail-total"><span>Monto Cobrado:</span> <strong>${(sale.amount || 0).toFixed(2)}</strong></p>
           ) : (
             <>
-              {(sale.debt || 0) > 0 && <p className="sale-detail-debt"><span>Deuda Generada:</span> <strong>${sale.debt.toFixed(2)}</strong></p>}
+              {totalDiscount > 0 && (
+                <>
+                  <p className="sale-detail-row"><span>Subtotal:</span> <strong>${subtotal.toFixed(2)}</strong></p>
+                  <p className="sale-detail-row discount"><span>Descuentos:</span> <strong>-${totalDiscount.toFixed(2)}</strong></p>
+                </>
+              )}
+              {(sale.debt || 0) > 0 && <p className="sale-detail-row debt"><span>Deuda Generada:</span> <strong>${sale.debt.toFixed(2)}</strong></p>}
               <p className="sale-detail-total"><span>Total Venta:</span> <strong>${(sale.total ?? 0).toFixed(2)}</strong></p>
             </>
           )}
         </div>
-        <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+        <div className="sale-detail-actions">
           <button onClick={downloadPDF} className="btn btn-primary">Descargar PDF</button>
           <button onClick={() => { const printable = buildPrintableHtml(); const w = window.open('', '_blank'); w.document.write(printable); w.document.close(); setTimeout(() => w.print(), 250); }} className="btn">Abrir vista imprimible</button>
         </div>

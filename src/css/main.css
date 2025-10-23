@@ -4105,6 +4105,26 @@ button.btn-reset:hover {
 .seleccionar-producto-container .cart-item-card .card-item-info .card-item-price-unit {
   color: #576677;
   font-size: 0.9rem;
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+.seleccionar-producto-container .cart-item-card .card-item-discount-info {
+  font-size: 0.8rem;
+  color: #576677;
+  background: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+.seleccionar-producto-container .cart-item-card .card-item-discount-info span:first-child {
+  text-decoration: line-through;
+}
+.seleccionar-producto-container .cart-item-card .card-item-discount-info span:last-child {
+  color: #2ecc71;
+  font-weight: 600;
 }
 .seleccionar-producto-container .cart-item-card .card-item-controls {
   display: flex;
@@ -4142,6 +4162,9 @@ button.btn-reset:hover {
   font-weight: 700;
   color: #2980b9;
 }
+.seleccionar-producto-container .cart-item-card .card-item-controls .card-item-subtotal.is-discounted {
+  color: #2ecc71;
+}
 .seleccionar-producto-container .cart-item-card .card-item-controls .remove-item-btn {
   background: none;
   border: none;
@@ -4162,6 +4185,10 @@ button.btn-reset:hover {
 .seleccionar-producto-container .cart-summary-footer .summary-line {
   display: flex;
   justify-content: space-between;
+}
+.seleccionar-producto-container .cart-summary-footer .summary-line.discount {
+  color: #2ecc71;
+  font-size: 0.9rem;
 }
 .seleccionar-producto-container .cart-summary-footer .summary-line.total {
   font-size: 1.5rem;
@@ -4250,30 +4277,6 @@ button.btn-reset:hover {
   justify-content: space-between;
   gap: 1rem;
   margin-top: 2rem;
-}
-
-.card-item-subtotal.clickable-price {
-  cursor: pointer;
-  position: relative;
-  transition: all 0.2s ease;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  user-select: none;
-}
-.card-item-subtotal.clickable-price:hover {
-  background-color: rgb(233.9355648536, 244.3121338912, 251.2644351464);
-  color: #2980b9;
-  transform: scale(1.05);
-}
-.card-item-subtotal.clickable-price::after {
-  content: "✎";
-  font-size: 0.75rem;
-  margin-left: 0.3rem;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-.card-item-subtotal.clickable-price:hover::after {
-  opacity: 0.7;
 }
 
 .sale-summary-box {
@@ -4710,20 +4713,53 @@ button.btn-reset:hover {
 }
 .resumen-venta-container .resumen-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   font-size: 1rem;
+}
+.resumen-venta-container .resumen-item .item-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex-grow: 1;
+}
+.resumen-venta-container .resumen-item .item-name-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 .resumen-venta-container .resumen-item .item-quantity {
   color: #576677;
-  margin-right: 0.75rem;
+  margin-right: 0.25rem;
 }
 .resumen-venta-container .resumen-item .item-name {
   font-weight: 500;
   color: #34495e;
 }
+.resumen-venta-container .resumen-item .item-discount-info {
+  font-size: 0.8rem;
+  color: #576677;
+  background: #f8f9fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  max-width: 200px;
+}
+.resumen-venta-container .resumen-item .item-discount-info span:first-child {
+  text-decoration: line-through;
+}
+.resumen-venta-container .resumen-item .item-discount-info span:last-child {
+  color: #2ecc71;
+  font-weight: 600;
+}
 .resumen-venta-container .resumen-item .item-price {
   margin-left: auto;
   font-weight: 600;
+  font-size: 1.1rem;
+}
+.resumen-venta-container .resumen-item .item-price.is-discounted {
+  color: #2ecc71;
 }
 .resumen-venta-container .summary-row {
   display: flex;
@@ -4749,6 +4785,10 @@ button.btn-reset:hover {
 }
 .resumen-venta-container .summary-row.debt strong {
   color: #e74c3c;
+}
+.resumen-venta-container .summary-row.discount strong {
+  color: #2ecc71;
+  font-weight: 600;
 }
 .resumen-venta-container .resumen-total-section {
   padding-top: 1.5rem;
@@ -4843,19 +4883,47 @@ button.btn-reset:hover {
 }
 .confirmar-venta-container .summary-item .item-info {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
+  flex-grow: 1;
+}
+.confirmar-venta-container .summary-item .item-name-details {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
 }
 .confirmar-venta-container .summary-item .item-quantity {
   color: #7f8c8d;
+  margin-right: 0.25rem;
 }
 .confirmar-venta-container .summary-item .item-name {
   font-weight: 500;
 }
+.confirmar-venta-container .summary-item .item-discount-info {
+  font-size: 0.8rem;
+  color: #576677;
+  background: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  max-width: 200px;
+}
+.confirmar-venta-container .summary-item .item-discount-info span:first-child {
+  text-decoration: line-through;
+}
+.confirmar-venta-container .summary-item .item-discount-info span:last-child {
+  color: #2ecc71;
+  font-weight: 600;
+}
 .confirmar-venta-container .summary-item .item-price {
   margin-left: auto;
   font-weight: 600;
+  font-size: 1.1rem;
+}
+.confirmar-venta-container .summary-item .item-price.is-discounted {
+  color: #2ecc71;
 }
 .confirmar-venta-container .clinical-history-toggle {
   display: flex;
@@ -4920,6 +4988,14 @@ button.btn-reset:hover {
 }
 .confirmar-venta-container .summary-row.surcharge {
   color: #FFB74D;
+  font-weight: 500;
+}
+.confirmar-venta-container .summary-row.discount {
+  color: #2ecc71;
+  font-weight: 500;
+}
+.confirmar-venta-container .summary-row.debt {
+  color: #e74c3c;
   font-weight: 500;
 }
 .confirmar-venta-container .summary-total {
@@ -5043,6 +5119,36 @@ button.btn-reset:hover {
   color: #576677;
 }
 
+.modal-tabs {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 1.5rem;
+}
+.modal-tabs .tab-btn {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #576677;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+.modal-tabs .tab-btn.active {
+  color: #3498db;
+  border-bottom-color: #3498db;
+}
+.modal-tabs .tab-btn:hover:not(.active) {
+  background-color: #f8f9fa;
+}
+
+.tab-content {
+  animation: fadeIn 0.3s ease;
+}
+
 .precio-current {
   display: flex;
   justify-content: space-between;
@@ -5059,6 +5165,35 @@ button.btn-reset:hover {
 .precio-current strong {
   font-size: 1.2rem;
   color: #2980b9;
+}
+
+.discount-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.discount-type-selector label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+.discount-type-selector label input {
+  margin-right: 0.25rem;
+}
+.discount-type-selector label:hover {
+  background-color: #f8f9fa;
+}
+.discount-type-selector label input:checked + span {
+  font-weight: 600;
 }
 
 .precio-input-group {
@@ -5115,6 +5250,10 @@ button.btn-reset:hover {
 }
 .precio-preview .preview-row:first-child {
   color: #576677;
+}
+.precio-preview .preview-row.discount {
+  color: #2ecc71;
+  font-weight: 600;
 }
 .precio-preview .preview-row.new {
   border-top: 2px solid #e0e0e0;
@@ -8869,6 +9008,12 @@ button.btn-reset:hover {
 .caja-diaria-container .caja-summary-card.deuda-generada strong {
   color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
+.caja-diaria-container .caja-summary-card.descuentos {
+  border-left-color: #2ecc71;
+}
+.caja-diaria-container .caja-summary-card.descuentos strong {
+  color: rgb(36.616, 162.384, 89.948);
+}
 .caja-diaria-container .caja-transactions-list h3 {
   margin-bottom: 1.5rem;
 }
@@ -8985,12 +9130,67 @@ button.btn-reset:hover {
 .sale-detail-modal .sale-detail-item-list li {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 0;
+  align-items: flex-start;
+  padding: 0.75rem 0;
   border-bottom: 1px solid #f8f9fa;
+}
+.sale-detail-modal .item-name-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.sale-detail-modal .item-name {
+  font-weight: 500;
+}
+.sale-detail-modal .item-discount-info {
+  font-size: 0.8rem;
+  color: #576677;
+  background: #f8f9fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  max-width: 200px;
+}
+.sale-detail-modal .item-discount-info span:first-child {
+  text-decoration: line-through;
+}
+.sale-detail-modal .item-discount-info span:last-child {
+  color: #2ecc71;
+  font-weight: 600;
+}
+.sale-detail-modal .item-price {
+  margin-left: auto;
+  font-weight: 600;
+  font-size: 1rem;
+  padding-left: 1rem;
+}
+.sale-detail-modal .item-price.is-discounted {
+  color: #2ecc71;
 }
 .sale-detail-modal .sale-detail-footer {
   border-top: 1px solid #e0e0e0;
   padding-top: 1rem;
+  text-align: right;
+}
+.sale-detail-modal .sale-detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.sale-detail-modal .sale-detail-row span {
+  color: #7f8c8d;
+}
+.sale-detail-modal .sale-detail-row strong {
+  font-weight: 600;
+}
+.sale-detail-modal .sale-detail-row.discount strong {
+  color: #2ecc71;
+}
+.sale-detail-modal .sale-detail-row.debt strong {
+  color: #e74c3c;
 }
 .sale-detail-modal .sale-detail-total, .sale-detail-modal .sale-detail-debt {
   display: flex;
@@ -8998,8 +9198,21 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: 700;
 }
+.sale-detail-modal .sale-detail-total {
+  margin-top: 0.5rem;
+  font-size: 1.4rem;
+}
 .sale-detail-modal .sale-detail-debt {
   color: #e74c3c;
+}
+.sale-detail-modal .sale-detail-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.sale-detail-modal .sale-detail-actions .btn, .sale-detail-modal .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-modal .sale-detail-actions .today-btn, .sale-detail-modal .sale-detail-actions .btn-suministrado, .sale-detail-modal .sale-detail-actions .btn-delete-small, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-modal .sale-detail-actions .view-mode-toggle, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-modal .sale-detail-actions .action-btn, .sale-detail-modal .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-modal .sale-detail-actions .add-line-btn, .sale-detail-modal .sale-detail-actions .btn-primary, .sale-detail-modal .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .sale-detail-modal .sale-detail-actions .btn-confirm {
+  flex: 1;
+  padding: 0.75rem 1rem;
 }
 
 .sale-summary-box {
@@ -9373,6 +9586,238 @@ button.btn-reset:hover {
   font-weight: 700;
   color: #34495e;
   margin-top: 1rem;
+}
+
+.sale-summary-box {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.sale-summary-box h4 {
+  margin-top: 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+.sale-summary-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+.sale-summary-box ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+.sale-summary-box .summary-row, .sale-summary-box .summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-top: 1px solid #e0e0e0;
+}
+.sale-summary-box .summary-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2980b9;
+}
+
+.sale-detail-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.sale-detail-modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+.sale-detail-modal h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #2980b9;
+  text-align: center;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.sale-detail-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #576677;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.sale-detail-close-btn:hover {
+  color: #34495e;
+}
+
+.sale-detail-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+.sale-detail-section:last-of-type {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.sale-detail-section p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+.sale-detail-section p span {
+  color: #576677;
+}
+.sale-detail-section p strong {
+  color: #34495e;
+}
+.sale-detail-section h4 {
+  margin: 0 0 1rem 0;
+  color: #2980b9;
+}
+
+.sale-detail-item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.sale-detail-item-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.sale-detail-item-list li .item-name-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.sale-detail-item-list li .item-name {
+  font-weight: 500;
+}
+.sale-detail-item-list li .item-discount-info {
+  font-size: 0.8rem;
+  color: #576677;
+  background: #f8f9fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  max-width: 200px;
+}
+.sale-detail-item-list li .item-discount-info span:first-child {
+  text-decoration: line-through;
+}
+.sale-detail-item-list li .item-discount-info span:last-child {
+  color: #2ecc71;
+  font-weight: 600;
+}
+.sale-detail-item-list li .item-price {
+  margin-left: auto;
+  font-weight: 600;
+  font-size: 1rem;
+  padding-left: 1rem;
+}
+.sale-detail-item-list li .item-price.is-discounted {
+  color: #2ecc71;
+}
+.sale-detail-item-list li span {
+  color: #34495e;
+  font-weight: 500;
+}
+.sale-detail-item-list li strong {
+  color: #34495e;
+  font-weight: 600;
+  flex-shrink: 0;
+  padding-left: 1rem;
+}
+
+.sale-detail-footer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #2980b9;
+  text-align: right;
+}
+.sale-detail-footer .sale-detail-row,
+.sale-detail-footer .sale-detail-debt {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.sale-detail-footer .sale-detail-row span,
+.sale-detail-footer .sale-detail-debt span {
+  color: #576677;
+}
+.sale-detail-footer .sale-detail-row strong,
+.sale-detail-footer .sale-detail-debt strong {
+  font-weight: 600;
+}
+.sale-detail-footer .sale-detail-row.discount strong,
+.sale-detail-footer .sale-detail-debt.discount strong {
+  color: #2ecc71;
+}
+.sale-detail-footer .sale-detail-row.debt strong,
+.sale-detail-footer .sale-detail-debt.debt strong {
+  color: #e74c3c;
+}
+.sale-detail-footer .sale-detail-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2980b9;
+  margin-top: 0.5rem;
+}
+
+.sale-detail-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.sale-detail-actions .btn, .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-actions button, .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-actions button, .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-actions button, .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-actions .today-btn, .sale-detail-actions .btn-suministrado, .sale-detail-actions .btn-delete-small, .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-actions .view-mode-toggle, .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-actions .action-btn, .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-actions .add-line-btn, .sale-detail-actions .btn-primary, .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .sale-detail-actions .btn-confirm {
+  flex: 1;
+  padding: 0.75rem 1rem;
 }
 
 .sale-summary-box {

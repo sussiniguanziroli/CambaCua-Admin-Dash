@@ -4,6 +4,10 @@ const ResumenVenta = ({ saleData, onReset }) => {
     const totalPaid = saleData.payments.reduce((sum, p) => sum + parseFloat(p.amount), 0);
     const totalSurcharges = saleData.payments.reduce((acc, p) => acc + (p.surchargeAmount || 0), 0);
 
+    // Usamos los valores calculados y guardados en saleData
+    const subtotal = saleData.subtotal || 0;
+    const totalDiscount = saleData.discount || 0;
+
     const downloadPDF = async () => {
         try {
             const { jsPDF } = await import('jspdf');
@@ -31,16 +35,29 @@ const ResumenVenta = ({ saleData, onReset }) => {
             meta.forEach(([k, v]) => { doc.text(`${k} ${v}`, margin, y); y += 18; });
             y += 10;
             
-            const items = (saleData.cart || []).map(it => [
-                String(it.quantity ?? 1), 
-                it.name, 
-                `$${(it.price * (it.isDoseable ? 1 : it.quantity)).toFixed(2)}`
-            ]);
+            const items = (saleData.cart || []).map(it => {
+                const quantity = it.isDoseable ? `${it.quantity} ${it.unit}` : String(it.quantity ?? 1);
+                let name = it.name;
+                if (it.discountAmount > 0) {
+                    name += ` (Dto: -$${it.discountAmount.toFixed(2)})`;
+                }
+                const price = `$${it.price.toFixed(2)}`; // 'price' es el subtotal final del item
+                return [quantity, name, price];
+            });
+
             if (items.length > 0) {
                 autoTable(doc, { startY: y, head: [['Cant.', 'Item', 'Subtotal']], body: items, margin: { left: margin, right: margin } });
                 y = doc.lastAutoTable.finalY + 15;
             }
             
+            doc.setFontSize(12);
+            doc.text(`Subtotal: $${subtotal.toFixed(2)}`, margin, y);
+            y += 20;
+            if (totalDiscount > 0) {
+                doc.text(`Descuentos: -$${totalDiscount.toFixed(2)}`, margin, y);
+                y += 20;
+            }
+
             const payments = (saleData.payments || []).map(p => [p.method || '-', `$${parseFloat(p.amount ?? 0).toFixed(2)}`]);
             if (payments.length > 0) {
                 autoTable(doc, { startY: y, head: [['Método', 'Monto Pagado']], body: payments, margin: { left: margin, right: margin } });
@@ -49,7 +66,7 @@ const ResumenVenta = ({ saleData, onReset }) => {
 
             if ((saleData.debt || 0) > 0) { doc.text(`Deuda Generada: $${saleData.debt.toFixed(2)}`, margin, y); y += 20; }
             doc.setFontSize(14);
-            doc.text(`Total Venta: $${(totalPaid + (saleData.debt || 0)).toFixed(2)}`, margin, y);
+            doc.text(`Total Venta: $${saleData.total.toFixed(2)}`, margin, y);
             
             doc.save(`Recibo_CambaCuaVet_${saleData.id}.pdf`);
 
@@ -74,18 +91,27 @@ const ResumenVenta = ({ saleData, onReset }) => {
                     <ul className="resumen-item-list">
                         {saleData.cart.map(item => (
                            <li key={item.id} className="resumen-item">
-                                {item.isDoseable ? (
-                                    <>
-                                        <span className="item-name">{item.name} ({item.quantity} {item.unit})</span>
-                                        <span className="item-price">${item.price.toFixed(2)}</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span className="item-quantity">{item.quantity}x</span>
-                                        <span className="item-name">{item.name}</span>
-                                        <span className="item-price">${(item.price * item.quantity).toFixed(2)}</span>
-                                    </>
-                                )}
+                               <div className="item-info">
+                                    <div className="item-name-details">
+                                        {item.isDoseable ? (
+                                            <span className="item-name">{item.name} ({item.quantity} {item.unit})</span>
+                                        ) : (
+                                            <>
+                                                <span className="item-quantity">{item.quantity}x</span>
+                                                <span className="item-name">{item.name}</span>
+                                            </>
+                                        )}
+                                        {item.discountAmount > 0 && (
+                                            <div className="item-discount-info">
+                                                <span>Orig: ${item.priceBeforeDiscount.toFixed(2)}</span>
+                                                <span>Dto: -${item.discountAmount.toFixed(2)}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <span className={`item-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}>
+                                        ${item.price.toFixed(2)}
+                                    </span>
+                                </div>
                             </li>
                         ))}
                     </ul>
@@ -97,6 +123,8 @@ const ResumenVenta = ({ saleData, onReset }) => {
                 </div>
 
                 <div className="resumen-section">
+                    <div className="summary-row"><span>Subtotal:</span><strong>${subtotal.toFixed(2)}</strong></div>
+                    {totalDiscount > 0 && (<div className="summary-row discount"><span>Descuentos:</span><strong>-${totalDiscount.toFixed(2)}</strong></div>)}
                     <div className="summary-row">
                         <span>Pagos Registrados:</span>
                         <div className="payment-details">
