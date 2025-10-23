@@ -55,7 +55,6 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     const [isDosageModalOpen, setIsDosageModalOpen] = useState(false);
     const [itemToDose, setItemToDose] = useState(null);
     
-    // New state for price modal
     const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
     const [itemToEditPrice, setItemToEditPrice] = useState(null);
 
@@ -211,13 +210,11 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
 
     const removeFromCart = (itemId) => setCart(prevCart => prevCart.filter(item => item.id !== itemId));
     
-    // Open price modal
     const handleOpenPriceModal = (item) => {
         setItemToEditPrice(item);
         setIsPriceModalOpen(true);
     };
 
-    // Update price only in cart
     const handleUpdateCartPrice = (itemId, newUnitPrice, newTotal) => {
         setCart(prevCart => prevCart.map(item => {
             if (item.id === itemId) {
@@ -240,9 +237,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         }));
     };
 
-    // Update price in product database and cart
     const handleUpdateProductPrice = (itemId, newUnitPrice, newTotal) => {
-        // Update cart
         setCart(prevCart => prevCart.map(item => {
             if (item.id === itemId) {
                 if (item.isDoseable) {
@@ -263,7 +258,6 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             return item;
         }));
 
-        // Update the product lists to reflect new price
         const updateProductList = (products) => 
             products.map(p => {
                 if (p.id === itemId) {
@@ -390,6 +384,15 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                             <div className="cart-items-list">
                                 {cart.map(item => (
                                     <div key={item.id} className="cart-item-card">
+                                        <div className="card-item-info">
+                                            <span className="card-item-name">{item.name}</span>
+                                            <span className="card-item-price-unit">
+                                                {item.isDoseable 
+                                                    ? `${item.quantity} ml @ $${(item.originalPrice || item.pricePerML).toFixed(2)}/ml`
+                                                    : `${item.quantity} u. @ $${item.originalPrice.toFixed(2)}/u.`
+                                                }
+                                            </span>
+                                        </div>
                                         <div className="card-item-controls">
                                             {!item.isDoseable && (
                                                 <div className="quantity-stepper">
@@ -448,4 +451,4 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     );
 };
 
-export default SeleccionarProducto; 
+export default SeleccionarProducto;
