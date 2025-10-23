@@ -5,12 +5,12 @@ import { db } from '../../../firebase/config';
 const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tutorName, pacienteName }) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [dueDate, setDueDate] = useState('');
+    const [appliedDate, setAppliedDate] = useState(new Date().toISOString().split('T')[0]);
     const [dosage, setDosage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
 
-    // New states for date calculation
-    const [dateInputMode, setDateInputMode] = useState('picker'); // 'picker' or 'days'
+    const [dateInputMode, setDateInputMode] = useState('picker');
     const [daysAmount, setDaysAmount] = useState('');
     const [calculatedDate, setCalculatedDate] = useState('');
 
@@ -37,7 +37,6 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
 
     useEffect(() => { fetchData(); }, [fetchData]);
 
-    // Calculate date when days amount changes
     useEffect(() => {
         if (dateInputMode === 'days' && daysAmount) {
             const days = parseInt(daysAmount);
@@ -55,7 +54,6 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
         }
     }, [daysAmount, dateInputMode]);
 
-    // Handle date input mode change
     const handleDateModeChange = (mode) => {
         setDateInputMode(mode);
         setDueDate('');
@@ -84,7 +82,7 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!selectedProduct || !dueDate) { setError('Debe seleccionar un producto y una fecha.'); return; }
+        if (!selectedProduct || !dueDate || !appliedDate) { setError('Debe seleccionar un producto, una fecha de aplicación y una fecha de vencimiento.'); return; }
         if (selectedProduct.isDoseable && (!dosage || parseFloat(dosage) <= 0)) { setError('Debe ingresar una dosis válida para este producto.'); return; }
 
         setIsSubmitting(true);
@@ -92,7 +90,8 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
         try {
             const dataToSave = {
                 productId: selectedProduct.id, productName: selectedProduct.name,
-                dueDate: Timestamp.fromDate(new Date(dueDate)), appliedDate: serverTimestamp(),
+                dueDate: Timestamp.fromDate(new Date(dueDate)), 
+                appliedDate: Timestamp.fromDate(new Date(appliedDate)),
                 status: 'pendiente', supplied: false,
                 tutorId, tutorName, pacienteId, pacienteName,
                 appliedDosage: selectedProduct.isDoseable ? `${dosage} ml` : null,
@@ -109,6 +108,7 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
     
     const handleClose = () => {
         setSelectedProduct(null); setDueDate(''); setDosage('');
+        setAppliedDate(new Date().toISOString().split('T')[0]);
         setFilters({ text: '', tipo: 'todos', category: 'todas', status: 'true' });
         setDateInputMode('picker');
         setDaysAmount('');
@@ -131,6 +131,18 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                     <div className="vencimiento-details-section">
                         <h4>Detalles del Vencimiento</h4>
                         {selectedProduct && (<div className="selected-product-display"><strong>Producto Seleccionado:</strong><p>{selectedProduct.name}</p></div>)}
+                        
+                        <div className="form-group">
+                            <label htmlFor="appliedDate">Fecha de Aplicación</label>
+                            <input 
+                                id="appliedDate" 
+                                type="date" 
+                                value={appliedDate} 
+                                onChange={(e) => setAppliedDate(e.target.value)} 
+                                required 
+                            />
+                        </div>
+
                         {selectedProduct && selectedProduct.isDoseable && (
                             <div className="form-group">
                                 <label htmlFor="dosage">Dosis Aplicada (ml)</label>
@@ -138,9 +150,8 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                             </div>
                         )}
                         
-                        {/* Date Input Mode Selector */}
                         <div className="form-group">
-                            <label>Método de Fecha</label>
+                            <label>Método de Fecha (Vencimiento)</label>
                             <div className="date-mode-selector">
                                 <button 
                                     type="button" 
@@ -159,7 +170,6 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                             </div>
                         </div>
 
-                        {/* Conditional Date Input */}
                         {dateInputMode === 'picker' ? (
                             <div className="form-group">
                                 <label htmlFor="dueDate">Próximo Vencimiento</label>

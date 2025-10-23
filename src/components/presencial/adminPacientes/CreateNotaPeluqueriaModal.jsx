@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 
 const CreateNotaPeluqueriaModal = ({ isOpen, onClose, onSave, pacienteId }) => {
     const [formData, setFormData] = useState({ title: '', description: '' });
+    const [noteDate, setNoteDate] = useState(new Date().toISOString().split('T')[0]);
     const [filesToUpload, setFilesToUpload] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -12,6 +13,7 @@ const CreateNotaPeluqueriaModal = ({ isOpen, onClose, onSave, pacienteId }) => {
     useEffect(() => {
         if (isOpen) {
             setFormData({ title: '', description: '' });
+            setNoteDate(new Date().toISOString().split('T')[0]);
             setFilesToUpload([]);
         }
     }, [isOpen]);
@@ -52,7 +54,7 @@ const CreateNotaPeluqueriaModal = ({ isOpen, onClose, onSave, pacienteId }) => {
 
             const newMediaFiles = await Promise.all(uploadPromises);
             
-            await onSave({ ...formData, media: newMediaFiles });
+            await onSave({ ...formData, media: newMediaFiles, date: noteDate });
 
         } catch (error) {
             Swal.fire('Error', 'No se pudo guardar la nota o subir los archivos.', 'error');
@@ -69,6 +71,10 @@ const CreateNotaPeluqueriaModal = ({ isOpen, onClose, onSave, pacienteId }) => {
                 <div className="modal-header"><h3>Agregar Nota de Peluquería</h3><button className="close-btn" onClick={onClose}>&times;</button></div>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group"><label>Título</label><input type="text" value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} required /></div>
+                    <div className="form-group">
+                        <label>Fecha de Nota</label>
+                        <input type="date" value={noteDate} onChange={(e) => setNoteDate(e.target.value)} required />
+                    </div>
                     <div className="form-group"><label>Descripción</label><textarea value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})}></textarea></div>
                     <div className="form-group"><label>Adjuntar Archivos</label><input type="file" multiple onChange={handleFileChange} /></div>
                     

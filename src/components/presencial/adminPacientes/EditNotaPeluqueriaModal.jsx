@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 
 const EditNotaPeluqueriaModal = ({ isOpen, onClose, onSave, note, pacienteId }) => {
     const [formData, setFormData] = useState({ title: '', description: '' });
+    const [noteDate, setNoteDate] = useState(new Date().toISOString().split('T')[0]);
     const [existingMedia, setExistingMedia] = useState([]);
     const [filesToUpload, setFilesToUpload] = useState([]);
     const [filesToDelete, setFilesToDelete] = useState([]);
@@ -13,7 +14,19 @@ const EditNotaPeluqueriaModal = ({ isOpen, onClose, onSave, note, pacienteId }) 
 
     useEffect(() => {
         if (isOpen && note) {
+            let defaultDate = new Date().toISOString().split('T')[0];
+            if (note?.date && note.date.toDate) {
+                defaultDate = note.date.toDate().toISOString().split('T')[0];
+            } else if (note?.date) {
+                try {
+                    defaultDate = new Date(note.date).toISOString().split('T')[0];
+                } catch (e) {
+                    defaultDate = new Date().toISOString().split('T')[0];
+                }
+            }
+
             setFormData({ title: note.title || '', description: note.description || '' });
+            setNoteDate(defaultDate);
             setExistingMedia(note.media || []);
             setFilesToUpload([]);
             setFilesToDelete([]);
@@ -67,7 +80,7 @@ const EditNotaPeluqueriaModal = ({ isOpen, onClose, onSave, note, pacienteId }) 
             const newMediaFiles = await Promise.all(uploadPromises);
             const finalMedia = [...existingMedia, ...newMediaFiles];
             
-            await onSave({ ...formData, media: finalMedia }, note);
+            await onSave({ ...formData, media: finalMedia, date: noteDate }, note);
 
         } catch (error) {
             Swal.fire('Error', 'No se pudo guardar la nota o subir los archivos.', 'error');
@@ -84,6 +97,10 @@ const EditNotaPeluqueriaModal = ({ isOpen, onClose, onSave, note, pacienteId }) 
                 <div className="modal-header"><h3>Editar Nota de Peluquería</h3><button className="close-btn" onClick={onClose}>&times;</button></div>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group"><label>Título</label><input type="text" value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} required /></div>
+                    <div className="form-group">
+                        <label>Fecha de Nota</label>
+                        <input type="date" value={noteDate} onChange={(e) => setNoteDate(e.target.value)} required />
+                    </div>
                     <div className="form-group"><label>Descripción</label><textarea value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})}></textarea></div>
                     <div className="form-group"><label>Adjuntar Archivos</label><input type="file" multiple onChange={handleFileChange} /></div>
                     

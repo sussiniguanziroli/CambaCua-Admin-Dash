@@ -6,6 +6,7 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 const CreateRecipeModal = ({ isOpen, onClose, onSave, paciente }) => {
     const [prescribedBy, setPrescribedBy] = useState('');
     const [generalIndications, setGeneralIndications] = useState('');
+    const [creationDate, setCreationDate] = useState(new Date().toISOString().split('T')[0]);
     const [prescriptions, setPrescriptions] = useState([{ productName: '', dose: '', frequency: '', duration: '' }]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     
@@ -13,6 +14,7 @@ const CreateRecipeModal = ({ isOpen, onClose, onSave, paciente }) => {
         if (isOpen) {
             setPrescribedBy('');
             setGeneralIndications('');
+            setCreationDate(new Date().toISOString().split('T')[0]);
             setPrescriptions([{ productName: '', dose: '', frequency: '', duration: '' }]);
         }
     }, [isOpen]);
@@ -37,6 +39,7 @@ const CreateRecipeModal = ({ isOpen, onClose, onSave, paciente }) => {
         const recipeData = {
             prescribedBy,
             generalIndications,
+            creationDate: creationDate,
             prescriptions: prescriptions.filter(p => p.productName),
         };
         onSave(recipeData).finally(() => setIsSubmitting(false));
@@ -55,6 +58,10 @@ const CreateRecipeModal = ({ isOpen, onClose, onSave, paciente }) => {
                     <div className="form-group">
                         <label htmlFor="prescribedBy">Recetado por:</label>
                         <input id="prescribedBy" type="text" value={prescribedBy} onChange={(e) => setPrescribedBy(e.target.value)} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="creationDate">Fecha de Receta:</label>
+                        <input id="creationDate" type="date" value={creationDate} onChange={(e) => setCreationDate(e.target.value)} required />
                     </div>
                     <div className="form-group">
                         <label htmlFor="generalIndications">Indicaciones Generales</label>

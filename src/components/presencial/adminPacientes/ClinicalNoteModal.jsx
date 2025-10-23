@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 
 const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteId }) => {
     const [formData, setFormData] = useState({ reason: '', diagnosis: '', treatment: '' });
+    const [noteDate, setNoteDate] = useState(new Date().toISOString().split('T')[0]);
     const [existingMedia, setExistingMedia] = useState([]);
     const [filesToUpload, setFilesToUpload] = useState([]);
     const [filesToDelete, setFilesToDelete] = useState([]);
@@ -13,11 +14,23 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
 
     useEffect(() => {
         if (isOpen) {
+            let defaultDate = new Date().toISOString().split('T')[0];
+            if (note?.date && note.date.toDate) {
+                defaultDate = note.date.toDate().toISOString().split('T')[0];
+            } else if (note?.date) {
+                try {
+                    defaultDate = new Date(note.date).toISOString().split('T')[0];
+                } catch (e) {
+                    defaultDate = new Date().toISOString().split('T')[0];
+                }
+            }
+
             setFormData({
                 reason: note?.reason || '',
                 diagnosis: note?.diagnosis || '',
                 treatment: note?.treatment || '',
             });
+            setNoteDate(defaultDate);
             setExistingMedia(note?.media || []);
             setFilesToUpload([]);
             setFilesToDelete([]);
@@ -71,7 +84,7 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
             const newMediaFiles = await Promise.all(uploadPromises);
             const finalMedia = [...existingMedia, ...newMediaFiles];
             
-            await onSave({ ...formData, media: finalMedia }, note, noteIndex);
+            await onSave({ ...formData, media: finalMedia, date: noteDate }, note, noteIndex);
 
         } catch (error) {
             Swal.fire('Error', 'No se pudo guardar la nota o subir los archivos.', 'error');
@@ -88,6 +101,10 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
                 <div className="modal-header"><h3>{note ? 'Editar Nota Clínica' : 'Agregar Nota'}</h3><button className="close-btn" onClick={onClose}>&times;</button></div>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group"><label>Motivo</label><input type="text" value={formData.reason} onChange={(e) => setFormData({...formData, reason: e.target.value})} required /></div>
+                    <div className="form-group">
+                        <label>Fecha de Nota</label>
+                        <input type="date" value={noteDate} onChange={(e) => setNoteDate(e.target.value)} required />
+                    </div>
                     <div className="form-group"><label>Diagnóstico</label><textarea value={formData.diagnosis} onChange={(e) => setFormData({...formData, diagnosis: e.target.value})}></textarea></div>
                     <div className="form-group"><label>Tratamiento</label><textarea value={formData.treatment} onChange={(e) => setFormData({...formData, treatment: e.target.value})}></textarea></div>
                     <div className="form-group"><label>Adjuntar Archivos</label><input type="file" multiple onChange={handleFileChange} /></div>
