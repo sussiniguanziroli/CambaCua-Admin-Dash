@@ -25,6 +25,7 @@
 @import './presencial/metodoPago';
 @import './presencial/resumenVenta';
 @import './presencial/confirmarVenta';
+@import './presencial/seleccionarPrecioModal';
 @import './adminClinica/linkUserModal';
 @import './adminClinica/tutorProfile';
 @import './adminClinica/verTutores';
@@ -40,6 +41,7 @@
 @import './adminVentas/clinicalDashboard';
 @import './adminVentas/resumenSemanal';
 @import './utils/peluqueroProfile.scss';
+
 
 * {
     margin: 0;

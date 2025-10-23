@@ -1,0 +1,263 @@
+@import './sharedStyles';
+
+.precio-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.precio-modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: $border-radius;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    animation: slideUp 0.3s ease;
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        color: $primary-dark;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.precio-modal-item-info {
+    background-color: $background-light;
+    padding: 1rem;
+    border-radius: $border-radius;
+    margin-bottom: 1.5rem;
+    text-align: center;
+
+    .item-name {
+        display: block;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: $text-color;
+        margin-bottom: 0.5rem;
+    }
+
+    .item-detail {
+        display: block;
+        font-size: 0.9rem;
+        color: $text-light;
+    }
+}
+
+.precio-current {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: lighten($primary-color, 42%);
+    border-radius: $border-radius;
+    margin-bottom: 1.5rem;
+
+    span {
+        color: $grey-dark;
+        font-size: 0.9rem;
+    }
+
+    strong {
+        font-size: 1.2rem;
+        color: $primary-dark;
+    }
+}
+
+.precio-input-group {
+    margin-bottom: 1.5rem;
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: $text-color;
+    }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .currency {
+            position: absolute;
+            left: 1rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: $grey-dark;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.5rem;
+            border: 2px solid $border-color;
+            border-radius: $border-radius;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: $primary-dark;
+            transition: all 0.2s ease;
+
+            &:focus {
+                outline: none;
+                border-color: $primary-color;
+                box-shadow: 0 0 0 3px lighten($primary-color, 35%);
+            }
+
+            &::placeholder {
+                color: lighten($grey-dark, 20%);
+            }
+        }
+    }
+}
+
+.precio-preview {
+    background-color: $background-light;
+    padding: 1rem;
+    border-radius: $border-radius;
+    margin-bottom: 1.5rem;
+
+    .preview-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        font-size: 0.95rem;
+
+        &:first-child {
+            color: $text-light;
+        }
+
+        &.new {
+            border-top: 2px solid $border-color;
+            padding-top: 0.75rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+
+            strong {
+                color: $primary-dark;
+                font-size: 1.3rem;
+            }
+        }
+    }
+}
+
+.precio-modal-actions {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+
+    .btn {
+        padding: 0.8rem 1rem;
+        border: none;
+        border-radius: $border-radius;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    .btn-secondary {
+        background-color: $secondary-color;
+        color: white;
+
+        &:hover:not(:disabled) {
+            background-color: darken($secondary-color, 8%);
+        }
+    }
+
+    .btn-outline {
+        background-color: white;
+        color: $primary-color;
+        border: 2px solid $primary-color;
+
+        &:hover:not(:disabled) {
+            background-color: lighten($primary-color, 42%);
+        }
+    }
+
+    .btn-primary {
+        background-color: $primary-color;
+        color: white;
+
+        &:hover:not(:disabled) {
+            background-color: $primary-dark;
+        }
+    }
+}
+
+.precio-modal-note {
+    background-color: lighten($primary-color, 45%);
+    border-left: 4px solid $primary-color;
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: $text-color;
+    margin: 0;
+
+    strong {
+        color: $primary-dark;
+    }
+}
+
+// Add clickable price style to cart items
+.clickable-price {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+
+    &:hover {
+        background-color: lighten($primary-color, 42%);
+        color: $primary-dark;
+        transform: scale(1.05);
+    }
+
+    &::after {
+        content: '✎';
+        font-size: 0.8rem;
+        margin-left: 0.25rem;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    &:hover::after {
+        opacity: 1;
+    }
+}
