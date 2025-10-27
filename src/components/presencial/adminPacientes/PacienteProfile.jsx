@@ -71,7 +71,15 @@ const PacienteProfile = () => {
       const groomingAppointmentsQuery = query(collection(db, 'turnos_peluqueria'), where('pacienteId', '==', id), orderBy('startTime', 'desc'));
       const vencQuery = query(collection(db, `pacientes/${id}/vencimientos`), orderBy('dueDate', 'asc'));
 
-      const [pacienteSnap, historySnap, groomingNotesSnap, recipesSnap, citasSnap, groomingAppointmentsSnap, vencSnap] = await Promise.all([ getDoc(pacienteRef), getDocs(historyQuery), getDocs(groomingNotesQuery), getDocs(recipesQuery), getDocs(citasQuery), getDocs(groomingAppointmentsQuery), getDocs(vencQuery) ]);
+      const [pacienteSnap, historySnap, groomingNotesSnap, recipesSnap, citasSnap, groomingAppointmentsSnap, vencSnap] = await Promise.all([ 
+        getDoc(pacienteRef), 
+        getDocs(historyQuery), 
+        getDocs(groomingNotesQuery), 
+        getDocs(recipesQuery), 
+        getDocs(citasQuery), // <-- Error estaba aquí: decía getDocs(citasSnap)
+        getDocs(groomingAppointmentsQuery), 
+        getDocs(vencQuery) 
+      ]);
 
       if (!pacienteSnap.exists()) { setPaciente(null); setAlert({ message: 'Paciente no encontrado.', type: 'error' }); return; }
       setPaciente({ id: pacienteSnap.id, ...pacienteSnap.data() });
@@ -91,6 +99,39 @@ const PacienteProfile = () => {
   useEffect(() => { fetchAllData(); }, [fetchAllData]);
 
   const handleSaveClinicalNote = async (formData, originalNote) => { try { if (originalNote) { await updateDoc(doc(db, `pacientes/${id}/clinical_history`, originalNote.id), formData); setAlert({ message: 'Nota clínica actualizada.', type: 'success' }); } else { await addDoc(collection(db, `pacientes/${id}/clinical_history`), { ...formData, createdAt: Timestamp.now() }); setAlert({ message: 'Nota agregada.', type: 'success' }); } handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la nota.', type: 'error' }); } };
+  
+  const handleDeleteClinicalNote = async (note) => {
+    const { isConfirmed } = await Swal.fire({
+      title: '¿Eliminar Nota Clínica?',
+      text: `Se eliminará la nota "${note.reason || 'Sin motivo'}" del ${note.date}. Se borrarán también los archivos adjuntos. Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (isConfirmed) {
+      try {
+        if (note.media && note.media.length > 0) {
+          const deletePromises = note.media.map(file => {
+            try {
+              return deleteObject(ref(storage, file.url));
+            } catch (storageError) {
+              console.warn("Error al intentar borrar archivo de storage:", storageError);
+              return Promise.resolve();
+            }
+          });
+          await Promise.all(deletePromises);
+        }
+        await deleteDoc(doc(db, `pacientes/${id}/clinical_history`, note.id));
+        setAlert({ message: 'Nota clínica eliminada.', type: 'success' });
+        await fetchAllData();
+      } catch (error) {
+        setAlert({ message: 'No se pudo eliminar la nota o sus archivos.', type: 'error' });
+      }
+    }
+  };
+
   const handleSaveRecipe = async (recipeData) => { try { await addDoc(collection(db, `pacientes/${id}/clinical_recipes`), { ...recipeData, createdAt: Timestamp.now() }); setAlert({ message: 'Receta guardada.', type: 'success' }); handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la receta.', type: 'error' }); } };
   const handleSaveGroomingNote = async (noteData, originalNote) => { try { if (originalNote) { await updateDoc(doc(db, `pacientes/${id}/notas_peluqueria`, originalNote.id), noteData); setAlert({ message: 'Nota de peluquería actualizada.', type: 'success' }); } else { await addDoc(collection(db, `pacientes/${id}/notas_peluqueria`), { ...noteData, createdAt: Timestamp.now() }); setAlert({ message: 'Nota de peluquería guardada.', type: 'success' }); } handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la nota de peluquería.', type: 'error' }); } };
   const handleDeleteRecipe = async (recipeId) => { const { isConfirmed } = await Swal.fire({ title: '¿Eliminar Receta?', text: 'Esta acción no se puede deshacer.', icon: 'warning', showCancelButton: true, confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar' }); if (isConfirmed) { try { await deleteDoc(doc(db, `pacientes/${id}/clinical_recipes`, recipeId)); setAlert({ message: 'Receta eliminada.', type: 'success' }); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo eliminar la receta.', type: 'error' }); } } };
@@ -133,7 +174,7 @@ const PacienteProfile = () => {
   const renderHistoria = () => {
     const totalPages = Math.ceil(filteredAndSortedHistory.length / itemsPerPage);
     const currentItems = filteredAndSortedHistory.slice((historyCurrentPage - 1) * itemsPerPage, historyCurrentPage * itemsPerPage);
-    return (<div className="tab-content"><div className="history-controls"><input type="text" name="searchTerm" placeholder="Buscar en historia..." value={historyFilters.searchTerm} onChange={handleHistoryFilterChange} /><input type="date" name="startDate" value={historyFilters.startDate} onChange={handleHistoryFilterChange} /><input type="date" name="endDate" value={historyFilters.endDate} onChange={handleHistoryFilterChange} /><select name="sortOrder" value={historyFilters.sortOrder} onChange={handleHistoryFilterChange}><option value="date-desc">Más Recientes</option><option value="date-asc">Más Antiguas</option></select></div>{currentItems.length > 0 ? (<div className="clinical-history-list">{currentItems.map((entry) => (<div key={entry.id} className="clinical-entry-card" onClick={() => handleViewNote(entry)}><div className="entry-header"><div className="header-info"><span className="entry-date">{entry.date}</span><strong className="entry-reason">{entry.reason}</strong></div></div><div className="entry-body"><p><strong>Diagnóstico:</strong> {entry.diagnosis || 'N/A'}</p></div></div>))}</div>) : (<p className="no-results-message">No hay entradas.</p>)}{renderPagination(historyCurrentPage, totalPages, setHistoryCurrentPage)}</div>);
+    return (<div className="tab-content"><div className="history-controls"><input type="text" name="searchTerm" placeholder="Buscar en historia..." value={historyFilters.searchTerm} onChange={handleHistoryFilterChange} /><input type="date" name="startDate" value={historyFilters.startDate} onChange={handleHistoryFilterChange} /><input type="date" name="endDate" value={historyFilters.endDate} onChange={handleHistoryFilterChange} /><select name="sortOrder" value={historyFilters.sortOrder} onChange={handleHistoryFilterChange}><option value="date-desc">Más Recientes</option><option value="date-asc">Más Antiguas</option></select></div>{currentItems.length > 0 ? (<div className="clinical-history-list">{currentItems.map((entry) => (<div key={entry.id} className="clinical-entry-card"><div className="entry-header" onClick={() => handleViewNote(entry)}><div className="header-info"><span className="entry-date">{entry.date}</span><strong className="entry-reason">{entry.reason}</strong></div><button className="btn-delete-note" onClick={(e) => { e.stopPropagation(); handleDeleteClinicalNote(entry); }}><FaTrash /></button></div><div className="entry-body" onClick={() => handleViewNote(entry)}><p><strong>Diagnóstico:</strong> {entry.diagnosis || 'N/A'}</p></div></div>))}</div>) : (<p className="no-results-message">No hay entradas.</p>)}{renderPagination(historyCurrentPage, totalPages, setHistoryCurrentPage)}</div>);
   };
   
   const renderCitas = () => {
@@ -203,3 +244,4 @@ const PacienteProfile = () => {
 };
 
 export default PacienteProfile;
+

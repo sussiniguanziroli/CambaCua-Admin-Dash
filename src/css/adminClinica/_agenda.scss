@@ -43,6 +43,16 @@ $transition-speed: 0.2s;
     background-color: transparent; color: $error-color; border-color: $error-color;
     &:hover { background-color: $error-color; color: $white-color; }
 }
+.btn-outline {
+    background-color: transparent;
+    color: $primary-color;
+    border-color: $primary-color;
+    &:hover {
+        background-color: $primary-color;
+        color: $white-color;
+    }
+}
+
 
 // --- Main Agenda Container ---
 .agenda-container {
@@ -140,7 +150,7 @@ $transition-speed: 0.2s;
 }
 
 
-// --- Modal Styles (Mostly unchanged) ---
+// --- Modal Styles ---
 .agenda-modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);
     display: flex; justify-content: center; align-items: center; z-index: 1050; backdrop-filter: blur(5px);
@@ -162,6 +172,83 @@ $transition-speed: 0.2s;
         }
         textarea { resize: vertical; min-height: 80px; }
     }
+    
+    // --- NEW: Search Toggle ---
+    .search-by-toggle {
+        display: flex;
+        border-radius: $border-radius * 0.75;
+        overflow: hidden;
+        border: 1px solid $border-color;
+        
+        .btn {
+            flex: 1;
+            border: none;
+            border-radius: 0;
+            padding: 10px 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            
+            &.btn-outline {
+                color: $text-light;
+                border-color: transparent;
+                &:hover {
+                    background-color: $background-color;
+                    color: $primary-color;
+                }
+            }
+            &.btn-primary {
+                box-shadow: $shadow;
+            }
+        }
+    }
+
+    // --- NEW: Combobox Container ---
+    .combobox-container {
+        position: relative;
+        z-index: 10; // Ensure it's above other form elements in the modal
+        
+        // --- NEW: Combobox Results List ---
+        .combobox-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: $white-color;
+            border: 1px solid $border-color;
+            border-top: none;
+            border-radius: 0 0 $border-radius $border-radius;
+            box-shadow: $shadow;
+            list-style: none;
+            padding: 0;
+            margin: -2px 0 0 0;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1060; // Higher than modal content
+
+            li {
+                padding: 12px;
+                cursor: pointer;
+                transition: background-color $transition-speed;
+                color: $text-color;
+
+                &:hover {
+                    background-color: lighten($primary-color, 38%);
+                    color: $primary-dark;
+                }
+                
+                // --- NEW: No Results Item ---
+                &.no-results {
+                    color: $text-light;
+                    cursor: not-allowed;
+                    background-color: $white-color;
+                }
+            }
+        }
+    }
+
     .services-list { display: flex; flex-wrap: wrap; gap: 0.75rem; }
     .service-chip { padding: 8px 16px; border: 1px solid $border-color; background-color: $white-color;
         color: $text-color; border-radius: 20px; cursor: pointer; font-weight: 500;
@@ -170,4 +257,3 @@ $transition-speed: 0.2s;
     }
     .modal-footer { margin-top: 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
 }
-

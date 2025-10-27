@@ -1,12 +1,25 @@
-import React, { useState, useMemo } from 'react';
-import { doc, updateDoc, serverTimestamp, deleteField } from 'firebase/firestore';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { doc, updateDoc, serverTimestamp, deleteField, deleteDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
-import { FaDog, FaCat } from 'react-icons/fa';
+import { FaDog, FaCat, FaEllipsisV, FaTrash } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 const VencimientosManager = ({ vencimientos, setVencimientos, pacienteId, pacienteSpecies, pacienteTutorName, onAlert, onAdd }) => {
     const [filters, setFilters] = useState({ searchTerm: '', status: 'todos', sortOrder: 'date-asc' });
     const [currentPage, setCurrentPage] = useState(1);
+    const [openMenuId, setOpenMenuId] = useState(null);
+    const menuRef = useRef(null);
     const itemsPerPage = 5;
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setOpenMenuId(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -30,6 +43,28 @@ const VencimientosManager = ({ vencimientos, setVencimientos, pacienteId, pacien
         }
     };
     
+    const handleDeleteVencimiento = async (vencimiento) => {
+        setOpenMenuId(null);
+        const { isConfirmed } = await Swal.fire({
+            title: `¿Eliminar Vencimiento?`,
+            text: `Se eliminará el vencimiento de "${vencimiento.productName}" del ${vencimiento.dueDate.toLocaleDateString('es-AR')}. Esta acción no se puede deshacer.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (isConfirmed) {
+            try {
+                await deleteDoc(doc(db, `pacientes/${pacienteId}/vencimientos`, vencimiento.id));
+                setVencimientos(prev => prev.filter(v => v.id !== vencimiento.id));
+                onAlert({ message: 'Vencimiento eliminado.', type: 'success' });
+            } catch (error) {
+                onAlert({ message: 'No se pudo eliminar el vencimiento.', type: 'error' });
+            }
+        }
+    };
+    
     const today = useMemo(() => {
         const d = new Date();
         d.setHours(0, 0, 0, 0);
@@ -37,6 +72,7 @@ const VencimientosManager = ({ vencimientos, setVencimientos, pacienteId, pacien
     }, []);
 
     const getStatus = (v) => {
+        if (!v || !v.dueDate) return { key: 'pendiente', label: 'Pendiente' };
         if (v.supplied) return { key: 'suministrado', label: 'Suministrado' };
         if (v.dueDate < today) return { key: 'vencido', label: 'Vencido' };
         const daysDiff = Math.ceil((v.dueDate - today) / (1000 * 60 * 60 * 24));
@@ -84,7 +120,30 @@ const VencimientosManager = ({ vencimientos, setVencimientos, pacienteId, pacien
             {currentItems.length > 0 ? (
                 <div className="vencimientos-list">{currentItems.map(v => {
                     const status = getStatus(v);
-                    return (<div key={v.id} className={`vencimiento-card ${status.key}`}><div className="vencimiento-info"><span className="vencimiento-product">{pacienteSpecies === 'Canino' ? <FaDog /> : pacienteSpecies === 'Felino' ? <FaCat /> : null}{v.productName}<span className={`badge ${status.key}`}>{status.label}</span></span><span className="vencimiento-tutor">Tutor: {v.tutorName || pacienteTutorName}</span>{v.appliedDosage && <span className="vencimiento-dosage">Dosis Anterior: {v.appliedDosage}</span>}</div><div className="vencimiento-date"><span>Vence el:</span><strong>{v.dueDate.toLocaleDateString('es-AR')}</strong>{v.suppliedDate && <span className="supplied-date">Suministrado el: {v.suppliedDate.toLocaleDateString('es-AR')}</span>}<button className={`btn btn-suministrado ${v.supplied ? 'supplied' : ''}`} onClick={() => toggleSupplied(v)}>{v.supplied ? 'Desmarcar' : 'Marcar Suministrado'}</button></div></div>);
+                    return (<div key={v.id} className={`vencimiento-card ${status.key}`}>
+                        <div className="vencimiento-info">
+                            <span className="vencimiento-product">{pacienteSpecies === 'Canino' ? <FaDog /> : pacienteSpecies === 'Felino' ? <FaCat /> : null}{v.productName}<span className={`badge ${status.key}`}>{status.label}</span></span>
+                            <span className="vencimiento-tutor">Tutor: {v.tutorName || pacienteTutorName}</span>
+                            {v.appliedDosage && <span className="vencimiento-dosage">Dosis Anterior: {v.appliedDosage}</span>}
+                        </div>
+                        <div className="vencimiento-date">
+                            <span>Vence el:</span><strong>{v.dueDate.toLocaleDateString('es-AR')}</strong>
+                            {v.suppliedDate && <span className="supplied-date">Suministrado el: {v.suppliedDate.toLocaleDateString('es-AR')}</span>}
+                            <button className={`btn btn-suministrado ${v.supplied ? 'supplied' : ''}`} onClick={() => toggleSupplied(v)}>{v.supplied ? 'Desmarcar' : 'Marcar Suministrado'}</button>
+                        </div>
+                        <div className="vencimiento-actions">
+                            <button className="vencimiento-actions-trigger" onClick={(e) => { e.stopPropagation(); setOpenMenuId(v.id); }}>
+                                <FaEllipsisV />
+                            </button>
+                            {openMenuId === v.id && (
+                                <div className="vencimiento-context-menu" ref={menuRef}>
+                                    <button className="context-menu-item delete" onClick={() => handleDeleteVencimiento(v)}>
+                                        <FaTrash /> Eliminar
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>);
                 })}</div>
             ) : <p className="no-results-message">No hay vencimientos que coincidan con los filtros.</p>}
             {renderPagination()}

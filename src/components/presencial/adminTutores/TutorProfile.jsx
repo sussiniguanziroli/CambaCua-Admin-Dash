@@ -16,6 +16,7 @@ import { FaDog, FaCat, FaStethoscope } from "react-icons/fa";
 import { PiBathtub } from "react-icons/pi";
 import LoaderSpinner from "../../utils/LoaderSpinner";
 import SaleDetailModal from "../../administracion/SaleDetailModal";
+import AddDebtModal from "./AddDebtModal";
 
 const PaymentModal = ({ tutor, onClose, onPaymentSuccess, setAlertInfo }) => {
   const [amount, setAmount] = useState("");
@@ -144,6 +145,7 @@ const TutorProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("cuenta");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isDebtModalOpen, setIsDebtModalOpen] = useState(false);
   const [alertInfo, setAlertInfo] = useState(null);
   const [selectedSale, setSelectedSale] = useState(null);
 
@@ -165,12 +167,13 @@ const TutorProfile = () => {
       const tutorData = { id: tutorSnap.id, ...tutorSnap.data() };
       setTutor(tutorData);
 
-      const [pacientesSnap, salesSnap, paymentsSnap, citasSnap, groomingSnap] = await Promise.all([
+      const [pacientesSnap, salesSnap, paymentsSnap, citasSnap, groomingSnap, adjustmentsSnap] = await Promise.all([
         getDocs(query(collection(db, "pacientes"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "ventas_presenciales"), where("tutorInfo.id", "==", id))),
         getDocs(query(collection(db, "pagos_deuda"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "citas"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "turnos_peluqueria"), where("tutorId", "==", id))),
+        getDocs(query(collection(db, "ajustes_cuenta"), where("tutorId", "==", id))),
       ]);
 
       setPacientes(pacientesSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -183,7 +186,9 @@ const TutorProfile = () => {
       setSalesHistory(sales.sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis()));
       
       const payments = paymentsSnap.docs.map((d) => ({ ...d.data(), id: d.id, type: "Cobro Deuda" }));
-      setAccountTransactions([...sales, ...payments].sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis()));
+      const adjustments = adjustmentsSnap.docs.map((d) => ({ ...d.data(), id: d.id, type: d.data().type || "Ajuste Manual" }));
+
+      setAccountTransactions([...sales, ...payments, ...adjustments].sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis()));
 
     } catch (error) {
       setAlertInfo({ title: "Error", text: "No se pudieron cargar los datos del tutor.", type: "error" });
@@ -228,7 +233,7 @@ const TutorProfile = () => {
         const totalSalesPages = Math.ceil(filteredSalesHistory.length / SALES_PER_PAGE);
         const currentSales = filteredSalesHistory.slice((salesCurrentPage - 1) * SALES_PER_PAGE, salesCurrentPage * SALES_PER_PAGE);
         return (<div className="tab-content"><div className="compras-controls"><input type="text" name="searchTerm" placeholder="Buscar por producto..." value={salesFilters.searchTerm} onChange={handleSalesFilterChange} /><input type="date" name="startDate" value={salesFilters.startDate} onChange={handleSalesFilterChange} /><input type="date" name="endDate" value={salesFilters.endDate} onChange={handleSalesFilterChange} /></div><div className="compras-list">{currentSales.length > 0 ? (currentSales.map(sale => { const productPreview = (sale.items && sale.items.length > 0) ? `${sale.items[0].name}${sale.items.length > 1 ? ` y ${sale.items.length - 1} más...` : ''}` : 'Venta sin items.'; return (<div key={sale.id} className="compra-card"><div className="compra-info"><span className="date">{sale.createdAt.toDate().toLocaleDateString('es-AR')}</span><span className="products-preview">{productPreview}</span></div><div className="compra-actions"><span className="total">${sale.total.toFixed(2)}</span><button className="btn btn-secondary" onClick={() => setSelectedSale(sale)}>Ver Detalle</button></div></div>);})) : (<p>No hay compras registradas.</p>)}</div>{totalSalesPages > 1 && (<div className="pagination-controls"><button onClick={() => setSalesCurrentPage(p => p - 1)} disabled={salesCurrentPage === 1} className="btn">Anterior</button><span>Página {salesCurrentPage} de {totalSalesPages}</span><button onClick={() => setSalesCurrentPage(p => p + 1)} disabled={salesCurrentPage === totalSalesPages} className="btn">Siguiente</button></div>)}</div>);
-      case "cuenta": return <div className="tutor-profile-tab-content"><div className="tutor-account-summary"><div className="tutor-balance-card"><h3>Saldo Actual</h3><p className={`balance-amount ${tutor.accountBalance < 0 ? "deudor" : ""}`}>${(tutor.accountBalance || 0).toFixed(2)}</p></div><button className="btn btn-success" onClick={() => setIsPaymentModalOpen(true)}>+ Registrar Pago</button></div><h4>Historial de Transacciones</h4><div className="tutor-transactions-list">{accountTransactions.map((t) => (<div key={t.id} className={`transaction-item ${t.type.toLowerCase().replace(' ', '-')}`}><div className="transaction-info"><span className="date">{t.createdAt.toDate().toLocaleDateString("es-AR")}</span><span className="type">{t.type === "Venta Presencial" ? `Venta #${t.id.substring(0, 6)}` : `Pago con ${t.paymentMethod}`}</span></div><div className="transaction-amount">{t.type === "Venta Presencial" ? (<span className="debit">- ${(t.debt || 0).toFixed(2)}</span>) : (<span className="credit">+ ${(t.amount || 0).toFixed(2)}</span>)}</div></div>))}{accountTransactions.length === 0 && <p>No hay transacciones.</p>}</div></div>;
+      case "cuenta": return <div className="tutor-profile-tab-content"><div className="tutor-account-summary"><div className="tutor-balance-card"><h3>Saldo Actual</h3><p className={`balance-amount ${tutor.accountBalance < 0 ? "deudor" : ""}`}>${(tutor.accountBalance || 0).toFixed(2)}</p></div><div className="account-actions"><button className="btn btn-success" onClick={() => setIsPaymentModalOpen(true)}>+ Registrar Pago</button><button className="btn btn-danger" onClick={() => setIsDebtModalOpen(true)}>- Agregar Deuda</button></div></div><h4>Historial de Transacciones</h4><div className="tutor-transactions-list">{accountTransactions.map((t) => (<div key={t.id} className={`transaction-item ${t.type.toLowerCase().replace(/ /g, '-')}`}><div className="transaction-info"><span className="date">{t.createdAt.toDate().toLocaleDateString("es-AR")}</span><span className="type">{t.type === "Venta Presencial" ? `Venta #${t.id.substring(0, 6)}` : t.type === "Cobro Deuda" ? `Pago con ${t.paymentMethod}` : `${t.type} (${t.reason || 'S/M'})`}</span></div><div className="transaction-amount">{t.type === "Venta Presencial" ? (<span className="debit">- ${(t.debt || 0).toFixed(2)}</span>) : t.type === "Cobro Deuda" ? (<span className="credit">+ ${(t.amount || 0).toFixed(2)}</span>) : (<span className="debit">- ${(t.amount || 0).toFixed(2)}</span>)}</div></div>))}{accountTransactions.length === 0 && <p>No hay transacciones.</p>}</div></div>;
       default: return <div className="tab-content details-grid"><div className="detail-item"><span>DNI</span><p>{tutor.dni || "N/A"}</p></div><div className="detail-item"><span>Email</span><p>{tutor.email || "N/A"}</p></div><div className="detail-item"><span>Tel. Principal</span><p>{tutor.phone || "N/A"}</p></div><div className="detail-item"><span>Tel. Secundario</span><p>{tutor.secondaryPhone || "N/A"}</p></div><div className="detail-item full-width"><span>Dirección</span><p>{tutor.address || "N/A"}</p></div><hr className="full-width" /><div className="detail-item"><span>Razón Social</span><p>{tutor.billingInfo?.razonSocial || "N/A"}</p></div><div className="detail-item"><span>CUIT/CUIL</span><p>{tutor.billingInfo?.cuit || "N/A"}</p></div><div className="detail-item"><span>Cond. Fiscal</span><p>{tutor.billingInfo?.condicionFiscal || "N/A"}</p></div></div>;
     }
   };
@@ -237,6 +242,7 @@ const TutorProfile = () => {
     <div className="profile-container">
       {alertInfo && (<CustomAlert {...alertInfo} onClose={() => setAlertInfo(null)} />)}
       {isPaymentModalOpen && (<PaymentModal tutor={tutor} onClose={() => setIsPaymentModalOpen(false)} onPaymentSuccess={() => { setIsPaymentModalOpen(false); fetchAllData(); }} setAlertInfo={setAlertInfo} />)}
+      {isDebtModalOpen && (<AddDebtModal tutor={tutor} onClose={() => setIsDebtModalOpen(false)} onDebtAdded={() => { setIsDebtModalOpen(false); fetchAllData(); }} setAlertInfo={setAlertInfo} />)}
       {selectedSale && <SaleDetailModal sale={selectedSale} onClose={() => setSelectedSale(null)} />}
       <div className="profile-header"><div className="profile-avatar">👤</div><div className="profile-info"><h1>{tutor.name}</h1><p>{tutor.email}</p>{tutor.serviceTypes && tutor.serviceTypes.length > 0 && (<div className="service-chips-container">{tutor.serviceTypes.includes("clinical") && (<div className="service-chip clinical"><FaStethoscope /><span>Clínica</span></div>)}{tutor.serviceTypes.includes("grooming") && (<div className="service-chip grooming"><PiBathtub /><span>Peluquería</span></div>)}</div>)}</div><div className="profile-actions"><button className="btn btn-primary" onClick={handleStartSale}>Vender</button><Link to={`/admin/edit-tutor/${tutor.id}`} className="btn btn-secondary">Editar Tutor</Link><button className="btn" onClick={() => navigate(`/admin/add-paciente?tutorId=${id}`)}>+ Paciente</button></div></div>
       <div className="profile-nav"><button className={activeTab === "details" ? "active" : ""} onClick={() => setActiveTab("details")}>Detalles</button><button className={activeTab === "pacientes" ? "active" : ""} onClick={() => setActiveTab("pacientes")}>Pacientes ({pacientes.length})</button><button className={activeTab === "citas" ? "active" : ""} onClick={() => setActiveTab("citas")}>Citas</button><button className={activeTab === "compras" ? "active" : ""} onClick={() => setActiveTab("compras")}>Historial de Compras</button><button className={activeTab === "cuenta" ? "active" : ""} onClick={() => setActiveTab("cuenta")}>Cuenta Corriente</button></div>

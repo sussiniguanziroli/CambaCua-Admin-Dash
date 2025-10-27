@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { fetchDailyTransactions } from '../../services/cashFlowService';
 import SaleDetailModal from './SaleDetailModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { db } from '../../firebase/config';
 import { doc, writeBatch, increment, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
@@ -238,8 +238,38 @@ const CajaDiaria = () => {
                                         <span className="time">{trans.createdAt.toDate().toLocaleTimeString('es-AR')}</span>
                                     </div>
                                     <div className="card-body">
-                                        <p className="customer">{trans.tutorInfo?.name || trans.tutorName || 'N/A'}</p>
+                                        <p className="customer">
+                                            {trans.tutorInfo?.id ? (
+                                                <Link 
+                                                className='link-class'
+                                                    to={`/admin/tutor-profile/${trans.tutorInfo.id}`} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer" 
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    title="Ver perfil del tutor"
+                                                >
+                                                    {trans.tutorInfo.name || trans.tutorName || 'Tutor'}
+                                                </Link>
+                                            ) : (
+                                                trans.tutorInfo?.name || trans.tutorName || 'N/A'
+                                            )}
+                                        </p>
                                         <p className="details">
+                                            {trans.patientInfo?.id && (
+                                                <>
+                                                    <Link 
+                                                    className='link-class'
+                                                        to={`/admin/paciente-profile/${trans.patientInfo.id}`} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer" 
+                                                        onClick={(e) => e.stopPropagation()}
+                                                        title="Ver perfil del paciente"
+                                                    >
+                                                        {trans.patientInfo.name || 'Paciente'}
+                                                    </Link>
+                                                    {' / '}
+                                                </>
+                                            )}
                                             {trans.type === 'Cobro Deuda' ? `Pagó con ${trans.paymentMethod}` : 
                                              (trans.payments && trans.payments.length > 0) ? `${trans.payments.length} método(s) de pago` :
                                              (trans.paymentMethod || 'N/A')}

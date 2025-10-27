@@ -3221,7 +3221,7 @@ button.btn-reset:hover {
   margin: 0;
 }
 
-.btn, .monitor-clinica-container .pagination-controls button, .recipe-modal .add-line-btn, .monitor-vencimientos-container .pagination-controls button, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .btn-suministrado, .agenda-container .week-navigator .today-btn, .pagination-controls button, .metodo-pago-container .card-selector button, .metodo-pago-container .payment-buttons button {
+.btn, .monitor-clinica-container .pagination-controls button, .recipe-modal .add-line-btn, .monitor-vencimientos-container .pagination-controls button, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .btn-suministrado, .agenda-container .week-navigator .today-btn, .pagination-controls button, .metodo-pago-container .card-selector button, .metodo-pago-container .payment-buttons button {
   padding: 0.7rem 1.2rem;
   border: none;
   border-radius: 8px;
@@ -3234,50 +3234,50 @@ button.btn-reset:hover {
   gap: 0.5rem;
   text-decoration: none;
 }
-.btn.btn-primary, .recipe-modal .btn-primary.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .btn-primary.view-mode-toggle, .btn-primary.btn-delete-small, .btn-primary.btn-suministrado, .agenda-container .week-navigator .btn-primary.today-btn, .pagination-controls button.btn-primary, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .confirmar-venta-container .navigator-buttons .pagination-controls button.btn-confirm, .pagination-controls .confirmar-venta-container .navigator-buttons button.btn-confirm, .metodo-pago-container .card-selector button.btn-primary, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm, .metodo-pago-container .payment-buttons button.btn-primary, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm {
+.btn.btn-primary, .recipe-modal .btn-primary.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .btn-primary.view-mode-toggle, .btn-primary.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-delete-note, .btn-primary.btn-suministrado, .agenda-container .week-navigator .btn-primary.today-btn, .pagination-controls button.btn-primary, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-note, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .confirmar-venta-container .navigator-buttons .pagination-controls button.btn-confirm, .pagination-controls .confirmar-venta-container .navigator-buttons button.btn-confirm, .metodo-pago-container .card-selector button.btn-primary, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm, .metodo-pago-container .payment-buttons button.btn-primary, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm {
   background-color: #3498db;
   color: white;
 }
-.btn.btn-primary:hover, .recipe-modal .btn-primary.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .btn-primary.view-mode-toggle:hover, .btn-primary.btn-delete-small:hover, .btn-primary.btn-suministrado:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .pagination-controls button.btn-primary:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn:hover, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn:hover, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle:hover, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .confirmar-venta-container .navigator-buttons .pagination-controls button.btn-confirm:hover, .pagination-controls .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .metodo-pago-container .card-selector button.btn-primary:hover, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm:hover, .metodo-pago-container .payment-buttons button.btn-primary:hover, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm:hover {
+.btn.btn-primary:hover, .recipe-modal .btn-primary.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .btn-primary.view-mode-toggle:hover, .btn-primary.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-delete-note:hover, .btn-primary.btn-suministrado:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .pagination-controls button.btn-primary:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn:hover, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn:hover, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle:hover, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small:hover, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-note:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .confirmar-venta-container .navigator-buttons .pagination-controls button.btn-confirm:hover, .pagination-controls .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .metodo-pago-container .card-selector button.btn-primary:hover, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm:hover, .metodo-pago-container .payment-buttons button.btn-primary:hover, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm:hover {
   background-color: #2980b9;
 }
-.btn.btn-secondary, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn, .monitor-vencimientos-container .btn-secondary.view-mode-toggle, .btn-secondary.btn-delete-small, .btn-secondary.btn-suministrado, .agenda-container .week-navigator .btn-secondary.today-btn, .agenda-container .week-navigator .recipe-modal .today-btn.add-line-btn, .recipe-modal .agenda-container .week-navigator .today-btn.add-line-btn, .pagination-controls button.btn-secondary, .metodo-pago-container .card-selector button.btn-secondary, .metodo-pago-container .card-selector .recipe-modal button.add-line-btn, .recipe-modal .metodo-pago-container .card-selector button.add-line-btn, .metodo-pago-container .payment-buttons button.btn-secondary, .metodo-pago-container .payment-buttons .recipe-modal button.add-line-btn, .recipe-modal .metodo-pago-container .payment-buttons button.add-line-btn {
+.btn.btn-secondary, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn, .monitor-vencimientos-container .btn-secondary.view-mode-toggle, .btn-secondary.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-secondary.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .recipe-modal .btn-delete-note.add-line-btn, .recipe-modal .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note.add-line-btn, .btn-secondary.btn-suministrado, .agenda-container .week-navigator .btn-secondary.today-btn, .agenda-container .week-navigator .recipe-modal .today-btn.add-line-btn, .recipe-modal .agenda-container .week-navigator .today-btn.add-line-btn, .pagination-controls button.btn-secondary, .metodo-pago-container .card-selector button.btn-secondary, .metodo-pago-container .card-selector .recipe-modal button.add-line-btn, .recipe-modal .metodo-pago-container .card-selector button.add-line-btn, .metodo-pago-container .payment-buttons button.btn-secondary, .metodo-pago-container .payment-buttons .recipe-modal button.add-line-btn, .recipe-modal .metodo-pago-container .payment-buttons button.add-line-btn {
   background-color: #e0e0e0;
   color: #34495e;
 }
-.btn.btn-secondary:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn:hover, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn:hover, .monitor-vencimientos-container .btn-secondary.view-mode-toggle:hover, .btn-secondary.btn-delete-small:hover, .btn-secondary.btn-suministrado:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .pagination-controls button.btn-secondary:hover, .metodo-pago-container .card-selector button.btn-secondary:hover, .metodo-pago-container .payment-buttons button.btn-secondary:hover {
+.btn.btn-secondary:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn:hover, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn:hover, .monitor-vencimientos-container .btn-secondary.view-mode-toggle:hover, .btn-secondary.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-secondary.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .recipe-modal .btn-delete-note.add-line-btn:hover, .recipe-modal .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note.add-line-btn:hover, .btn-secondary.btn-suministrado:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .pagination-controls button.btn-secondary:hover, .metodo-pago-container .card-selector button.btn-secondary:hover, .metodo-pago-container .payment-buttons button.btn-secondary:hover {
   background-color: rgb(198.5, 198.5, 198.5);
 }
-.btn.btn-success, .recipe-modal .btn-success.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn, .monitor-vencimientos-container .btn-success.view-mode-toggle, .btn-success.btn-delete-small, .btn-success.btn-suministrado, .agenda-container .week-navigator .btn-success.today-btn, .pagination-controls button.btn-success, .metodo-pago-container .card-selector button.btn-success, .metodo-pago-container .payment-buttons button.btn-success {
+.btn.btn-success, .recipe-modal .btn-success.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn, .monitor-vencimientos-container .btn-success.view-mode-toggle, .btn-success.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-delete-note, .btn-success.btn-suministrado, .agenda-container .week-navigator .btn-success.today-btn, .pagination-controls button.btn-success, .metodo-pago-container .card-selector button.btn-success, .metodo-pago-container .payment-buttons button.btn-success {
   background-color: #2ecc71;
   color: white;
 }
-.btn.btn-success:hover, .recipe-modal .btn-success.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .monitor-vencimientos-container .btn-success.view-mode-toggle:hover, .btn-success.btn-delete-small:hover, .btn-success.btn-suministrado:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .pagination-controls button.btn-success:hover, .metodo-pago-container .card-selector button.btn-success:hover, .metodo-pago-container .payment-buttons button.btn-success:hover {
+.btn.btn-success:hover, .recipe-modal .btn-success.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .monitor-vencimientos-container .btn-success.view-mode-toggle:hover, .btn-success.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-delete-note:hover, .btn-success.btn-suministrado:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .pagination-controls button.btn-success:hover, .metodo-pago-container .card-selector button.btn-success:hover, .metodo-pago-container .payment-buttons button.btn-success:hover {
   background-color: rgb(36.616, 162.384, 89.948);
 }
-.btn.btn-danger, .recipe-modal .btn-danger.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn, .monitor-vencimientos-container .btn-danger.view-mode-toggle, .btn-danger.btn-delete-small, .btn-danger.btn-suministrado, .agenda-container .week-navigator .btn-danger.today-btn, .pagination-controls button.btn-danger, .metodo-pago-container .card-selector button.btn-danger, .metodo-pago-container .payment-buttons button.btn-danger {
+.btn.btn-danger, .recipe-modal .btn-danger.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn, .monitor-vencimientos-container .btn-danger.view-mode-toggle, .btn-danger.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-delete-note, .btn-danger.btn-suministrado, .agenda-container .week-navigator .btn-danger.today-btn, .pagination-controls button.btn-danger, .metodo-pago-container .card-selector button.btn-danger, .metodo-pago-container .payment-buttons button.btn-danger {
   background-color: #e74c3c;
   color: white;
 }
-.btn.btn-danger:hover, .recipe-modal .btn-danger.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn:hover, .monitor-vencimientos-container .btn-danger.view-mode-toggle:hover, .btn-danger.btn-delete-small:hover, .btn-danger.btn-suministrado:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .pagination-controls button.btn-danger:hover, .metodo-pago-container .card-selector button.btn-danger:hover, .metodo-pago-container .payment-buttons button.btn-danger:hover {
+.btn.btn-danger:hover, .recipe-modal .btn-danger.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn:hover, .monitor-vencimientos-container .btn-danger.view-mode-toggle:hover, .btn-danger.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-delete-note:hover, .btn-danger.btn-suministrado:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .pagination-controls button.btn-danger:hover, .metodo-pago-container .card-selector button.btn-danger:hover, .metodo-pago-container .payment-buttons button.btn-danger:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
-.btn.btn-edit, .recipe-modal .btn-edit.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn, .monitor-vencimientos-container .btn-edit.view-mode-toggle, .btn-edit.btn-delete-small, .btn-edit.btn-suministrado, .agenda-container .week-navigator .btn-edit.today-btn, .pagination-controls button.btn-edit, .metodo-pago-container .card-selector button.btn-edit, .metodo-pago-container .payment-buttons button.btn-edit {
+.btn.btn-edit, .recipe-modal .btn-edit.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn, .monitor-vencimientos-container .btn-edit.view-mode-toggle, .btn-edit.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-delete-note, .btn-edit.btn-suministrado, .agenda-container .week-navigator .btn-edit.today-btn, .pagination-controls button.btn-edit, .metodo-pago-container .card-selector button.btn-edit, .metodo-pago-container .payment-buttons button.btn-edit {
   background-color: #f39c12;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-edit:hover, .recipe-modal .btn-edit.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn:hover, .monitor-vencimientos-container .btn-edit.view-mode-toggle:hover, .btn-edit.btn-delete-small:hover, .btn-edit.btn-suministrado:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .pagination-controls button.btn-edit:hover, .metodo-pago-container .card-selector button.btn-edit:hover, .metodo-pago-container .payment-buttons button.btn-edit:hover {
+.btn.btn-edit:hover, .recipe-modal .btn-edit.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn:hover, .monitor-vencimientos-container .btn-edit.view-mode-toggle:hover, .btn-edit.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-delete-note:hover, .btn-edit.btn-suministrado:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .pagination-controls button.btn-edit:hover, .metodo-pago-container .card-selector button.btn-edit:hover, .metodo-pago-container .payment-buttons button.btn-edit:hover {
   background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
 }
-.btn.btn-delete, .recipe-modal .btn-delete.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .monitor-vencimientos-container .btn-delete.view-mode-toggle, .btn-delete.btn-delete-small, .btn-delete.btn-suministrado, .agenda-container .week-navigator .btn-delete.today-btn, .pagination-controls button.btn-delete, .metodo-pago-container .card-selector button.btn-delete, .metodo-pago-container .payment-buttons button.btn-delete {
+.btn.btn-delete, .recipe-modal .btn-delete.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .monitor-vencimientos-container .btn-delete.view-mode-toggle, .btn-delete.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-delete-note, .btn-delete.btn-suministrado, .agenda-container .week-navigator .btn-delete.today-btn, .pagination-controls button.btn-delete, .metodo-pago-container .card-selector button.btn-delete, .metodo-pago-container .payment-buttons button.btn-delete {
   background-color: #e74c3c;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-delete:hover, .recipe-modal .btn-delete.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .monitor-vencimientos-container .btn-delete.view-mode-toggle:hover, .btn-delete.btn-delete-small:hover, .btn-delete.btn-suministrado:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .pagination-controls button.btn-delete:hover, .metodo-pago-container .card-selector button.btn-delete:hover, .metodo-pago-container .payment-buttons button.btn-delete:hover {
+.btn.btn-delete:hover, .recipe-modal .btn-delete.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .monitor-vencimientos-container .btn-delete.view-mode-toggle:hover, .btn-delete.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-delete-note:hover, .btn-delete.btn-suministrado:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .pagination-controls button.btn-delete:hover, .metodo-pago-container .card-selector button.btn-delete:hover, .metodo-pago-container .payment-buttons button.btn-delete:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
 
@@ -4805,7 +4805,7 @@ button.btn-reset:hover {
 .resumen-venta-container .resumen-actions {
   margin-top: 2rem;
 }
-.resumen-venta-container .resumen-actions .btn, .resumen-venta-container .resumen-actions .recipe-modal .add-line-btn, .recipe-modal .resumen-venta-container .resumen-actions .add-line-btn, .resumen-venta-container .resumen-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .resumen-venta-container .resumen-actions .action-btn, .resumen-venta-container .resumen-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .resumen-venta-container .resumen-actions .view-mode-toggle, .resumen-venta-container .resumen-actions .btn-delete-small, .resumen-venta-container .resumen-actions .btn-suministrado, .resumen-venta-container .resumen-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .resumen-venta-container .resumen-actions .today-btn, .resumen-venta-container .resumen-actions .pagination-controls button, .pagination-controls .resumen-venta-container .resumen-actions button, .resumen-venta-container .resumen-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .resumen-venta-container .resumen-actions button, .resumen-venta-container .resumen-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .resumen-venta-container .resumen-actions button {
+.resumen-venta-container .resumen-actions .btn, .resumen-venta-container .resumen-actions .recipe-modal .add-line-btn, .recipe-modal .resumen-venta-container .resumen-actions .add-line-btn, .resumen-venta-container .resumen-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .resumen-venta-container .resumen-actions .action-btn, .resumen-venta-container .resumen-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .resumen-venta-container .resumen-actions .view-mode-toggle, .resumen-venta-container .resumen-actions .btn-delete-small, .resumen-venta-container .resumen-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .resumen-venta-container .resumen-actions .btn-delete-note, .resumen-venta-container .resumen-actions .btn-suministrado, .resumen-venta-container .resumen-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .resumen-venta-container .resumen-actions .today-btn, .resumen-venta-container .resumen-actions .pagination-controls button, .pagination-controls .resumen-venta-container .resumen-actions button, .resumen-venta-container .resumen-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .resumen-venta-container .resumen-actions button, .resumen-venta-container .resumen-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .resumen-venta-container .resumen-actions button {
   margin-left: 5px;
 }
 
@@ -5272,7 +5272,7 @@ button.btn-reset:hover {
   gap: 0.75rem;
   margin-bottom: 1rem;
 }
-.precio-modal-actions .btn, .precio-modal-actions .recipe-modal .add-line-btn, .recipe-modal .precio-modal-actions .add-line-btn, .precio-modal-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .precio-modal-actions .action-btn, .precio-modal-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .precio-modal-actions .view-mode-toggle, .precio-modal-actions .btn-delete-small, .precio-modal-actions .btn-suministrado, .precio-modal-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .precio-modal-actions .today-btn, .precio-modal-actions .pagination-controls button, .pagination-controls .precio-modal-actions button, .precio-modal-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .precio-modal-actions button, .precio-modal-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .precio-modal-actions button {
+.precio-modal-actions .btn, .precio-modal-actions .recipe-modal .add-line-btn, .recipe-modal .precio-modal-actions .add-line-btn, .precio-modal-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .precio-modal-actions .action-btn, .precio-modal-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .precio-modal-actions .view-mode-toggle, .precio-modal-actions .btn-delete-small, .precio-modal-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .precio-modal-actions .btn-delete-note, .precio-modal-actions .btn-suministrado, .precio-modal-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .precio-modal-actions .today-btn, .precio-modal-actions .pagination-controls button, .pagination-controls .precio-modal-actions button, .precio-modal-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .precio-modal-actions button, .precio-modal-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .precio-modal-actions button {
   padding: 0.8rem 1rem;
   border: none;
   border-radius: 8px;
@@ -5281,7 +5281,7 @@ button.btn-reset:hover {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.precio-modal-actions .btn:disabled, .precio-modal-actions .recipe-modal .add-line-btn:disabled, .recipe-modal .precio-modal-actions .add-line-btn:disabled, .precio-modal-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .precio-modal-actions .action-btn:disabled, .precio-modal-actions .monitor-vencimientos-container .view-mode-toggle:disabled, .monitor-vencimientos-container .precio-modal-actions .view-mode-toggle:disabled, .precio-modal-actions .btn-delete-small:disabled, .precio-modal-actions .btn-suministrado:disabled, .precio-modal-actions .agenda-container .week-navigator .today-btn:disabled, .agenda-container .week-navigator .precio-modal-actions .today-btn:disabled, .precio-modal-actions .pagination-controls button:disabled, .pagination-controls .precio-modal-actions button:disabled, .precio-modal-actions .metodo-pago-container .payment-buttons button:disabled, .metodo-pago-container .payment-buttons .precio-modal-actions button:disabled, .precio-modal-actions .metodo-pago-container .card-selector button:disabled, .metodo-pago-container .card-selector .precio-modal-actions button:disabled {
+.precio-modal-actions .btn:disabled, .precio-modal-actions .recipe-modal .add-line-btn:disabled, .recipe-modal .precio-modal-actions .add-line-btn:disabled, .precio-modal-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .precio-modal-actions .action-btn:disabled, .precio-modal-actions .monitor-vencimientos-container .view-mode-toggle:disabled, .monitor-vencimientos-container .precio-modal-actions .view-mode-toggle:disabled, .precio-modal-actions .btn-delete-small:disabled, .precio-modal-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:disabled, .clinical-history-list .clinical-entry-card .entry-header .precio-modal-actions .btn-delete-note:disabled, .precio-modal-actions .btn-suministrado:disabled, .precio-modal-actions .agenda-container .week-navigator .today-btn:disabled, .agenda-container .week-navigator .precio-modal-actions .today-btn:disabled, .precio-modal-actions .pagination-controls button:disabled, .pagination-controls .precio-modal-actions button:disabled, .precio-modal-actions .metodo-pago-container .payment-buttons button:disabled, .metodo-pago-container .payment-buttons .precio-modal-actions button:disabled, .precio-modal-actions .metodo-pago-container .card-selector button:disabled, .metodo-pago-container .card-selector .precio-modal-actions button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -5536,7 +5536,7 @@ button.btn-reset:hover {
   }
 }
 @media (max-width: 768px) {
-  .profile-header .profile-actions .btn, .profile-header .profile-actions .recipe-modal .add-line-btn, .recipe-modal .profile-header .profile-actions .add-line-btn, .profile-header .profile-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .profile-header .profile-actions .action-btn, .profile-header .profile-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .profile-header .profile-actions .view-mode-toggle, .profile-header .profile-actions .btn-delete-small, .profile-header .profile-actions .btn-suministrado, .profile-header .profile-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .profile-header .profile-actions .today-btn, .profile-header .profile-actions .pagination-controls button, .pagination-controls .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .profile-header .profile-actions button {
+  .profile-header .profile-actions .btn, .profile-header .profile-actions .recipe-modal .add-line-btn, .recipe-modal .profile-header .profile-actions .add-line-btn, .profile-header .profile-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .profile-header .profile-actions .action-btn, .profile-header .profile-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .profile-header .profile-actions .view-mode-toggle, .profile-header .profile-actions .btn-delete-small, .profile-header .profile-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .profile-header .profile-actions .btn-delete-note, .profile-header .profile-actions .btn-suministrado, .profile-header .profile-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .profile-header .profile-actions .today-btn, .profile-header .profile-actions .pagination-controls button, .pagination-controls .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .profile-header .profile-actions button {
     flex-grow: 1;
     text-align: center;
   }
@@ -5938,7 +5938,7 @@ button.btn-reset:hover {
   }
 }
 @media (max-width: 768px) {
-  .tutor-profile-tab-content .tutor-account-summary .btn, .tutor-profile-tab-content .tutor-account-summary .recipe-modal .add-line-btn, .recipe-modal .tutor-profile-tab-content .tutor-account-summary .add-line-btn, .tutor-profile-tab-content .tutor-account-summary .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .tutor-profile-tab-content .tutor-account-summary .action-btn, .tutor-profile-tab-content .tutor-account-summary .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .tutor-profile-tab-content .tutor-account-summary .view-mode-toggle, .tutor-profile-tab-content .tutor-account-summary .btn-delete-small, .tutor-profile-tab-content .tutor-account-summary .btn-suministrado, .tutor-profile-tab-content .tutor-account-summary .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .tutor-profile-tab-content .tutor-account-summary .today-btn, .tutor-profile-tab-content .tutor-account-summary .pagination-controls button, .pagination-controls .tutor-profile-tab-content .tutor-account-summary button, .tutor-profile-tab-content .tutor-account-summary .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .tutor-profile-tab-content .tutor-account-summary button, .tutor-profile-tab-content .tutor-account-summary .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .tutor-profile-tab-content .tutor-account-summary button {
+  .tutor-profile-tab-content .tutor-account-summary .btn, .tutor-profile-tab-content .tutor-account-summary .recipe-modal .add-line-btn, .recipe-modal .tutor-profile-tab-content .tutor-account-summary .add-line-btn, .tutor-profile-tab-content .tutor-account-summary .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .tutor-profile-tab-content .tutor-account-summary .action-btn, .tutor-profile-tab-content .tutor-account-summary .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .tutor-profile-tab-content .tutor-account-summary .view-mode-toggle, .tutor-profile-tab-content .tutor-account-summary .btn-delete-small, .tutor-profile-tab-content .tutor-account-summary .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .tutor-profile-tab-content .tutor-account-summary .btn-delete-note, .tutor-profile-tab-content .tutor-account-summary .btn-suministrado, .tutor-profile-tab-content .tutor-account-summary .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .tutor-profile-tab-content .tutor-account-summary .today-btn, .tutor-profile-tab-content .tutor-account-summary .pagination-controls button, .pagination-controls .tutor-profile-tab-content .tutor-account-summary button, .tutor-profile-tab-content .tutor-account-summary .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .tutor-profile-tab-content .tutor-account-summary button, .tutor-profile-tab-content .tutor-account-summary .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .tutor-profile-tab-content .tutor-account-summary button {
     text-align: center;
   }
 }
@@ -6246,7 +6246,7 @@ button.btn-reset:hover {
   }
 }
 
-.btn, .monitor-clinica-container .pagination-controls button, .recipe-modal .add-line-btn, .monitor-vencimientos-container .pagination-controls button, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .btn-suministrado, .agenda-container .week-navigator .today-btn, .metodo-pago-container .payment-buttons button, .metodo-pago-container .card-selector button, .pagination-controls button {
+.btn, .monitor-clinica-container .pagination-controls button, .recipe-modal .add-line-btn, .monitor-vencimientos-container .pagination-controls button, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .btn-suministrado, .agenda-container .week-navigator .today-btn, .metodo-pago-container .payment-buttons button, .metodo-pago-container .card-selector button, .pagination-controls button {
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: 600;
@@ -6257,11 +6257,11 @@ button.btn-reset:hover {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.btn:disabled, .recipe-modal .add-line-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .monitor-vencimientos-container .view-mode-toggle:disabled, .btn-delete-small:disabled, .btn-suministrado:disabled, .agenda-container .week-navigator .today-btn:disabled, .metodo-pago-container .payment-buttons button:disabled, .metodo-pago-container .card-selector button:disabled, .pagination-controls button:disabled {
+.btn:disabled, .recipe-modal .add-line-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .monitor-vencimientos-container .view-mode-toggle:disabled, .btn-delete-small:disabled, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:disabled, .btn-suministrado:disabled, .agenda-container .week-navigator .today-btn:disabled, .metodo-pago-container .payment-buttons button:disabled, .metodo-pago-container .card-selector button:disabled, .pagination-controls button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-.btn:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .view-mode-toggle:hover, .btn-delete-small:hover, .btn-suministrado:hover, .agenda-container .week-navigator .today-btn:hover, .metodo-pago-container .payment-buttons button:hover, .metodo-pago-container .card-selector button:hover, .pagination-controls button:hover {
+.btn:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .view-mode-toggle:hover, .btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:hover, .btn-suministrado:hover, .agenda-container .week-navigator .today-btn:hover, .metodo-pago-container .payment-buttons button:hover, .metodo-pago-container .card-selector button:hover, .pagination-controls button:hover {
   background-color: #f1f3f5;
 }
 
@@ -6295,6 +6295,16 @@ button.btn-reset:hover {
   color: #fff;
 }
 
+.btn-outline {
+  background-color: transparent;
+  color: #3498db;
+  border-color: #3498db;
+}
+.btn-outline:hover {
+  background-color: #3498db;
+  color: #fff;
+}
+
 .agenda-container {
   padding: 2rem;
   background-color: #f8f9fa;
@@ -6321,15 +6331,15 @@ button.btn-reset:hover {
   padding: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.agenda-container .view-switcher .btn, .agenda-container .view-switcher .recipe-modal .add-line-btn, .recipe-modal .agenda-container .view-switcher .add-line-btn, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle, .agenda-container .view-switcher .btn-delete-small, .agenda-container .view-switcher .btn-suministrado, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .agenda-container .view-switcher button, .agenda-container .view-switcher .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .agenda-container .view-switcher button, .agenda-container .view-switcher .pagination-controls button, .pagination-controls .agenda-container .view-switcher button {
+.agenda-container .view-switcher .btn, .agenda-container .view-switcher .recipe-modal .add-line-btn, .recipe-modal .agenda-container .view-switcher .add-line-btn, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle, .agenda-container .view-switcher .btn-delete-small, .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-delete-note, .agenda-container .view-switcher .btn-suministrado, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .agenda-container .view-switcher button, .agenda-container .view-switcher .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .agenda-container .view-switcher button, .agenda-container .view-switcher .pagination-controls button, .pagination-controls .agenda-container .view-switcher button {
   border: none;
   padding: 8px 16px;
 }
-.agenda-container .view-switcher .btn:not(.btn-primary), .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary), .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary), .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary), .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary), .agenda-container .view-switcher .btn-delete-small:not(.btn-primary), .agenda-container .view-switcher .btn-suministrado:not(.btn-primary), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary), .agenda-container .view-switcher .metodo-pago-container .payment-buttons button:not(.btn-primary), .metodo-pago-container .payment-buttons .agenda-container .view-switcher button:not(.btn-primary), .agenda-container .view-switcher .metodo-pago-container .card-selector button:not(.btn-primary), .metodo-pago-container .card-selector .agenda-container .view-switcher button:not(.btn-primary), .agenda-container .view-switcher .pagination-controls button:not(.btn-primary), .pagination-controls .agenda-container .view-switcher button:not(.btn-primary) {
+.agenda-container .view-switcher .btn:not(.btn-primary), .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary), .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary), .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary), .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary), .agenda-container .view-switcher .btn-delete-small:not(.btn-primary), .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:not(.btn-primary), .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-delete-note:not(.btn-primary), .agenda-container .view-switcher .btn-suministrado:not(.btn-primary), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary), .agenda-container .view-switcher .metodo-pago-container .payment-buttons button:not(.btn-primary), .metodo-pago-container .payment-buttons .agenda-container .view-switcher button:not(.btn-primary), .agenda-container .view-switcher .metodo-pago-container .card-selector button:not(.btn-primary), .metodo-pago-container .card-selector .agenda-container .view-switcher button:not(.btn-primary), .agenda-container .view-switcher .pagination-controls button:not(.btn-primary), .pagination-controls .agenda-container .view-switcher button:not(.btn-primary) {
   background-color: transparent;
   color: #8492a6;
 }
-.agenda-container .view-switcher .btn:not(.btn-primary):hover, .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary):hover, .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary):hover, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary):hover, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary):hover, .agenda-container .view-switcher .btn-delete-small:not(.btn-primary):hover, .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):hover, .agenda-container .view-switcher .metodo-pago-container .payment-buttons button:not(.btn-primary):hover, .metodo-pago-container .payment-buttons .agenda-container .view-switcher button:not(.btn-primary):hover, .agenda-container .view-switcher .metodo-pago-container .card-selector button:not(.btn-primary):hover, .metodo-pago-container .card-selector .agenda-container .view-switcher button:not(.btn-primary):hover, .agenda-container .view-switcher .pagination-controls button:not(.btn-primary):hover, .pagination-controls .agenda-container .view-switcher button:not(.btn-primary):hover {
+.agenda-container .view-switcher .btn:not(.btn-primary):hover, .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary):hover, .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary):hover, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary):hover, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary):hover, .agenda-container .view-switcher .btn-delete-small:not(.btn-primary):hover, .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:not(.btn-primary):hover, .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-delete-note:not(.btn-primary):hover, .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):hover, .agenda-container .view-switcher .metodo-pago-container .payment-buttons button:not(.btn-primary):hover, .metodo-pago-container .payment-buttons .agenda-container .view-switcher button:not(.btn-primary):hover, .agenda-container .view-switcher .metodo-pago-container .card-selector button:not(.btn-primary):hover, .metodo-pago-container .card-selector .agenda-container .view-switcher button:not(.btn-primary):hover, .agenda-container .view-switcher .pagination-controls button:not(.btn-primary):hover, .pagination-controls .agenda-container .view-switcher button:not(.btn-primary):hover {
   background-color: #f8f9fa;
 }
 .agenda-container .week-navigator {
@@ -6543,6 +6553,70 @@ button.btn-reset:hover {
   resize: vertical;
   min-height: 80px;
 }
+.agenda-modal-content .search-by-toggle {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e0e6ed;
+}
+.agenda-modal-content .search-by-toggle .btn, .agenda-modal-content .search-by-toggle .recipe-modal .add-line-btn, .recipe-modal .agenda-modal-content .search-by-toggle .add-line-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-modal-content .search-by-toggle .action-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .view-mode-toggle, .agenda-modal-content .search-by-toggle .btn-delete-small, .agenda-modal-content .search-by-toggle .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-modal-content .search-by-toggle .btn-delete-note, .agenda-modal-content .search-by-toggle .btn-suministrado, .agenda-modal-content .search-by-toggle .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .agenda-modal-content .search-by-toggle button, .agenda-modal-content .search-by-toggle .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .agenda-modal-content .search-by-toggle button, .agenda-modal-content .search-by-toggle .pagination-controls button, .pagination-controls .agenda-modal-content .search-by-toggle button, .agenda-modal-content .search-by-toggle .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .agenda-modal-content .search-by-toggle .today-btn {
+  flex: 1;
+  border: none;
+  border-radius: 0;
+  padding: 10px 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.agenda-modal-content .search-by-toggle .btn.btn-outline, .agenda-modal-content .search-by-toggle .recipe-modal .btn-outline.add-line-btn, .recipe-modal .agenda-modal-content .search-by-toggle .btn-outline.add-line-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .vencimiento-card .card-footer .btn-outline.action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-modal-content .search-by-toggle .btn-outline.action-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .btn-outline.view-mode-toggle, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .btn-outline.view-mode-toggle, .agenda-modal-content .search-by-toggle .btn-outline.btn-delete-small, .agenda-modal-content .search-by-toggle .clinical-history-list .clinical-entry-card .entry-header .btn-outline.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-modal-content .search-by-toggle .btn-outline.btn-delete-note, .agenda-modal-content .search-by-toggle .btn-outline.btn-suministrado, .agenda-modal-content .search-by-toggle .metodo-pago-container .payment-buttons button.btn-outline, .metodo-pago-container .payment-buttons .agenda-modal-content .search-by-toggle button.btn-outline, .agenda-modal-content .search-by-toggle .metodo-pago-container .card-selector button.btn-outline, .metodo-pago-container .card-selector .agenda-modal-content .search-by-toggle button.btn-outline, .agenda-modal-content .search-by-toggle .pagination-controls button.btn-outline, .pagination-controls .agenda-modal-content .search-by-toggle button.btn-outline, .agenda-modal-content .search-by-toggle .agenda-container .week-navigator .btn-outline.today-btn, .agenda-container .week-navigator .agenda-modal-content .search-by-toggle .btn-outline.today-btn {
+  color: #8492a6;
+  border-color: transparent;
+}
+.agenda-modal-content .search-by-toggle .btn.btn-outline:hover, .agenda-modal-content .search-by-toggle .recipe-modal .btn-outline.add-line-btn:hover, .recipe-modal .agenda-modal-content .search-by-toggle .btn-outline.add-line-btn:hover, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .vencimiento-card .card-footer .btn-outline.action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-modal-content .search-by-toggle .btn-outline.action-btn:hover, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .btn-outline.view-mode-toggle:hover, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .btn-outline.view-mode-toggle:hover, .agenda-modal-content .search-by-toggle .btn-outline.btn-delete-small:hover, .agenda-modal-content .search-by-toggle .clinical-history-list .clinical-entry-card .entry-header .btn-outline.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .agenda-modal-content .search-by-toggle .btn-outline.btn-delete-note:hover, .agenda-modal-content .search-by-toggle .btn-outline.btn-suministrado:hover, .agenda-modal-content .search-by-toggle .metodo-pago-container .payment-buttons button.btn-outline:hover, .metodo-pago-container .payment-buttons .agenda-modal-content .search-by-toggle button.btn-outline:hover, .agenda-modal-content .search-by-toggle .metodo-pago-container .card-selector button.btn-outline:hover, .metodo-pago-container .card-selector .agenda-modal-content .search-by-toggle button.btn-outline:hover, .agenda-modal-content .search-by-toggle .pagination-controls button.btn-outline:hover, .pagination-controls .agenda-modal-content .search-by-toggle button.btn-outline:hover, .agenda-modal-content .search-by-toggle .agenda-container .week-navigator .btn-outline.today-btn:hover, .agenda-container .week-navigator .agenda-modal-content .search-by-toggle .btn-outline.today-btn:hover {
+  background-color: #f8f9fa;
+  color: #3498db;
+}
+.agenda-modal-content .search-by-toggle .btn.btn-primary, .agenda-modal-content .search-by-toggle .recipe-modal .btn-primary.add-line-btn, .recipe-modal .agenda-modal-content .search-by-toggle .btn-primary.add-line-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-modal-content .search-by-toggle .action-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .btn-primary.view-mode-toggle, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .btn-primary.view-mode-toggle, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .vencimiento-card .card-footer .view-mode-toggle.action-btn, .agenda-modal-content .search-by-toggle .btn-primary.btn-delete-small, .agenda-modal-content .search-by-toggle .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-modal-content .search-by-toggle .btn-primary.btn-delete-note, .agenda-modal-content .search-by-toggle .btn-primary.btn-suministrado, .agenda-modal-content .search-by-toggle .metodo-pago-container .payment-buttons button.btn-primary, .metodo-pago-container .payment-buttons .agenda-modal-content .search-by-toggle button.btn-primary, .agenda-modal-content .search-by-toggle .metodo-pago-container .card-selector button.btn-primary, .metodo-pago-container .card-selector .agenda-modal-content .search-by-toggle button.btn-primary, .agenda-modal-content .search-by-toggle .pagination-controls button.btn-primary, .pagination-controls .agenda-modal-content .search-by-toggle button.btn-primary, .agenda-modal-content .search-by-toggle .agenda-container .week-navigator .btn-primary.today-btn, .agenda-container .week-navigator .agenda-modal-content .search-by-toggle .btn-primary.today-btn, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .monitor-clinica-container .pagination-controls .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn, .monitor-vencimientos-container .pagination-controls .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-note, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .monitor-clinica-container .pagination-controls button.btn-confirm, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.add-line-btn, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .pagination-controls button.btn-confirm, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.view-mode-toggle, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.btn-delete-small, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.btn-delete-note, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.btn-suministrado, .agenda-modal-content .search-by-toggle .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .pagination-controls .confirmar-venta-container .navigator-buttons button.btn-confirm, .pagination-controls .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .pagination-controls button.btn-confirm, .confirmar-venta-container .navigator-buttons .pagination-controls .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .today-btn.btn-confirm, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .today-btn.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .today-btn.btn-confirm, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .agenda-modal-content .search-by-toggle .today-btn.btn-confirm {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.agenda-modal-content .combobox-container {
+  position: relative;
+  z-index: 10;
+}
+.agenda-modal-content .combobox-container .combobox-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #e0e6ed;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  list-style: none;
+  padding: 0;
+  margin: -2px 0 0 0;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1060;
+}
+.agenda-modal-content .combobox-container .combobox-results li {
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: #3c4858;
+}
+.agenda-modal-content .combobox-container .combobox-results li:hover {
+  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  color: #2980b9;
+}
+.agenda-modal-content .combobox-container .combobox-results li.no-results {
+  color: #8492a6;
+  cursor: not-allowed;
+  background-color: #fff;
+}
 .agenda-modal-content .services-list {
   display: flex;
   flex-wrap: wrap;
@@ -6700,7 +6774,7 @@ button.btn-reset:hover {
     flex-direction: column;
     gap: 0.5rem;
   }
-  .profile-header .profile-actions .btn, .profile-header .profile-actions .recipe-modal .add-line-btn, .recipe-modal .profile-header .profile-actions .add-line-btn, .profile-header .profile-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .profile-header .profile-actions .action-btn, .profile-header .profile-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .profile-header .profile-actions .view-mode-toggle, .profile-header .profile-actions .btn-delete-small, .profile-header .profile-actions .btn-suministrado, .profile-header .profile-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .profile-header .profile-actions button, .profile-header .profile-actions .pagination-controls button, .pagination-controls .profile-header .profile-actions button, .profile-header .profile-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .profile-header .profile-actions .today-btn {
+  .profile-header .profile-actions .btn, .profile-header .profile-actions .recipe-modal .add-line-btn, .recipe-modal .profile-header .profile-actions .add-line-btn, .profile-header .profile-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .profile-header .profile-actions .action-btn, .profile-header .profile-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .profile-header .profile-actions .view-mode-toggle, .profile-header .profile-actions .btn-delete-small, .profile-header .profile-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .profile-header .profile-actions .btn-delete-note, .profile-header .profile-actions .btn-suministrado, .profile-header .profile-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .profile-header .profile-actions button, .profile-header .profile-actions .pagination-controls button, .pagination-controls .profile-header .profile-actions button, .profile-header .profile-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .profile-header .profile-actions .today-btn {
     width: 100%;
     justify-content: center;
   }
@@ -6993,7 +7067,6 @@ button.btn-reset:hover {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   margin-bottom: 1rem;
-  cursor: pointer;
   transition: all 0.2s ease;
 }
 @media (max-width: 768px) {
@@ -7013,14 +7086,16 @@ button.btn-reset:hover {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
 }
 @media (max-width: 768px) {
   .clinical-history-list .clinical-entry-card .entry-header {
     padding: 0.75rem 1rem;
-    flex-direction: column;
-    align-items: flex-start;
     gap: 0.5rem;
   }
+}
+.clinical-history-list .clinical-entry-card .entry-header .header-info {
+  flex-grow: 1;
 }
 .clinical-history-list .clinical-entry-card .entry-header .header-info .entry-date {
   display: block;
@@ -7042,8 +7117,14 @@ button.btn-reset:hover {
     font-size: 1rem;
   }
 }
+.clinical-history-list .clinical-entry-card .entry-header .btn-delete-note {
+  flex-shrink: 0;
+  margin-left: 1rem;
+  font-size: 1.2rem;
+}
 .clinical-history-list .clinical-entry-card .entry-body {
   padding: 1.5rem;
+  cursor: pointer;
 }
 @media (max-width: 768px) {
   .clinical-history-list .clinical-entry-card .entry-body {
@@ -7135,6 +7216,7 @@ button.btn-reset:hover {
   flex-wrap: wrap;
   gap: 1rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
 }
 @media (max-width: 768px) {
   .vencimientos-list .vencimiento-card {
@@ -7153,6 +7235,7 @@ button.btn-reset:hover {
   flex-direction: column;
   gap: 0.5rem;
   flex: 1;
+  padding-right: 2rem;
 }
 .vencimientos-list .vencimiento-card .vencimiento-info .vencimiento-product {
   font-weight: 600;
@@ -7219,6 +7302,62 @@ button.btn-reset:hover {
   font-style: italic;
   color: #2ecc71;
   font-size: 0.8rem;
+}
+.vencimientos-list .vencimiento-card .vencimiento-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+@media (max-width: 768px) {
+  .vencimientos-list .vencimiento-card .vencimiento-actions {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}
+.vencimientos-list .vencimiento-card .vencimiento-actions .vencimiento-actions-trigger {
+  background: transparent;
+  border: none;
+  color: #576677;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.vencimientos-list .vencimiento-card .vencimiento-actions .vencimiento-actions-trigger:hover {
+  background-color: #f8f9fa;
+  color: #34495e;
+}
+.vencimientos-list .vencimiento-card .vencimiento-actions .vencimiento-context-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  width: 150px;
+}
+.vencimientos-list .vencimiento-card .vencimiento-actions .vencimiento-context-menu .context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.vencimientos-list .vencimiento-card .vencimiento-actions .vencimiento-context-menu .context-menu-item:hover {
+  background-color: #f8f9fa;
+}
+.vencimientos-list .vencimiento-card .vencimiento-actions .vencimiento-context-menu .context-menu-item.delete {
+  color: #e74c3c;
+}
+.vencimientos-list .vencimiento-card .vencimiento-actions .vencimiento-context-menu .context-menu-item.delete svg {
+  color: #e74c3c;
 }
 .vencimientos-list .vencimiento-card .badge {
   display: inline-block;
@@ -7330,22 +7469,22 @@ button.btn-reset:hover {
   .recipe-actions {
     width: 100%;
   }
-  .recipe-actions .btn, .recipe-actions .recipe-modal .add-line-btn, .recipe-modal .recipe-actions .add-line-btn, .recipe-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-actions .action-btn, .recipe-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .recipe-actions .view-mode-toggle, .recipe-actions .btn-delete-small, .recipe-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .recipe-actions button, .recipe-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .recipe-actions button, .recipe-actions .pagination-controls button, .pagination-controls .recipe-actions button, .recipe-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .recipe-actions .today-btn, .recipe-actions .btn-suministrado {
+  .recipe-actions .btn, .recipe-actions .recipe-modal .add-line-btn, .recipe-modal .recipe-actions .add-line-btn, .recipe-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-actions .action-btn, .recipe-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .recipe-actions .view-mode-toggle, .recipe-actions .btn-delete-small, .recipe-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .recipe-actions .btn-delete-note, .recipe-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .recipe-actions button, .recipe-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .recipe-actions button, .recipe-actions .pagination-controls button, .pagination-controls .recipe-actions button, .recipe-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .recipe-actions .today-btn, .recipe-actions .btn-suministrado {
     flex: 1;
   }
 }
 
-.btn-delete-small {
+.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note {
   background-color: transparent;
   color: #e74c3c;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn-delete-small:hover {
+.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:hover {
   background-color: rgb(250.5616438356, 221.897260274, 218.9383561644);
 }
 @media (max-width: 768px) {
-  .btn-delete-small {
+  .btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note {
     padding: 0.75rem;
   }
 }
@@ -8938,6 +9077,14 @@ button.btn-reset:hover {
   max-width: 1400px;
   margin: 0 auto;
 }
+.caja-diaria-container .link-class {
+  font-weight: 500;
+  text-decoration: none;
+  color: rgb(61, 60, 60);
+}
+.caja-diaria-container .link-class:hover {
+  text-decoration: underline;
+}
 .caja-diaria-container .caja-page-header {
   display: flex;
   justify-content: space-between;
@@ -9210,7 +9357,7 @@ button.btn-reset:hover {
   gap: 1rem;
   margin-top: 2rem;
 }
-.sale-detail-modal .sale-detail-actions .btn, .sale-detail-modal .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-modal .sale-detail-actions .today-btn, .sale-detail-modal .sale-detail-actions .btn-suministrado, .sale-detail-modal .sale-detail-actions .btn-delete-small, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-modal .sale-detail-actions .view-mode-toggle, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-modal .sale-detail-actions .action-btn, .sale-detail-modal .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-modal .sale-detail-actions .add-line-btn, .sale-detail-modal .sale-detail-actions .btn-primary, .sale-detail-modal .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .sale-detail-modal .sale-detail-actions .btn-confirm {
+.sale-detail-modal .sale-detail-actions .btn, .sale-detail-modal .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-modal .sale-detail-actions .today-btn, .sale-detail-modal .sale-detail-actions .btn-suministrado, .sale-detail-modal .sale-detail-actions .btn-delete-small, .sale-detail-modal .sale-detail-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .sale-detail-modal .sale-detail-actions .btn-delete-note, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-modal .sale-detail-actions .view-mode-toggle, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-modal .sale-detail-actions .action-btn, .sale-detail-modal .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-modal .sale-detail-actions .add-line-btn, .sale-detail-modal .sale-detail-actions .btn-primary, .sale-detail-modal .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .sale-detail-modal .sale-detail-actions .btn-confirm {
   flex: 1;
   padding: 0.75rem 1rem;
 }
@@ -9815,7 +9962,7 @@ button.btn-reset:hover {
   gap: 1rem;
   margin-top: 2rem;
 }
-.sale-detail-actions .btn, .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-actions button, .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-actions button, .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-actions button, .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-actions .today-btn, .sale-detail-actions .btn-suministrado, .sale-detail-actions .btn-delete-small, .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-actions .view-mode-toggle, .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-actions .action-btn, .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-actions .add-line-btn, .sale-detail-actions .btn-primary, .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .sale-detail-actions .btn-confirm {
+.sale-detail-actions .btn, .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-actions button, .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-actions button, .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-actions button, .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-actions .today-btn, .sale-detail-actions .btn-suministrado, .sale-detail-actions .btn-delete-small, .sale-detail-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .sale-detail-actions .btn-delete-note, .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-actions .view-mode-toggle, .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-actions .action-btn, .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-actions .add-line-btn, .sale-detail-actions .btn-primary, .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .sale-detail-actions .btn-confirm {
   flex: 1;
   padding: 0.75rem 1rem;
 }

@@ -398,7 +398,6 @@ $tablet: 1024px;
     border: 1px solid $border-color;
     border-radius: $border-radius;
     margin-bottom: 1rem;
-    cursor: pointer;
     transition: all 0.2s ease;
 
     @media (max-width: $mobile) {
@@ -418,15 +417,16 @@ $tablet: 1024px;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid $border-color;
+      cursor: pointer;
 
       @media (max-width: $mobile) {
         padding: 0.75rem 1rem;
-        flex-direction: column;
-        align-items: flex-start;
         gap: 0.5rem;
       }
 
       .header-info {
+        flex-grow: 1;
+        
         .entry-date {
           display: block;
           color: $text-light;
@@ -447,10 +447,18 @@ $tablet: 1024px;
           }
         }
       }
+
+      .btn-delete-note {
+        @extend .btn-delete-small;
+        flex-shrink: 0;
+        margin-left: 1rem;
+        font-size: 1.2rem;
+      }
     }
 
     .entry-body {
       padding: 1.5rem;
+      cursor: pointer;
 
       @media (max-width: $mobile) {
         padding: 1rem;
@@ -541,6 +549,7 @@ $tablet: 1024px;
     flex-wrap: wrap;
     gap: 1rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative; 
 
     @media (max-width: $mobile) {
       padding: 1rem;
@@ -559,6 +568,7 @@ $tablet: 1024px;
       flex-direction: column;
       gap: 0.5rem;
       flex: 1;
+      padding-right: 2rem; 
 
       .vencimiento-product {
         font-weight: 600;
@@ -626,6 +636,69 @@ $tablet: 1024px;
         font-style: italic;
         color: $success-color;
         font-size: 0.8rem;
+      }
+    }
+    
+    .vencimiento-actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+
+      @media (max-width: $mobile) {
+        top: 0.5rem;
+        right: 0.5rem;
+      }
+
+      .vencimiento-actions-trigger {
+        background: transparent;
+        border: none;
+        color: $text-light;
+        font-size: 1.1rem;
+        padding: 0.5rem;
+        cursor: pointer;
+        border-radius: 50%;
+
+        &:hover {
+          background-color: $background-light;
+          color: $text-color;
+        }
+      }
+
+      .vencimiento-context-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: $white-color;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        box-shadow: $shadow;
+        z-index: 10;
+        width: 150px;
+
+        .context-menu-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          width: 100%;
+          padding: 0.75rem 1rem;
+          background: none;
+          border: none;
+          text-align: left;
+          font-size: 0.9rem;
+          cursor: pointer;
+
+          &:hover {
+            background-color: $background-light;
+          }
+
+          &.delete {
+            color: $error-color;
+            
+            svg {
+              color: $error-color;
+            }
+          }
+        }
       }
     }
 
@@ -884,3 +957,4 @@ $tablet: 1024px;
     opacity: 1;
   }
 }
+
