@@ -29,14 +29,30 @@ const VenderNavigator = () => {
   // --- Soporte para arranque con tutor/paciente preseleccionados ---
   useEffect(() => {
     if (location.state) {
-      const { tutor, patient } = location.state;
+      const { tutor, patient, cart } = location.state;
 
-      if (tutor && patient) {
+      if (cart) {
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        const serviceItems = cart
+          .filter((item) => item.tipo === "servicio" || item.isDoseable)
+          .map((item) => item.id);
+        
+        setSaleData((prev) => ({ 
+            ...prev, 
+            tutor, 
+            patient, 
+            cart, 
+            total, 
+            clinicalHistoryItems: serviceItems 
+        }));
+        setStep(3);
+      
+      } else if (tutor && patient) {
         setSaleData((prev) => ({ ...prev, tutor, patient }));
-        setStep(3); // Salta directo a productos
+        setStep(3);
       } else if (tutor) {
         setSaleData((prev) => ({ ...prev, tutor }));
-        setStep(2); // Salta a selección de paciente
+        setStep(2);
       }
     }
   }, [location.state]);
