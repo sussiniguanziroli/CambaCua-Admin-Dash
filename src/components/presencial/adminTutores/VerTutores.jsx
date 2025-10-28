@@ -13,7 +13,12 @@ const VerTutores = () => {
   const [tutores, setTutores] = useState([]);
   const [filteredTutores, setFilteredTutores] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filters, setFilters] = useState({ searchTerm: "", sortOrder: "name_asc", serviceType: "todos" });
+  const [filters, setFilters] = useState({
+    searchTerm: "",
+    sortOrder: "name_asc",
+    serviceType: "todos",
+    showOnlyDebtors: false,
+  });
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
@@ -31,36 +36,61 @@ const VerTutores = () => {
     }
   }, []);
 
-  useEffect(() => { fetchTutores(); }, [fetchTutores]);
+  useEffect(() => {
+    fetchTutores();
+  }, [fetchTutores]);
 
   useEffect(() => {
     let filtered = [...tutores];
 
     if (filters.serviceType !== "todos") {
-      filtered = filtered.filter(t => {
+      filtered = filtered.filter((t) => {
         const services = t.serviceTypes || [];
-        if (filters.serviceType === "clinical") return services.includes("clinical");
-        if (filters.serviceType === "grooming") return services.includes("grooming");
-        if (filters.serviceType === "both") return services.includes("clinical") && services.includes("grooming");
+        if (filters.serviceType === "clinical")
+          return services.includes("clinical");
+        if (filters.serviceType === "grooming")
+          return services.includes("grooming");
+        if (filters.serviceType === "both")
+          return services.includes("clinical") && services.includes("grooming");
         return true;
       });
     }
 
+    if (filters.showOnlyDebtors) {
+      filtered = filtered.filter((t) => (t.accountBalance || 0) < 0);
+    }
+
     const term = filters.searchTerm.toLowerCase();
     if (term) {
-      filtered = filtered.filter(t =>
-        t.name?.toLowerCase().includes(term) ||
-        t.email?.toLowerCase().includes(term) ||
-        t.dni?.includes(term) ||
-        t.phone?.includes(term)
+      filtered = filtered.filter(
+        (t) =>
+          t.name?.toLowerCase().includes(term) ||
+          t.email?.toLowerCase().includes(term) ||
+          t.dni?.includes(term) ||
+          t.phone?.includes(term)
       );
     }
 
     filtered.sort((a, b) => {
-      if (filters.sortOrder === "name_asc") return (a.name || "").localeCompare(b.name || "");
-      if (filters.sortOrder === "name_desc") return (b.name || "").localeCompare(a.name || "");
-      if (filters.sortOrder === "newest") return (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0);
-      return 0;
+      const balanceA = a.accountBalance || 0;
+      const balanceB = b.accountBalance || 0;
+
+      switch (filters.sortOrder) {
+        case "name_asc":
+          return (a.name || "").localeCompare(b.name || "");
+        case "name_desc":
+          return (b.name || "").localeCompare(a.name || "");
+        case "newest":
+          return (
+            (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0)
+          );
+        case "debt_asc":
+          return balanceA - balanceB;
+        case "debt_desc":
+          return balanceB - balanceA;
+        default:
+          return 0;
+      }
     });
 
     setFilteredTutores(filtered);
@@ -73,7 +103,7 @@ const VerTutores = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar"
+      cancelButtonText: "Cancelar",
     });
     if (result.isConfirmed) {
       try {
@@ -87,8 +117,9 @@ const VerTutores = () => {
   };
 
   const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+    setFilters((prev) => ({ ...prev, [name]: newValue }));
     setCurrentPage(1);
   };
 
@@ -117,9 +148,15 @@ const VerTutores = () => {
           />
         </div>
         <div className="filter-group">
-          <select name="sortOrder" value={filters.sortOrder} onChange={handleFilterChange}>
+          <select
+            name="sortOrder"
+            value={filters.sortOrder}
+            onChange={handleFilterChange}
+          >
             <option value="name_asc">Nombre (A-Z)</option>
             <option value="name_desc">Nombre (Z-A)</option>
+            <option value="debt_desc">Deuda (Menor a Mayor)</option>
+            <option value="debt_asc">Deuda (Mayor a Menor)</option>
             <option value="newest">Más nuevos</option>
           </select>
         </div>
@@ -137,6 +174,16 @@ const VerTutores = () => {
             <option value="both">Ambos</option>
           </select>
         </div>
+        <div className="filter-group checkbox-group">
+          <input
+            type="checkbox"
+            id="showOnlyDebtors"
+            name="showOnlyDebtors"
+            checked={filters.showOnlyDebtors}
+            onChange={handleFilterChange}
+          />
+          <label htmlFor="showOnlyDebtors">Ver Solo Deudores</label>
+        </div>
       </div>
 
       {isLoading ? (
@@ -151,10 +198,13 @@ const VerTutores = () => {
                 onClick={() => navigate(`/admin/tutor-profile/${tutor.id}`)}
               >
                 <div className="tutor-card-header">
-                  <div className="tutor-avatar"><FaUserLarge /></div>
+                  <div className="tutor-avatar">
+                    <FaUserLarge />
+                  </div>
                   <div className="tutor-info">
                     <p className="tutor-name">
-                      <Link  className="link-class"
+                      <Link
+                        className="link-class"
                         to={`/admin/tutor-profile/${tutor.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -163,22 +213,37 @@ const VerTutores = () => {
                         {tutor.name}
                       </Link>
                     </p>
-                    <p className="tutor-contact">{tutor.phone || tutor.email || "Sin contacto"}</p>
+                    <p className="tutor-contact">
+                      {tutor.phone || tutor.email || "Sin contacto"}
+                    </p>
                   </div>
                 </div>
 
                 <div className="tutor-card-body">
-                  <div className="info-chip"><FaDog /><span>{tutor.pacientesIds?.length || 0} Pacientes</span></div>
-                  <div className={`info-chip balance ${tutor.accountBalance < 0 ? "deudor" : ""}`}>
+                  <div className="info-chip">
+                    <FaDog />
+                    <span>{tutor.pacientesIds?.length || 0} Pacientes</span>
+                  </div>
+                  <div
+                    className={`info-chip balance ${
+                      tutor.accountBalance < 0 ? "deudor" : ""
+                    }`}
+                  >
                     <span>${tutor.accountBalance?.toFixed?.(2) || "0.00"}</span>
                   </div>
-                  {(tutor.serviceTypes && tutor.serviceTypes.length > 0) && (
+                  {tutor.serviceTypes && tutor.serviceTypes.length > 0 && (
                     <div className="service-chips-container">
                       {tutor.serviceTypes.includes("clinical") && (
-                        <div className="service-chip clinical"><FaStethoscope /><span>Clínica</span></div>
+                        <div className="service-chip clinical">
+                          <FaStethoscope />
+                          <span>Clínica</span>
+                        </div>
                       )}
                       {tutor.serviceTypes.includes("grooming") && (
-                        <div className="service-chip grooming"><PiBathtub /><span>Peluquería</span></div>
+                        <div className="service-chip grooming">
+                          <PiBathtub />
+                          <span>Peluquería</span>
+                        </div>
                       )}
                     </div>
                   )}
@@ -208,14 +273,19 @@ const VerTutores = () => {
 
           {totalPages > 1 && (
             <div className="pagination-controls">
-              <button onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1}>
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
                 Anterior
               </button>
               <span>
                 Página {currentPage} de {totalPages}
               </span>
               <button
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
                 disabled={currentPage === totalPages}
               >
                 Siguiente
