@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { fetchDailyTransactions } from '../../services/cashFlowService';
 import SaleDetailModal from './SaleDetailModal';
+import CajaDetailPopup from './CajaDetailPopup'; // <-- Importar el nuevo popup
 import { useNavigate, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { db } from '../../firebase/config';
 import { doc, writeBatch, increment, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
+import { FaFileInvoiceDollar, FaHandHoldingUsd, FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-const FaFileInvoiceDollar = () => <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 384 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M320 0H64C28.7 0 0 28.7 0 64v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zM192 416c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm32-160h-64c-8.8 0-16-7.2-16-16s7.2-16 16-16h64c8.8 0 16 7.2 16 16s-7.2 16-16 16zm48-96H112c-8.8 0-16-7.2-16-16s7.2-16 16-16h160c8.8 0 16 7.2 16 16s-7.2 16-16 16z"></path></svg>;
-const FaHandHoldingUsd = () => <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 576 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M528.3 22.8c-20.7-20.7-54.3-20.7-75 0L320 156.2l-32.3-32.3c-27.5-27.5-72.2-27.5-99.7 0l-112 112c-27.5 27.5-27.5 72.2 0 99.7l32.3 32.3L22.8 503.7c-20.7 20.7-20.7 54.3 0 75s54.3 20.7 75 0l133.3-133.3 32.3 32.3c27.5 27.5 72.2 27.5 99.7 0l112-112c27.5-27.5 27.5-72.2 0-99.7l-32.3-32.3L528.3 97.8c20.7-20.7 20.7-54.3 0-75zM224 288c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"></path></svg>;
-const FaTrash = () => <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32l21.2 339z"></path></svg>;
-const FaPencilAlt = () => <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9l-5.5-5.5 53.5-53.5 11.1 11.1-59.1 47.9z"></path></svg>;
+// ... (Iconos de Fa... sin cambios)
 
 
+
+// ... (Función cancelSale sin cambios)
 const cancelSale = async (sale) => {
     if (sale.type !== 'Venta Presencial' && sale.type !== 'Pedido Online') {
         throw new Error("Solo se pueden cancelar ventas o pedidos.");
@@ -68,6 +69,7 @@ const CajaDiaria = () => {
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [filterType, setFilterType] = useState('Todos');
     const [filterMethod, setFilterMethod] = useState('Todos');
+    const [popupData, setPopupData] = useState(null); // <-- Estado para el popup
     const navigate = useNavigate();
 
     const fetchAndSetTransactions = useCallback(async (date) => {
@@ -81,27 +83,139 @@ const CajaDiaria = () => {
         fetchAndSetTransactions(selectedDate);
     }, [selectedDate, fetchAndSetTransactions]);
 
+    // ... (summary useMemo sin cambios)
     const summary = useMemo(() => {
         return transactions.reduce((acc, trans) => {
             if (trans.type === 'Venta Presencial' || trans.type === 'Pedido Online') {
-                acc.subtotalVendido += trans.subtotal || trans.total;
+                const saleSubtotal = trans.subtotal || trans.total;
+                acc.subtotalVendido += saleSubtotal;
+                acc.balanceDiario += saleSubtotal;
                 acc.totalDescuentos += trans.discount || 0;
                 acc.deudaGenerada += trans.debt || 0;
+                
                 (trans.payments || []).forEach(p => {
-                    acc.metodos[p.method] = (acc.metodos[p.method] || 0) + parseFloat(p.amount);
+                    const amount = parseFloat(p.amount);
+                    if (p.method === 'Efectivo') {
+                        acc.totalEfectivo += amount;
+                    } else {
+                        acc.totalElectronico += amount;
+                    }
                 });
             } else if (trans.type === 'Cobro Deuda') {
-                acc.deudaCobrada += trans.amount;
-                acc.metodos[trans.paymentMethod] = (acc.metodos[trans.paymentMethod] || 0) + trans.amount;
+                const amount = parseFloat(trans.amount);
+                acc.deudaCobrada += amount;
+                if (trans.paymentMethod === 'Efectivo') {
+                    acc.totalEfectivo += amount;
+                } else {
+                    acc.totalElectronico += amount;
+                }
             }
             return acc;
-        }, { subtotalVendido: 0, totalDescuentos: 0, deudaGenerada: 0, deudaCobrada: 0, metodos: {} });
+        }, { 
+            subtotalVendido: 0, 
+            totalDescuentos: 0, 
+            deudaGenerada: 0, 
+            deudaCobrada: 0,
+            totalEfectivo: 0,
+            totalElectronico: 0,
+            balanceDiario: 0
+        });
     }, [transactions]);
 
     const totalEnCaja = useMemo(() => {
-        return Object.values(summary.metodos).reduce((sum, val) => sum + val, 0);
-    }, [summary.metodos]);
+        return summary.totalEfectivo + summary.totalElectronico;
+    }, [summary.totalEfectivo, summary.totalElectronico]);
 
+    // --- NUEVO useMemo para los detalles del popup ---
+    const summaryDetails = useMemo(() => {
+        const metodosElectronicos = {};
+        const metodosCobranza = {};
+        let ventasEfectivo = 0;
+        let cobrosEfectivo = 0;
+        let ventasDeuda = 0;
+        let ventasSubtotal = 0;
+
+        transactions.forEach(trans => {
+            if (trans.type === 'Venta Presencial' || trans.type === 'Pedido Online') {
+                ventasSubtotal += trans.subtotal || trans.total;
+                ventasDeuda += trans.debt || 0;
+                (trans.payments || []).forEach(p => {
+                    const amount = parseFloat(p.amount);
+                    if (p.method === 'Efectivo') {
+                        ventasEfectivo += amount;
+                    } else {
+                        metodosElectronicos[p.method] = (metodosElectronicos[p.method] || 0) + amount;
+                    }
+                });
+            } else if (trans.type === 'Cobro Deuda') {
+                const amount = parseFloat(trans.amount);
+                metodosCobranza[trans.paymentMethod] = (metodosCobranza[trans.paymentMethod] || 0) + amount;
+                if (trans.paymentMethod === 'Efectivo') {
+                    cobrosEfectivo += amount;
+                } else {
+                    metodosElectronicos[trans.paymentMethod] = (metodosElectronicos[trans.paymentMethod] || 0) + amount;
+                }
+            }
+        });
+
+        const formatBreakdown = (obj) => Object.entries(obj).map(([label, value]) => ({
+            label, value: `$${value.toFixed(2)}`
+        })).sort((a, b) => b.value.localeCompare(a.value));
+
+        return {
+            totalCaja: {
+                title: "Total en Caja",
+                total: `$${totalEnCaja.toFixed(2)}`,
+                breakdown: [
+                    { label: "Total Efectivo", value: `$${summary.totalEfectivo.toFixed(2)}` },
+                    { label: "Total Electrónico", value: `$${summary.totalElectronico.toFixed(2)}` }
+                ]
+            },
+            totalElectronico: {
+                title: "Total Electrónico",
+                total: `$${summary.totalElectronico.toFixed(2)}`,
+                breakdown: formatBreakdown(metodosElectronicos)
+            },
+            totalEfectivo: {
+                title: "Total Efectivo",
+                total: `$${summary.totalEfectivo.toFixed(2)}`,
+                breakdown: [
+                    { label: "Ingreso por Ventas", value: `$${ventasEfectivo.toFixed(2)}` },
+                    { label: "Ingreso por Cobranzas", value: `$${cobrosEfectivo.toFixed(2)}` }
+                ]
+            },
+            balanceDiario: {
+                title: "Balance Diario (Ventas)",
+                total: `$${summary.balanceDiario.toFixed(2)}`,
+                breakdown: [
+                    { label: "Ventas Totales del Día", value: `$${ventasSubtotal.toFixed(2)}` },
+                    { label: "Generado en Cta. Cte.", value: `-$${ventasDeuda.toFixed(2)}` },
+                    { label: "Ventas Cobradas Hoy", value: `$${(ventasSubtotal - ventasDeuda).toFixed(2)}` }
+                ]
+            },
+            deudaCobrada: {
+                title: "Cobranza de Deuda",
+                total: `$${summary.deudaCobrada.toFixed(2)}`,
+                breakdown: formatBreakdown(metodosCobranza)
+            },
+            deudaGenerada: {
+                title: "Deuda Generada",
+                total: `$${summary.deudaGenerada.toFixed(2)}`,
+                breakdown: [
+                    { label: "Ventas en Cta. Cte.", value: `$${summary.deudaGenerada.toFixed(2)}` }
+                ]
+            },
+            descuentos: {
+                title: "Descuentos",
+                total: `-$${summary.totalDescuentos.toFixed(2)}`,
+                breakdown: [
+                    { label: "Descuentos Aplicados", value: `-$${summary.totalDescuentos.toFixed(2)}` }
+                ]
+            }
+        };
+    }, [transactions, summary, totalEnCaja]);
+
+    // ... (filteredTransactions, formatDateForInput, uniqueTypes, uniqueMethods, handleDeleteSale, handleEditSale sin cambios)
     const filteredTransactions = useMemo(() => {
         return transactions.filter(t => {
             const typeOk = filterType === 'Todos' || t.type === filterType;
@@ -189,9 +303,13 @@ const CajaDiaria = () => {
         });
     };
 
+
     return (
         <div className="caja-diaria-container">
+            {/* --- Modales --- */}
             {selectedTransaction && <SaleDetailModal sale={selectedTransaction} onClose={() => setSelectedTransaction(null)} />}
+            {popupData && <CajaDetailPopup data={popupData} onClose={() => setPopupData(null)} />}
+
             <div className="caja-page-header">
                 <h1>Caja Diaria</h1>
                 <div className="caja-date-picker">
@@ -211,18 +329,67 @@ const CajaDiaria = () => {
                     {uniqueMethods.map(m => <option key={m} value={m}>{m}</option>)}
                 </select>
             </div>
-            <div className="caja-summary-grid">
-                <div className="caja-summary-card total-caja"><span>Total en Caja</span><strong>${totalEnCaja.toFixed(2)}</strong></div>
-                <div className="caja-summary-card"><span>Subtotal Vendido</span><strong>${summary.subtotalVendido.toFixed(2)}</strong></div>
-                {summary.totalDescuentos > 0 && (
-                    <div className="caja-summary-card descuentos"><span>Descuentos</span><strong>-${summary.totalDescuentos.toFixed(2)}</strong></div>
-                )}
-                <div className="caja-summary-card deuda-cobrada"><span>Cobranza de Deuda</span><strong>${summary.deudaCobrada.toFixed(2)}</strong></div>
-                <div className="caja-summary-card deuda-generada"><span>Deuda Generada</span><strong>${summary.deudaGenerada.toFixed(2)}</strong></div>
-                {Object.entries(summary.metodos).map(([method, total]) => (
-                    <div className="caja-summary-card" key={method}><span>{method}</span><strong>${total.toFixed(2)}</strong></div>
-                ))}
+
+            {/* --- Sección de Resumen Principal (AHORA CLICKEABLE) --- */}
+            <div className="caja-summary-main">
+                <div 
+                    className="caja-summary-card total-caja" 
+                    onClick={() => setPopupData(summaryDetails.totalCaja)}
+                >
+                    <span>Total en Caja</span>
+                    <strong>${totalEnCaja.toFixed(2)}</strong>
+                </div>
+                <div 
+                    className="caja-summary-card total-electronico"
+                    onClick={() => setPopupData(summaryDetails.totalElectronico)}
+                >
+                    <span>Total Electrónico</span>
+                    <strong>${summary.totalElectronico.toFixed(2)}</strong>
+                </div>
+                <div 
+                    className="caja-summary-card total-efectivo"
+                    onClick={() => setPopupData(summaryDetails.totalEfectivo)}
+                >
+                    <span>Total Efectivo</span>
+                    <strong>${summary.totalEfectivo.toFixed(2)}</strong>
+                </div>
             </div>
+
+            {/* --- Sección de Resumen Secundaria (AHORA CLICKEABLE) --- */}
+            <div className="caja-summary-secondary">
+                <div 
+                    className="caja-summary-card"
+                    onClick={() => setPopupData(summaryDetails.balanceDiario)}
+                >
+                    <span>Balance Diario (Ventas)</span>
+                    <strong>${summary.balanceDiario.toFixed(2)}</strong>
+                </div>
+                <div 
+                    className="caja-summary-card deuda-cobrada"
+                    onClick={() => setPopupData(summaryDetails.deudaCobrada)}
+                >
+                    <span>Cobranza de Deuda</span>
+                    <strong>${summary.deudaCobrada.toFixed(2)}</strong>
+                </div>
+                <div 
+                    className="caja-summary-card deuda-generada"
+                    onClick={() => setPopupData(summaryDetails.deudaGenerada)}
+                >
+                    <span>Deuda Generada</span>
+                    <strong>${summary.deudaGenerada.toFixed(2)}</strong>
+                </div>
+                {summary.totalDescuentos > 0 && (
+                    <div 
+                        className="caja-summary-card descuentos"
+                        onClick={() => setPopupData(summaryDetails.descuentos)}
+                    >
+                        <span>Descuentos</span>
+                        <strong>-${summary.totalDescuentos.toFixed(2)}</strong>
+                    </div>
+                )}
+            </div>
+
+            {/* ... (Lista de transacciones sin cambios) ... */}
             <div className="caja-transactions-list">
                 <h3>Transacciones del Día ({filteredTransactions.length})</h3>
                 {isLoading ? <p>Cargando...</p> : (

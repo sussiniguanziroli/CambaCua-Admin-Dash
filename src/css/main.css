@@ -9114,7 +9114,19 @@ button.btn-reset:hover {
   cursor: pointer;
   font-weight: 500;
 }
-.caja-diaria-container .caja-summary-grid {
+.caja-diaria-container .caja-summary-main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.caja-diaria-container .caja-summary-main .caja-summary-card {
+  padding: 2rem;
+}
+.caja-diaria-container .caja-summary-main .caja-summary-card strong {
+  font-size: 2.5rem;
+}
+.caja-diaria-container .caja-summary-secondary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
@@ -9126,6 +9138,15 @@ button.btn-reset:hover {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border-left: 5px solid #95a5a6;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+.caja-diaria-container .caja-summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+.caja-diaria-container .caja-summary-card:active {
+  transform: translateY(-1px) scale(0.99);
 }
 .caja-diaria-container .caja-summary-card span {
   display: block;
@@ -9143,6 +9164,18 @@ button.btn-reset:hover {
 .caja-diaria-container .caja-summary-card.total-caja strong {
   color: #2980b9;
 }
+.caja-diaria-container .caja-summary-card.total-electronico {
+  border-left-color: #95a5a6;
+}
+.caja-diaria-container .caja-summary-card.total-electronico strong {
+  color: rgb(121.2769230769, 141.4615384615, 142.7230769231);
+}
+.caja-diaria-container .caja-summary-card.total-efectivo {
+  border-left-color: #2ecc71;
+}
+.caja-diaria-container .caja-summary-card.total-efectivo strong {
+  color: rgb(36.616, 162.384, 89.948);
+}
 .caja-diaria-container .caja-summary-card.deuda-cobrada {
   border-left-color: #2ecc71;
 }
@@ -9156,10 +9189,10 @@ button.btn-reset:hover {
   color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
 .caja-diaria-container .caja-summary-card.descuentos {
-  border-left-color: #2ecc71;
+  border-left-color: #95a5a6;
 }
 .caja-diaria-container .caja-summary-card.descuentos strong {
-  color: rgb(36.616, 162.384, 89.948);
+  color: rgb(121.2769230769, 141.4615384615, 142.7230769231);
 }
 .caja-diaria-container .caja-transactions-list h3 {
   margin-bottom: 1.5rem;
@@ -9181,7 +9214,9 @@ button.btn-reset:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
-.caja-diaria-container .card-header, .caja-diaria-container .card-body, .caja-diaria-container .card-footer {
+.caja-diaria-container .card-header,
+.caja-diaria-container .card-body,
+.caja-diaria-container .card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9339,7 +9374,8 @@ button.btn-reset:hover {
 .sale-detail-modal .sale-detail-row.debt strong {
   color: #e74c3c;
 }
-.sale-detail-modal .sale-detail-total, .sale-detail-modal .sale-detail-debt {
+.sale-detail-modal .sale-detail-total,
+.sale-detail-modal .sale-detail-debt {
   display: flex;
   justify-content: space-between;
   font-size: 1.2rem;
@@ -9357,9 +9393,120 @@ button.btn-reset:hover {
   gap: 1rem;
   margin-top: 2rem;
 }
-.sale-detail-modal .sale-detail-actions .btn, .sale-detail-modal .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-modal .sale-detail-actions .today-btn, .sale-detail-modal .sale-detail-actions .btn-suministrado, .sale-detail-modal .sale-detail-actions .btn-delete-small, .sale-detail-modal .sale-detail-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .sale-detail-modal .sale-detail-actions .btn-delete-note, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-modal .sale-detail-actions .view-mode-toggle, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-modal .sale-detail-actions .action-btn, .sale-detail-modal .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-modal .sale-detail-actions .add-line-btn, .sale-detail-modal .sale-detail-actions .btn-primary, .sale-detail-modal .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .sale-detail-modal .sale-detail-actions .btn-confirm {
+.sale-detail-modal .sale-detail-actions .btn, .sale-detail-modal .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-modal .sale-detail-actions .today-btn, .sale-detail-modal .sale-detail-actions .btn-suministrado, .sale-detail-modal .sale-detail-actions .btn-delete-small, .sale-detail-modal .sale-detail-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .sale-detail-modal .sale-detail-actions .btn-delete-note, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-modal .sale-detail-actions .view-mode-toggle, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-modal .sale-detail-actions .action-btn, .sale-detail-modal .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-modal .sale-detail-actions .add-line-btn,
+.sale-detail-modal .sale-detail-actions .btn-primary,
+.sale-detail-modal .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm,
+.confirmar-venta-container .navigator-buttons .sale-detail-modal .sale-detail-actions .btn-confirm {
   flex: 1;
   padding: 0.75rem 1rem;
+}
+
+.caja-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+.caja-popup-overlay.open {
+  opacity: 1;
+}
+
+.caja-popup-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  opacity: 0;
+  transform: scale(0.9) translateY(10px);
+  transition: all 0.25s ease-out;
+}
+.caja-popup-content.open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.caja-popup-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #555;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.5rem;
+}
+.caja-popup-close:hover {
+  color: #333;
+}
+
+.caja-popup-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #f4f4f4;
+  padding-bottom: 1rem;
+}
+.caja-popup-header span {
+  display: block;
+  font-size: 1.1rem;
+  color: #555;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.caja-popup-header strong {
+  display: block;
+  font-size: 2.5rem;
+  color: #333;
+  font-weight: 700;
+}
+
+.caja-popup-breakdown {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.caja-popup-breakdown li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+.caja-popup-breakdown li:not(:last-child) {
+  border-bottom: 1px solid #f4f4f4;
+}
+.caja-popup-breakdown li:hover {
+  background-color: #f4f4f4;
+}
+.caja-popup-breakdown li span {
+  font-size: 0.95rem;
+  color: #555;
+  font-weight: 500;
+}
+.caja-popup-breakdown li strong {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 600;
+}
+.caja-popup-breakdown li.no-detail span {
+  width: 100%;
+  text-align: center;
+  color: #555;
 }
 
 .sale-summary-box {
@@ -9606,7 +9753,7 @@ button.btn-reset:hover {
   background-color: #3498db;
   color: #fff;
   transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .sale-summary-box {
@@ -10056,7 +10203,7 @@ button.btn-reset:hover {
 }
 .peluquero-profile .turno-card:hover, .peluquero-profile .nota-card:hover {
   border-color: #3498db;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 .peluquero-profile .turno-info p {
   margin: 0 0 0.5rem 0;
