@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { collection, addDoc, writeBatch, Timestamp, getDocs } from 'firebase/firestore';
+import { collection, addDoc, writeBatch, Timestamp, getDocs, doc } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
 import { FaTrash } from 'react-icons/fa';
 
