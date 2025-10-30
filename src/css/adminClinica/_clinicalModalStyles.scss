@@ -128,6 +128,90 @@
     .item-price { font-weight: 600; color: $primary-dark; }
 }
 
+// --- NEW STYLES for Multi-Product Selection ---
+
+.selected-products-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: $background-light;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    padding: 0.75rem;
+
+    .no-products-message {
+        text-align: center;
+        color: $text-light;
+        padding: 1rem 0;
+        margin: 0;
+    }
+}
+
+.selected-product-item {
+    background-color: $white-color;
+    border: 1px solid darken($border-color, 5%);
+    border-radius: $border-radius * 0.75;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .product-main-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        strong {
+            color: $primary-dark;
+            font-size: 1rem;
+        }
+
+        .remove-product-btn {
+            background: none;
+            border: none;
+            color: $error-color;
+            cursor: pointer;
+            padding: 0.25rem;
+
+            &:hover {
+                color: darken($error-color, 10%);
+            }
+        }
+    }
+
+    .product-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+
+            input[type="checkbox"] {
+                width: auto;
+            }
+        }
+
+        .dose-input {
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            max-width: 120px;
+            margin-bottom: 0;
+        }
+    }
+}
+
+// --- END NEW STYLES ---
+
 .selected-product-display { 
     background-color: $background-light; border: 1px solid $border-color; 
     border-radius: $border-radius; padding: 1rem; margin-bottom: 1.5rem;

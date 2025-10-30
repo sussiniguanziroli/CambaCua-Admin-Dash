@@ -608,11 +608,17 @@ $tablet: 1024px;
     }
 
     .vencimiento-date {
-      text-align: right;
+      // --- MODIFIED for new buttons ---
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+      // --- END MODIFIED ---
 
       @media (max-width: $mobile) {
         text-align: left;
         width: 100%;
+        align-items: stretch;
       }
 
       span {
@@ -624,7 +630,6 @@ $tablet: 1024px;
       strong {
         font-size: 1rem;
         color: $text-color;
-        margin-bottom: 0.5rem;
         display: block;
 
         @media (max-width: $mobile) {
@@ -718,44 +723,22 @@ $tablet: 1024px;
 
     &.vencido {
       border-left: 5px solid $status-vencido;
-
-      .badge {
-        background-color: $status-vencido;
-      }
+      .badge { background-color: $status-vencido; }
     }
-
     &.proximo {
       border-left: 5px solid $status-proximo;
-
-      .badge {
-        background-color: $status-proximo;
-      }
+      .badge { background-color: $status-proximo; }
     }
-
     &.pendiente {
       border-left: 5px solid $status-pendiente;
-
-      .badge {
-        background-color: $status-pendiente;
-      }
+      .badge { background-color: $status-pendiente; }
     }
-
     &.suministrado {
       border-left: 5px solid $status-suministrado;
-
-      .badge {
-        background-color: $status-suministrado;
-      }
-
+      .badge { background-color: $status-suministrado; }
       .vencimiento-product {
         color: $text-light;
         text-decoration: line-through;
-      }
-    }
-
-    .btn-suministrado {
-      @media (max-width: $mobile) {
-        width: 100%;
       }
     }
   }
@@ -772,13 +755,78 @@ $tablet: 1024px;
   &.supplied {
     background-color: $text-light;
     border-color: $text-light;
-
     &:hover {
       background-color: darken($text-light, 10%);
       border-color: darken($text-light, 10%);
     }
   }
 }
+
+// --- NEW STYLES for Vencimiento Manager ---
+
+.supply-actions {
+  display: flex;
+  gap: 0.5rem;
+
+  @media (max-width: $mobile) {
+    width: 100%;
+    .btn {
+      flex: 1;
+    }
+  }
+}
+
+.btn-custom-date {
+  @extend .btn;
+  padding: 0.4rem;
+  font-size: 0.85rem;
+  background-color: $text-light;
+  border-color: $text-light;
+  color: $white-color;
+  line-height: 1;
+
+  &:hover {
+    background-color: darken($text-light, 10%);
+    border-color: darken($text-light, 10%);
+  }
+}
+
+.custom-date-supply-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  background-color: $background-light;
+  padding: 0.5rem;
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
+
+  label {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  input[type="date"] {
+    padding: 0.3rem;
+    font-size: 0.85rem;
+  }
+  .btn-small {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: $mobile) {
+    flex-wrap: wrap;
+    width: 100%;
+    
+    input[type="date"] {
+      flex-grow: 1;
+    }
+    .btn {
+      flex: 1;
+    }
+  }
+}
+
+// --- END NEW STYLES ---
 
 .recipe-list {
   margin-top: 1.5rem;
@@ -809,7 +857,6 @@ $tablet: 1024px;
 
   span {
     font-weight: 500;
-
     @media (max-width: $mobile) {
       font-size: 0.9rem;
     }
@@ -822,7 +869,6 @@ $tablet: 1024px;
 
   @media (max-width: $mobile) {
     width: 100%;
-
     .btn {
       flex: 1;
     }
@@ -860,7 +906,6 @@ $tablet: 1024px;
 
   button {
     @extend .btn;
-
     @media (max-width: $mobile) {
       flex: 1;
       min-width: 80px;
@@ -957,4 +1002,3 @@ $tablet: 1024px;
     opacity: 1;
   }
 }
-

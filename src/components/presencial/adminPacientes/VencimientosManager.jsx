@@ -1,15 +1,20 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { doc, updateDoc, serverTimestamp, deleteField, deleteDoc } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp, deleteField, deleteDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
-import { FaDog, FaCat, FaEllipsisV, FaTrash } from 'react-icons/fa';
+import { FaDog, FaCat, FaEllipsisV, FaTrash, FaClock } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 
 const VencimientosManager = ({ vencimientos, setVencimientos, pacienteId, pacienteSpecies, pacienteTutorName, onAlert, onAdd }) => {
-    const [filters, setFilters] = useState({ searchTerm: '', status: 'todos', sortOrder: 'date-asc' });
+    // --- CHANGE: Default sortOrder to 'date-desc' ---
+    const [filters, setFilters] = useState({ searchTerm: '', status: 'todos', sortOrder: 'date-desc' });
     const [currentPage, setCurrentPage] = useState(1);
     const [openMenuId, setOpenMenuId] = useState(null);
     const menuRef = useRef(null);
     const itemsPerPage = 5;
+
+    // --- NEW: State for custom date picker ---
+    const [customDateVencimientoId, setCustomDateVencimientoId] = useState(null);
+    const [customSuppliedDate, setCustomSuppliedDate] = useState('');
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -27,15 +32,46 @@ const VencimientosManager = ({ vencimientos, setVencimientos, pacienteId, pacien
         setCurrentPage(1);
     };
 
-    const toggleSupplied = async (vencimientoToUpdate) => {
+    // --- REWORK: toggleSupplied to handle custom dates ---
+    const toggleSupplied = async (vencimientoToUpdate, customDate = null) => {
         const isCurrentlySupplied = vencimientoToUpdate.supplied;
         const originalVencimientos = [...vencimientos];
         
-        setVencimientos(prev => prev.map(v => v.id === vencimientoToUpdate.id ? { ...v, supplied: !isCurrentlySupplied, suppliedDate: !isCurrentlySupplied ? new Date() : null } : v));
+        let newSuppliedState = !isCurrentlySupplied;
+        let newSuppliedDateObj = null;
+
+        if (newSuppliedState) { // We are MARKING as supplied
+            newSuppliedDateObj = customDate ? new Date(customDate) : new Date();
+        }
+
+        // Optimistic UI update
+        setVencimientos(prev => prev.map(v => 
+            v.id === vencimientoToUpdate.id ? { ...v, supplied: newSuppliedState, suppliedDate: newSuppliedState ? newSuppliedDateObj : null } : v
+        ));
+
+        // Close custom date picker if it was open
+        setCustomDateVencimientoId(null);
+        setCustomSuppliedDate('');
         
         try {
             const vencRef = doc(db, `pacientes/${pacienteId}/vencimientos`, vencimientoToUpdate.id);
-            await updateDoc(vencRef, { supplied: !isCurrentlySupplied, suppliedDate: !isCurrentlySupplied ? serverTimestamp() : deleteField(), status: !isCurrentlySupplied ? 'suministrado' : 'pendiente' });
+            
+            let dataToUpdate;
+            if (newSuppliedState) { // Marking AS supplied
+                dataToUpdate = {
+                    supplied: true,
+                    suppliedDate: customDate ? Timestamp.fromDate(new Date(customDate)) : serverTimestamp(),
+                    status: 'suministrado'
+                };
+            } else { // UN-marking (toggling off)
+                dataToUpdate = {
+                    supplied: false,
+                    suppliedDate: deleteField(),
+                    status: 'pendiente' // Note: This might need recalculation based on dueDate vs today
+                };
+            }
+            
+            await updateDoc(vencRef, dataToUpdate);
             onAlert({ message: 'Estado actualizado.', type: 'success' });
         } catch (error) {
             onAlert({ message: 'Error al actualizar. Reintentando...', type: 'error' });
@@ -90,7 +126,8 @@ const VencimientosManager = ({ vencimientos, setVencimientos, pacienteId, pacien
         filtered.sort((a, b) => {
             const dateA = a.dueDate.getTime();
             const dateB = b.dueDate.getTime();
-            return filters.sortOrder === 'date-asc' ? dateA - dateB : dateB - a.dueDate.getTime();
+            // --- CHANGE: Swapped a and b for descending order ---
+            return filters.sortOrder === 'date-asc' ? dateA - dateB : dateB - dateA;
         });
         return filtered;
     }, [vencimientos, filters, today]);
@@ -109,12 +146,22 @@ const VencimientosManager = ({ vencimientos, setVencimientos, pacienteId, pacien
         );
       };
 
+    const handleOpenCustomDate = (e, vencimiento) => {
+        e.stopPropagation();
+        setCustomDateVencimientoId(vencimiento.id);
+        // Default to today if no supplied date, otherwise use the existing supplied date
+        const defaultDate = vencimiento.suppliedDate 
+            ? vencimiento.suppliedDate.toISOString().split('T')[0]
+            : new Date().toISOString().split('T')[0];
+        setCustomSuppliedDate(defaultDate);
+    };
+
     return (
         <div className="tab-content">
             <div className="vencimientos-controls">
                 <input type="text" name="searchTerm" placeholder="Buscar por producto..." value={filters.searchTerm} onChange={handleFilterChange} />
                 <select name="status" value={filters.status} onChange={handleFilterChange}><option value="todos">Todos</option><option value="pendiente">Pendientes</option><option value="proximo">Próximos</option><option value="vencido">Vencidos</option><option value="suministrado">Suministrados</option></select>
-                <select name="sortOrder" value={filters.sortOrder} onChange={handleFilterChange}><option value="date-asc">Fecha Ascendente</option><option value="date-desc">Fecha Descendente</option></select>
+                <select name="sortOrder" value={filters.sortOrder} onChange={handleFilterChange}><option value="date-desc">Fecha Descendente</option><option value="date-asc">Fecha Ascendente</option></select>
                 <button className="btn btn-primary" onClick={onAdd}>+ Agregar Vencimiento</button>
             </div>
             {currentItems.length > 0 ? (
@@ -126,11 +173,37 @@ const VencimientosManager = ({ vencimientos, setVencimientos, pacienteId, pacien
                             <span className="vencimiento-tutor">Tutor: {v.tutorName || pacienteTutorName}</span>
                             {v.appliedDosage && <span className="vencimiento-dosage">Dosis Anterior: {v.appliedDosage}</span>}
                         </div>
+                        
+                        {/* --- REWORK: Vencimiento Date & Actions --- */}
                         <div className="vencimiento-date">
                             <span>Vence el:</span><strong>{v.dueDate.toLocaleDateString('es-AR')}</strong>
                             {v.suppliedDate && <span className="supplied-date">Suministrado el: {v.suppliedDate.toLocaleDateString('es-AR')}</span>}
-                            <button className={`btn btn-suministrado ${v.supplied ? 'supplied' : ''}`} onClick={() => toggleSupplied(v)}>{v.supplied ? 'Desmarcar' : 'Marcar Suministrado'}</button>
+
+                            {/* --- NEW: Custom Date Picker Form --- */}
+                            {customDateVencimientoId === v.id ? (
+                                <div className="custom-date-supply-form" onClick={e => e.stopPropagation()}>
+                                    <label>Fecha Suministro:</label>
+                                    <input 
+                                        type="date" 
+                                        value={customSuppliedDate} 
+                                        onChange={e => setCustomSuppliedDate(e.target.value)} 
+                                    />
+                                    <button className="btn btn-primary btn-small" onClick={() => toggleSupplied(v, customSuppliedDate)}>OK</button>
+                                    <button className="btn btn-secondary btn-small" onClick={(e) => {e.stopPropagation(); setCustomDateVencimientoId(null);}}>X</button>
+                                </div>
+                            ) : (
+                                <div className="supply-actions">
+                                    <button className={`btn btn-suministrado ${v.supplied ? 'supplied' : ''}`} onClick={() => toggleSupplied(v)}>
+                                        {v.supplied ? 'Desmarcar' : 'Marcar Suministrado'}
+                                    </button>
+                                    {/* --- NEW: Clock button --- */}
+                                    <button className="btn btn-custom-date" title="Suministrar con fecha" onClick={(e) => handleOpenCustomDate(e, v)}>
+                                        <FaClock />
+                                    </button>
+                                </div>
+                            )}
                         </div>
+
                         <div className="vencimiento-actions">
                             <button className="vencimiento-actions-trigger" onClick={(e) => { e.stopPropagation(); setOpenMenuId(v.id); }}>
                                 <FaEllipsisV />
