@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaSyringe } from 'react-icons/fa';
 
 const ProgramarVencimientos = ({ saleData, onConfirmAndSchedule, prevStep, isSubmitting }) => {
     const itemsToSchedule = saleData.cart.filter(item => saleData.clinicalHistoryItems.includes(item.id));
@@ -16,7 +17,16 @@ const ProgramarVencimientos = ({ saleData, onConfirmAndSchedule, prevStep, isSub
                 {itemsToSchedule.map(item => (
                     <div key={item.id} className="vencimiento-item">
                         <div className="item-info">
-                            <span className="item-name">{item.name}</span>
+                            <span className="item-name">
+                                {/* --- NEW: Show syringe if suministro is active --- */}
+                                {saleData.suministroItems.includes(item.id) &&  (
+                                    <span title="Creará Suministro Base" className="suministro-indicator">
+                                        <FaSyringe />
+
+                                    </span>
+                                )}
+                                {item.name}
+                            </span>
                             {item.isDoseable && <span className="item-desc">Dosis Actual: {item.quantity} {item.unit}</span>}
                         </div>
                         <div className="item-schedule-input">

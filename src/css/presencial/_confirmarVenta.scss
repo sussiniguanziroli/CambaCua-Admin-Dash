@@ -129,6 +129,31 @@
             }
         }
     }
+    // --- NEW: Styles for Suministro Toggle Button ---
+    .btn-suministro-toggle {
+        @extend .btn;
+        background-color: $text-light;
+        border-color: $text-light;
+        color: whitesmoke;
+        padding: 0.5rem; // Make it small and square-ish
+        line-height: 1;
+        font-size: 0.9rem;
+        margin-left: 1rem; // Space it out from the checkbox
+
+        &.active {
+            background-color: $primary-color;
+            border-color: $primary-color;
+            box-shadow: 0 0 8px lighten($primary-color, 20%);
+        }
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        svg {
+            display: block; // Ensure icon is centered
+        }
+    }
 
     .clinical-history-info {
         text-align: center;

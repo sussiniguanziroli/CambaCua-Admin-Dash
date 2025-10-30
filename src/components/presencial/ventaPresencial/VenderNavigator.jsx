@@ -10,6 +10,8 @@ import ProgramarVencimientos from "./ProgramarVencimientos";
 import { db } from "../../../firebase/config";
 import { collection, doc, writeBatch, increment, Timestamp } from "firebase/firestore";
 
+
+
 const VenderNavigator = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,6 +25,7 @@ const VenderNavigator = () => {
     debt: 0,
     total: 0,
     clinicalHistoryItems: [],
+    suministroItems: [], // --- NEW STATE ---
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -43,7 +46,8 @@ const VenderNavigator = () => {
             patient, 
             cart, 
             total, 
-            clinicalHistoryItems: serviceItems 
+            clinicalHistoryItems: serviceItems,
+            suministroItems: serviceItems, // --- NEW: Default suministro items to match H.C. items ---
         }));
         setStep(3);
       
@@ -72,6 +76,7 @@ const VenderNavigator = () => {
       cart: [],
       total: 0,
       clinicalHistoryItems: [],
+      suministroItems: [], // --- NEW ---
       payments: [],
       debt: 0,
     });
@@ -85,6 +90,7 @@ const VenderNavigator = () => {
       cart: [],
       total: 0,
       clinicalHistoryItems: [],
+      suministroItems: [], // --- NEW ---
       payments: [],
       debt: 0,
     });
@@ -106,7 +112,7 @@ const VenderNavigator = () => {
       .filter((item) => item.tipo === "servicio" || item.isDoseable)
       .map((item) => item.id);
 
-    updateSaleData({ cart, total, clinicalHistoryItems: serviceItems });
+    updateSaleData({ cart, total, clinicalHistoryItems: serviceItems, suministroItems: serviceItems }); // --- NEW: Default suministroItems ---
     nextStep();
   };
 
@@ -120,7 +126,23 @@ const VenderNavigator = () => {
       const newItems = prev.clinicalHistoryItems.includes(itemId)
         ? prev.clinicalHistoryItems.filter((id) => id !== itemId)
         : [...prev.clinicalHistoryItems, itemId];
-      return { ...prev, clinicalHistoryItems: newItems };
+      
+      // --- NEW: Also toggle suministro item ---
+      const newSuministroItems = newItems.includes(itemId)
+        ? [...prev.suministroItems, itemId] // Add to suministro if added to H.C.
+        : prev.suministroItems.filter((id) => id !== itemId); // Remove from suministro if removed from H.C.
+
+      return { ...prev, clinicalHistoryItems: newItems, suministroItems: newSuministroItems };
+    });
+  };
+
+  // --- NEW: Handler for Suministro Toggle ---
+  const handleToggleSuministroItem = (itemId) => {
+    setSaleData((prev) => {
+      const newItems = prev.suministroItems.includes(itemId)
+        ? prev.suministroItems.filter((id) => id !== itemId)
+        : [...prev.suministroItems, itemId];
+      return { ...prev, suministroItems: newItems };
     });
   };
 
@@ -227,7 +249,8 @@ const VenderNavigator = () => {
             collection(db, `pacientes/${saleData.patient.id}/vencimientos`)
           );
 
-          batch.set(vencimientoRef, {
+          // --- This is the FUTURE Vencimiento (Existing logic) ---
+          const vencimientoData = {
             productId: item.id,
             productName: item.name,
             tutorId: saleData.tutor.id,
@@ -235,14 +258,33 @@ const VenderNavigator = () => {
             pacienteId: saleData.patient.id,
             pacienteName: saleData.patient.name,
             appliedDate: saleTimestamp,
-            dueDate: Timestamp.fromDate(dueDate),
             appliedDosage: item.isDoseable
               ? `${item.quantity} ${item.unit}`
               : null,
-            status: "pendiente",
             saleId: saleRef.id,
+          };
+          
+          batch.set(vencimientoRef, {
+            ...vencimientoData,
+            dueDate: Timestamp.fromDate(dueDate),
+            status: "pendiente",
             supplied: false,
+            suppliedDate: null,
           });
+
+          // --- NEW: Create Baseline Suministro if toggled ---
+          if (saleData.suministroItems.includes(itemId)) {
+            const suministroRef = doc(
+              collection(db, `pacientes/${saleData.patient.id}/vencimientos`)
+            );
+            batch.set(suministroRef, {
+              ...vencimientoData, // Reuse most data
+              dueDate: saleTimestamp, // Due date is today
+              status: "suministrado",
+              supplied: true,
+              suppliedDate: saleTimestamp, // Supplied today
+            });
+          }
         }
       });
 
@@ -271,6 +313,7 @@ const VenderNavigator = () => {
       debt: 0,
       total: 0,
       clinicalHistoryItems: [],
+      suministroItems: [], // --- NEW ---
     });
     navigate("/admin/vender");
   };
@@ -318,7 +361,9 @@ const VenderNavigator = () => {
             onConfirm={handleConfirmAndProceed}
             prevStep={prevStep}
             onToggleClinicalHistory={handleToggleClinicalHistoryItem}
+            onToggleSuministro={handleToggleSuministroItem} // --- NEW PROP ---
             isSubmitting={isSubmitting}
+             // --- NEW PROP ---
           />
         );
       case 6:
@@ -328,6 +373,7 @@ const VenderNavigator = () => {
             onConfirmAndSchedule={handleConfirmSaleAndSchedule}
             prevStep={prevStep}
             isSubmitting={isSubmitting}
+            // --- NEW PROP ---
           />
         );
       case 7:

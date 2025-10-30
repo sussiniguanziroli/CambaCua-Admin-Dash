@@ -32,13 +32,26 @@
     border: 1px solid $border-color;
     border-radius: $border-radius;
 
-    .item-info {
+     .item-info {
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
 
-      .item-name { font-weight: 600; }
+      .item-name { 
+        font-weight: 600;
+        display: flex; // Use flex to align icon
+        align-items: center;
+        gap: 0.5rem;
+      }
       .item-desc { font-size: 0.85rem; color: $grey-dark; }
+    }
+
+    // --- NEW: Style for Suministro Indicator ---
+    .suministro-indicator {
+        color: $primary-color;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
     }
 
     .item-schedule-input {

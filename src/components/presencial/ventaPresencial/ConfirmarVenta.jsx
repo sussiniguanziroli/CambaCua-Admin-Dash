@@ -1,6 +1,8 @@
 import React from 'react';
+import { FaSyringe } from 'react-icons/fa';
+// --- We will pass SyringeIcon as a prop from VenderNavigator ---
 
-const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleClinicalHistory }) => {
+const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleClinicalHistory, onToggleSuministro}) => {
     
     const subtotal = saleData.cart.reduce((sum, item) => sum + (item.priceBeforeDiscount || item.price), 0);
     const totalDiscount = saleData.cart.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
@@ -38,6 +40,21 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                                 <div className="clinical-history-toggle">
                                     <input type="checkbox" id={`ch-${item.id}`} checked={saleData.clinicalHistoryItems.includes(item.id)} onChange={() => onToggleClinicalHistory(item.id)}/>
                                     <label htmlFor={`ch-${item.id}`}>Añadir a H.C.</label>
+
+                                    {/* --- NEW Suministro Toggle Button --- */}
+                                    {/* Only show if item is ADDED to H.C. */}
+                                    {saleData.clinicalHistoryItems.includes(item.id) && (
+                                        <button 
+                                            type="button"
+                                            title="Crear Suministro Base"
+                                            className={`btn-suministro-toggle ${saleData.suministroItems.includes(item.id) ? 'active' : ''}`}
+                                            onClick={() => onToggleSuministro(item.id)}
+                                        >
+                                       
+                                            <FaSyringe />
+
+                                        </button>
+                                    )}
                                 </div>
                             )}
                         </li>
