@@ -3,6 +3,7 @@ import { db } from '../../../firebase/config';
 import { collection, getDocs } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import SeleccionarPrecioModal from './SeleccionarPrecioModal';
+import { Timestamp } from 'firebase/firestore';
 
 const DosageModal = ({ isOpen, onClose, onConfirm, item }) => {
     const [amount, setAmount] = useState('');
@@ -39,7 +40,7 @@ const DosageModal = ({ isOpen, onClose, onConfirm, item }) => {
     );
 };
 
-const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleData }) => {
+const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleData, onSaleDateChange }) => {
     const [onlineProducts, setOnlineProducts] = useState([]);
     const [presentialProducts, setPresentialProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -328,6 +329,50 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             };
         }));
     };
+
+    const formatDateForInput = (date) => {
+        const d = new Date(date);
+        const offset = d.getTimezoneOffset();
+        const adjustedDate = new Date(d.getTime() - (offset*60*1000));
+        return adjustedDate.toISOString().split('T')[0];
+    };
+
+    const handleChangeSaleDate = () => {
+        const currentDate = saleData.saleTimestamp.toDate();
+        
+        Swal.fire({
+            title: 'Cambiar Fecha de Venta',
+            html: `<p>Seleccione la nueva fecha para esta venta. La fecha actual es ${currentDate.toLocaleDateString('es-AR')}.</p>
+                   <input type="date" id="swal-sale-date" class="swal2-input" value="${formatDateForInput(currentDate)}">`,
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+                const dateValue = document.getElementById('swal-sale-date').value;
+                if (!dateValue) {
+                    Swal.showValidationMessage('Por favor seleccione una fecha');
+                    return false;
+                }
+                return dateValue;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const dateString = result.value;
+                const newDate = new Date(dateString);
+                const offset = newDate.getTimezoneOffset() * 60000;
+                const adjustedDate = new Date(newDate.getTime() + offset);
+                
+                const newTimestamp = Timestamp.fromDate(adjustedDate);
+                onSaleDateChange(newTimestamp);
+                
+                Swal.fire(
+                    'Fecha Actualizada',
+                    `La fecha de la venta se ha establecido a ${adjustedDate.toLocaleDateString('es-AR')}.`,
+                    'success'
+                );
+            }
+        });
+    };
     
     const CheckIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>;
     const CartIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>;
@@ -501,6 +546,10 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 <div className="venta-context-info">
                     <span><strong>Tutor:</strong> {saleData.tutor?.name || 'Cliente Genérico'}</span>
                     <span><strong>Paciente:</strong> {saleData.patient?.name || 'N/A'}</span>
+                    <div className="sale-date-changer">
+                        <span><strong>Fecha Venta:</strong> {saleData.saleTimestamp.toDate().toLocaleDateString('es-AR')}</span>
+                        <button onClick={handleChangeSaleDate} className="btn btn-outline btn-small">Cambiar Fecha</button>
+                    </div>
                 </div>
                 <div className="navigator-buttons">
                     <button onClick={prevStep} className="btn btn-secondary">Anterior</button>

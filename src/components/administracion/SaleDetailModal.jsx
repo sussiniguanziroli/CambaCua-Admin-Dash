@@ -151,50 +151,54 @@ const SaleDetailModal = ({ sale, onClose }) => {
       <div className="sale-detail-modal" ref={printableRef} role="dialog" aria-modal="true">
         <button className="sale-detail-close-btn" onClick={onClose} aria-label="Cerrar"><FaTimes /></button>
         <h3>{isDebtPayment ? 'Detalle de Cobranza' : 'Detalle de la Transacción'}</h3>
-        <div className="sale-detail-section">
-          <p><span>Cliente:</span> <strong>{sale.tutorInfo?.name || sale.tutorName || 'N/A'}</strong></p>
-          {sale.patientInfo?.name && <p><span>Paciente:</span> <strong>{sale.patientInfo.name}</strong></p>}
-          <p><span>Fecha:</span> <strong>{sale.createdAt?.toDate ? sale.createdAt.toDate().toLocaleString('es-AR') : 'N/A'}</strong></p>
-        </div>
-        {!isDebtPayment && (sale.items || []).length > 0 && (
+
+        <div className="sale-detail-body">
           <div className="sale-detail-section">
-            <h4>Items</h4>
+            <p><span>Cliente:</span> <strong>{sale.tutorInfo?.name || sale.tutorName || 'N/A'}</strong></p>
+            {sale.patientInfo?.name && <p><span>Paciente:</span> <strong>{sale.patientInfo.name}</strong></p>}
+            <p><span>Fecha:</span> <strong>{sale.createdAt?.toDate ? sale.createdAt.toDate().toLocaleString('es-AR') : 'N/A'}</strong></p>
+          </div>
+          {!isDebtPayment && (sale.items || []).length > 0 && (
+            <div className="sale-detail-section">
+              <h4>Items</h4>
+              <ul className="sale-detail-item-list">
+                {(sale.items || []).map((item, index) => (
+                  <li key={item.id || index}>
+                      <div className="item-name-details">
+                          {item.isDoseable ? (
+                              <span className="item-name">{item.name} ({item.quantity} {item.unit})</span>
+                          ) : (
+                              <span className="item-name">{item.quantity ?? 1} x {item.name}</span>
+                          )}
+                          {item.discountAmount > 0 && (
+                              <div className="item-discount-info">
+                                  <span>Orig: ${item.priceBeforeDiscount.toFixed(2)}</span>
+                                  <span>Dto: -${item.discountAmount.toFixed(2)}</span>
+                              </div>
+                          )}
+                      </div>
+                      <strong className={`item-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}>
+                          ${(item.price ?? 0).toFixed(2)}
+                      </strong>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className="sale-detail-section">
+            <h4>{isDebtPayment ? 'Pago Recibido' : 'Pagos'}</h4>
             <ul className="sale-detail-item-list">
-              {(sale.items || []).map((item, index) => (
-                <li key={item.id || index}>
-                    <div className="item-name-details">
-                        {item.isDoseable ? (
-                            <span className="item-name">{item.name} ({item.quantity} {item.unit})</span>
-                        ) : (
-                            <span className="item-name">{item.quantity ?? 1} x {item.name}</span>
-                        )}
-                        {item.discountAmount > 0 && (
-                            <div className="item-discount-info">
-                                <span>Orig: ${item.priceBeforeDiscount.toFixed(2)}</span>
-                                <span>Dto: -${item.discountAmount.toFixed(2)}</span>
-                            </div>
-                        )}
-                    </div>
-                    <strong className={`item-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}>
-                        ${(item.price ?? 0).toFixed(2)}
-                    </strong>
-                </li>
-              ))}
+              {isDebtPayment ? (
+                  <li><span>{sale.paymentMethod}</span><strong>${(sale.amount || 0).toFixed(2)}</strong></li>
+              ) : (
+                  (sale.payments || []).length > 0 
+                  ? sale.payments.map((p, index) => (<li key={p.id || index}><span>{p.method}</span><strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong></li>))
+                  : <li>No se registraron pagos.</li>
+              )}
             </ul>
           </div>
-        )}
-        <div className="sale-detail-section">
-          <h4>{isDebtPayment ? 'Pago Recibido' : 'Pagos'}</h4>
-          <ul className="sale-detail-item-list">
-            {isDebtPayment ? (
-                <li><span>{sale.paymentMethod}</span><strong>${(sale.amount || 0).toFixed(2)}</strong></li>
-            ) : (
-                (sale.payments || []).length > 0 
-                ? sale.payments.map((p, index) => (<li key={p.id || index}><span>{p.method}</span><strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong></li>))
-                : <li>No se registraron pagos.</li>
-            )}
-          </ul>
         </div>
+        
         <div className="sale-detail-footer">
           {isDebtPayment ? (
             <p className="sale-detail-total"><span>Monto Cobrado:</span> <strong>${(sale.amount || 0).toFixed(2)}</strong></p>

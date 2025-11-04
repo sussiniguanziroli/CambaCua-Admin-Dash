@@ -4206,8 +4206,23 @@ button.btn-reset:hover {
 }
 .seleccionar-producto-container .venta-context-info {
   display: flex;
-  gap: 2rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
   font-weight: 500;
+  align-items: center;
+}
+.seleccionar-producto-container .venta-context-info .sale-date-changer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #f8f9fa;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+.seleccionar-producto-container .venta-context-info .sale-date-changer .btn-small {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .dosage-modal-overlay {
@@ -10106,12 +10121,24 @@ button.btn-reset:hover {
   max-width: 500px;
   position: relative;
   animation: slideUp 0.3s ease;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
 }
 .sale-detail-modal h3 {
   margin-top: 0;
   margin-bottom: 1.5rem;
   color: #2980b9;
   text-align: center;
+  flex-shrink: 0;
+}
+
+.sale-detail-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  margin-bottom: 1.5rem;
+  padding-right: 0.5rem;
 }
 
 @keyframes slideUp {
@@ -10229,6 +10256,7 @@ button.btn-reset:hover {
   padding-top: 1.5rem;
   border-top: 2px solid #2980b9;
   text-align: right;
+  flex-shrink: 0;
 }
 .sale-detail-footer .sale-detail-row,
 .sale-detail-footer .sale-detail-debt {
@@ -10266,6 +10294,7 @@ button.btn-reset:hover {
   display: flex;
   gap: 1rem;
   margin-top: 2rem;
+  flex-shrink: 0;
 }
 .sale-detail-actions .btn, .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-actions button, .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-actions button, .sale-detail-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .sale-detail-actions .btn-suministro-toggle, .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-actions button, .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-actions .today-btn, .sale-detail-actions .btn-suministrado, .sale-detail-actions .btn-custom-date, .sale-detail-actions .btn-delete-small, .sale-detail-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .sale-detail-actions .btn-delete-note, .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-actions .view-mode-toggle, .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-actions .action-btn, .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-actions .add-line-btn, .sale-detail-actions .btn-primary, .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .sale-detail-actions .btn-confirm {
   flex: 1;

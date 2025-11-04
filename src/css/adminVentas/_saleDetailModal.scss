@@ -29,12 +29,25 @@
     position: relative;
     animation: slideUp 0.3s ease;
 
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+
     h3 {
         margin-top: 0;
         margin-bottom: 1.5rem;
         color: $primary-dark;
         text-align: center;
+        flex-shrink: 0;
     }
+}
+
+.sale-detail-body {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    margin-bottom: 1.5rem;
+    padding-right: 0.5rem;
 }
 
 @keyframes slideUp {
@@ -162,6 +175,7 @@
     padding-top: 1.5rem;
     border-top: 2px solid $primary-dark;
     text-align: right;
+    flex-shrink: 0;
     
     .sale-detail-row,
     .sale-detail-debt {
@@ -195,6 +209,7 @@
     display: flex;
     gap: 1rem;
     margin-top: 2rem;
+    flex-shrink: 0;
 
     .btn, .btn-primary {
         flex: 1;

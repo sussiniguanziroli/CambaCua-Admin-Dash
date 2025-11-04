@@ -25,11 +25,11 @@ const VenderNavigator = () => {
     debt: 0,
     total: 0,
     clinicalHistoryItems: [],
-    suministroItems: [], // --- NEW STATE ---
+    suministroItems: [],
+    saleTimestamp: Timestamp.now(),
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // --- Soporte para arranque con tutor/paciente preseleccionados ---
   useEffect(() => {
     if (location.state) {
       const { tutor, patient, cart } = location.state;
@@ -47,28 +47,27 @@ const VenderNavigator = () => {
             cart, 
             total, 
             clinicalHistoryItems: serviceItems,
-            suministroItems: serviceItems, // --- NEW: Default suministro items to match H.C. items ---
+            suministroItems: serviceItems,
+            saleTimestamp: Timestamp.now(),
         }));
         setStep(3);
       
       } else if (tutor && patient) {
-        setSaleData((prev) => ({ ...prev, tutor, patient }));
+        setSaleData((prev) => ({ ...prev, tutor, patient, saleTimestamp: Timestamp.now() }));
         setStep(3);
       } else if (tutor) {
-        setSaleData((prev) => ({ ...prev, tutor }));
+        setSaleData((prev) => ({ ...prev, tutor, saleTimestamp: Timestamp.now() }));
         setStep(2);
       }
     }
   }, [location.state]);
 
-  // --- Helpers de navegación ---
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
   const updateSaleData = (data) =>
     setSaleData((prev) => ({ ...prev, ...data }));
 
-  // --- Selecciones ---
   const handleSelectTutor = (tutor) => {
     updateSaleData({
       tutor,
@@ -76,9 +75,10 @@ const VenderNavigator = () => {
       cart: [],
       total: 0,
       clinicalHistoryItems: [],
-      suministroItems: [], // --- NEW ---
+      suministroItems: [],
       payments: [],
       debt: 0,
+      saleTimestamp: Timestamp.now(),
     });
     nextStep();
   };
@@ -90,11 +90,12 @@ const VenderNavigator = () => {
       cart: [],
       total: 0,
       clinicalHistoryItems: [],
-      suministroItems: [], // --- NEW ---
+      suministroItems: [],
       payments: [],
       debt: 0,
+      saleTimestamp: Timestamp.now(),
     });
-    setStep(3); // Salta a productos
+    setStep(3);
   };
 
   const handleSelectPatient = (patient) => {
@@ -112,12 +113,16 @@ const VenderNavigator = () => {
       .filter((item) => item.tipo === "servicio" || item.isDoseable)
       .map((item) => item.id);
 
-    updateSaleData({ cart, total, clinicalHistoryItems: serviceItems, suministroItems: serviceItems }); // --- NEW: Default suministroItems ---
+    updateSaleData({ cart, total, clinicalHistoryItems: serviceItems, suministroItems: serviceItems });
     nextStep();
   };
+  
+  const handleSaleDateChange = (newTimestamp) => {
+    updateSaleData({ saleTimestamp: newTimestamp });
+  };
 
-  const handlePaymentSelected = (payments, debt) => {
-    updateSaleData({ payments, debt });
+  const handlePaymentSelected = (payments, debt, totalWithSurcharges) => {
+    updateSaleData({ payments, debt, total: totalWithSurcharges });
     nextStep();
   };
 
@@ -127,16 +132,14 @@ const VenderNavigator = () => {
         ? prev.clinicalHistoryItems.filter((id) => id !== itemId)
         : [...prev.clinicalHistoryItems, itemId];
       
-      // --- NEW: Also toggle suministro item ---
       const newSuministroItems = newItems.includes(itemId)
-        ? [...prev.suministroItems, itemId] // Add to suministro if added to H.C.
-        : prev.suministroItems.filter((id) => id !== itemId); // Remove from suministro if removed from H.C.
+        ? [...prev.suministroItems, itemId]
+        : prev.suministroItems.filter((id) => id !== itemId);
 
       return { ...prev, clinicalHistoryItems: newItems, suministroItems: newSuministroItems };
     });
   };
 
-  // --- NEW: Handler for Suministro Toggle ---
   const handleToggleSuministroItem = (itemId) => {
     setSaleData((prev) => {
       const newItems = prev.suministroItems.includes(itemId)
@@ -146,7 +149,6 @@ const VenderNavigator = () => {
     });
   };
 
-  // --- Confirmación de venta ---
   const handleConfirmAndProceed = () => {
     if (!!saleData.patient && saleData.clinicalHistoryItems.length > 0) {
       nextStep();
@@ -160,7 +162,8 @@ const VenderNavigator = () => {
     try {
       const batch = writeBatch(db);
       const saleRef = doc(collection(db, "ventas_presenciales"));
-      const saleTimestamp = Timestamp.now();
+      
+      const { saleTimestamp } = saleData;
       
       const totalSubtotal = saleData.cart.reduce((sum, item) => sum + (item.priceBeforeDiscount || item.price), 0);
       const totalDiscount = saleData.cart.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
@@ -191,11 +194,10 @@ const VenderNavigator = () => {
           discountType: item.discountType || null,
           discountValue: item.discountValue || 0,
           discountAmount: item.discountAmount || 0,
-          price: item.price, // Precio final del item (subtotal con descuento)
+          price: item.price,
         })),
       });
 
-      // --- Actualización de stock ---
       saleData.cart.forEach(item => {
           if (item.source === 'online' && !item.isDoseable) {
               const productRef = doc(db, 'productos', item.id);
@@ -203,7 +205,6 @@ const VenderNavigator = () => {
           }
       });
 
-      // --- Historia clínica ---
       const itemsForHistory = saleData.cart.filter((item) =>
         saleData.clinicalHistoryItems.includes(item.id)
       );
@@ -229,7 +230,6 @@ const VenderNavigator = () => {
         });
       }
 
-      // --- Cuenta corriente ---
       if (saleData.debt > 0 && saleData.tutor?.id) {
         const tutorRef = doc(db, "tutores", saleData.tutor.id);
         batch.update(tutorRef, {
@@ -237,7 +237,6 @@ const VenderNavigator = () => {
         });
       }
 
-      // --- Vencimientos ---
       Object.keys(schedule).forEach((itemId) => {
         const days = schedule[itemId];
         if (days > 0 && saleData.patient?.id) {
@@ -249,7 +248,6 @@ const VenderNavigator = () => {
             collection(db, `pacientes/${saleData.patient.id}/vencimientos`)
           );
 
-          // --- This is the FUTURE Vencimiento (Existing logic) ---
           const vencimientoData = {
             productId: item.id,
             productName: item.name,
@@ -272,17 +270,16 @@ const VenderNavigator = () => {
             suppliedDate: null,
           });
 
-          // --- NEW: Create Baseline Suministro if toggled ---
           if (saleData.suministroItems.includes(itemId)) {
             const suministroRef = doc(
               collection(db, `pacientes/${saleData.patient.id}/vencimientos`)
             );
             batch.set(suministroRef, {
-              ...vencimientoData, // Reuse most data
-              dueDate: saleTimestamp, // Due date is today
+              ...vencimientoData,
+              dueDate: saleTimestamp,
               status: "suministrado",
               supplied: true,
-              suppliedDate: saleTimestamp, // Supplied today
+              suppliedDate: saleTimestamp,
             });
           }
         }
@@ -313,12 +310,12 @@ const VenderNavigator = () => {
       debt: 0,
       total: 0,
       clinicalHistoryItems: [],
-      suministroItems: [], // --- NEW ---
+      suministroItems: [],
+      saleTimestamp: Timestamp.now(),
     });
     navigate("/admin/vender");
   };
 
-  // --- Renderizado de pasos ---
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -344,6 +341,7 @@ const VenderNavigator = () => {
             prevStep={saleData.tutor ? prevStep : handleReset}
             initialCart={saleData.cart}
             saleData={saleData}
+            onSaleDateChange={handleSaleDateChange}
           />
         );
       case 4:
@@ -361,9 +359,8 @@ const VenderNavigator = () => {
             onConfirm={handleConfirmAndProceed}
             prevStep={prevStep}
             onToggleClinicalHistory={handleToggleClinicalHistoryItem}
-            onToggleSuministro={handleToggleSuministroItem} // --- NEW PROP ---
+            onToggleSuministro={handleToggleSuministroItem}
             isSubmitting={isSubmitting}
-             // --- NEW PROP ---
           />
         );
       case 6:
@@ -373,7 +370,6 @@ const VenderNavigator = () => {
             onConfirmAndSchedule={handleConfirmSaleAndSchedule}
             prevStep={prevStep}
             isSubmitting={isSubmitting}
-            // --- NEW PROP ---
           />
         );
       case 7:
