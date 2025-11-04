@@ -61,10 +61,27 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
     };
 
     const handleNext = () => {
-        const finalPayments = payments.filter(p => parseFloat(p.amount) > 0);
-        const finalTotalPaid = finalPayments.reduce((acc, p) => acc + parseFloat(p.amount), 0);
-        const debt = totalWithSurcharges - finalTotalPaid;
-        onPaymentSelected(finalPayments, debt < 0 ? 0 : debt, totalWithSurcharges);
+        let finalPayments = payments.filter(p => parseFloat(p.amount || 0) !== 0);
+        let finalDebt = remainingBalance;
+
+        if (remainingBalance < -0.01) {
+            const vuelto = Math.abs(remainingBalance);
+            
+            finalPayments.push({
+                id: `vuelto-${Date.now()}`,
+                method: 'Efectivo',
+                amount: -vuelto.toFixed(2),
+                isVuelto: true
+            });
+            
+            finalDebt = 0;
+        }
+
+        if (finalDebt < 0.01) {
+            finalDebt = 0;
+        }
+
+        onPaymentSelected(finalPayments, finalDebt, totalWithSurcharges);
     };
 
     const isGenericAndHasDebt = !saleData.tutor && remainingBalance > 0.01;
