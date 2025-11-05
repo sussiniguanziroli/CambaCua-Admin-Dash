@@ -8,9 +8,7 @@ import ConfirmarVenta from "./ConfirmarVenta";
 import ResumenVenta from "./ResumenVenta";
 import ProgramarVencimientos from "./ProgramarVencimientos";
 import { db } from "../../../firebase/config";
-import { collection, doc, writeBatch, increment, Timestamp } from "firebase/firestore";
-
-
+import { collection, doc, writeBatch, increment, Timestamp, deleteDoc } from "firebase/firestore";
 
 const VenderNavigator = () => {
   const location = useLocation();
@@ -29,12 +27,30 @@ const VenderNavigator = () => {
     saleTimestamp: Timestamp.now(),
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadedSaleId, setLoadedSaleId] = useState(null);
 
   useEffect(() => {
     if (location.state) {
-      const { tutor, patient, cart } = location.state;
+      const { tutor, patient, cart, savedSale, loadStep } = location.state;
 
-      if (cart) {
+      if (savedSale) {
+        const total = savedSale.cart.reduce((sum, item) => sum + item.price, 0);
+        
+        setSaleData({
+          cart: savedSale.cart,
+          tutor: savedSale.tutor,
+          patient: savedSale.patient,
+          total: total,
+          clinicalHistoryItems: savedSale.clinicalHistoryItems || [],
+          suministroItems: savedSale.suministroItems || [],
+          payments: [],
+          debt: 0,
+          saleTimestamp: savedSale.saleTimestamp || Timestamp.now(),
+        });
+        
+        setLoadedSaleId(savedSale.id);
+        setStep(loadStep || 4);
+      } else if (cart) {
         const total = cart.reduce((sum, item) => sum + item.price, 0);
         const serviceItems = cart
           .filter((item) => item.tipo === "servicio" || item.isDoseable)
@@ -54,7 +70,7 @@ const VenderNavigator = () => {
       
       } else if (tutor && patient) {
         setSaleData((prev) => ({ ...prev, tutor, patient, saleTimestamp: Timestamp.now() }));
-        setStep(3);
+        setStep(2);
       } else if (tutor) {
         setSaleData((prev) => ({ ...prev, tutor, saleTimestamp: Timestamp.now() }));
         setStep(2);
@@ -285,6 +301,11 @@ const VenderNavigator = () => {
         }
       });
 
+      if (loadedSaleId) {
+        const savedSaleRef = doc(db, "ventas_guardadas", loadedSaleId);
+        batch.delete(savedSaleRef);
+      }
+
       await batch.commit();
       updateSaleData({ 
         id: saleRef.id, 
@@ -313,6 +334,7 @@ const VenderNavigator = () => {
       suministroItems: [],
       saleTimestamp: Timestamp.now(),
     });
+    setLoadedSaleId(null);
     navigate("/admin/vender");
   };
 
@@ -361,6 +383,7 @@ const VenderNavigator = () => {
             onToggleClinicalHistory={handleToggleClinicalHistoryItem}
             onToggleSuministro={handleToggleSuministroItem}
             isSubmitting={isSubmitting}
+            onSaleReset={handleReset}
           />
         );
       case 6:

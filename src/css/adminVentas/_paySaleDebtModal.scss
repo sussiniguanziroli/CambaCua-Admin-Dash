@@ -1,0 +1,285 @@
+.pay-debt-modal {
+  max-width: 550px;
+  width: 90%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+    color: #2c3e50;
+    flex-shrink: 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex: 1;
+  }
+}
+
+.pay-debt-modal-body {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 0.5rem;
+  margin-bottom: 1rem;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #bdc3c7;
+    border-radius: 10px;
+
+    &:hover {
+      background: #95a5a6;
+    }
+  }
+}
+
+.sale-info-summary {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    &.debt {
+      margin-top: 0.5rem;
+      padding-top: 0.75rem;
+      border-top: 2px solid #e74c3c;
+    }
+
+    span {
+      color: #7f8c8d;
+    }
+
+    strong {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .debt-amount {
+      color: #e74c3c;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #2c3e50;
+  }
+}
+
+.payment-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.payment-method-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  border: 2px solid #bdc3c7;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  color: #7f8c8d;
+
+  svg {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+
+  &:hover {
+    border-color: #3498db;
+    background: #e3f2fd;
+  }
+
+  &.active {
+    border-color: #3498db;
+    background: #3498db;
+    color: white;
+  }
+}
+
+.amount-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .currency-symbol {
+    position: absolute;
+    left: 1rem;
+    font-size: 1rem;
+    color: #7f8c8d;
+    font-weight: 600;
+  }
+
+  input {
+    flex: 1;
+    padding: 0.7rem 1rem 0.7rem 2.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+
+    &:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+  }
+
+  .btn-full-amount {
+    padding: 0.7rem 1rem;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    white-space: nowrap;
+
+    &:hover {
+      background: #2980b9;
+    }
+  }
+}
+
+.helper-text {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+.payment-preview {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+
+  .preview-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    font-size: 0.95rem;
+
+    &.payment {
+      color: #27ae60;
+      font-weight: 500;
+    }
+
+    &.total {
+      margin-top: 0.5rem;
+      padding-top: 0.75rem;
+      border-top: 2px solid #bdc3c7;
+      font-size: 1.1rem;
+
+      strong {
+        color: #e74c3c;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+  flex-shrink: 0;
+
+  .btn {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .pay-debt-modal {
+    max-height: 85vh;
+  }
+
+  .payment-methods-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .amount-input-wrapper {
+    flex-direction: column;
+
+    .btn-full-amount {
+      width: 100%;
+    }
+  }
+
+  .form-actions {
+    flex-direction: column;
+
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-height: 700px) {
+  .pay-debt-modal {
+    max-height: 95vh;
+
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .sale-info-summary {
+    padding: 0.75rem;
+  }
+
+  .form-group {
+    margin-bottom: 0.75rem;
+  }
+
+  .payment-preview {
+    padding: 0.75rem;
+    margin-top: 0.75rem;
+  }
+}

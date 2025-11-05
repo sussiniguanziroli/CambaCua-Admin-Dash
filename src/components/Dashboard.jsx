@@ -18,7 +18,7 @@ import EditTutor from './presencial/adminTutores/EditTutor';
 import VerPacientes from './presencial/adminPacientes/VerPacientes';
 import AddPaciente from './presencial/adminPacientes/AddPaciente';
 import EditPaciente from './presencial/adminPacientes/EditPaciente';
-import { FaStore, FaShoppingCart, FaUsers, FaTag, FaTicketAlt, FaPlus, FaListUl, FaHistory, FaHeartbeat, FaStethoscope, FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt, FaMoneyCheckAlt, FaUserMd, FaCashRegister, FaChartBar, FaRegCalendarAlt } from 'react-icons/fa';
+import { FaStore, FaShoppingCart, FaUsers, FaTag, FaTicketAlt, FaPlus, FaListUl, FaHistory, FaHeartbeat, FaStethoscope, FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt, FaMoneyCheckAlt, FaUserMd, FaCashRegister, FaChartBar, FaRegCalendarAlt, FaHome, FaChevronRight } from 'react-icons/fa';
 import ResumenSemanal from './administracion/ResumenSemanal';
 import CajaDiaria from './administracion/CajaDiaria';
 import { FaBookBookmark, FaUserDoctor } from 'react-icons/fa6';
@@ -36,6 +36,72 @@ import AddPeluquero from './presencial/adminPeluqueria/AddPeluquero';
 import EditPeluquero from './presencial/adminPeluqueria/EditPeluquero';
 import AgendaPeluqueria from './presencial/adminPeluqueria/AgendaPeluqueria';
 import { PiBathtub } from 'react-icons/pi';
+
+const routeTitles = {
+    '/admin/main-dashboard': 'Monitor General',
+    '/admin/users': 'Usuarios',
+    '/admin/coupons': 'Cupones',
+    '/admin/caja-diaria': 'Caja Diaria',
+    '/admin/resumen-semanal': 'Resumen Semanal',
+    '/admin/tutores': 'Tutores',
+    '/admin/add-tutor': 'Agregar Tutor',
+    '/admin/edit-tutor': 'Editar Tutor',
+    '/admin/tutor-profile': 'Perfil de Tutor',
+    '/admin/pacientes': 'Pacientes',
+    '/admin/add-paciente': 'Agregar Paciente',
+    '/admin/edit-paciente': 'Editar Paciente',
+    '/admin/paciente-profile': 'Perfil de Paciente',
+    '/admin/agenda': 'Agenda',
+    '/admin/monitor-vencimientos': 'Monitor Vencimientos',
+    '/admin/monitor-clinica': 'Monitor Historia Clínica',
+    '/admin/orders': 'Gestionar Pedidos',
+    '/admin/orders/complete': 'Historial de Pedidos',
+    '/admin/products': 'Productos Online',
+    '/admin/add-product': 'Agregar Producto',
+    '/admin/edit-product': 'Editar Producto',
+    '/admin/promociones': 'Promociones',
+    '/admin/vender': 'Vender',
+    '/admin/presential-list': 'Items Presenciales',
+    '/admin/add-presential': 'Agregar Item Presencial',
+    '/admin/edit-presential': 'Editar Item Presencial',
+    '/admin/peluqueros': 'Peluqueros',
+    '/admin/add-peluquero': 'Agregar Peluquero',
+    '/admin/edit-peluquero': 'Editar Peluquero',
+    '/admin/agenda-peluqueria': 'Agenda Peluquería',
+};
+
+const routeBreadcrumbs = {
+    '/admin/main-dashboard': [{ label: 'Inicio', path: '/admin/main-dashboard' }],
+    '/admin/users': [{ label: 'Administración', path: null }, { label: 'Usuarios', path: '/admin/users' }],
+    '/admin/coupons': [{ label: 'Administración', path: null }, { label: 'Cupones', path: '/admin/coupons' }],
+    '/admin/caja-diaria': [{ label: 'Administración', path: null }, { label: 'Caja Diaria', path: '/admin/caja-diaria' }],
+    '/admin/resumen-semanal': [{ label: 'Administración', path: null }, { label: 'Resumen Semanal', path: '/admin/resumen-semanal' }],
+    '/admin/tutores': [{ label: 'Gestión Clínica', path: null }, { label: 'Tutores', path: '/admin/tutores' }],
+    '/admin/add-tutor': [{ label: 'Gestión Clínica', path: null }, { label: 'Tutores', path: '/admin/tutores' }, { label: 'Agregar', path: '/admin/add-tutor' }],
+    '/admin/edit-tutor': [{ label: 'Gestión Clínica', path: null }, { label: 'Tutores', path: '/admin/tutores' }, { label: 'Editar', path: null }],
+    '/admin/tutor-profile': [{ label: 'Gestión Clínica', path: null }, { label: 'Tutores', path: '/admin/tutores' }, { label: 'Perfil', path: null }],
+    '/admin/pacientes': [{ label: 'Gestión Clínica', path: null }, { label: 'Pacientes', path: '/admin/pacientes' }],
+    '/admin/add-paciente': [{ label: 'Gestión Clínica', path: null }, { label: 'Pacientes', path: '/admin/pacientes' }, { label: 'Agregar', path: '/admin/add-paciente' }],
+    '/admin/edit-paciente': [{ label: 'Gestión Clínica', path: null }, { label: 'Pacientes', path: '/admin/pacientes' }, { label: 'Editar', path: null }],
+    '/admin/paciente-profile': [{ label: 'Gestión Clínica', path: null }, { label: 'Pacientes', path: '/admin/pacientes' }, { label: 'Perfil', path: null }],
+    '/admin/agenda': [{ label: 'Gestión Clínica', path: null }, { label: 'Agenda', path: '/admin/agenda' }],
+    '/admin/monitor-vencimientos': [{ label: 'Gestión Clínica', path: null }, { label: 'Monitor Vencimientos', path: '/admin/monitor-vencimientos' }],
+    '/admin/monitor-clinica': [{ label: 'Gestión Clínica', path: null }, { label: 'Monitor H. Clínica', path: '/admin/monitor-clinica' }],
+    '/admin/orders': [{ label: 'Pedidos Online', path: null }, { label: 'Gestionar', path: '/admin/orders' }],
+    '/admin/orders/complete': [{ label: 'Pedidos Online', path: null }, { label: 'Historial', path: '/admin/orders/complete' }],
+    '/admin/products': [{ label: 'Tienda Online', path: null }, { label: 'Productos', path: '/admin/products' }],
+    '/admin/add-product': [{ label: 'Tienda Online', path: null }, { label: 'Productos', path: '/admin/products' }, { label: 'Agregar', path: '/admin/add-product' }],
+    '/admin/edit-product': [{ label: 'Tienda Online', path: null }, { label: 'Productos', path: '/admin/products' }, { label: 'Editar', path: null }],
+    '/admin/promociones': [{ label: 'Tienda Online', path: null }, { label: 'Promociones', path: '/admin/promociones' }],
+    '/admin/vender': [{ label: 'Venta Presencial', path: null }, { label: 'Vender', path: '/admin/vender' }],
+    '/admin/presential-list': [{ label: 'Items Presenciales', path: null }, { label: 'Lista', path: '/admin/presential-list' }],
+    '/admin/add-presential': [{ label: 'Items Presenciales', path: null }, { label: 'Lista', path: '/admin/presential-list' }, { label: 'Agregar', path: '/admin/add-presential' }],
+    '/admin/edit-presential': [{ label: 'Items Presenciales', path: null }, { label: 'Lista', path: '/admin/presential-list' }, { label: 'Editar', path: null }],
+    '/admin/peluqueros': [{ label: 'Peluquería', path: null }, { label: 'Peluqueros', path: '/admin/peluqueros' }],
+    '/admin/add-peluquero': [{ label: 'Peluquería', path: null }, { label: 'Peluqueros', path: '/admin/peluqueros' }, { label: 'Agregar', path: '/admin/add-peluquero' }],
+    '/admin/edit-peluquero': [{ label: 'Peluquería', path: null }, { label: 'Peluqueros', path: '/admin/peluqueros' }, { label: 'Editar', path: null }],
+    '/admin/agenda-peluqueria': [{ label: 'Peluquería', path: null }, { label: 'Agenda', path: '/admin/agenda-peluqueria' }],
+};
 
 const Dashboard = ({ user, handleLogout }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768);
@@ -70,6 +136,17 @@ const Dashboard = ({ user, handleLogout }) => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [profileRef]);
+
+    useEffect(() => {
+        const pathKey = Object.keys(routeTitles).find(key => location.pathname.startsWith(key));
+        const pageTitle = pathKey ? routeTitles[pathKey] : 'Admin Panel';
+        document.title = `${pageTitle} - CambaCua`;
+    }, [location]);
+
+    const getBreadcrumbs = () => {
+        const pathKey = Object.keys(routeBreadcrumbs).find(key => location.pathname.startsWith(key));
+        return pathKey ? routeBreadcrumbs[pathKey] : [{ label: 'Inicio', path: '/admin/main-dashboard' }];
+    };
 
     const menuCategories = [
         {
@@ -158,6 +235,23 @@ const Dashboard = ({ user, handleLogout }) => {
                     </ul>
                 </nav>
                 <main className="content">
+                    <div className="breadcrumb-container">
+                        <NavLink to="/admin/main-dashboard" className="breadcrumb-home">
+                            <FaHome />
+                        </NavLink>
+                        {getBreadcrumbs().map((crumb, index) => (
+                            <React.Fragment key={index}>
+                                <FaChevronRight className="breadcrumb-separator" />
+                                {crumb.path ? (
+                                    <NavLink to={crumb.path} className="breadcrumb-link">
+                                        {crumb.label}
+                                    </NavLink>
+                                ) : (
+                                    <span className="breadcrumb-text">{crumb.label}</span>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </div>
                     <Routes>
                         <Route path="/" element={<Navigate to="/admin/main-dashboard" replace />} />
                         <Route path="/admin/add-product" element={<AddProduct />} />

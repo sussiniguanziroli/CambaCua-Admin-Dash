@@ -1,4 +1,3 @@
-// --- Variable Definitions ---
 $primary-color: #3498db;
 $primary-dark: #2980b9;
 $text-color: #3c4858;
@@ -10,12 +9,9 @@ $shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 $transition-speed: 0.3s;
 $border-radius: 12px;
 
-// --- Service-specific colors ---
 $clinical-color: #2ECC71;
 $grooming-color: #9B59B6;
 
-
-// --- Main Profile Container ---
 .profile-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -26,7 +22,6 @@ $grooming-color: #9B59B6;
     }
 }
 
-// --- Profile Header ---
 .profile-header {
     background: $white-color;
     padding: 2rem;
@@ -95,7 +90,6 @@ $grooming-color: #9B59B6;
         &.grooming { background-color: lighten($grooming-color, 35%); color: darken($grooming-color, 15%); svg { color: darken($grooming-color, 15%); } }
     }
 
-
     .profile-actions {
         display: flex;
         gap: 1rem;
@@ -114,7 +108,6 @@ $grooming-color: #9B59B6;
     }
 }
 
-// --- Profile Navigation Tabs ---
 .profile-nav {
     display: flex;
     gap: 0.5rem;
@@ -137,7 +130,7 @@ $grooming-color: #9B59B6;
         color: $text-light;
         cursor: pointer;
         transition: all $transition-speed ease;
-        flex-shrink: 0; // Prevents shrinking in scroll container
+        flex-shrink: 0;
 
         &.active, &:hover {
             color: $primary-dark;
@@ -151,7 +144,6 @@ $grooming-color: #9B59B6;
     }
 }
 
-// --- Profile Content Area ---
 .profile-content {
     background: $white-color;
     padding: 2.5rem;
@@ -164,7 +156,6 @@ $grooming-color: #9B59B6;
     }
 }
 
-// --- Specific Tab Content Styles ---
 .details-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -216,6 +207,11 @@ $grooming-color: #9B59B6;
     p { margin: 0.25rem 0; }
 }
 
+$success-color: #28a745;
+$error-color: #dc3545;
+$grey-dark: #6c757d;
+$background-light: #f1f3f5;
+
 .compras-list {
     .compra-card {
         display: flex;
@@ -223,10 +219,21 @@ $grooming-color: #9B59B6;
         align-items: center;
         padding: 1rem;
         border-bottom: 1px solid $border-color;
-        transition: background-color 0.2s ease;
+        transition: all 0.2s ease;
+        border-left: 4px solid transparent;
 
         &:last-child { border-bottom: none; }
         &:hover { background-color: $background-light; }
+
+        &.unpaid {
+            border-left-color: #e74c3c;
+            background: #fff5f5;
+        }
+
+        &.partial-payment {
+            border-left-color: #f39c12;
+            background: #fffbf0;
+        }
 
         @media (max-width: 768px) {
             flex-direction: column;
@@ -238,19 +245,80 @@ $grooming-color: #9B59B6;
         .compra-info {
             display: flex;
             flex-direction: column;
+            gap: 0.5rem;
+            
             .date { color: $grey-dark; font-size: 0.9rem; }
-            .products-preview { font-size: 1rem; color: $text-color; font-weight: 500; margin-top: 0.25rem; }
+            .products-preview { font-size: 1rem; color: $text-color; font-weight: 500; }
+            
+            .sale-debt-indicator {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.4rem 0.75rem;
+                border-radius: 6px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                background: #fff3cd;
+                color: #856404;
+                border: 1px solid #ffeeba;
+                width: fit-content;
+
+                .compra-card.unpaid & {
+                    background: #f8d7da;
+                    color: #721c24;
+                    border-color: #f5c6cb;
+                }
+
+                svg {
+                    width: 0.9rem;
+                    height: 0.9rem;
+                }
+            }
         }
 
         .compra-actions {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            .total { font-weight: 600; font-size: 1.2rem; }
+            gap: 1rem;
+            
+            .total { 
+                font-weight: 600; 
+                font-size: 1.2rem; 
+            }
+
+            .btn-pay-debt {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: #27ae60;
+                color: white;
+                padding: 0.6rem 1rem;
+                border-radius: 6px;
+                border: none;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                svg {
+                    width: 1rem;
+                    height: 1rem;
+                }
+
+                &:hover {
+                    background: #229954;
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+                }
+            }
 
             @media (max-width: 768px) {
                 width: 100%;
                 justify-content: space-between;
+                flex-wrap: wrap;
+                
+                .btn {
+                    flex: 1;
+                }
             }
         }
     }
@@ -270,14 +338,6 @@ $grooming-color: #9B59B6;
         span { font-size: 0.9rem; }
     }
 }
-
-
-// --- Color Definitions for Account ---
-$success-color: #28a745;
-$error-color: #dc3545;
-$grey-dark: #6c757d;
-$background-light: #f1f3f5;
-
 
 .account-balance-card { text-align: center; h3 { color: $text-light; } .balance-amount { font-size: 3rem; font-weight: 700; color: $success-color; &.deudor { color: $error-color; } } }
 .tutor-balance-card { 
@@ -310,7 +370,6 @@ $background-light: #f1f3f5;
     }
 } }
 
-// Payment Modal Styles
 .payment-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1050; backdrop-filter: blur(4px); }
 .payment-modal { background: #fff; padding: 2.5rem; border-radius: $border-radius; width: 90%; max-width: 500px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
     
@@ -321,7 +380,6 @@ $background-light: #f1f3f5;
     
     .close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: $grey-dark; &:hover { color: $text-color; } } h3 { margin-top: 0; color: $primary-dark; } form { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem; } .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem; } .form-group { label { font-weight: 500; margin-bottom: 0.5rem; display: block; } input, select { width: 100%; padding: 0.8rem; font-size: 1rem; border-radius: $border-radius * 0.75; border: 1px solid $border-color; &:focus { outline: none; border-color: $primary-color; box-shadow: 0 0 0 3px lighten($primary-color, 35%);} } } }
 
-// --- Tutor Account Tab ---
 .tutor-profile-tab-content { 
     .tutor-account-summary { 
         display: flex; 
@@ -356,7 +414,6 @@ $background-light: #f1f3f5;
     
     &::before { content: ''; display: block; width: 12px; height: 12px; border-radius: 50%; } } &.cobro-deuda .transaction-info::before { background-color: $success-color; } &.venta-presencial .transaction-info::before { background-color: $error-color; } } }
 
-// --- Custom Alert Modal ---
 .custom-alert-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1100; backdrop-filter: blur(4px); }
 .custom-alert-content { background: $white-color; padding: 2rem 2.5rem; border-radius: $border-radius; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transform: scale(0.95); animation: alert-pop 0.3s ease-out forwards; 
     

@@ -1,4 +1,71 @@
 @charset "UTF-8";
+.breadcrumb-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  border-radius: 6px;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-home {
+  display: flex;
+  align-items: center;
+  color: #3498db;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+.breadcrumb-home svg {
+  width: 1rem;
+  height: 1rem;
+}
+.breadcrumb-home:hover {
+  background: #e3f2fd;
+  color: #2980b9;
+}
+
+.breadcrumb-separator {
+  color: #95a5a6;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.breadcrumb-link {
+  color: #3498db;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.breadcrumb-link:hover {
+  background: #e3f2fd;
+  color: #2980b9;
+}
+
+.breadcrumb-text {
+  color: #7f8c8d;
+  padding: 0.25rem 0.5rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .breadcrumb-container {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  .breadcrumb-separator {
+    width: 0.6rem;
+    height: 0.6rem;
+  }
+}
 .loading-message,
 .error-message {
   text-align: center;
@@ -5737,13 +5804,22 @@ button.btn-reset:hover {
   align-items: center;
   padding: 1rem;
   border-bottom: 1px solid #e0e6ed;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  border-left: 4px solid transparent;
 }
 .compras-list .compra-card:last-child {
   border-bottom: none;
 }
 .compras-list .compra-card:hover {
-  background-color: #f8f9fa;
+  background-color: #f1f3f5;
+}
+.compras-list .compra-card.unpaid {
+  border-left-color: #e74c3c;
+  background: #fff5f5;
+}
+.compras-list .compra-card.partial-payment {
+  border-left-color: #f39c12;
+  background: #fffbf0;
 }
 @media (max-width: 768px) {
   .compras-list .compra-card {
@@ -5756,30 +5832,78 @@ button.btn-reset:hover {
 .compras-list .compra-card .compra-info {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 .compras-list .compra-card .compra-info .date {
-  color: #7f8c8d;
+  color: #6c757d;
   font-size: 0.9rem;
 }
 .compras-list .compra-card .compra-info .products-preview {
   font-size: 1rem;
   color: #3c4858;
   font-weight: 500;
-  margin-top: 0.25rem;
+}
+.compras-list .compra-card .compra-info .sale-debt-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  width: fit-content;
+}
+.compra-card.unpaid .compras-list .compra-card .compra-info .sale-debt-indicator {
+  background: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+.compras-list .compra-card .compra-info .sale-debt-indicator svg {
+  width: 0.9rem;
+  height: 0.9rem;
 }
 .compras-list .compra-card .compra-actions {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 .compras-list .compra-card .compra-actions .total {
   font-weight: 600;
   font-size: 1.2rem;
 }
+.compras-list .compra-card .compra-actions .btn-pay-debt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #27ae60;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.compras-list .compra-card .compra-actions .btn-pay-debt svg {
+  width: 1rem;
+  height: 1rem;
+}
+.compras-list .compra-card .compra-actions .btn-pay-debt:hover {
+  background: #229954;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+}
 @media (max-width: 768px) {
   .compras-list .compra-card .compra-actions {
     width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .compras-list .compra-card .compra-actions .btn, .compras-list .compra-card .compra-actions .recipe-modal .add-line-btn, .recipe-modal .compras-list .compra-card .compra-actions .add-line-btn, .compras-list .compra-card .compra-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .compras-list .compra-card .compra-actions .action-btn, .compras-list .compra-card .compra-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .compras-list .compra-card .compra-actions .view-mode-toggle, .compras-list .compra-card .compra-actions .btn-delete-small, .compras-list .compra-card .compra-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .compras-list .compra-card .compra-actions .btn-delete-note, .compras-list .compra-card .compra-actions .btn-custom-date, .compras-list .compra-card .compra-actions .btn-suministrado, .compras-list .compra-card .compra-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .compras-list .compra-card .compra-actions .today-btn, .compras-list .compra-card .compra-actions .pagination-controls button, .pagination-controls .compras-list .compra-card .compra-actions button, .compras-list .compra-card .compra-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .compras-list .compra-card .compra-actions button, .compras-list .compra-card .compra-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .compras-list .compra-card .compra-actions button, .compras-list .compra-card .compra-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .compras-list .compra-card .compra-actions .btn-suministro-toggle {
+    flex: 1;
   }
 }
 
@@ -9210,370 +9334,370 @@ button.btn-reset:hover {
   cursor: not-allowed;
 }
 
-.sale-summary-box {
-  background-color: #f8f9fa;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 2rem 0;
-}
-.sale-summary-box h4 {
-  margin-top: 0;
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 0.8rem;
-  margin-bottom: 1rem;
-}
-.sale-summary-box ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1rem 0;
-}
-.sale-summary-box ul li {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.4rem 0;
-}
-.sale-summary-box .summary-row, .sale-summary-box .summary-total {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.6rem 0;
-  border-top: 1px solid #e0e0e0;
-}
-.sale-summary-box .summary-total {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #2980b9;
-}
-
 .caja-diaria-container {
   padding: 2rem;
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
 }
-.caja-diaria-container .link-class {
-  font-weight: 500;
-  text-decoration: none;
-  color: rgb(61, 60, 60);
-}
-.caja-diaria-container .link-class:hover {
-  text-decoration: underline;
-}
-.caja-diaria-container .caja-page-header {
+
+.caja-page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-}
-.caja-diaria-container .caja-date-picker {
-  display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 1rem;
-  background-color: #fff;
-  padding: 0.8rem 1.2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.caja-diaria-container .caja-filters {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-.caja-diaria-container .caja-filters select {
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  font-weight: 500;
-}
-.caja-diaria-container .caja-summary-main {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-.caja-diaria-container .caja-summary-main .caja-summary-card {
-  padding: 2rem;
-}
-.caja-diaria-container .caja-summary-main .caja-summary-card strong {
-  font-size: 2.5rem;
-}
-.caja-diaria-container .caja-summary-secondary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
-}
-.caja-diaria-container .caja-summary-card {
-  background-color: #fff;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-left: 5px solid #95a5a6;
-  cursor: pointer;
-  transition: all 0.2s ease-out;
-}
-.caja-diaria-container .caja-summary-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-.caja-diaria-container .caja-summary-card:active {
-  transform: translateY(-1px) scale(0.99);
-}
-.caja-diaria-container .caja-summary-card span {
-  display: block;
-  color: #7f8c8d;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-.caja-diaria-container .caja-summary-card strong {
+.caja-page-header h1 {
   font-size: 2rem;
-  color: #34495e;
+  color: #2c3e50;
+  margin: 0;
 }
-.caja-diaria-container .caja-summary-card.total-caja {
-  border-left-color: #3498db;
-}
-.caja-diaria-container .caja-summary-card.total-caja strong {
-  color: #2980b9;
-}
-.caja-diaria-container .caja-summary-card.total-electronico {
-  border-left-color: #95a5a6;
-}
-.caja-diaria-container .caja-summary-card.total-electronico strong {
-  color: rgb(121.2769230769, 141.4615384615, 142.7230769231);
-}
-.caja-diaria-container .caja-summary-card.total-efectivo {
-  border-left-color: #2ecc71;
-}
-.caja-diaria-container .caja-summary-card.total-efectivo strong {
-  color: rgb(36.616, 162.384, 89.948);
-}
-.caja-diaria-container .caja-summary-card.deuda-cobrada {
-  border-left-color: #2ecc71;
-}
-.caja-diaria-container .caja-summary-card.deuda-cobrada strong {
-  color: rgb(36.616, 162.384, 89.948);
-}
-.caja-diaria-container .caja-summary-card.deuda-generada {
-  border-left-color: #e74c3c;
-}
-.caja-diaria-container .caja-summary-card.deuda-generada strong {
-  color: rgb(213.698630137, 43.8356164384, 26.301369863);
-}
-.caja-diaria-container .caja-summary-card.descuentos {
-  border-left-color: #95a5a6;
-}
-.caja-diaria-container .caja-summary-card.descuentos strong {
-  color: rgb(121.2769230769, 141.4615384615, 142.7230769231);
-}
-.caja-diaria-container .caja-transactions-list h3 {
-  margin-bottom: 1.5rem;
-}
-.caja-diaria-container .caja-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-.caja-diaria-container .caja-transaction-card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.caja-diaria-container .caja-transaction-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-.caja-diaria-container .card-header,
-.caja-diaria-container .card-body,
-.caja-diaria-container .card-footer {
+
+.caja-header-actions {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
-.caja-diaria-container .card-header {
-  margin-bottom: 1rem;
-}
-.caja-diaria-container .card-body {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
-  margin-bottom: 1rem;
-}
-.caja-diaria-container .card-footer {
-  border-top: 1px solid #f8f9fa;
-  padding-top: 1rem;
-}
-.caja-diaria-container .type-badge {
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  display: inline-flex;
+
+.caja-date-picker {
+  display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-.caja-diaria-container .type-badge.venta {
-  background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
-  color: #2980b9;
-}
-.caja-diaria-container .type-badge.cobro {
-  background-color: rgb(188.496, 240.004, 210.338);
-  color: rgb(31.924, 141.576, 78.422);
-}
-.caja-diaria-container .customer {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-.caja-diaria-container .details {
-  color: #7f8c8d;
-}
-.caja-diaria-container .total {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #2980b9;
-}
-
-.sale-detail-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1050;
-}
-
-.sale-detail-modal {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 600px;
-  position: relative;
-}
-.sale-detail-modal h3 {
-  margin-top: 0;
-}
-.sale-detail-modal .sale-detail-close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-.sale-detail-modal .sale-detail-section {
-  margin-bottom: 1.5rem;
-}
-.sale-detail-modal .sale-detail-section p {
-  display: flex;
-  justify-content: space-between;
-}
-.sale-detail-modal .sale-detail-item-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.sale-detail-modal .sale-detail-item-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #f8f9fa;
-}
-.sale-detail-modal .item-name-details {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-.sale-detail-modal .item-name {
+.caja-date-picker label {
   font-weight: 500;
+  color: #34495e;
 }
-.sale-detail-modal .item-discount-info {
-  font-size: 0.8rem;
-  color: #576677;
-  background: #f8f9fa;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  margin-top: 0.25rem;
-  display: flex;
-  justify-content: space-between;
-  max-width: 200px;
-}
-.sale-detail-modal .item-discount-info span:first-child {
-  text-decoration: line-through;
-}
-.sale-detail-modal .item-discount-info span:last-child {
-  color: #2ecc71;
-  font-weight: 600;
-}
-.sale-detail-modal .item-price {
-  margin-left: auto;
-  font-weight: 600;
+.caja-date-picker input[type=date] {
+  padding: 0.5rem 1rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 6px;
   font-size: 1rem;
-  padding-left: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-.sale-detail-modal .item-price.is-discounted {
-  color: #2ecc71;
+.caja-date-picker input[type=date]:hover {
+  border-color: #3498db;
 }
-.sale-detail-modal .sale-detail-footer {
-  border-top: 1px solid #e0e0e0;
-  padding-top: 1rem;
-  text-align: right;
+.caja-date-picker input[type=date]:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
-.sale-detail-modal .sale-detail-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-.sale-detail-modal .sale-detail-row span {
-  color: #7f8c8d;
-}
-.sale-detail-modal .sale-detail-row strong {
-  font-weight: 600;
-}
-.sale-detail-modal .sale-detail-row.discount strong {
-  color: #2ecc71;
-}
-.sale-detail-modal .sale-detail-row.debt strong {
-  color: #e74c3c;
-}
-.sale-detail-modal .sale-detail-total,
-.sale-detail-modal .sale-detail-debt {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-.sale-detail-modal .sale-detail-total {
-  margin-top: 0.5rem;
-  font-size: 1.4rem;
-}
-.sale-detail-modal .sale-detail-debt {
-  color: #e74c3c;
-}
-.sale-detail-modal .sale-detail-actions {
+
+.caja-filters {
   display: flex;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
-.sale-detail-modal .sale-detail-actions .btn, .sale-detail-modal .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .sale-detail-modal .sale-detail-actions .btn-suministro-toggle, .sale-detail-modal .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-modal .sale-detail-actions button, .sale-detail-modal .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-modal .sale-detail-actions .today-btn, .sale-detail-modal .sale-detail-actions .btn-suministrado, .sale-detail-modal .sale-detail-actions .btn-custom-date, .sale-detail-modal .sale-detail-actions .btn-delete-small, .sale-detail-modal .sale-detail-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .sale-detail-modal .sale-detail-actions .btn-delete-note, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-modal .sale-detail-actions .view-mode-toggle, .sale-detail-modal .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-modal .sale-detail-actions .action-btn, .sale-detail-modal .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-modal .sale-detail-actions .add-line-btn,
-.sale-detail-modal .sale-detail-actions .btn-primary,
-.sale-detail-modal .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm,
-.confirmar-venta-container .navigator-buttons .sale-detail-modal .sale-detail-actions .btn-confirm {
-  flex: 1;
-  padding: 0.75rem 1rem;
+.caja-filters select {
+  padding: 0.6rem 1rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.caja-filters select:hover {
+  border-color: #3498db;
+}
+.caja-filters select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
+.caja-summary-main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.caja-summary-secondary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.caja-summary-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.caja-summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+.caja-summary-card span {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+.caja-summary-card strong {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  font-weight: 700;
+}
+.caja-summary-card.total-caja strong {
+  color: #27ae60;
+}
+.caja-summary-card.total-electronico strong {
+  color: #3498db;
+}
+.caja-summary-card.total-efectivo strong {
+  color: #16a085;
+}
+.caja-summary-card.deuda-cobrada strong {
+  color: #27ae60;
+}
+.caja-summary-card.deuda-generada strong {
+  color: #e67e22;
+}
+.caja-summary-card.descuentos strong {
+  color: #e74c3c;
+}
+
+.caja-transactions-list h3 {
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+}
+
+.caja-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.caja-transaction-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  position: relative;
+}
+.caja-transaction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+.caja-transaction-card.unpaid {
+  border-color: #e74c3c;
+  background: #fff5f5;
+}
+.caja-transaction-card.unpaid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #e74c3c;
+  border-radius: 10px 0 0 10px;
+}
+.caja-transaction-card.partial-payment {
+  border-color: #f39c12;
+  background: #fffbf0;
+}
+.caja-transaction-card.partial-payment::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #f39c12;
+  border-radius: 10px 0 0 10px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.type-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.type-badge.venta {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+.type-badge.cobro {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+.type-badge svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.time {
+  font-size: 0.85rem;
+  color: #95a5a6;
+  font-weight: 500;
+}
+
+.card-body {
+  margin-bottom: 1rem;
+}
+.card-body .customer {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+.card-body .details {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 0.5rem;
+}
+.card-body .link-class {
+  color: #3498db;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.card-body .link-class:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.payment-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+.caja-transaction-card.unpaid .payment-status-indicator {
+  background: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+.payment-status-indicator svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid #ecf0f1;
+}
+.card-footer .total {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #27ae60;
+}
+.card-footer .card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.card-footer .card-actions .btn, .card-footer .card-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .card-footer .card-actions button, .card-footer .card-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .card-footer .card-actions button, .card-footer .card-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .btn-suministro-toggle, .card-footer .card-actions .pagination-controls button, .pagination-controls .card-footer .card-actions button, .card-footer .card-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .card-footer .card-actions .today-btn, .card-footer .card-actions .btn-suministrado, .card-footer .card-actions .btn-custom-date, .card-footer .card-actions .btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .action-btn, .card-footer .card-actions .recipe-modal .add-line-btn, .recipe-modal .card-footer .card-actions .add-line-btn {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-footer .card-actions .btn svg, .card-footer .card-actions .metodo-pago-container .payment-buttons button svg, .metodo-pago-container .payment-buttons .card-footer .card-actions button svg, .card-footer .card-actions .metodo-pago-container .card-selector button svg, .metodo-pago-container .card-selector .card-footer .card-actions button svg, .card-footer .card-actions .confirmar-venta-container .btn-suministro-toggle svg, .confirmar-venta-container .card-footer .card-actions .btn-suministro-toggle svg, .card-footer .card-actions .pagination-controls button svg, .pagination-controls .card-footer .card-actions button svg, .card-footer .card-actions .agenda-container .week-navigator .today-btn svg, .agenda-container .week-navigator .card-footer .card-actions .today-btn svg, .card-footer .card-actions .btn-suministrado svg, .card-footer .card-actions .btn-custom-date svg, .card-footer .card-actions .btn-delete-small svg, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note svg, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .btn-delete-note svg, .card-footer .card-actions .monitor-vencimientos-container .view-mode-toggle svg, .monitor-vencimientos-container .card-footer .card-actions .view-mode-toggle svg, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .action-btn svg, .card-footer .card-actions .recipe-modal .add-line-btn svg, .recipe-modal .card-footer .card-actions .add-line-btn svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+.card-footer .card-actions .btn.pay-debt, .card-footer .card-actions .metodo-pago-container .payment-buttons button.pay-debt, .metodo-pago-container .payment-buttons .card-footer .card-actions button.pay-debt, .card-footer .card-actions .metodo-pago-container .card-selector button.pay-debt, .metodo-pago-container .card-selector .card-footer .card-actions button.pay-debt, .card-footer .card-actions .confirmar-venta-container .pay-debt.btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .pay-debt.btn-suministro-toggle, .card-footer .card-actions .pagination-controls button.pay-debt, .pagination-controls .card-footer .card-actions button.pay-debt, .card-footer .card-actions .agenda-container .week-navigator .pay-debt.today-btn, .agenda-container .week-navigator .card-footer .card-actions .pay-debt.today-btn, .card-footer .card-actions .pay-debt.btn-suministrado, .card-footer .card-actions .pay-debt.btn-custom-date, .card-footer .card-actions .pay-debt.btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .pay-debt.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .pay-debt.btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .pay-debt.view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .pay-debt.view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .pay-debt.action-btn, .card-footer .card-actions .recipe-modal .pay-debt.add-line-btn, .recipe-modal .card-footer .card-actions .pay-debt.add-line-btn {
+  background: #27ae60;
+  color: white;
+}
+.card-footer .card-actions .btn.pay-debt:hover, .card-footer .card-actions .metodo-pago-container .payment-buttons button.pay-debt:hover, .metodo-pago-container .payment-buttons .card-footer .card-actions button.pay-debt:hover, .card-footer .card-actions .metodo-pago-container .card-selector button.pay-debt:hover, .metodo-pago-container .card-selector .card-footer .card-actions button.pay-debt:hover, .card-footer .card-actions .confirmar-venta-container .pay-debt.btn-suministro-toggle:hover, .confirmar-venta-container .card-footer .card-actions .pay-debt.btn-suministro-toggle:hover, .card-footer .card-actions .pagination-controls button.pay-debt:hover, .pagination-controls .card-footer .card-actions button.pay-debt:hover, .card-footer .card-actions .agenda-container .week-navigator .pay-debt.today-btn:hover, .agenda-container .week-navigator .card-footer .card-actions .pay-debt.today-btn:hover, .card-footer .card-actions .pay-debt.btn-suministrado:hover, .card-footer .card-actions .pay-debt.btn-custom-date:hover, .card-footer .card-actions .pay-debt.btn-delete-small:hover, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .pay-debt.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .pay-debt.btn-delete-note:hover, .card-footer .card-actions .monitor-vencimientos-container .pay-debt.view-mode-toggle:hover, .monitor-vencimientos-container .card-footer .card-actions .pay-debt.view-mode-toggle:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .pay-debt.action-btn:hover, .card-footer .card-actions .recipe-modal .pay-debt.add-line-btn:hover, .recipe-modal .card-footer .card-actions .pay-debt.add-line-btn:hover {
+  background: #229954;
+  transform: scale(1.05);
+}
+.card-footer .card-actions .btn.edit, .card-footer .card-actions .metodo-pago-container .payment-buttons button.edit, .metodo-pago-container .payment-buttons .card-footer .card-actions button.edit, .card-footer .card-actions .metodo-pago-container .card-selector button.edit, .metodo-pago-container .card-selector .card-footer .card-actions button.edit, .card-footer .card-actions .confirmar-venta-container .edit.btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .edit.btn-suministro-toggle, .card-footer .card-actions .pagination-controls button.edit, .pagination-controls .card-footer .card-actions button.edit, .card-footer .card-actions .agenda-container .week-navigator .edit.today-btn, .agenda-container .week-navigator .card-footer .card-actions .edit.today-btn, .card-footer .card-actions .edit.btn-suministrado, .card-footer .card-actions .edit.btn-custom-date, .card-footer .card-actions .edit.btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .edit.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .edit.btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .edit.view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .edit.view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .edit.action-btn, .card-footer .card-actions .recipe-modal .edit.add-line-btn, .recipe-modal .card-footer .card-actions .edit.add-line-btn {
+  background: #3498db;
+  color: white;
+}
+.card-footer .card-actions .btn.edit:hover, .card-footer .card-actions .metodo-pago-container .payment-buttons button.edit:hover, .metodo-pago-container .payment-buttons .card-footer .card-actions button.edit:hover, .card-footer .card-actions .metodo-pago-container .card-selector button.edit:hover, .metodo-pago-container .card-selector .card-footer .card-actions button.edit:hover, .card-footer .card-actions .confirmar-venta-container .edit.btn-suministro-toggle:hover, .confirmar-venta-container .card-footer .card-actions .edit.btn-suministro-toggle:hover, .card-footer .card-actions .pagination-controls button.edit:hover, .pagination-controls .card-footer .card-actions button.edit:hover, .card-footer .card-actions .agenda-container .week-navigator .edit.today-btn:hover, .agenda-container .week-navigator .card-footer .card-actions .edit.today-btn:hover, .card-footer .card-actions .edit.btn-suministrado:hover, .card-footer .card-actions .edit.btn-custom-date:hover, .card-footer .card-actions .edit.btn-delete-small:hover, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .edit.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .edit.btn-delete-note:hover, .card-footer .card-actions .monitor-vencimientos-container .edit.view-mode-toggle:hover, .monitor-vencimientos-container .card-footer .card-actions .edit.view-mode-toggle:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .edit.action-btn:hover, .card-footer .card-actions .recipe-modal .edit.add-line-btn:hover, .recipe-modal .card-footer .card-actions .edit.add-line-btn:hover {
+  background: #2980b9;
+  transform: scale(1.05);
+}
+.card-footer .card-actions .btn.delete, .card-footer .card-actions .metodo-pago-container .payment-buttons button.delete, .metodo-pago-container .payment-buttons .card-footer .card-actions button.delete, .card-footer .card-actions .metodo-pago-container .card-selector button.delete, .metodo-pago-container .card-selector .card-footer .card-actions button.delete, .card-footer .card-actions .confirmar-venta-container .delete.btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .delete.btn-suministro-toggle, .card-footer .card-actions .pagination-controls button.delete, .pagination-controls .card-footer .card-actions button.delete, .card-footer .card-actions .agenda-container .week-navigator .delete.today-btn, .agenda-container .week-navigator .card-footer .card-actions .delete.today-btn, .card-footer .card-actions .delete.btn-suministrado, .card-footer .card-actions .delete.btn-custom-date, .card-footer .card-actions .delete.btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .delete.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .delete.btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .delete.view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .delete.view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .delete.action-btn, .card-footer .card-actions .recipe-modal .delete.add-line-btn, .recipe-modal .card-footer .card-actions .delete.add-line-btn {
+  background: #e74c3c;
+  color: white;
+}
+.card-footer .card-actions .btn.delete:hover, .card-footer .card-actions .metodo-pago-container .payment-buttons button.delete:hover, .metodo-pago-container .payment-buttons .card-footer .card-actions button.delete:hover, .card-footer .card-actions .metodo-pago-container .card-selector button.delete:hover, .metodo-pago-container .card-selector .card-footer .card-actions button.delete:hover, .card-footer .card-actions .confirmar-venta-container .delete.btn-suministro-toggle:hover, .confirmar-venta-container .card-footer .card-actions .delete.btn-suministro-toggle:hover, .card-footer .card-actions .pagination-controls button.delete:hover, .pagination-controls .card-footer .card-actions button.delete:hover, .card-footer .card-actions .agenda-container .week-navigator .delete.today-btn:hover, .agenda-container .week-navigator .card-footer .card-actions .delete.today-btn:hover, .card-footer .card-actions .delete.btn-suministrado:hover, .card-footer .card-actions .delete.btn-custom-date:hover, .card-footer .card-actions .delete.btn-delete-small:hover, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .delete.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .delete.btn-delete-note:hover, .card-footer .card-actions .monitor-vencimientos-container .delete.view-mode-toggle:hover, .monitor-vencimientos-container .card-footer .card-actions .delete.view-mode-toggle:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .delete.action-btn:hover, .card-footer .card-actions .recipe-modal .delete.add-line-btn:hover, .recipe-modal .card-footer .card-actions .delete.add-line-btn:hover {
+  background: #c0392b;
+  transform: scale(1.05);
+}
+
+.no-results-message {
+  text-align: center;
+  color: #95a5a6;
+  padding: 3rem;
+  font-size: 1.1rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .caja-diaria-container {
+    padding: 1rem;
+  }
+  .caja-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .caja-page-header h1 {
+    font-size: 1.5rem;
+  }
+  .caja-summary-main,
+  .caja-summary-secondary {
+    grid-template-columns: 1fr;
+  }
+  .caja-grid {
+    grid-template-columns: 1fr;
+  }
+  .caja-filters {
+    flex-direction: column;
+  }
+  .caja-filters select {
+    width: 100%;
+  }
+}
 .caja-popup-overlay {
   position: fixed;
   top: 0;
@@ -9682,6 +9806,449 @@ button.btn-reset:hover {
   color: #555;
 }
 
+.ventas-guardadas-modal {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 900px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+.ventas-guardadas-modal h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.5rem;
+}
+
+.ventas-guardadas-body .no-results-message {
+  text-align: center;
+  color: #95a5a6;
+  padding: 3rem;
+  font-size: 1.1rem;
+}
+
+.ventas-guardadas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.venta-guardada-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f8f9fa;
+  transition: all 0.2s ease;
+}
+.venta-guardada-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #3498db;
+}
+
+.venta-guardada-info {
+  flex: 1;
+}
+
+.venta-guardada-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.venta-guardada-time {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.venta-guardada-total {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #27ae60;
+}
+
+.venta-guardada-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.venta-guardada-details p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #34495e;
+}
+.venta-guardada-details p strong {
+  color: #2c3e50;
+  margin-right: 0.25rem;
+}
+
+.venta-guardada-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.venta-guardada-actions .btn-icon {
+  padding: 0.5rem;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid #bdc3c7;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.venta-guardada-actions .btn-icon:hover {
+  background: #ecf0f1;
+  border-color: #95a5a6;
+  color: #2c3e50;
+}
+.venta-guardada-actions .btn-icon.btn-danger {
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+.venta-guardada-actions .btn-icon.btn-danger:hover {
+  background: #e74c3c;
+  color: white;
+}
+.venta-guardada-actions .btn-icon svg {
+  width: 1rem;
+  height: 1rem;
+}
+.venta-guardada-actions .btn-primary, .venta-guardada-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .venta-guardada-actions .btn-confirm, .venta-guardada-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .venta-guardada-actions .action-btn {
+  padding: 0.6rem 1.2rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.venta-guardada-actions .btn-primary:hover, .venta-guardada-actions .confirmar-venta-container .navigator-buttons .btn-confirm:hover, .confirmar-venta-container .navigator-buttons .venta-guardada-actions .btn-confirm:hover, .venta-guardada-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .venta-guardada-actions .action-btn:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+.venta-guardada-actions .btn-sm {
+  font-size: 0.9rem;
+}
+
+.btn-ventas-guardadas {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+.btn-ventas-guardadas svg {
+  width: 1rem;
+  height: 1rem;
+}
+.btn-ventas-guardadas:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.caja-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .ventas-guardadas-modal {
+    width: 95%;
+    padding: 1.5rem;
+  }
+  .venta-guardada-card {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .venta-guardada-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .venta-guardada-actions .btn-primary, .venta-guardada-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .venta-guardada-actions .btn-confirm, .venta-guardada-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .venta-guardada-actions .action-btn {
+    flex: 1;
+  }
+  .caja-header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .btn-ventas-guardadas {
+    width: 100%;
+    justify-content: center;
+  }
+}
+.pay-debt-modal {
+  max-width: 550px;
+  width: 90%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.pay-debt-modal h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  color: #2c3e50;
+  flex-shrink: 0;
+}
+.pay-debt-modal form {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+}
+
+.pay-debt-modal-body {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 0.5rem;
+  margin-bottom: 1rem;
+}
+.pay-debt-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+.pay-debt-modal-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.pay-debt-modal-body::-webkit-scrollbar-thumb {
+  background: #bdc3c7;
+  border-radius: 10px;
+}
+.pay-debt-modal-body::-webkit-scrollbar-thumb:hover {
+  background: #95a5a6;
+}
+
+.sale-info-summary {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.sale-info-summary .info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+}
+.sale-info-summary .info-row:not(:last-child) {
+  border-bottom: 1px solid #e0e0e0;
+}
+.sale-info-summary .info-row.debt {
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid #e74c3c;
+}
+.sale-info-summary .info-row span {
+  color: #7f8c8d;
+}
+.sale-info-summary .info-row strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+.sale-info-summary .info-row .debt-amount {
+  color: #e74c3c;
+  font-size: 1.1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+
+.payment-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.payment-method-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  border: 2px solid #bdc3c7;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+.payment-method-btn svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+.payment-method-btn:hover {
+  border-color: #3498db;
+  background: #e3f2fd;
+}
+.payment-method-btn.active {
+  border-color: #3498db;
+  background: #3498db;
+  color: white;
+}
+
+.amount-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.amount-input-wrapper .currency-symbol {
+  position: absolute;
+  left: 1rem;
+  font-size: 1rem;
+  color: #7f8c8d;
+  font-weight: 600;
+}
+.amount-input-wrapper input {
+  flex: 1;
+  padding: 0.7rem 1rem 0.7rem 2.5rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.amount-input-wrapper input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+.amount-input-wrapper .btn-full-amount {
+  padding: 0.7rem 1rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+.amount-input-wrapper .btn-full-amount:hover {
+  background: #2980b9;
+}
+
+.helper-text {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+.payment-preview {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+.payment-preview .preview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  font-size: 0.95rem;
+}
+.payment-preview .preview-row.payment {
+  color: #27ae60;
+  font-weight: 500;
+}
+.payment-preview .preview-row.total {
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid #bdc3c7;
+  font-size: 1.1rem;
+}
+.payment-preview .preview-row.total strong {
+  color: #e74c3c;
+  font-size: 1.2rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+.form-actions .btn, .form-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .form-actions button, .form-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .form-actions button, .form-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .form-actions .btn-suministro-toggle, .form-actions .pagination-controls button, .pagination-controls .form-actions button, .form-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .form-actions .today-btn, .form-actions .btn-suministrado, .form-actions .btn-custom-date, .form-actions .btn-delete-small, .form-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .form-actions .btn-delete-note, .form-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .form-actions .view-mode-toggle, .form-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .form-actions .action-btn, .form-actions .recipe-modal .add-line-btn, .recipe-modal .form-actions .add-line-btn {
+  padding: 0.7rem 1.5rem;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .pay-debt-modal {
+    max-height: 85vh;
+  }
+  .payment-methods-grid {
+    grid-template-columns: 1fr;
+  }
+  .amount-input-wrapper {
+    flex-direction: column;
+  }
+  .amount-input-wrapper .btn-full-amount {
+    width: 100%;
+  }
+  .form-actions {
+    flex-direction: column;
+  }
+  .form-actions .btn, .form-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .form-actions button, .form-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .form-actions button, .form-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .form-actions .btn-suministro-toggle, .form-actions .pagination-controls button, .pagination-controls .form-actions button, .form-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .form-actions .today-btn, .form-actions .btn-suministrado, .form-actions .btn-custom-date, .form-actions .btn-delete-small, .form-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .form-actions .btn-delete-note, .form-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .form-actions .view-mode-toggle, .form-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .form-actions .action-btn, .form-actions .recipe-modal .add-line-btn, .recipe-modal .form-actions .add-line-btn {
+    width: 100%;
+  }
+}
+@media (max-height: 700px) {
+  .pay-debt-modal {
+    max-height: 95vh;
+  }
+  .pay-debt-modal h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+  .sale-info-summary {
+    padding: 0.75rem;
+  }
+  .form-group {
+    margin-bottom: 0.75rem;
+  }
+  .payment-preview {
+    padding: 0.75rem;
+    margin-top: 0.75rem;
+  }
+}
 .sale-summary-box {
   background-color: #f8f9fa;
   border: 1px solid #e0e0e0;

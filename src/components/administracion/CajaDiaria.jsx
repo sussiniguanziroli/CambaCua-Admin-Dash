@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { fetchDailyTransactions } from '../../services/cashFlowService';
 import SaleDetailModal from './SaleDetailModal';
-import CajaDetailPopup from './CajaDetailPopup'; // <-- Importar el nuevo popup
+import CajaDetailPopup from './CajaDetailPopup';
+import VentasGuardadasModal from './VentasGuardadasModal';
+import PaySaleDebtModal from './PaySaleDebtModal';
 import { useNavigate, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { db } from '../../firebase/config';
 import { doc, writeBatch, increment, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
-import { FaFileInvoiceDollar, FaHandHoldingUsd, FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { FaFileInvoiceDollar, FaHandHoldingUsd, FaPencilAlt, FaTrash, FaSave, FaExclamationTriangle, FaMoneyBillWave } from 'react-icons/fa';
 
-// ... (Iconos de Fa... sin cambios)
-
-
-
-// ... (Función cancelSale sin cambios)
 const cancelSale = async (sale) => {
     if (sale.type !== 'Venta Presencial' && sale.type !== 'Pedido Online') {
         throw new Error("Solo se pueden cancelar ventas o pedidos.");
@@ -61,7 +58,6 @@ const cancelSale = async (sale) => {
     await batch.commit();
 };
 
-
 const CajaDiaria = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [transactions, setTransactions] = useState([]);
@@ -69,7 +65,10 @@ const CajaDiaria = () => {
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [filterType, setFilterType] = useState('Todos');
     const [filterMethod, setFilterMethod] = useState('Todos');
-    const [popupData, setPopupData] = useState(null); // <-- Estado para el popup
+    const [filterPaymentStatus, setFilterPaymentStatus] = useState('Todos');
+    const [popupData, setPopupData] = useState(null);
+    const [isVentasGuardadasOpen, setIsVentasGuardadasOpen] = useState(false);
+    const [saleToPayDebt, setSaleToPayDebt] = useState(null);
     const navigate = useNavigate();
 
     const fetchAndSetTransactions = useCallback(async (date) => {
@@ -83,7 +82,6 @@ const CajaDiaria = () => {
         fetchAndSetTransactions(selectedDate);
     }, [selectedDate, fetchAndSetTransactions]);
 
-    // ... (summary useMemo sin cambios)
     const summary = useMemo(() => {
         return transactions.reduce((acc, trans) => {
             if (trans.type === 'Venta Presencial' || trans.type === 'Pedido Online') {
@@ -126,7 +124,6 @@ const CajaDiaria = () => {
         return summary.totalEfectivo + summary.totalElectronico;
     }, [summary.totalEfectivo, summary.totalElectronico]);
 
-    // --- NUEVO useMemo para los detalles del popup ---
     const summaryDetails = useMemo(() => {
         const metodosElectronicos = {};
         const metodosCobranza = {};
@@ -215,14 +212,33 @@ const CajaDiaria = () => {
         };
     }, [transactions, summary, totalEnCaja]);
 
-    // ... (filteredTransactions, formatDateForInput, uniqueTypes, uniqueMethods, handleDeleteSale, handleEditSale sin cambios)
+    const getPaymentStatus = (trans) => {
+        if (trans.type === 'Cobro Deuda') return 'paid';
+        
+        const debt = trans.debt || 0;
+        const total = trans.total || 0;
+        const paid = (trans.payments || []).reduce((sum, p) => sum + parseFloat(p.amount), 0);
+        
+        if (debt === 0 || Math.abs(debt) < 0.01) return 'paid';
+        if (paid === 0 || Math.abs(paid) < 0.01) return 'unpaid';
+        if (debt > 0 && paid > 0) return 'partial';
+        return 'paid';
+    };
+
     const filteredTransactions = useMemo(() => {
         return transactions.filter(t => {
             const typeOk = filterType === 'Todos' || t.type === filterType;
             const methodOk = filterMethod === 'Todos' || (t.paymentMethod === filterMethod || (t.payments || []).some(p => p.method === filterMethod));
-            return typeOk && methodOk;
+            
+            let statusOk = true;
+            if (filterPaymentStatus !== 'Todos') {
+                const status = getPaymentStatus(t);
+                statusOk = filterPaymentStatus === status;
+            }
+            
+            return typeOk && methodOk && statusOk;
         });
-    }, [transactions, filterType, filterMethod]);
+    }, [transactions, filterType, filterMethod, filterPaymentStatus]);
     
     const formatDateForInput = (date) => {
         const d = new Date(date);
@@ -303,22 +319,59 @@ const CajaDiaria = () => {
         });
     };
 
+    const handleLoadSale = (sale, step) => {
+        navigate('/admin/vender', {
+            state: {
+                savedSale: sale,
+                loadStep: step
+            }
+        });
+    };
+
+    const handlePayDebt = (e, sale) => {
+        e.stopPropagation();
+        setSaleToPayDebt(sale);
+    };
+
+    const handlePaymentComplete = () => {
+        fetchAndSetTransactions(selectedDate);
+    };
 
     return (
         <div className="caja-diaria-container">
-            {/* --- Modales --- */}
             {selectedTransaction && <SaleDetailModal sale={selectedTransaction} onClose={() => setSelectedTransaction(null)} />}
             {popupData && <CajaDetailPopup data={popupData} onClose={() => setPopupData(null)} />}
+            <VentasGuardadasModal 
+                isOpen={isVentasGuardadasOpen} 
+                onClose={() => setIsVentasGuardadasOpen(false)}
+                selectedDate={selectedDate}
+                onLoadSale={handleLoadSale}
+            />
+            {saleToPayDebt && (
+                <PaySaleDebtModal
+                    sale={saleToPayDebt}
+                    onClose={() => setSaleToPayDebt(null)}
+                    onPaymentComplete={handlePaymentComplete}
+                />
+            )}
 
             <div className="caja-page-header">
                 <h1>Caja Diaria</h1>
-                <div className="caja-date-picker">
-                    <label htmlFor="sale-date">Seleccionar Fecha:</label>
-                    <input type="date" id="sale-date" value={formatDateForInput(selectedDate)} onChange={e => {
-                        const newDate = new Date(e.target.value);
-                        const offset = newDate.getTimezoneOffset() * 60000;
-                        setSelectedDate(new Date(newDate.getTime() + offset));
-                    }}/>
+                <div className="caja-header-actions">
+                    <button 
+                        className="btn btn-ventas-guardadas"
+                        onClick={() => setIsVentasGuardadasOpen(true)}
+                    >
+                        <FaSave /> Ventas Guardadas
+                    </button>
+                    <div className="caja-date-picker">
+                        <label htmlFor="sale-date">Seleccionar Fecha:</label>
+                        <input type="date" id="sale-date" value={formatDateForInput(selectedDate)} onChange={e => {
+                            const newDate = new Date(e.target.value);
+                            const offset = newDate.getTimezoneOffset() * 60000;
+                            setSelectedDate(new Date(newDate.getTime() + offset));
+                        }}/>
+                    </div>
                 </div>
             </div>
              <div className="caja-filters">
@@ -328,9 +381,14 @@ const CajaDiaria = () => {
                 <select value={filterMethod} onChange={e => setFilterMethod(e.target.value)}>
                     {uniqueMethods.map(m => <option key={m} value={m}>{m}</option>)}
                 </select>
+                <select value={filterPaymentStatus} onChange={e => setFilterPaymentStatus(e.target.value)}>
+                    <option value="Todos">Todos los Estados</option>
+                    <option value="paid">Pagado Completo</option>
+                    <option value="partial">Pago Parcial</option>
+                    <option value="unpaid">Sin Pagar</option>
+                </select>
             </div>
 
-            {/* --- Sección de Resumen Principal (AHORA CLICKEABLE) --- */}
             <div className="caja-summary-main">
                 <div 
                     className="caja-summary-card total-caja" 
@@ -355,7 +413,6 @@ const CajaDiaria = () => {
                 </div>
             </div>
 
-            {/* --- Sección de Resumen Secundaria (AHORA CLICKEABLE) --- */}
             <div className="caja-summary-secondary">
                 <div 
                     className="caja-summary-card"
@@ -389,70 +446,96 @@ const CajaDiaria = () => {
                 )}
             </div>
 
-            {/* ... (Lista de transacciones sin cambios) ... */}
             <div className="caja-transactions-list">
                 <h3>Transacciones del Día ({filteredTransactions.length})</h3>
                 {isLoading ? <p>Cargando...</p> : (
                     filteredTransactions.length > 0 ? (
                         <div className="caja-grid">
-                            {filteredTransactions.map(trans => (
-                                <div key={trans.id} className="caja-transaction-card" onClick={() => setSelectedTransaction(trans)}>
-                                    <div className="card-header">
-                                        <span className={`type-badge ${trans.type.includes('Venta') || trans.type.includes('Pedido') ? 'venta' : 'cobro'}`}>
-                                            {trans.type.includes('Venta') || trans.type.includes('Pedido') ? <FaFileInvoiceDollar/> : <FaHandHoldingUsd/>}
-                                            {trans.type}
-                                        </span>
-                                        <span className="time">{trans.createdAt.toDate().toLocaleTimeString('es-AR')}</span>
-                                    </div>
-                                    <div className="card-body">
-                                        <p className="customer">
-                                            {trans.tutorInfo?.id ? (
-                                                <Link 
-                                                className='link-class'
-                                                    to={`/admin/tutor-profile/${trans.tutorInfo.id}`} 
-                                                    target="_blank" 
-                                                    rel="noopener noreferrer" 
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    title="Ver perfil del tutor"
-                                                >
-                                                    {trans.tutorInfo.name || trans.tutorName || 'Tutor'}
-                                                </Link>
-                                            ) : (
-                                                trans.tutorInfo?.name || trans.tutorName || 'N/A'
-                                            )}
-                                        </p>
-                                        <p className="details">
-                                            {trans.patientInfo?.id && (
-                                                <>
+                            {filteredTransactions.map(trans => {
+                                const paymentStatus = getPaymentStatus(trans);
+                                const hasDebt = (trans.debt || 0) > 0;
+                                
+                                return (
+                                    <div 
+                                        key={trans.id} 
+                                        className={`caja-transaction-card ${paymentStatus === 'unpaid' ? 'unpaid' : ''} ${paymentStatus === 'partial' ? 'partial-payment' : ''}`}
+                                        onClick={() => setSelectedTransaction(trans)}
+                                    >
+                                        <div className="card-header">
+                                            <span className={`type-badge ${trans.type.includes('Venta') || trans.type.includes('Pedido') ? 'venta' : 'cobro'}`}>
+                                                {trans.type.includes('Venta') || trans.type.includes('Pedido') ? <FaFileInvoiceDollar/> : <FaHandHoldingUsd/>}
+                                                {trans.type}
+                                            </span>
+                                            <span className="time">{trans.createdAt.toDate().toLocaleTimeString('es-AR')}</span>
+                                        </div>
+                                        <div className="card-body">
+                                            <p className="customer">
+                                                {trans.tutorInfo?.id ? (
                                                     <Link 
                                                     className='link-class'
-                                                        to={`/admin/paciente-profile/${trans.patientInfo.id}`} 
+                                                        to={`/admin/tutor-profile/${trans.tutorInfo.id}`} 
                                                         target="_blank" 
                                                         rel="noopener noreferrer" 
                                                         onClick={(e) => e.stopPropagation()}
-                                                        title="Ver perfil del paciente"
+                                                        title="Ver perfil del tutor"
                                                     >
-                                                        {trans.patientInfo.name || 'Paciente'}
+                                                        {trans.tutorInfo.name || trans.tutorName || 'Tutor'}
                                                     </Link>
-                                                    {' / '}
-                                                </>
+                                                ) : (
+                                                    trans.tutorInfo?.name || trans.tutorName || 'N/A'
+                                                )}
+                                            </p>
+                                            <p className="details">
+                                                {trans.patientInfo?.id && (
+                                                    <>
+                                                        <Link 
+                                                        className='link-class'
+                                                            to={`/admin/paciente-profile/${trans.patientInfo.id}`} 
+                                                            target="_blank" 
+                                                            rel="noopener noreferrer" 
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            title="Ver perfil del paciente"
+                                                        >
+                                                            {trans.patientInfo.name || 'Paciente'}
+                                                        </Link>
+                                                        {' / '}
+                                                    </>
+                                                )}
+                                                {trans.type === 'Cobro Deuda' ? `Pagó con ${trans.paymentMethod}` : 
+                                                 (trans.payments && trans.payments.length > 0) ? `${trans.payments.length} método(s) de pago` :
+                                                 (trans.paymentMethod || 'N/A')}
+                                            </p>
+                                            {hasDebt && (
+                                                <div className="payment-status-indicator">
+                                                    <FaExclamationTriangle />
+                                                    <span>
+                                                        {paymentStatus === 'unpaid' && 'Sin Pagar'}
+                                                        {paymentStatus === 'partial' && `Deuda: $${trans.debt.toFixed(2)}`}
+                                                    </span>
+                                                </div>
                                             )}
-                                            {trans.type === 'Cobro Deuda' ? `Pagó con ${trans.paymentMethod}` : 
-                                             (trans.payments && trans.payments.length > 0) ? `${trans.payments.length} método(s) de pago` :
-                                             (trans.paymentMethod || 'N/A')}
-                                        </p>
+                                        </div>
+                                        <div className="card-footer">
+                                            <span className="total">${(trans.total || trans.amount).toFixed(2)}</span>
+                                            { (trans.type === 'Venta Presencial' || trans.type === 'Pedido Online') &&
+                                                <div className="card-actions">
+                                                    {hasDebt && (
+                                                        <button 
+                                                            title="Cobrar Deuda" 
+                                                            className="btn pay-debt" 
+                                                            onClick={(e) => handlePayDebt(e, trans)}
+                                                        >
+                                                            <FaMoneyBillWave/>
+                                                        </button>
+                                                    )}
+                                                    <button title="Editar Venta" className="btn edit" onClick={(e) => handleEditSale(e, trans)}><FaPencilAlt/></button>
+                                                    <button title="Cancelar Venta" className="btn delete" onClick={(e) => handleDeleteSale(e, trans)}><FaTrash/></button>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
-                                    <div className="card-footer">
-                                        <span className="total">${(trans.total || trans.amount).toFixed(2)}</span>
-                                        { (trans.type === 'Venta Presencial' || trans.type === 'Pedido Online') &&
-                                            <div className="card-actions">
-                                                <button title="Editar Venta" className="btn edit" onClick={(e) => handleEditSale(e, trans)}><FaPencilAlt/></button>
-                                                <button title="Cancelar Venta" className="btn delete" onClick={(e) => handleDeleteSale(e, trans)}><FaTrash/></button>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     ) : <p className="no-results-message">No se encontraron transacciones para esta fecha.</p>
                 )}
