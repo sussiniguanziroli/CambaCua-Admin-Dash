@@ -362,7 +362,7 @@ const CajaDiaria = () => {
                         className="btn btn-ventas-guardadas"
                         onClick={() => setIsVentasGuardadasOpen(true)}
                     >
-                        <FaSave /> Ventas Guardadas
+                        <FaSave /> Prespuestos de Hoy
                     </button>
                     <div className="caja-date-picker">
                         <label htmlFor="sale-date">Seleccionar Fecha:</label>

@@ -12,7 +12,12 @@ import {
   where,
 } from "firebase/firestore";
 import Swal from "sweetalert2";
-import { FaStethoscope, FaRegCalendarAlt, FaRegClock, FaUser, FaDog } from "react-icons/fa";
+import {
+  FaStethoscope,
+  FaRegCalendarAlt,
+  FaRegClock,
+} from "react-icons/fa";
+import AppointmentModal from "./AppointmentModal";
 
 const AppointmentCard = ({ appointment, onClick, viewMode }) => {
   const getCardPosition = () => {
@@ -28,13 +33,18 @@ const AppointmentCard = ({ appointment, onClick, viewMode }) => {
     return { top: `${top}px`, height: `${height}px` };
   };
 
+  const tutor = appointment.tutorName || "Genérico";
+  const paciente = appointment.pacienteName || "Genérico";
+
   return (
     <div
       className={`appointment-card view-${viewMode}`}
       style={viewMode === "day" ? getCardPosition() : {}}
       onClick={onClick}
     >
-      <p className="patient-name">{appointment.pacienteName}</p>
+      <p className="patient-name">
+        {paciente} ({tutor})
+      </p>
       <p className="service-name">
         <FaStethoscope /> {appointment.services?.[0]?.nombre || "Consulta"}
       </p>
@@ -45,387 +55,6 @@ const AppointmentCard = ({ appointment, onClick, viewMode }) => {
           minute: "2-digit",
         })}
       </p>
-    </div>
-  );
-};
-
-const AppointmentModal = ({
-  isOpen,
-  onClose,
-  selectedDate,
-  appointmentData,
-  onSave,
-  onDelete,
-}) => {
-  const [formData, setFormData] = useState({
-    tutor: null,
-    paciente: null,
-    date: "",
-    startTime: "",
-    endTime: "",
-    services: [],
-    notes: "",
-  });
-
-  const [allTutores, setAllTutores] = useState([]);
-  const [allPacientes, setAllPacientes] = useState([]);
-  const [availableServices, setAvailableServices] = useState([]);
-
-  const [tutorInput, setTutorInput] = useState("");
-  const [pacienteInput, setPacienteInput] = useState("");
-  
-  const [filteredTutores, setFilteredTutores] = useState([]);
-  const [filteredPacientes, setFilteredPacientes] = useState([]);
-
-  const [isTutorDropdownOpen, setIsTutorDropdownOpen] = useState(false);
-  const [isPacienteDropdownOpen, setIsPacienteDropdownOpen] = useState(false);
-
-  const [searchBy, setSearchBy] = useState("tutor");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const initialDate = selectedDate
-      ? selectedDate.toISOString().split("T")[0]
-      : new Date().toISOString().split("T")[0];
-    if (appointmentData) {
-      setFormData({
-        tutor: { id: appointmentData.tutorId, name: appointmentData.tutorName },
-        paciente: {
-          id: appointmentData.pacienteId,
-          name: appointmentData.pacienteName,
-        },
-        date: appointmentData.startTime.toISOString().split("T")[0],
-        startTime: appointmentData.startTime.toTimeString().substring(0, 5),
-        endTime: appointmentData.endTime
-          ? appointmentData.endTime.toTimeString().substring(0, 5)
-          : "",
-        services: appointmentData.services || [],
-        notes: appointmentData.notes || "",
-      });
-      setTutorInput(appointmentData.tutorName || "");
-      setPacienteInput(appointmentData.pacienteName || "");
-    } else {
-      setFormData({
-        tutor: null,
-        paciente: null,
-        date: initialDate,
-        startTime: "",
-        endTime: "",
-        services: [],
-        notes: "",
-      });
-      setTutorInput("");
-      setPacienteInput("");
-    }
-    setSearchBy("tutor");
-  }, [isOpen, selectedDate, appointmentData]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const fetchInitialData = async () => {
-      try {
-        const [tutorsSnap, pacientesSnap, servicesSnap] = await Promise.all([
-          getDocs(collection(db, "tutores")),
-          getDocs(collection(db, "pacientes")),
-          getDocs(
-            query(
-              collection(db, "productos_presenciales"),
-              where("category", "!=", "peluqueria")
-            )
-          ),
-        ]);
-
-        const tutorsList = tutorsSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        const pacientesList = pacientesSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
-        tutorsList.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-        pacientesList.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-
-        setAllTutores(tutorsList);
-        setAllPacientes(pacientesList);
-        setFilteredTutores(tutorsList); // Initially show all
-        setFilteredPacientes(pacientesList); // Initially show all
-
-        setAvailableServices(
-          servicesSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        );
-      } catch (error) {
-        console.error("Error fetching initial data: ", error);
-      }
-    };
-    fetchInitialData();
-  }, [isOpen]);
-
-  const handleTutorInput = (e) => {
-    const value = e.target.value;
-    setTutorInput(value);
-    setFormData(prev => ({...prev, tutor: null, paciente: null}));
-    setPacienteInput("");
-    setIsTutorDropdownOpen(true);
-    
-    if (value) {
-      setFilteredTutores(
-        allTutores.filter(t => t.name.toLowerCase().includes(value.toLowerCase()))
-      );
-    } else {
-      setFilteredTutores(allTutores);
-    }
-  };
-  
-  const handlePacienteInput = (e) => {
-    const value = e.target.value;
-    setPacienteInput(value);
-    setFormData(prev => ({...prev, paciente: null}));
-    setIsPacienteDropdownOpen(true);
-
-    const sourceList = (searchBy === 'tutor' && formData.tutor)
-      ? allPacientes.filter(p => p.tutorId === formData.tutor.id)
-      : allPacientes;
-
-    if (value) {
-      setFilteredPacientes(
-        sourceList.filter(p => p.name.toLowerCase().includes(value.toLowerCase()))
-      );
-    } else {
-      setFilteredPacientes(sourceList);
-    }
-  };
-
-  const selectTutor = (tutor) => {
-    setTutorInput(tutor.name);
-    setFormData(prev => ({ ...prev, tutor, paciente: null }));
-    setPacienteInput("");
-    setIsTutorDropdownOpen(false);
-    
-    setFilteredPacientes(allPacientes.filter(p => p.tutorId === tutor.id));
-  };
-  
-  const selectPaciente = (paciente) => {
-    setPacienteInput(paciente.name);
-    setIsPacienteDropdownOpen(false);
-    
-    if (searchBy === 'patient') {
-      const correspondingTutor = allTutores.find(t => t.id === paciente.tutorId);
-      if (correspondingTutor) {
-        setTutorInput(correspondingTutor.name);
-        setFormData(prev => ({ ...prev, paciente, tutor: correspondingTutor }));
-      } else {
-        setFormData(prev => ({ ...prev, paciente, tutor: null }));
-        setTutorInput("");
-      }
-    } else {
-      setFormData(prev => ({ ...prev, paciente }));
-    }
-  };
-
-  const handleSearchToggle = () => {
-    setSearchBy(prev => (prev === 'tutor' ? 'patient' : 'tutor'));
-    setFormData({ ...formData, tutor: null, paciente: null });
-    setTutorInput("");
-    setPacienteInput("");
-    setFilteredTutores(allTutores);
-    setFilteredPacientes(allPacientes);
-  };
-  
-  const handleChange = (e) =>
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-
-  const handleServiceToggle = (service) =>
-    setFormData((prev) => ({
-      ...prev,
-      services: prev.services.some((s) => s.id === service.id)
-        ? prev.services.filter((s) => s.id !== service.id)
-        : [
-            ...prev.services,
-            {
-              id: service.id,
-              nombre: service.name || service.nombre,
-              precio: service.price ?? null,
-            },
-          ],
-    }));
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.tutor || !formData.paciente) {
-        Swal.fire("Datos incompletos", "Debe seleccionar un tutor y un paciente válidos.", "warning");
-        return;
-    }
-    setIsSubmitting(true);
-    onSave(formData, appointmentData?.id).finally(() => setIsSubmitting(false));
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="agenda-modal-overlay">
-      <div className="agenda-modal-content">
-        <div className="modal-header">
-          <h3>{appointmentData ? "Editar Cita" : "Agendar Nueva Cita"}</h3>
-          <button className="close-btn" onClick={onClose}>
-            &times;
-          </button>
-        </div>
-        <form onSubmit={handleSubmit} autoComplete="off">
-          <div className="form-group">
-            <label>Buscar por</label>
-            <div className="search-by-toggle">
-              <button type="button" className={`btn ${searchBy === 'tutor' ? 'btn-primary' : 'btn-outline'}`} onClick={searchBy === 'tutor' ? null : handleSearchToggle}><FaUser/> Tutor</button>
-              <button type="button" className={`btn ${searchBy === 'patient' ? 'btn-primary' : 'btn-outline'}`} onClick={searchBy === 'patient' ? null : handleSearchToggle}><FaDog/> Paciente</button>
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group combobox-container">
-              <label>Tutor</label>
-              <input
-                type="text"
-                value={tutorInput}
-                onChange={handleTutorInput}
-                onFocus={() => {
-                  handleTutorInput({ target: { value: tutorInput } });
-                  setIsTutorDropdownOpen(true);
-                }}
-                onBlur={() => setTimeout(() => setIsTutorDropdownOpen(false), 200)}
-                placeholder="Buscar o seleccionar tutor..."
-                required
-                disabled={searchBy === 'patient'}
-              />
-              {isTutorDropdownOpen && (
-                <ul className="combobox-results">
-                  {filteredTutores.length > 0 ? (
-                    filteredTutores.map((t) => (
-                      <li key={t.id} onMouseDown={() => selectTutor(t)}>
-                        {t.name}
-                      </li>
-                    ))
-                  ) : (
-                    <li className="no-results">No se encontraron tutores</li>
-                  )}
-                </ul>
-              )}
-            </div>
-            <div className="form-group combobox-container">
-              <label>Paciente</label>
-              <input
-                type="text"
-                value={pacienteInput}
-                onChange={handlePacienteInput}
-                onFocus={() => {
-                  handlePacienteInput({ target: { value: pacienteInput } });
-                  setIsPacienteDropdownOpen(true);
-                }}
-                onBlur={() => setTimeout(() => setIsPacienteDropdownOpen(false), 200)}
-                placeholder={searchBy === 'tutor' && !formData.tutor ? "Seleccione un tutor" : "Buscar o seleccionar paciente..."}
-                required
-                disabled={searchBy === 'tutor' && !formData.tutor}
-              />
-              {isPacienteDropdownOpen && (
-                <ul className="combobox-results">
-                  {filteredPacientes.length > 0 ? (
-                    filteredPacientes.map((p) => (
-                      <li key={p.id} onMouseDown={() => selectPaciente(p)}>
-                        {p.name}
-                      </li>
-                    ))
-                  ) : (
-                    <li className="no-results">No se encontraron pacientes</li>
-                  )}
-                </ul>
-              )}
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label>Fecha</label>
-              <input
-                type="date"
-                name="date"
-                value={formData.date || ""}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Hora Inicio</label>
-              <input
-                type="time"
-                name="startTime"
-                value={formData.startTime || ""}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Hora Fin</label>
-              <input
-                type="time"
-                name="endTime"
-                value={formData.endTime || ""}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="form-group">
-            <label>Servicios</label>
-            <div className="services-list">
-              {availableServices.map((service) => (
-                <button
-                  type="button"
-                  key={service.id}
-                  className={`service-chip ${
-                    formData.services?.some((s) => s.id === service.id)
-                      ? "selected"
-                      : ""
-                  }`}
-                  onClick={() => handleServiceToggle(service)}
-                >
-                  {service.name || service.nombre}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="form-group">
-            <label>Notas</label>
-            <textarea
-              name="notes"
-              value={formData.notes || ""}
-              onChange={handleChange}
-            ></textarea>
-          </div>
-          <div className="modal-footer">
-            <div>
-              {appointmentData && (
-                <button
-                  type="button"
-                  className="btn btn-danger-outline"
-                  onClick={() => onDelete(appointmentData)}
-                >
-                  Eliminar
-                </button>
-              )}
-            </div>
-            <div style={{ display: "flex", gap: "1rem" }}>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={onClose}
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Guardando..." : "Guardar"}
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
     </div>
   );
 };
@@ -502,19 +131,43 @@ const Agenda = () => {
   const handleCloseModal = () => setIsModalOpen(false);
 
   const handleSave = async (formData, appointmentId) => {
-    if (!formData.tutor || !formData.paciente || !formData.startTime) {
-      Swal.fire(
-        "Campos incompletos",
-        "Tutor, paciente y hora son requeridos.",
-        "warning"
-      );
-      return Promise.reject();
+    const isGeneric = formData.isGeneric;
+    let appointmentData;
+
+    if (isGeneric) {
+      if (!formData.genericTutorName || !formData.genericPacienteName) {
+        Swal.fire(
+          "Campos incompletos",
+          "Tutor y paciente son requeridos.",
+          "warning"
+        );
+        return Promise.reject();
+      }
+      appointmentData = {
+        tutorId: null,
+        tutorName: formData.genericTutorName,
+        pacienteId: null,
+        pacienteName: formData.genericPacienteName,
+      };
+    } else {
+      if (!formData.tutor || !formData.paciente) {
+        Swal.fire(
+          "Campos incompletos",
+          "Tutor y paciente son requeridos.",
+          "warning"
+        );
+        return Promise.reject();
+      }
+      appointmentData = {
+        tutorId: formData.tutor.id,
+        tutorName: formData.tutor.name,
+        pacienteId: formData.paciente.id,
+        pacienteName: formData.paciente.name,
+      };
     }
+
     const appointment = {
-      tutorId: formData.tutor.id,
-      tutorName: formData.tutor.name,
-      pacienteId: formData.paciente.id,
-      pacienteName: formData.paciente.name,
+      ...appointmentData,
       startTime: Timestamp.fromDate(
         new Date(`${formData.date}T${formData.startTime}`)
       ),
@@ -524,6 +177,7 @@ const Agenda = () => {
       services: formData.services,
       notes: formData.notes,
     };
+
     try {
       if (appointmentId) {
         await updateDoc(doc(db, "citas", appointmentId), appointment);

@@ -111,7 +111,7 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
             <div className="navigator-buttons">
                 <button onClick={prevStep} className="btn btn-secondary" disabled={isSubmitting || isSaving}>Anterior</button>
                 <button onClick={handleSaveSale} className="btn btn-outline" disabled={isSubmitting || isSaving}>
-                    {isSaving ? 'Guardando...' : 'Guardar Venta'}
+                    {isSaving ? 'Generando...' : 'Generar Presupuesto'}
                 </button>
                 <button onClick={onConfirm} className="btn btn-confirm" disabled={isSubmitting || isSaving}>
                     {isSubmitting ? 'Procesando...' : 'Siguiente'}

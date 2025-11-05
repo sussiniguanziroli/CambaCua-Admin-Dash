@@ -162,11 +162,11 @@ const VentasGuardadasModal = ({ isOpen, onClose, selectedDate, onLoadSale }) => 
                 <button className="sale-detail-close-btn" onClick={onClose} aria-label="Cerrar">
                     <FaTimes />
                 </button>
-                <h3>Ventas Guardadas - {selectedDate.toLocaleDateString('es-AR')}</h3>
+                <h3>Presupuestos - {selectedDate.toLocaleDateString('es-AR')}</h3>
 
                 <div className="ventas-guardadas-body">
                     {isLoading ? (
-                        <p>Cargando ventas guardadas...</p>
+                        <p>Cargando presupuestos...</p>
                     ) : savedSales.length === 0 ? (
                         <p className="no-results-message">No hay ventas guardadas para este día</p>
                     ) : (
