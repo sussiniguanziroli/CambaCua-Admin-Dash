@@ -1,126 +1,145 @@
-// _addPresential.scss
+// _ItemForm.scss
 
-// Variables consistent with _presential.scss
+// --- Variables ---
 $primary-color: #3498db;
 $primary-dark: #2980b9;
 $grey-medium: #e0e0e0;
+$grey-border: #dfe6e9;
 $text-color: #34495e;
-$border-radius: 8px;
-$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-$transition: all 0.3s ease;
+$white: #ffffff;
+$radius: 8px;
+$shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+$transition: all 0.25s ease;
 
-// Container for the form page
-.presential-form-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2.5rem;
-    background-color: #fff;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow;
+// --- Form Page Container ---
+.item-form-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background-color: $white;
+  border-radius: $radius;
+  box-shadow: $shadow;
 
-    // Form title
+  .item-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
     h2 {
-        text-align: center;
-        margin-top: 0;
-        margin-bottom: 2rem;
-        color: $primary-dark;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 1.5rem; // Reduced margin
+      color: $primary-dark;
+    }
+  }
+
+  .item-form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-weight: 500;
+      color: $text-color;
+      font-size: 0.9rem; // Slightly smaller label
     }
 
-    // The form element itself
-    .presential-form {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      padding: 0.8rem;
+      border-radius: $radius * 0.75;
+      border: 1px solid $grey-border;
+      font-size: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+      transition: $transition;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+      }
+      &:disabled {
+        background-color: lighten($grey-medium, 5%);
+      }
     }
 
-    // Styling for each label + input group
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-
-        label {
-            font-weight: 500;
-            color: $text-color;
-        }
-        
-        input[type="text"],
-        input[type="number"],
-        textarea,
-        select {
-            padding: 0.8rem;
-            border-radius: $border-radius * 0.75;
-            border: 1px solid $grey-medium;
-            font-size: 1rem;
-            width: 100%;
-            box-sizing: border-box; // Ensures padding doesn't affect width
-
-            &:focus {
-                outline: none;
-                border-color: $primary-color;
-                box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
-            }
-        }
-        
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
+    textarea {
+      min-height: 120px;
+      resize: vertical;
     }
     
-    // For placing form groups side-by-side (e.g., Category and Subcategory)
-    .form-row {
-        display: flex;
-        gap: 1.5rem;
-        
-        > .form-group {
-            flex: 1;
-        }
-    }
-
-    // Radio button styling for 'Producto' vs 'Servicio'
-    .radio-group {
-        display: flex;
-        gap: 2rem;
-        padding: 0.5rem 0;
-        
-        label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            font-weight: normal;
-        }
-    }
-
-    // Main submit button
-    .btn-submit {
-        padding: 0.9rem;
+    // For nested price-per-ml
+    &--nested {
         margin-top: 1rem;
-        font-size: 1rem;
-        font-weight: 600;
-        background-color: $primary-color;
-        color: white;
-        border: none;
-        border-radius: $border-radius * 0.75;
-        cursor: pointer;
-        transition: $transition;
-
-        &:hover {
-            background-color: $primary-dark;
-        }
-
-        &:disabled {
-            background-color: darken($grey-medium, 10%);
-            cursor: not-allowed;
-        }
+        padding-left: 1rem;
+        border-left: 3px solid $grey-medium;
     }
-}
+  }
 
-// Loading message style (if needed)
-.loading-message {
-    text-align: center;
-    padding: 3rem;
-    font-size: 1.1rem;
-    color: $text-color;
+  .item-form__row {
+    display: flex;
+    gap: 1.5rem;
+    @media (max-width: 600px) {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    > .item-form__group {
+      flex: 1;
+    }
+  }
+
+  .item-form__radio-group {
+    display: flex;
+    gap: 2rem;
+    padding: 0.5rem 0;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-weight: normal;
+    }
+  }
+  
+  .item-form__checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      
+      label {
+          font-weight: normal;
+          cursor: pointer;
+      }
+      input[type="checkbox"] {
+          transform: scale(1.2);
+          cursor: pointer;
+      }
+  }
+
+  .item-form__submit-btn {
+    padding: 0.9rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: $primary-color;
+    color: $white;
+    border: none;
+    border-radius: $radius * 0.75;
+    cursor: pointer;
+    transition: $transition;
+
+    &:hover {
+      background-color: $primary-dark;
+    }
+
+    &:disabled {
+      background-color: darken($grey-medium, 10%);
+      cursor: not-allowed;
+    }
+  }
 }

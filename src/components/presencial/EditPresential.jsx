@@ -94,19 +94,77 @@ const EditPresential = () => {
         }
     };
     
-    if (isDataLoading) { return <p className="loading-message">Cargando datos del item...</p>; }
+    if (isDataLoading) { return <p className="item-list__message">Cargando datos del item...</p>; }
 
     return (
-        <div className="presential-form-container">
-            <h2>Editar Item Presencial</h2>
-            <form onSubmit={handleSubmit} className="presential-form">
-                <div className="form-group"><label>Tipo de Item</label><div className="radio-group"><label><input type="radio" value="producto" checked={tipo === 'producto'} onChange={(e) => setTipo(e.target.value)} /> Producto</label><label><input type="radio" value="servicio" checked={tipo === 'servicio'} onChange={(e) => setTipo(e.target.value)} /> Servicio</label></div></div>
-                <div className="form-group"><label htmlFor="name">Nombre</label><input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required /></div>
-                <div className="form-group"><label htmlFor="description">Descripción</label><textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} required /></div>
-                <div className="form-group"><label htmlFor="price">Precio (Contenedor Entero)</label><input id="price" type="number" value={price} onChange={(e) => setPrice(e.target.value)} required min="0" step="0.01" /></div>
-                <div className="form-row"><div className="form-group"><label htmlFor="category">Categoría</label><select id="category" value={category} onChange={handleCategoriaChange} required disabled={isCatLoading}><option value="">{isCatLoading ? 'Cargando...' : 'Seleccionar Categoría'}</option>{categoriasDb.map(cat => <option key={cat.adress} value={cat.adress}>{cat.nombre}</option>)}</select></div>{subcategoriasDb.length > 0 && (<div className="form-group"><label htmlFor="subcat">Subcategoría</label><select id="subcat" value={subcat} onChange={(e) => setSubcat(e.target.value)}><option value="">Opcional</option>{subcategoriasDb.map(sub => <option key={sub} value={sub}>{sub}</option>)}</select></div>)}</div>
-                <div className="form-group doseable-section"><div className="checkbox-group"><input id="isDoseable" type="checkbox" checked={isDoseable} onChange={(e) => setIsDoseable(e.target.checked)} /><label htmlFor="isDoseable">Producto Dosificable (ej: inyectables)</label></div>{isDoseable && (<div className="form-group"><label htmlFor="pricePerML">Precio por ML</label><input id="pricePerML" type="number" value={pricePerML} onChange={(e) => setPricePerML(e.target.value)} required min="0" step="0.01" placeholder="Ingrese el precio por mililitro"/></div>)}</div>
-                <button type="submit" className="btn-submit" disabled={isSubmitting}>{isSubmitting ? 'Actualizando...' : 'Actualizar Item'}</button>
+        <div className="item-form-container">
+            <form onSubmit={handleSubmit} className="item-form">
+                <h2>Editar Item Presencial</h2>
+
+                <div className="item-form__group">
+                    <label>Tipo de Item</label>
+                    <div className="item-form__radio-group">
+                        <label>
+                            <input type="radio" value="producto" checked={tipo === 'producto'} onChange={(e) => setTipo(e.target.value)} /> 
+                            Producto
+                        </label>
+                        <label>
+                            <input type="radio" value="servicio" checked={tipo === 'servicio'} onChange={(e) => setTipo(e.target.value)} /> 
+                            Servicio
+                        </label>
+                    </div>
+                </div>
+
+                <div className="item-form__group">
+                    <label htmlFor="name">Nombre</label>
+                    <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+                </div>
+
+                <div className="item-form__group">
+                    <label htmlFor="description">Descripción</label>
+                    <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+                </div>
+
+                <div className="item-form__group">
+                    <label htmlFor="price">Precio (Contenedor Entero)</label>
+                    <input id="price" type="number" value={price} onChange={(e) => setPrice(e.target.value)} required min="0" step="0.01" />
+                </div>
+
+                 <div className="item-form__row">
+                    <div className="item-form__group">
+                        <label htmlFor="category">Categoría</label>
+                        <select id="category" value={category} onChange={handleCategoriaChange} required disabled={isCatLoading}>
+                            <option value="">{isCatLoading ? 'Cargando...' : 'Seleccionar Categoría'}</option>
+                            {categoriasDb.map(cat => <option key={cat.adress} value={cat.adress}>{cat.nombre}</option>)}
+                        </select>
+                    </div>
+                    {subcategoriasDb.length > 0 && (
+                        <div className="item-form__group">
+                            <label htmlFor="subcat">Subcategoría</label>
+                            <select id="subcat" value={subcat} onChange={(e) => setSubcat(e.target.value)}>
+                                <option value="">Opcional</option>
+                                {subcategoriasDb.map(sub => <option key={sub} value={sub}>{sub}</option>)}
+                            </select>
+                        </div>
+                    )}
+                </div>
+
+                <div className="item-form__group item-form__group--doseable">
+                    <div className="item-form__checkbox-group">
+                        <input id="isDoseable" type="checkbox" checked={isDoseable} onChange={(e) => setIsDoseable(e.target.checked)} />
+                        <label htmlFor="isDoseable">Producto Dosificable (ej: inyectables)</label>
+                    </div>
+                    {isDoseable && (
+                        <div className="item-form__group item-form__group--nested">
+                            <label htmlFor="pricePerML">Precio por ML</label>
+                            <input id="pricePerML" type="number" value={pricePerML} onChange={(e) => setPricePerML(e.target.value)} required min="0" step="0.01" placeholder="Ingrese el precio por mililitro"/>
+                        </div>
+                    )}
+                </div>
+                
+                <button type="submit" className="item-form__submit-btn" disabled={isSubmitting}>
+                    {isSubmitting ? 'Actualizando...' : 'Actualizar Item'}
+                </button>
             </form>
         </div>
     );

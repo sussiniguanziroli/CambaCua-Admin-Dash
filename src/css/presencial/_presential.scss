@@ -1,39 +1,29 @@
+// _ItemList.scss
+
+// --- Variables ---
 $primary-color: #3498db;
 $primary-dark: #2980b9;
 $success-color: #2ecc71;
 $danger-color: #e74c3c;
+$warn-color: #f39c12;
 $grey-light: #f8f9fa;
 $grey-medium: #e0e0e0;
+$grey-border: #dfe6e9;
 $grey-dark: #7f8c8d;
 $text-color: #34495e;
-$border-radius: 8px;
-$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-$transition: all 0.3s ease;
+$text-light: #566573;
+$white: #ffffff;
+$radius: 8px;
+$shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+$transition: all 0.25s ease;
 
-.presential-container {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    h1 {
-        color: $primary-dark;
-        margin: 0;
-    }
-}
-
-.btn {
+// --- Helper Buttons ---
+// Scoped inside the list container to avoid collisions
+.item-list {
+  .item-list__btn {
     padding: 0.7rem 1.2rem;
     border: none;
-    border-radius: $border-radius;
+    border-radius: $radius;
     cursor: pointer;
     font-size: 0.9rem;
     font-weight: 500;
@@ -42,186 +32,305 @@ $transition: all 0.3s ease;
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
+    line-height: 1;
 
-    &.btn-primary { background-color: $primary-color; color: white; &:hover { background-color: $primary-dark; }}
-    &.btn-secondary { background-color: $grey-medium; color: $text-color; &:hover { background-color: darken($grey-medium, 10%); }}
-    &.btn-success { background-color: $success-color; color: white; &:hover { background-color: darken($success-color, 10%); }}
-    &.btn-danger { background-color: $danger-color; color: white; &:hover { background-color: darken($danger-color, 10%); }}
-    &.btn-edit { background-color: #f39c12; color: white; padding: 0.5rem; font-size: 1rem; &:hover { background-color: darken(#f39c12, 10%); }}
-    &.btn-delete { background-color: $danger-color; color: white; padding: 0.5rem; font-size: 1rem; &:hover { background-color: darken($danger-color, 10%); }}
+    &--primary {
+      background-color: $primary-color;
+      color: $white;
+      &:hover { background-color: $primary-dark; }
+    }
+    &--secondary {
+      background-color: $grey-medium;
+      color: $text-color;
+      &:hover { background-color: darken($grey-medium, 10%); }
+    }
+    &--success {
+      background-color: $success-color;
+      color: $white;
+      &:hover { background-color: darken($success-color, 10%); }
+    }
+    &--danger {
+      background-color: $danger-color;
+      color: $white;
+      &:hover { background-color: darken($danger-color, 10%); }
+    }
+    &--edit {
+      background-color: $warn-color;
+      color: $white;
+      padding: 0.5rem;
+      font-size: 1rem;
+      &:hover { background-color: darken($warn-color, 10%); }
+    }
+    &--delete {
+      background-color: $danger-color;
+      color: $white;
+      padding: 0.5rem;
+      font-size: 1rem;
+      &:hover { background-color: darken($danger-color, 10%); }
+    }
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
 }
 
-.filter-bar {
+// --- List Page Container ---
+.item-list {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    
+    h1 {
+      color: $primary-dark;
+      margin: 0;
+    }
+  }
+
+  &__filters {
     display: flex;
     gap: 1rem;
     align-items: flex-end;
     padding: 1.5rem;
-    background-color: #fff;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow;
+    background-color: $white;
+    border-radius: $radius;
+    box-shadow: $shadow;
     margin-bottom: 2rem;
     flex-wrap: wrap;
 
-    .filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        flex: 1 1 180px;
+    .item-list__filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1 1 180px;
 
-        label { font-size: 0.8rem; font-weight: 500; color: $grey-dark; }
-        input, select {
-            padding: 0.6rem 0.8rem;
-            border: 1px solid $grey-medium;
-            border-radius: $border-radius * 0.75;
-            font-size: 0.9rem;
-            &:focus { outline: none; border-color: $primary-color; box-shadow: 0 0 0 3px rgba($primary-color, 0.15); }
+      label { font-size: 0.8rem; font-weight: 500; color: $grey-dark; }
+      input, select {
+        padding: 0.6rem 0.8rem;
+        border: 1px solid $grey-border;
+        border-radius: $radius * 0.75;
+        font-size: 0.9rem;
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
         }
+      }
     }
-}
+  }
 
-.bulk-action-panel {
+  &__bulk-actions {
     padding: 1.5rem;
     margin-bottom: 2rem;
     border: 1px solid $primary-color;
-    border-radius: $border-radius;
+    border-radius: $radius;
     background-color: lighten($primary-color, 40%);
 
     h4 { margin-top: 0; color: $primary-dark; }
-    .bulk-actions-controls {
-        display: flex;
-        align-items: flex-end;
-        gap: 1rem;
-        flex-wrap: wrap;
+    
+    .item-list__bulk-controls {
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        label { font-size: 0.8rem; font-weight: 500; }
-        input {
-            padding: 0.7rem;
-            border-radius: $border-radius * 0.75;
-            border: 1px solid $grey-medium;
-            font-size: 0.9rem;
-        }
-    }
-}
 
-.controls-container {
+    .item-list__form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      label { font-size: 0.8rem; font-weight: 500; }
+      input {
+        padding: 0.7rem;
+        border-radius: $radius * 0.75;
+        border: 1px solid $grey-border;
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  &__controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
     padding: 1rem;
     background-color: $grey-light;
-    border-radius: $border-radius;
-    .item-count { font-weight: 500; color: $grey-dark; }
-}
+    border-radius: $radius;
+    
+    .item-list__item-count { font-weight: 500; color: $grey-dark; }
+  }
 
-.presential-list {
+  &__list {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-}
+    gap: 1rem; // Reduced gap
+  }
 
-.presential-card {
-    background-color: #fff;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    border-left: 5px solid $primary-color;
-    transition: $transition;
-    
-    &.selected {
-        background-color: lighten($primary-color, 42%);
-        border-left-color: darken($primary-color, 15%);
-    }
-
-    .card-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-        h3 { margin: 0; color: $text-color; }
-    }
-    
-    .item-selector input[type="checkbox"] {
-        transform: scale(1.4);
-        cursor: pointer;
-    }
-    
-    .type-badge {
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        &.producto { background-color: lighten($primary-color, 35%); color: $primary-dark; }
-        &.servicio { background-color: lighten($success-color, 35%); color: darken($success-color, 15%); }
-    }
-    
-    .card-description { color: lighten($text-color, 20%); font-size: 0.95rem; flex-grow: 1; margin-bottom: 1.5rem; }
-    
-    .card-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid $grey-light;
-    }
-
-    .card-info {
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
-        .price { font-size: 1.2rem; font-weight: 600; color: $primary-dark; }
-        .category { font-size: 0.8rem; color: $grey-dark; }
-    }
-
-    .card-actions { display: flex; gap: 0.5rem; }
-}
-
-.pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 2rem;
-    
-    button {
-        padding: 0.6rem 1rem;
-        border: 1px solid $grey-medium;
-        background-color: #fff;
-        border-radius: $border-radius * 0.75;
-        cursor: pointer;
-        transition: $transition;
-        
-        &:hover:not(:disabled) {
-            background-color: $grey-light;
-            border-color: $grey-dark;
-        }
-        
-        &:disabled {
-            color: $grey-dark;
-            cursor: not-allowed;
-            background-color: $grey-light;
-        }
-    }
-    
-    span {
-        font-weight: 500;
-        color: $text-color;
-    }
-}
-
-.loading-message, .error-message, .no-results-message {
+  &__message {
     text-align: center;
     padding: 3rem;
     font-size: 1.1rem;
     color: $grey-dark;
+    &--error { color: $danger-color; }
+  }
+}
+
+// --- Card Component ---
+.item-card {
+  background-color: $white;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  border: 1px solid $grey-border;
+  transition: $transition;
+  display: flex;
+  flex-direction: column;
+  
+  // New layout: This moves the old "footer" content to be the main view
+  // and hides the description by default.
+  padding: 1rem 1.5rem;
+
+  // Selected state
+  &--selected {
+    background-color: lighten($primary-color, 42%);
+    border-color: $primary-color;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 1rem; // Add space for description
+  }
+
+  &__selector {
+    input[type="checkbox"] {
+      transform: scale(1.4);
+      cursor: pointer;
+    }
+  }
+
+  &__badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    &--producto { background-color: lighten($primary-color, 35%); color: $primary-dark; }
+    &--servicio { background-color: lighten($success-color, 35%); color: darken($success-color, 15%); }
+  }
+  
+  &__title {
+      margin: 0;
+      color: $text-color;
+      font-size: 1.1rem;
+      font-weight: 600;
+  }
+
+  &__description {
+    color: $text-light;
+    font-size: 0.9rem;
+    padding-left: 2.7rem; // Align with title
+    margin: -0.5rem 0 1rem 0;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid $grey-light;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex-grow: 1;
+  }
+
+  &__price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $primary-dark;
+  }
+
+  &__category {
+    font-size: 0.8rem;
+    color: $grey-dark;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
+
+// --- Pagination Component ---
+// (Moved from its own file to be part of the ItemList styles)
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: $radius;
+  background-color: $grey-light;
+  width: 100%;
+  box-sizing: border-box;
+
+  &__status {
+    font-weight: 600;
+    color: $text-color;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid $grey-medium;
+    background-color: $white;
+    color: $primary-color;
+    border-radius: $radius;
+    cursor: pointer;
+    transition: $transition;
+    text-decoration: none;
+
+    svg { font-size: 0.8rem; }
+
+    &:hover:not(:disabled) {
+      background-color: $primary-color;
+      color: $white;
+      border-color: $primary-color;
+    }
+    
+    &:active:not(:disabled) { transform: scale(0.98); }
+
+    &:disabled {
+      background-color: darken($grey-light, 3%);
+      color: $grey-dark;
+      border-color: $grey-medium;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+  }
 }

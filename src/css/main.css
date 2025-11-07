@@ -3270,12 +3270,77 @@ button.btn-reset:hover {
   background-color: #021128;
 }
 
-.presential-container {
+.item-list .item-list__btn {
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  line-height: 1;
+}
+.item-list .item-list__btn--primary {
+  background-color: #3498db;
+  color: #ffffff;
+}
+.item-list .item-list__btn--primary:hover {
+  background-color: #2980b9;
+}
+.item-list .item-list__btn--secondary {
+  background-color: #e0e0e0;
+  color: #34495e;
+}
+.item-list .item-list__btn--secondary:hover {
+  background-color: rgb(198.5, 198.5, 198.5);
+}
+.item-list .item-list__btn--success {
+  background-color: #2ecc71;
+  color: #ffffff;
+}
+.item-list .item-list__btn--success:hover {
+  background-color: rgb(36.616, 162.384, 89.948);
+}
+.item-list .item-list__btn--danger {
+  background-color: #e74c3c;
+  color: #ffffff;
+}
+.item-list .item-list__btn--danger:hover {
+  background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
+}
+.item-list .item-list__btn--edit {
+  background-color: #f39c12;
+  color: #ffffff;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+.item-list .item-list__btn--edit:hover {
+  background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
+}
+.item-list .item-list__btn--delete {
+  background-color: #e74c3c;
+  color: #ffffff;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+.item-list .item-list__btn--delete:hover {
+  background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
+}
+.item-list .item-list__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.item-list {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
-.presential-container .page-header {
+.item-list__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -3283,139 +3348,76 @@ button.btn-reset:hover {
   flex-wrap: wrap;
   gap: 1rem;
 }
-.presential-container h1 {
+.item-list__header h1 {
   color: #2980b9;
   margin: 0;
 }
-
-.btn, .monitor-clinica-container .pagination-controls button, .recipe-modal .add-line-btn, .monitor-vencimientos-container .pagination-controls button, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .btn-custom-date, .btn-suministrado, .pagination-controls button {
-  padding: 0.7rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-}
-.btn.btn-primary, .recipe-modal .btn-primary.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .btn-primary.view-mode-toggle, .btn-primary.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-delete-note, .btn-primary.btn-custom-date, .btn-primary.btn-suministrado, .pagination-controls button.btn-primary {
-  background-color: #3498db;
-  color: white;
-}
-.btn.btn-primary:hover, .recipe-modal .btn-primary.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .btn-primary.view-mode-toggle:hover, .btn-primary.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-delete-note:hover, .btn-primary.btn-custom-date:hover, .btn-primary.btn-suministrado:hover, .pagination-controls button.btn-primary:hover {
-  background-color: #2980b9;
-}
-.btn.btn-secondary, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn, .monitor-vencimientos-container .btn-secondary.view-mode-toggle, .btn-secondary.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-secondary.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .recipe-modal .btn-delete-note.add-line-btn, .recipe-modal .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note.add-line-btn, .btn-secondary.btn-custom-date, .btn-secondary.btn-suministrado, .pagination-controls button.btn-secondary {
-  background-color: #e0e0e0;
-  color: #34495e;
-}
-.btn.btn-secondary:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn:hover, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn:hover, .monitor-vencimientos-container .btn-secondary.view-mode-toggle:hover, .btn-secondary.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-secondary.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .recipe-modal .btn-delete-note.add-line-btn:hover, .recipe-modal .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note.add-line-btn:hover, .btn-secondary.btn-custom-date:hover, .btn-secondary.btn-suministrado:hover, .pagination-controls button.btn-secondary:hover {
-  background-color: rgb(198.5, 198.5, 198.5);
-}
-.btn.btn-success, .recipe-modal .btn-success.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn, .monitor-vencimientos-container .btn-success.view-mode-toggle, .btn-success.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-delete-note, .btn-success.btn-custom-date, .btn-success.btn-suministrado, .pagination-controls button.btn-success {
-  background-color: #2ecc71;
-  color: white;
-}
-.btn.btn-success:hover, .recipe-modal .btn-success.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .monitor-vencimientos-container .btn-success.view-mode-toggle:hover, .btn-success.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-delete-note:hover, .btn-success.btn-custom-date:hover, .btn-success.btn-suministrado:hover, .pagination-controls button.btn-success:hover {
-  background-color: rgb(36.616, 162.384, 89.948);
-}
-.btn.btn-danger, .recipe-modal .btn-danger.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn, .monitor-vencimientos-container .btn-danger.view-mode-toggle, .btn-danger.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-delete-note, .btn-danger.btn-custom-date, .btn-danger.btn-suministrado, .pagination-controls button.btn-danger {
-  background-color: #e74c3c;
-  color: white;
-}
-.btn.btn-danger:hover, .recipe-modal .btn-danger.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn:hover, .monitor-vencimientos-container .btn-danger.view-mode-toggle:hover, .btn-danger.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-delete-note:hover, .btn-danger.btn-custom-date:hover, .btn-danger.btn-suministrado:hover, .pagination-controls button.btn-danger:hover {
-  background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
-}
-.btn.btn-edit, .recipe-modal .btn-edit.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn, .monitor-vencimientos-container .btn-edit.view-mode-toggle, .btn-edit.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-delete-note, .btn-edit.btn-custom-date, .btn-edit.btn-suministrado, .pagination-controls button.btn-edit {
-  background-color: #f39c12;
-  color: white;
-  padding: 0.5rem;
-  font-size: 1rem;
-}
-.btn.btn-edit:hover, .recipe-modal .btn-edit.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn:hover, .monitor-vencimientos-container .btn-edit.view-mode-toggle:hover, .btn-edit.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-delete-note:hover, .btn-edit.btn-custom-date:hover, .btn-edit.btn-suministrado:hover, .pagination-controls button.btn-edit:hover {
-  background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
-}
-.btn.btn-delete, .recipe-modal .btn-delete.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .monitor-vencimientos-container .btn-delete.view-mode-toggle, .btn-delete.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-delete-note, .btn-delete.btn-custom-date, .btn-delete.btn-suministrado, .pagination-controls button.btn-delete {
-  background-color: #e74c3c;
-  color: white;
-  padding: 0.5rem;
-  font-size: 1rem;
-}
-.btn.btn-delete:hover, .recipe-modal .btn-delete.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .monitor-vencimientos-container .btn-delete.view-mode-toggle:hover, .btn-delete.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-delete-note:hover, .btn-delete.btn-custom-date:hover, .btn-delete.btn-suministrado:hover, .pagination-controls button.btn-delete:hover {
-  background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
-}
-
-.filter-bar {
+.item-list__filters {
   display: flex;
   gap: 1rem;
   align-items: flex-end;
   padding: 1.5rem;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   margin-bottom: 2rem;
   flex-wrap: wrap;
 }
-.filter-bar .filter-group {
+.item-list__filters .item-list__filter-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   flex: 1 1 180px;
 }
-.filter-bar .filter-group label {
+.item-list__filters .item-list__filter-group label {
   font-size: 0.8rem;
   font-weight: 500;
   color: #7f8c8d;
 }
-.filter-bar .filter-group input, .filter-bar .filter-group select {
+.item-list__filters .item-list__filter-group input, .item-list__filters .item-list__filter-group select {
   padding: 0.6rem 0.8rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #dfe6e9;
   border-radius: 6px;
   font-size: 0.9rem;
 }
-.filter-bar .filter-group input:focus, .filter-bar .filter-group select:focus {
+.item-list__filters .item-list__filter-group input:focus, .item-list__filters .item-list__filter-group select:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
 }
-
-.bulk-action-panel {
+.item-list__bulk-actions {
   padding: 1.5rem;
   margin-bottom: 2rem;
   border: 1px solid #3498db;
   border-radius: 8px;
   background-color: rgb(225.2719665272, 239.9163179916, 249.7280334728);
 }
-.bulk-action-panel h4 {
+.item-list__bulk-actions h4 {
   margin-top: 0;
   color: #2980b9;
 }
-.bulk-action-panel .bulk-actions-controls {
+.item-list__bulk-actions .item-list__bulk-controls {
   display: flex;
   align-items: flex-end;
   gap: 1rem;
   flex-wrap: wrap;
 }
-.bulk-action-panel .form-group {
+.item-list__bulk-actions .item-list__form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-.bulk-action-panel .form-group label {
+.item-list__bulk-actions .item-list__form-group label {
   font-size: 0.8rem;
   font-weight: 500;
 }
-.bulk-action-panel .form-group input {
+.item-list__bulk-actions .item-list__form-group input {
   padding: 0.7rem;
   border-radius: 6px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #dfe6e9;
   font-size: 0.9rem;
 }
-
-.controls-container {
+.item-list__controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -3424,46 +3426,51 @@ button.btn-reset:hover {
   background-color: #f8f9fa;
   border-radius: 8px;
 }
-.controls-container .item-count {
+.item-list__controls .item-list__item-count {
   font-weight: 500;
   color: #7f8c8d;
 }
-
-.presential-list {
+.item-list__list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 1rem;
+}
+.item-list__message {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+}
+.item-list__message--error {
+  color: #e74c3c;
 }
 
-.presential-card {
-  background-color: #fff;
+.item-card {
+  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
+  border: 1px solid #dfe6e9;
+  transition: all 0.25s ease;
   display: flex;
   flex-direction: column;
-  border-left: 5px solid #3498db;
-  transition: all 0.3s ease;
+  padding: 1rem 1.5rem;
 }
-.presential-card.selected {
+.item-card--selected {
   background-color: rgb(233.9355648536, 244.3121338912, 251.2644351464);
-  border-left-color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  border-color: #3498db;
 }
-.presential-card .card-header {
+.item-card__header {
   display: flex;
   align-items: center;
   gap: 1rem;
+  width: 100%;
   margin-bottom: 1rem;
 }
-.presential-card .card-header h3 {
-  margin: 0;
-  color: #34495e;
-}
-.presential-card .item-selector input[type=checkbox] {
+.item-card__selector input[type=checkbox] {
   transform: scale(1.4);
   cursor: pointer;
 }
-.presential-card .type-badge {
+.item-card__badge {
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -3472,21 +3479,27 @@ button.btn-reset:hover {
   align-items: center;
   gap: 0.4rem;
 }
-.presential-card .type-badge.producto {
+.item-card__badge--producto {
   background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
   color: #2980b9;
 }
-.presential-card .type-badge.servicio {
+.item-card__badge--servicio {
   background-color: rgb(188.496, 240.004, 210.338);
   color: rgb(31.924, 141.576, 78.422);
 }
-.presential-card .card-description {
-  color: rgb(88.3287671233, 124, 159.6712328767);
-  font-size: 0.95rem;
-  flex-grow: 1;
-  margin-bottom: 1.5rem;
+.item-card__title {
+  margin: 0;
+  color: #34495e;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
-.presential-card .card-footer {
+.item-card__description {
+  color: #566573;
+  font-size: 0.9rem;
+  padding-left: 2.7rem;
+  margin: -0.5rem 0 1rem 0;
+}
+.item-card__footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -3494,156 +3507,200 @@ button.btn-reset:hover {
   padding-top: 1rem;
   border-top: 1px solid #f8f9fa;
 }
-.presential-card .card-info {
+.item-card__info {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  flex-grow: 1;
 }
-.presential-card .card-info .price {
+.item-card__price {
   font-size: 1.2rem;
   font-weight: 600;
   color: #2980b9;
 }
-.presential-card .card-info .category {
+.item-card__category {
   font-size: 0.8rem;
   color: #7f8c8d;
 }
-.presential-card .card-actions {
+.item-card__actions {
   display: flex;
   gap: 0.5rem;
 }
 
-.pagination-controls {
+.pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
   margin-top: 2rem;
-}
-.pagination-controls button {
-  padding: 0.6rem 1rem;
-  border: 1px solid #e0e0e0;
-  background-color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.pagination-controls button:hover:not(:disabled) {
+  padding: 1rem;
+  border-radius: 8px;
   background-color: #f8f9fa;
-  border-color: #7f8c8d;
+  width: 100%;
+  box-sizing: border-box;
 }
-.pagination-controls button:disabled {
-  color: #7f8c8d;
-  cursor: not-allowed;
-  background-color: #f8f9fa;
-}
-.pagination-controls span {
-  font-weight: 500;
+.pagination__status {
+  font-weight: 600;
   color: #34495e;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
 }
-
-.loading-message, .error-message, .no-results-message {
-  text-align: center;
-  padding: 3rem;
-  font-size: 1.1rem;
+.pagination__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  color: #3498db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+.pagination__button svg {
+  font-size: 0.8rem;
+}
+.pagination__button:hover:not(:disabled) {
+  background-color: #3498db;
+  color: #ffffff;
+  border-color: #3498db;
+}
+.pagination__button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.pagination__button:disabled {
+  background-color: rgb(239.075, 241.35, 243.625);
   color: #7f8c8d;
+  border-color: #e0e0e0;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
-.presential-form-container {
+.item-form-container {
   max-width: 800px;
   margin: 2rem auto;
   padding: 2.5rem;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.presential-form-container h2 {
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 2rem;
-  color: #2980b9;
-}
-.presential-form-container .presential-form {
+.item-form-container .item-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
-.presential-form-container .form-group {
+.item-form-container .item-form h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #2980b9;
+}
+.item-form-container .item-form__group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-.presential-form-container .form-group label {
+.item-form-container .item-form__group label {
   font-weight: 500;
   color: #34495e;
+  font-size: 0.9rem;
 }
-.presential-form-container .form-group input[type=text],
-.presential-form-container .form-group input[type=number],
-.presential-form-container .form-group textarea,
-.presential-form-container .form-group select {
+.item-form-container .item-form__group input[type=text],
+.item-form-container .item-form__group input[type=number],
+.item-form-container .item-form__group textarea,
+.item-form-container .item-form__group select {
   padding: 0.8rem;
   border-radius: 6px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #dfe6e9;
   font-size: 1rem;
   width: 100%;
   box-sizing: border-box;
+  transition: all 0.25s ease;
 }
-.presential-form-container .form-group input[type=text]:focus,
-.presential-form-container .form-group input[type=number]:focus,
-.presential-form-container .form-group textarea:focus,
-.presential-form-container .form-group select:focus {
+.item-form-container .item-form__group input[type=text]:focus,
+.item-form-container .item-form__group input[type=number]:focus,
+.item-form-container .item-form__group textarea:focus,
+.item-form-container .item-form__group select:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
 }
-.presential-form-container .form-group textarea {
+.item-form-container .item-form__group input[type=text]:disabled,
+.item-form-container .item-form__group input[type=number]:disabled,
+.item-form-container .item-form__group textarea:disabled,
+.item-form-container .item-form__group select:disabled {
+  background-color: rgb(236.75, 236.75, 236.75);
+}
+.item-form-container .item-form__group textarea {
   min-height: 120px;
   resize: vertical;
 }
-.presential-form-container .form-row {
+.item-form-container .item-form__group--nested {
+  margin-top: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid #e0e0e0;
+}
+.item-form-container .item-form__row {
   display: flex;
   gap: 1.5rem;
 }
-.presential-form-container .form-row > .form-group {
+@media (max-width: 600px) {
+  .item-form-container .item-form__row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+.item-form-container .item-form__row > .item-form__group {
   flex: 1;
 }
-.presential-form-container .radio-group {
+.item-form-container .item-form__radio-group {
   display: flex;
   gap: 2rem;
   padding: 0.5rem 0;
 }
-.presential-form-container .radio-group label {
+.item-form-container .item-form__radio-group label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
   font-weight: normal;
 }
-.presential-form-container .btn-submit {
+.item-form-container .item-form__checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+.item-form-container .item-form__checkbox-group label {
+  font-weight: normal;
+  cursor: pointer;
+}
+.item-form-container .item-form__checkbox-group input[type=checkbox] {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+.item-form-container .item-form__submit-btn {
   padding: 0.9rem;
   margin-top: 1rem;
   font-size: 1rem;
   font-weight: 600;
   background-color: #3498db;
-  color: white;
+  color: #ffffff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
-.presential-form-container .btn-submit:hover {
+.item-form-container .item-form__submit-btn:hover {
   background-color: #2980b9;
 }
-.presential-form-container .btn-submit:disabled {
+.item-form-container .item-form__submit-btn:disabled {
   background-color: rgb(198.5, 198.5, 198.5);
   cursor: not-allowed;
-}
-
-.loading-message {
-  text-align: center;
-  padding: 3rem;
-  font-size: 1.1rem;
-  color: #34495e;
 }
 
 .sale-summary-box {
@@ -3892,7 +3949,7 @@ button.btn-reset:hover {
   border-color: #2980b9;
   color: white;
   transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .venta-resumen-container {
@@ -4255,7 +4312,7 @@ button.btn-reset:hover {
   background: #fff;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   width: 90%;
   max-width: 400px;
   text-align: center;

@@ -16,8 +16,41 @@ import {
   FaTrash,
   FaBox,
   FaHandHoldingMedical,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa";
 
+// --- New Reusable Pagination Component ---
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  if (totalPages <= 1) return null;
+  return (
+    <div className="pagination">
+      <button
+        className="pagination__button"
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        aria-label="Página Anterior"
+      >
+        <FaChevronLeft />
+        Anterior
+      </button>
+      <span className="pagination__status">
+        Página {currentPage} de {totalPages}
+      </span>
+      <button
+        className="pagination__button"
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        aria-label="Página Siguiente"
+      >
+        Siguiente
+        <FaChevronRight />
+      </button>
+    </div>
+  );
+};
+
+// --- Refactored PresentialList Component ---
 const ITEMS_PER_PAGE = 7;
 
 const PresentialList = () => {
@@ -45,6 +78,7 @@ const PresentialList = () => {
   const [isBulkUpdating, setIsBulkUpdating] = useState(false);
 
   const fetchItemsAndCategories = useCallback(async () => {
+    // ... (Data fetching logic is unchanged) ...
     setIsLoading(true);
     setError(null);
     try {
@@ -84,6 +118,14 @@ const PresentialList = () => {
   useEffect(() => {
     fetchItemsAndCategories();
   }, [fetchItemsAndCategories]);
+
+  // --- All other logic (filtering, pagination math, handlers) is unchanged ---
+  // ... (useEffect for filtering) ...
+  // ... (useEffect for pagination logic) ...
+  // ... (handleFilterChange, clearFilters, handlePageChange) ...
+  // ... (handleItemSelect, handleSelectAllVisible) ...
+  // ... (parseModifier, handleApplyBulkPriceUpdate, handleBulkDelete, deleteItem) ...
+  // ... (resolveCategoryName) ...
 
   useEffect(() => {
     let tempItems = [...items];
@@ -364,16 +406,18 @@ const PresentialList = () => {
     return cat ? cat.nombre : item.category;
   };
 
+  // --- JSX with NEW class names ---
   return (
-    <div className="presential-container">
-      <div className="page-header">
+    <div className="item-list">
+      <div className="item-list__header">
         <h1>Items de Venta Presencial</h1>
-        <Link to="/admin/add-presential" className="btn btn-primary">
+        <Link to="/admin/add-presential" className="item-list__btn item-list__btn--primary">
           <FaPlus /> Agregar Nuevo Item
         </Link>
       </div>
-      <div className="filter-bar">
-        <div className="filter-group">
+
+      <div className="item-list__filters">
+        <div className="item-list__filter-group">
           <label htmlFor="text-filter">Buscar</label>
           <input
             type="text"
@@ -384,7 +428,7 @@ const PresentialList = () => {
             placeholder="Nombre o descripción..."
           />
         </div>
-        <div className="filter-group">
+        <div className="item-list__filter-group">
           <label htmlFor="tipo-filter">Tipo</label>
           <select
             id="tipo-filter"
@@ -397,7 +441,7 @@ const PresentialList = () => {
             <option value="servicio">Servicio</option>
           </select>
         </div>
-        <div className="filter-group">
+        <div className="item-list__filter-group">
           <label htmlFor="category-filter">Categoría</label>
           <select
             id="category-filter"
@@ -418,7 +462,7 @@ const PresentialList = () => {
           </select>
         </div>
         {subcategoriesForFilter.length > 0 && (
-          <div className="filter-group">
+          <div className="item-list__filter-group">
             <label htmlFor="subcategory-filter">Subcategoría</label>
             <select
               id="subcategory-filter"
@@ -435,15 +479,16 @@ const PresentialList = () => {
             </select>
           </div>
         )}
-        <button className="btn btn-secondary" onClick={clearFilters}>
+        <button className="item-list__btn item-list__btn--secondary" onClick={clearFilters}>
           <FaTimes /> Limpiar
         </button>
       </div>
+
       {selectedItemIds.size > 0 && (
-        <div className="bulk-action-panel">
+        <div className="item-list__bulk-actions">
           <h4>Acciones Masivas ({selectedItemIds.size} seleccionados)</h4>
-          <div className="bulk-actions-controls">
-            <div className="form-group">
+          <div className="item-list__bulk-controls">
+            <div className="item-list__form-group">
               <label htmlFor="priceModifier">Modificar Precio:</label>
               <input
                 type="text"
@@ -456,30 +501,31 @@ const PresentialList = () => {
             <button
               onClick={handleApplyBulkPriceUpdate}
               disabled={isBulkUpdating}
-              className="btn btn-success"
+              className="item-list__btn item-list__btn--success"
             >
               Aplicar
             </button>
             <button
               onClick={handleBulkDelete}
               disabled={isBulkUpdating}
-              className="btn btn-danger"
+              className="item-list__btn item-list__btn--danger"
             >
               Eliminar
             </button>
             <button
               onClick={() => setSelectedItemIds(new Set())}
-              className="btn btn-secondary"
+              className="item-list__btn item-list__btn--secondary"
             >
               Deseleccionar
             </button>
           </div>
         </div>
       )}
+
       {!isLoading && !error && items.length > 0 && (
-        <div className="controls-container">
-          <div className="item-count">{filteredItems.length} item(s)</div>
-          <button onClick={handleSelectAllVisible} className="btn btn-primary">
+        <div className="item-list__controls">
+          <div className="item-list__item-count">{filteredItems.length} item(s)</div>
+          <button onClick={handleSelectAllVisible} className="item-list__btn item-list__btn--primary">
             {currentViewItems.every((p) => selectedItemIds.has(p.id)) &&
             currentViewItems.length > 0
               ? "Deseleccionar Visibles"
@@ -487,22 +533,24 @@ const PresentialList = () => {
           </button>
         </div>
       )}
-      {isLoading && <p className="loading-message">Cargando items...</p>}
-      {error && <p className="error-message">{error}</p>}
+
+      {isLoading && <p className="item-list__message">Cargando items...</p>}
+      {error && <p className="item-list__message item-list__message--error">{error}</p>}
+      
       {!isLoading && !error && (
         <>
-          <div className="presential-list">
+          <div className="item-list__list">
             {currentViewItems.length > 0 ? (
               currentViewItems.map((item) => (
                 <div
                   key={item.id}
-                  className={`presential-card ${
-                    selectedItemIds.has(item.id) ? "selected" : ""
+                  className={`item-card ${
+                    selectedItemIds.has(item.id) ? "item-card--selected" : ""
                   }`}
                 >
-                  <div className="card-header">
+                  <div className="item-card__header">
                     <div
-                      className="item-selector"
+                      className="item-card__selector"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <input
@@ -511,7 +559,7 @@ const PresentialList = () => {
                         onChange={() => handleItemSelect(item.id)}
                       />
                     </div>
-                    <span className={`type-badge ${item.tipo}`}>
+                    <span className={`item-card__badge item-card__badge--${item.tipo}`}>
                       {item.tipo === "producto" ? (
                         <FaBox />
                       ) : (
@@ -519,32 +567,34 @@ const PresentialList = () => {
                       )}{" "}
                       {item.tipo}
                     </span>
-                    <h3>{item.name}</h3>
+                    <h3 className="item-card__title">{item.name}</h3>
                   </div>
-                  <p className="card-description">{item.description}</p>
-                  <div className="card-footer">
-                    <div className="card-info">
-                      <span className="price">
+                  
+                  <p className="item-card__description">{item.description}</p>
+                  
+                  <div className="item-card__footer">
+                    <div className="item-card__info">
+                      <span className="item-card__price">
                         $
                         {item.price
                           ? item.price.toLocaleString("es-AR")
                           : "N/A"}
                       </span>
-                      <span className="category">
+                      <span className="item-card__category">
                         {resolveCategoryName(item)}{" "}
                         {item.subcat && `> ${item.subcat}`}
                       </span>
                     </div>
-                    <div className="card-actions">
+                    <div className="item-card__actions">
                       <Link
                         to={`/admin/edit-presential/${item.id}`}
-                        className="btn btn-edit"
+                        className="item-list__btn item-list__btn--edit"
                       >
                         <FaEdit />
                       </Link>
                       <button
                         onClick={() => deleteItem(item)}
-                        className="btn btn-delete"
+                        className="item-list__btn item-list__btn--delete"
                       >
                         <FaTrash />
                       </button>
@@ -553,28 +603,15 @@ const PresentialList = () => {
                 </div>
               ))
             ) : (
-              <p className="no-results-message">No se encontraron items.</p>
+              <p className="item-list__message">No se encontraron items.</p>
             )}
           </div>
-          {totalPages > 1 && (
-            <div className="pagination-controls">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Anterior
-              </button>
-              <span>
-                Página {currentPage} de {totalPages}
-              </span>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                Siguiente
-              </button>
-            </div>
-          )}
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </>
       )}
     </div>
