@@ -348,7 +348,7 @@ const Agenda = () => {
                       onClick={() => handleOpenModalForNew(day)}
                       title="Agregar cita"
                     >
-                      <FaPlus />
+                      <FaPlus/>
                     </button>
                   </div>
                 </div>

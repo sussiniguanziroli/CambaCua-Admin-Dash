@@ -1,4 +1,18 @@
-@import './sharedStyles';
+$primary-color: #3498db;
+$primary-dark: #2980b9;
+$secondary-color: #95a5a6;
+$success-color: #2ecc71;
+$error-color: #e74c3c;
+$warning-color: #f39c12;
+$border-color: #e0e0e0;
+$text-color: #34495e;
+$text-light: #576677;
+$grey-dark: #7f8c8d;
+$background-light: #f8f9fa;
+$border-radius: 8px;
+$shadow-light: 0 2px 8px rgba(0, 0, 0, 0.05);
+$transition: all 0.2s ease;
+
 
 .precio-modal-overlay {
     position: fixed;

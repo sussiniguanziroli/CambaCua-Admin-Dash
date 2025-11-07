@@ -1,19 +1,16 @@
-$primary-color: #3498db;
-$primary-dark: #2980b9;
-$primary-light: #5dade2;
-$grooming-primary: #e67e22;
-$grooming-primary-dark: #d35400;
-$grooming-primary-light: #f39c12;
+$primary-color: #5ab1eb;
+$primary-dark: #1e5a8a;
+$primary-light: #3d98d3;
 $secondary-color: #95a5a6;
 $secondary-dark: #7f8c8d;
 $success-color: #27ae60;
 $danger-color: #e74c3c;
 $danger-dark: #c0392b;
 $text-color: #2c3e50;
-$text-light: #7f8c8d;
+$text-light: #5f6464;
 $text-lighter: #bdc3c7;
 $background: #ecf0f1;
-$background-light: #f8f9fa;
+$background-light: #d2d5d8;
 $white: #ffffff;
 $border-color: #dfe6e9;
 $border-light: #ecf0f1;
@@ -26,1780 +23,895 @@ $radius-lg: 14px;
 $transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes dropdownSlide {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to { transform: rotate(360deg); }
 }
 
 .agenda-main-container {
-    min-height: 100vh;
-    background: $background;
-    padding: 2rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
+  background: $background;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-    @media (max-width: 768px) {
-        padding: 1rem;
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+
+  .agenda-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+
+    @media (max-width: 968px) {
+      flex-direction: column;
+      align-items: stretch;
     }
 
-    .agenda-page-header {
+    .agenda-header-left {
+      flex: 0 0 auto;
+
+      .agenda-title {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 700;
+        color: $text-color;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        svg {
+          color: $primary-color;
+          font-size: 1.75rem;
+        }
+
+        @media (max-width: 768px) {
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    .agenda-header-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+
+      @media (max-width: 968px) {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      @media (max-width: 640px) {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .agenda-view-switcher {
+        display: flex;
+        background: $white;
+        border-radius: $radius-lg;
+        padding: 4px;
+        box-shadow: $shadow-sm;
+        gap: 4px;
+
+        .agenda-view-btn {
+          padding: 0.6rem 1.5rem;
+          font-size: 0.95rem;
+          font-weight: 600;
+          border: none;
+          border-radius: $radius-md;
+          background: transparent;
+          color: $text-light;
+          cursor: pointer;
+          transition: $transition;
+          white-space: nowrap;
+
+          &:hover {
+            background: $background-light;
+            color: $primary-color;
+          }
+
+          &.active {
+            background: $primary-color;
+            color: $white;
+            box-shadow: 0 2px 6px rgba($primary-color, 0.3);
+          }
+        }
+      }
+
+      .agenda-navigator {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: $white;
+        padding: 0.5rem 1rem;
+        border-radius: $radius-lg;
+        box-shadow: $shadow-sm;
+
+        @media (max-width: 640px) {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .agenda-nav-btn {
+          width: 36px;
+          height: 36px;
+          border: none;
+          border-radius: 50%;
+          background: transparent;
+          color: $text-light;
+          font-size: 1.5rem;
+          cursor: pointer;
+          transition: $transition;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            background: $background-light;
+            color: $primary-color;
+          }
+
+          &:active {
+            transform: scale(0.95);
+          }
+        }
+
+        .agenda-today-btn {
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+          font-weight: 600;
+          border: 2px solid $primary-color;
+          border-radius: $radius-md;
+          background: transparent;
+          color: $primary-color;
+          cursor: pointer;
+          transition: $transition;
+          white-space: nowrap;
+
+          &:hover {
+            background: $primary-color;
+            color: $white;
+          }
+        }
+
+        .agenda-date-display {
+          font-weight: 600;
+          color: $text-color;
+          font-size: 0.95rem;
+          white-space: nowrap;
+
+          @media (max-width: 640px) {
+            font-size: 0.85rem;
+          }
+        }
+      }
+    }
+  }
+
+  .agenda-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    gap: 1rem;
+
+    p {
+      color: $text-light;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .agenda-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid $border-color;
+      border-top-color: $primary-color;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  .agenda-calendar-grid {
+    display: grid;
+    gap: 1rem;
+
+    @media (min-width: 1400px) {
+      gap: 1.25rem;
+    }
+
+    &.week {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+
+      @media (max-width: 1400px) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      @media (max-width: 968px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &.day {
+      grid-template-columns: 1fr;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .agenda-day-container {
+      background: $white;
+      border-radius: $radius-lg;
+      box-shadow: $shadow-sm;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: $transition;
+
+      &:hover {
+        box-shadow: $shadow-md;
+      }
+
+      .agenda-day-header {
+        padding: 1rem 1.25rem;
+        background: linear-gradient(135deg, $white 0%, $background-light 100%);
+        border-bottom: 2px solid $border-light;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 2rem;
-        gap: 2rem;
-        flex-wrap: wrap;
-
-        @media (max-width: 968px) {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .agenda-header-left {
-            flex: 0 0 auto;
-
-            .agenda-title {
-                margin: 0;
-                font-size: 2rem;
-                font-weight: 700;
-                color: $text-color;
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-
-                svg {
-                    color: $primary-color;
-                    font-size: 1.75rem;
-                }
-
-                @media (max-width: 768px) {
-                    font-size: 1.5rem;
-                }
-            }
-        }
-
-        .agenda-header-controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-
-            @media (max-width: 968px) {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            @media (max-width: 640px) {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .agenda-view-switcher {
-                display: flex;
-                background: $white;
-                border-radius: $radius-lg;
-                padding: 4px;
-                box-shadow: $shadow-sm;
-                gap: 4px;
-
-                .agenda-view-btn {
-                    padding: 0.6rem 1.5rem;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    border: none;
-                    border-radius: $radius-md;
-                    background: transparent;
-                    color: $text-light;
-                    cursor: pointer;
-                    transition: $transition;
-                    white-space: nowrap;
-
-                    &:hover {
-                        background: $background-light;
-                        color: $primary-color;
-                    }
-
-                    &.active {
-                        background: $primary-color;
-                        color: $white;
-                        box-shadow: 0 2px 6px rgba($primary-color, 0.3);
-                    }
-                }
-            }
-
-            .agenda-navigator {
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                background: $white;
-                padding: 0.5rem 1rem;
-                border-radius: $radius-lg;
-                box-shadow: $shadow-sm;
-
-                @media (max-width: 640px) {
-                    width: 100%;
-                    justify-content: space-between;
-                }
-
-                .agenda-nav-btn {
-                    width: 36px;
-                    height: 36px;
-                    border: none;
-                    border-radius: 50%;
-                    background: transparent;
-                    color: $text-light;
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    transition: $transition;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    &:hover {
-                        background: $background-light;
-                        color: $primary-color;
-                    }
-
-                    &:active {
-                        transform: scale(0.95);
-                    }
-                }
-
-                .agenda-today-btn {
-                    padding: 0.5rem 1rem;
-                    font-size: 0.9rem;
-                    font-weight: 600;
-                    border: 2px solid $primary-color;
-                    border-radius: $radius-md;
-                    background: transparent;
-                    color: $primary-color;
-                    cursor: pointer;
-                    transition: $transition;
-                    white-space: nowrap;
-
-                    &:hover {
-                        background: $primary-color;
-                        color: $white;
-                    }
-                }
-
-                .agenda-date-display {
-                    font-weight: 600;
-                    color: $text-color;
-                    font-size: 0.95rem;
-                    white-space: nowrap;
-
-                    @media (max-width: 640px) {
-                        font-size: 0.85rem;
-                    }
-                }
-            }
-        }
-    }
-
-    .agenda-loading {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 4rem 2rem;
         gap: 1rem;
 
-        p {
-            color: $text-light;
-            font-size: 1.1rem;
-            margin: 0;
-        }
+        &.today {
+          background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
+          border-bottom-color: $primary-dark;
 
-        .agenda-spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid $border-color;
-            border-top-color: $primary-color;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-    }
+          .agenda-day-name,
+          .agenda-day-number,
+          .agenda-appointment-count {
+            color: $white;
+          }
 
-    .agenda-calendar-grid {
-        display: grid;
-        gap: 1.5rem;
-
-        &.week {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-
-            @media (max-width: 1400px) {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            @media (max-width: 968px) {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            @media (max-width: 640px) {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        &.day {
-            grid-template-columns: 1fr;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .agenda-day-container {
+          .agenda-add-btn {
             background: $white;
-            border-radius: $radius-lg;
-            box-shadow: $shadow-sm;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            color: $primary-color;
+           
+            &:hover {
+              background: rgba($white, 0.9);
+            }
+          }
+        }
+
+        .agenda-day-info {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+
+          .agenda-day-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            color: $text-light;
+          }
+
+          .agenda-day-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: $text-color;
+            line-height: 1;
+          }
+        }
+
+        .agenda-day-stats {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+
+          .agenda-appointment-count {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: $text-light;
+            padding: 0.3rem 0.6rem;
+            background: $background-light;
+            border-radius: $radius-sm;
+            white-space: nowrap;
+          }
+
+          .agenda-add-btn .agenda-day-stats {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: $primary-color;
+            color: $white;
+            font-size: 0.9rem;
+            cursor: pointer;
             transition: $transition;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba($primary-color, 0.3);
 
             &:hover {
-                box-shadow: $shadow-md;
+              background: $primary-dark;
+              transform: scale(1.1);
+              box-shadow: 0 4px 12px rgba($primary-color, 0.4);
             }
 
-            .agenda-day-header {
-                padding: 1.25rem 1.5rem;
-                background: linear-gradient(135deg, $white 0%, $background-light 100%);
-                border-bottom: 2px solid $border-light;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 1rem;
-
-                &.today {
-                    background: linear-gradient(135deg, $primary-light 0%, $primary-color 100%);
-                    border-bottom-color: $primary-dark;
-
-                    .agenda-day-name,
-                    .agenda-day-number,
-                    .agenda-appointment-count {
-                        color: $white;
-                    }
-
-                    .agenda-add-btn {
-                        background: $white;
-                        color: $primary-color;
-
-                        &:hover {
-                            background: rgba($white, 0.9);
-                        }
-
-                        // --- Agrega esto ---
-                        // Apunta al ícono SVG dentro del botón
-                        svg {
-                            font-size: 1.2em; // <-- Ajusta este valor (ej: 1.5rem, 24px, 1.2em)
-
-                            // Opcionalmente, para centrarlo si se desalinea:
-                            vertical-align: middle;
-                        }
-                    }
-                }
-
-                .agenda-day-info {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.25rem;
-
-                    .agenda-day-name {
-                        font-size: 0.9rem;
-                        font-weight: 600;
-                        text-transform: capitalize;
-                        color: $text-light;
-                    }
-
-                    .agenda-day-number {
-                        font-size: 2rem;
-                        font-weight: 700;
-                        color: $text-color;
-                        line-height: 1;
-                    }
-                }
-
-                .agenda-day-stats {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.75rem;
-
-                    .agenda-appointment-count {
-                        font-size: 0.85rem;
-                        font-weight: 600;
-                        color: $text-light;
-                        padding: 0.35rem 0.75rem;
-                        background: $background-light;
-                        border-radius: $radius-sm;
-                        white-space: nowrap;
-                    }
-
-                    .agenda-add-btn {
-                        width: 36px;
-                        height: 36px;
-                        border: none;
-                        border-radius: 50%;
-                        background: $primary-color;
-                        color: $white;
-                        font-size: 1rem;
-                        cursor: pointer;
-                        transition: $transition;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        box-shadow: 0 2px 8px rgba($primary-color, 0.3);
-
-                        &:hover {
-                            background: $primary-dark;
-                            transform: scale(1.1);
-                            box-shadow: 0 4px 12px rgba($primary-color, 0.4);
-                        }
-
-                        &:active {
-                            transform: scale(0.95);
-                        }
-                    }
-                }
+            &:active {
+              transform: scale(0.95);
             }
-
-            .agenda-appointments-container {
-                flex: 1;
-                padding: 1.5rem;
-                min-height: 200px;
-                display: flex;
-                flex-direction: column;
-
-                .agenda-no-appointments {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 1rem;
-                    padding: 2rem;
-
-                    p {
-                        color: $text-lighter;
-                        font-size: 0.95rem;
-                        margin: 0;
-                    }
-
-                    .agenda-add-first-btn {
-                        padding: 0.75rem 1.5rem;
-                        font-size: 0.9rem;
-                        font-weight: 600;
-                        border: 2px dashed $border-color;
-                        border-radius: $radius-md;
-                        background: transparent;
-                        color: $text-light;
-                        cursor: pointer;
-                        transition: $transition;
-                        display: flex;
-                        align-items: center;
-                        gap: 0.5rem;
-
-                        &:hover {
-                            border-color: $primary-color;
-                            color: $primary-color;
-                            background: rgba($primary-color, 0.05);
-                        }
-                    }
-                }
-
-                .agenda-appointments-list {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.75rem;
-
-                    .agenda-appointment-card {
-                        background: linear-gradient(135deg, $white 0%, lighten($primary-color, 45%) 100%);
-                        border-left: 4px solid $primary-color;
-                        border-radius: $radius-md;
-                        padding: 1rem;
-                        cursor: pointer;
-                        transition: $transition;
-                        box-shadow: $shadow-sm;
-
-                        &:hover {
-                            transform: translateX(4px);
-                            box-shadow: $shadow-md;
-                            border-left-width: 6px;
-                            background: linear-gradient(135deg, lighten($primary-color, 48%) 0%, lighten($primary-color, 42%) 100%);
-                        }
-
-                        &:active {
-                            transform: translateX(2px);
-                        }
-
-                        &.day {
-                            background: linear-gradient(135deg, lighten($primary-color, 47%) 0%, lighten($primary-color, 44%) 100%);
-                        }
-
-                        .agenda-appointment-header {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            margin-bottom: 0.75rem;
-                            padding-bottom: 0.5rem;
-                            border-bottom: 1px solid rgba($primary-color, 0.15);
-
-                            .agenda-appointment-time {
-                                font-size: 0.85rem;
-                                font-weight: 700;
-                                color: $primary-dark;
-                                display: flex;
-                                align-items: center;
-                                gap: 0.4rem;
-
-                                svg {
-                                    font-size: 0.9rem;
-                                }
-                            }
-                        }
-
-                        .agenda-appointment-body {
-                            display: flex;
-                            flex-direction: column;
-                            gap: 0.4rem;
-
-                            p {
-                                margin: 0;
-                                font-size: 0.9rem;
-                                display: flex;
-                                align-items: center;
-                                gap: 0.5rem;
-                            }
-
-                            .agenda-appointment-patient {
-                                font-weight: 700;
-                                color: $text-color;
-                                font-size: 1rem !important;
-
-                                svg {
-                                    color: $primary-color;
-                                }
-                            }
-
-                            .agenda-appointment-tutor {
-                                color: $text-light;
-                                font-size: 0.85rem !important;
-                            }
-
-                            .agenda-appointment-service {
-                                color: $text-color;
-                                font-weight: 500;
-
-                                svg {
-                                    color: $success-color;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+          }
         }
-    }
+      }
 
-    .agenda-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(4px);
+      .agenda-appointments-container {
+        flex: 1;
+        padding: 1.25rem;
+        min-height: 200px;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        padding: 1rem;
-        animation: fadeIn 0.2s ease;
+        flex-direction: column;
 
-        .agenda-modal-wrapper {
-            background: $white;
-            border-radius: $radius-lg;
-            box-shadow: $shadow-lg;
-            width: 100%;
-            max-width: 800px;
-            max-height: 90vh;
+        .agenda-no-appointments {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 1rem;
+          padding: 2rem;
+
+          p {
+            color: $text-lighter;
+            font-size: 0.9rem;
+            margin: 0;
+          }
+
+          .agenda-add-first-btn {
+            padding: 0.65rem 1.25rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 2px dashed $border-color;
+            border-radius: $radius-md;
+            background: transparent;
+            color: $text-light;
+            cursor: pointer;
+            transition: $transition;
             display: flex;
-            flex-direction: column;
-            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            align-items: center;
+            gap: 0.5rem;
 
-            @media (max-width: 768px) {
-                max-width: 100%;
-                max-height: 95vh;
+            &:hover {
+              border-color: $primary-color;
+              color: $primary-color;
+              background: rgba($primary-color, 0.05);
             }
-
-            .agenda-modal-header {
-                padding: 2rem 2rem 1.5rem;
-                border-bottom: 2px solid $border-light;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-
-                @media (max-width: 640px) {
-                    padding: 1.5rem 1.5rem 1rem;
-                }
-
-                h3 {
-                    margin: 0;
-                    font-size: 1.75rem;
-                    font-weight: 700;
-                    color: $text-color;
-
-                    @media (max-width: 640px) {
-                        font-size: 1.4rem;
-                    }
-                }
-
-                .agenda-modal-close {
-                    width: 40px;
-                    height: 40px;
-                    border: none;
-                    border-radius: 50%;
-                    background: transparent;
-                    color: $text-light;
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    transition: $transition;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    &:hover {
-                        background: $background-light;
-                        color: $danger-color;
-                    }
-                }
-            }
-
-            .agenda-modal-form {
-                flex: 1;
-                overflow-y: auto;
-                padding: 2rem;
-
-                @media (max-width: 640px) {
-                    padding: 1.5rem;
-                }
-
-                .agenda-form-section {
-                    margin-bottom: 2rem;
-                    padding-bottom: 2rem;
-                    border-bottom: 1px solid $border-light;
-
-                    &:last-of-type {
-                        border-bottom: none;
-                    }
-
-                    .agenda-checkbox-group {
-                        display: flex;
-                        align-items: center;
-                        gap: 0.75rem;
-                        padding: 1rem;
-                        background: $background-light;
-                        border-radius: $radius-md;
-                        margin-bottom: 1.5rem;
-
-                        input[type="checkbox"] {
-                            width: 20px;
-                            height: 20px;
-                            cursor: pointer;
-                            accent-color: $primary-color;
-                        }
-
-                        label {
-                            margin: 0;
-                            font-weight: 600;
-                            color: $text-color;
-                            cursor: pointer;
-                        }
-                    }
-
-                    .agenda-search-toggle {
-                        margin-bottom: 1.5rem;
-
-                        >label {
-                            display: block;
-                            font-weight: 600;
-                            color: $text-color;
-                            margin-bottom: 0.75rem;
-                            font-size: 0.95rem;
-                        }
-
-                        .agenda-toggle-buttons {
-                            display: flex;
-                            gap: 0.5rem;
-                            background: $background-light;
-                            padding: 4px;
-                            border-radius: $radius-md;
-
-                            .agenda-toggle-btn {
-                                flex: 1;
-                                padding: 0.75rem 1.5rem;
-                                font-size: 0.95rem;
-                                font-weight: 600;
-                                border: none;
-                                border-radius: $radius-sm;
-                                background: transparent;
-                                color: $text-light;
-                                cursor: pointer;
-                                transition: $transition;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                gap: 0.5rem;
-
-                                &:hover:not(.active) {
-                                    background: $white;
-                                    color: $primary-color;
-                                }
-
-                                &.active {
-                                    background: $primary-color;
-                                    color: $white;
-                                    box-shadow: 0 2px 8px rgba($primary-color, 0.3);
-                                }
-
-                                svg {
-                                    font-size: 1rem;
-                                }
-                            }
-                        }
-                    }
-
-                    .agenda-form-row {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                        gap: 1rem;
-                        margin-bottom: 1.5rem;
-
-                        @media (max-width: 640px) {
-                            grid-template-columns: 1fr;
-                        }
-
-                        .agenda-form-field {
-                            display: flex;
-                            flex-direction: column;
-                            gap: 0.5rem;
-
-                            label {
-                                font-weight: 600;
-                                color: $text-color;
-                                font-size: 0.95rem;
-                                display: flex;
-                                align-items: center;
-                                gap: 0.5rem;
-                            }
-                            
-
-                            input,
-                            textarea,
-                            select {
-                                padding: 0.875rem 1rem;
-                                font-size: 0.95rem;
-                                border: 2px solid $border-color;
-                                border-radius: $radius-md;
-                                background: $white;
-                                color: $text-color;
-                                transition: $transition;
-                                font-family: inherit;
-
-                                &::placeholder {
-                                    color: $text-lighter;
-                                }
-
-                                &:focus {
-                                    outline: none;
-                                    border-color: $primary-color;
-                                    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
-                                }
-
-                                &:disabled {
-                                    background: $background-light;
-                                    color: $text-lighter;
-                                    cursor: not-allowed;
-                                }
-                            }
-
-                            select {
-                                cursor: pointer;
-                            }
-
-                            textarea {
-                                resize: vertical;
-                                min-height: 100px;
-                                line-height: 1.5;
-                            }
-
-                            &.agenda-combobox {
-                                position: relative;
-
-                                .agenda-dropdown-list {
-                                    position: absolute;
-                                    top: calc(100% + 4px);
-                                    left: 0;
-                                    right: 0;
-                                    background: $white;
-                                    border: 2px solid $border-color;
-                                    border-radius: $radius-md;
-                                    box-shadow: $shadow-md;
-                                    list-style: none;
-                                    padding: 0.5rem 0;
-                                    margin: 0;
-                                    max-height: 250px;
-                                    overflow-y: auto;
-                                    z-index: 1000;
-                                    animation: dropdownSlide 0.2s ease;
-
-                                    li {
-                                        padding: 0.875rem 1rem;
-                                        cursor: pointer;
-                                        transition: $transition;
-                                        color: $text-color;
-                                        font-size: 0.95rem;
-
-                                        &:hover:not(.no-results) {
-                                            background: lighten($primary-color, 45%);
-                                            color: $primary-dark;
-                                        }
-
-                                        &.no-results {
-                                            color: $text-lighter;
-                                            cursor: default;
-                                            text-align: center;
-                                            font-style: italic;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    .agenda-services-grid {
-                        display: flex;
-                        flex-wrap: wrap;
-                        gap: 0.75rem;
-                        margin-top: 0.5rem;
-
-                        .agenda-service-chip {
-                            padding: 0.65rem 1.25rem;
-                            font-size: 0.9rem;
-                            font-weight: 600;
-                            border: 2px solid $border-color;
-                            border-radius: $radius-lg;
-                            background: $white;
-                            color: $text-color;
-                            cursor: pointer;
-                            transition: $transition;
-
-                            &:hover:not(.selected) {
-                                border-color: $primary-color;
-                                color: $primary-color;
-                                background: lighten($primary-color, 48%);
-                            }
-
-                            &.selected {
-                                background: $primary-color;
-                                border-color: $primary-color;
-                                color: $white;
-                                box-shadow: 0 2px 8px rgba($primary-color, 0.3);
-                            }
-                        }
-                    }
-                }
-            }
-
-            .agenda-modal-footer {
-                padding: 1.5rem 2rem;
-                border-top: 2px solid $border-light;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 1rem;
-                background: $background-light;
-
-                @media (max-width: 640px) {
-                    flex-direction: column;
-                    padding: 1.25rem 1.5rem;
-                }
-
-                .agenda-modal-actions-left,
-                .agenda-modal-actions-right {
-                    display: flex;
-                    gap: 0.75rem;
-                    flex-wrap: wrap;
-
-                    @media (max-width: 640px) {
-                        width: 100%;
-                        justify-content: stretch;
-
-                        .agenda-btn {
-                            flex: 1;
-                        }
-                    }
-                }
-
-                .agenda-btn {
-                    padding: 0.875rem 1.75rem;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    border: 2px solid transparent;
-                    border-radius: $radius-md;
-                    cursor: pointer;
-                    transition: $transition;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 0.5rem;
-                    white-space: nowrap;
-
-                    &:disabled {
-                        opacity: 0.5;
-                        cursor: not-allowed;
-                    }
-
-                    &:not(:disabled):active {
-                        transform: scale(0.98);
-                    }
-
-                    &.agenda-btn-primary {
-                        background: $primary-color;
-                        color: $white;
-                        border-color: $primary-color;
-                        box-shadow: 0 2px 8px rgba($primary-color, 0.3);
-
-                        &:hover:not(:disabled) {
-                            background: $primary-dark;
-                            border-color: $primary-dark;
-                            box-shadow: 0 4px 12px rgba($primary-color, 0.4);
-                        }
-                    }
-
-                    &.agenda-btn-secondary {
-                        background: $secondary-color;
-                        color: $white;
-                        border-color: $secondary-color;
-
-                        &:hover:not(:disabled) {
-                            background: $secondary-dark;
-                            border-color: $secondary-dark;
-                        }
-                    }
-
-                    &.agenda-btn-danger {
-                        background: $danger-color;
-                        color: $white;
-                        border-color: $danger-color;
-
-                        &:hover:not(:disabled) {
-                            background: $danger-dark;
-                            border-color: $danger-dark;
-                        }
-                    }
-
-                    &.agenda-btn-outline {
-                        background: transparent;
-                        color: $primary-color;
-                        border-color: $primary-color;
-
-                        &:hover:not(:disabled) {
-                            background: $primary-color;
-                            color: $white;
-                        }
-                    }
-                }
-            }
+          }
         }
+
+        .agenda-appointments-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.65rem;
+
+          .agenda-appointment-card {
+            background: linear-gradient(135deg, lighten($primary-color, 32%) 0%, lighten($primary-color, 25%) 100%);
+            border-left: 4px solid $primary-color;
+            border-radius: $radius-md;
+            padding: 0.85rem;
+            cursor: pointer;
+            transition: $transition;
+            box-shadow: $shadow-sm;
+
+            &:hover {
+              transform: translateX(4px);
+              box-shadow: $shadow-md;
+              border-left-width: 6px;
+              background: linear-gradient(135deg, lighten($primary-color, 28%) 0%, lighten($primary-color, 22%) 100%);
+            }
+
+            &:active {
+              transform: translateX(2px);
+            }
+
+            &.day {
+              background: linear-gradient(135deg, lighten($primary-color, 30%) 0%, lighten($primary-color, 24%) 100%);
+            }
+
+            .agenda-appointment-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 0.65rem;
+              padding-bottom: 0.45rem;
+              border-bottom: 1px solid rgba($primary-color, 0.2);
+
+              .agenda-appointment-time {
+                font-size: 0.8rem;
+                font-weight: 700;
+                color: $primary-dark;
+                display: flex;
+                align-items: center;
+                gap: 0.35rem;
+
+                svg {
+                  font-size: 0.85rem;
+                }
+              }
+            }
+
+            .agenda-appointment-body {
+              display: flex;
+              flex-direction: column;
+              gap: 0.35rem;
+
+              p {
+                margin: 0;
+                font-size: 0.85rem;
+                display: flex;
+                align-items: center;
+                gap: 0.45rem;
+              }
+
+              .agenda-appointment-patient {
+                font-weight: 700;
+                color: $text-color;
+                font-size: 0.95rem !important;
+
+                svg {
+                  color: $primary-color;
+                }
+              }
+
+              .agenda-appointment-tutor {
+                color: $text-light;
+                font-size: 0.8rem !important;
+              }
+
+              .agenda-appointment-service {
+                color: $text-color;
+                font-weight: 500;
+
+                svg {
+                  color: $success-color;
+                }
+              }
+            }
+          }
+        }
+      }
     }
-}
+  }
 
-.peluqueria-main-container {
-    min-height: 100vh;
-    background: $background;
-    padding: 2rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  .agenda-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1rem;
+    animation: fadeIn 0.2s ease;
 
-    @media (max-width: 768px) {
-        padding: 1rem;
-    }
+    .agenda-modal-wrapper {
+      background: $white;
+      border-radius: $radius-lg;
+      box-shadow: $shadow-lg;
+      width: 100%;
+      max-width: 800px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    .peluqueria-page-header {
+      @media (max-width: 768px) {
+        max-width: 100%;
+        max-height: 95vh;
+      }
+
+      .agenda-modal-header {
+        padding: 1.75rem 2rem 1.25rem;
+        border-bottom: 2px solid $border-light;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 2rem;
-        gap: 2rem;
-        flex-wrap: wrap;
 
-        @media (max-width: 968px) {
-            flex-direction: column;
-            align-items: stretch;
+        @media (max-width: 640px) {
+          padding: 1.5rem 1.5rem 1rem;
         }
 
-        .peluqueria-header-left {
-            flex: 0 0 auto;
+        h3 {
+          margin: 0;
+          font-size: 1.6rem;
+          font-weight: 700;
+          color: $text-color;
 
-            .peluqueria-title {
-                margin: 0;
-                font-size: 2rem;
-                font-weight: 700;
-                color: $text-color;
+          @media (max-width: 640px) {
+            font-size: 1.4rem;
+          }
+        }
+
+        .agenda-modal-close {
+          width: 40px;
+          height: 40px;
+          border: none;
+          border-radius: 50%;
+          background: transparent;
+          color: $text-light;
+          font-size: 1.5rem;
+          cursor: pointer;
+          transition: $transition;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            background: $background-light;
+            color: $danger-color;
+          }
+        }
+      }
+
+      .agenda-modal-form {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.75rem;
+
+        @media (max-width: 640px) {
+          padding: 1.5rem;
+        }
+
+        .agenda-form-section {
+          margin-bottom: 1.75rem;
+          padding-bottom: 1.75rem;
+          border-bottom: 1px solid $border-light;
+
+          &:last-of-type {
+            border-bottom: none;
+          }
+
+          .agenda-checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.9rem;
+            background: $background-light;
+            border-radius: $radius-md;
+            margin-bottom: 1.25rem;
+
+            input[type="checkbox"] {
+              width: 18px;
+              height: 18px;
+              cursor: pointer;
+              accent-color: $primary-color;
+            }
+
+            label {
+              margin: 0;
+              font-weight: 600;
+              color: $text-color;
+              cursor: pointer;
+            }
+          }
+
+          .agenda-search-toggle {
+            margin-bottom: 1.25rem;
+
+            > label {
+              display: block;
+              font-weight: 600;
+              color: $text-color;
+              margin-bottom: 0.65rem;
+              font-size: 0.95rem;
+            }
+
+            .agenda-toggle-buttons {
+              display: flex;
+              gap: 0.5rem;
+              background: $background-light;
+              padding: 4px;
+              border-radius: $radius-md;
+
+              .agenda-toggle-btn {
+                flex: 1;
+                padding: 0.7rem 1.25rem;
+                font-size: 0.9rem;
+                font-weight: 600;
+                border: none;
+                border-radius: $radius-sm;
+                background: transparent;
+                color: $text-light;
+                cursor: pointer;
+                transition: $transition;
                 display: flex;
                 align-items: center;
-                gap: 0.75rem;
+                justify-content: center;
+                gap: 0.5rem;
+
+                &:hover:not(.active) {
+                  background: $white;
+                  color: $primary-color;
+                }
+
+                &.active {
+                  background: $primary-color;
+                  color: $white;
+                  box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+                }
 
                 svg {
-                    color: $grooming-primary;
-                    font-size: 1.75rem;
+                  font-size: 1rem;
                 }
-
-                @media (max-width: 768px) {
-                    font-size: 1.5rem;
-                }
+              }
             }
-        }
+          }
 
-        .peluqueria-header-controls {
-            display: flex;
+          .agenda-form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-
-            @media (max-width: 968px) {
-                width: 100%;
-                justify-content: space-between;
-            }
+            margin-bottom: 1.25rem;
 
             @media (max-width: 640px) {
-                flex-direction: column;
-                gap: 0.75rem;
+              grid-template-columns: 1fr;
             }
 
-            .peluqueria-view-switcher {
-                display: flex;
-                background: $white;
-                border-radius: $radius-lg;
-                padding: 4px;
-                box-shadow: $shadow-sm;
-                gap: 4px;
+            .agenda-form-field {
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
 
-                .peluqueria-view-btn {
-                    padding: 0.6rem 1.5rem;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    border: none;
-                    border-radius: $radius-md;
-                    background: transparent;
-                    color: $text-light;
-                    cursor: pointer;
-                    transition: $transition;
-                    white-space: nowrap;
-
-                    &:hover {
-                        background: $background-light;
-                        color: $grooming-primary;
-                    }
-
-                    &.active {
-                        background: $grooming-primary;
-                        color: $white;
-                        box-shadow: 0 2px 6px rgba($grooming-primary, 0.3);
-                    }
-                }
-            }
-
-            .peluqueria-navigator {
+              label {
+                font-weight: 600;
+                color: $text-color;
+                font-size: 0.9rem;
                 display: flex;
                 align-items: center;
-                gap: 0.75rem;
-                background: $white;
-                padding: 0.5rem 1rem;
-                border-radius: $radius-lg;
-                box-shadow: $shadow-sm;
+                gap: 0.5rem;
+              }
 
-                @media (max-width: 640px) {
-                    width: 100%;
-                    justify-content: space-between;
+              input,
+              textarea,
+              select {
+                padding: 0.8rem 0.9rem;
+                font-size: 0.95rem;
+                border: 2px solid $border-color;
+                border-radius: $radius-md;
+                background: $white;
+                color: $text-color;
+                transition: $transition;
+                font-family: inherit;
+
+                &::placeholder {
+                  color: $text-lighter;
                 }
 
-                .peluqueria-nav-btn {
-                    width: 36px;
-                    height: 36px;
-                    border: none;
-                    border-radius: 50%;
-                    background: transparent;
-                    color: $text-light;
-                    font-size: 1.5rem;
+                &:focus {
+                  outline: none;
+                  border-color: $primary-color;
+                  box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+                }
+
+                &:disabled {
+                  background: $background-light;
+                  color: $text-lighter;
+                  cursor: not-allowed;
+                }
+              }
+
+              select {
+                cursor: pointer;
+              }
+
+              textarea {
+                resize: vertical;
+                min-height: 90px;
+                line-height: 1.5;
+              }
+
+              &.agenda-combobox {
+                position: relative;
+
+                .agenda-dropdown-list {
+                  position: absolute;
+                  top: calc(100% + 4px);
+                  left: 0;
+                  right: 0;
+                  background: $white;
+                  border: 2px solid $border-color;
+                  border-radius: $radius-md;
+                  box-shadow: $shadow-md;
+                  list-style: none;
+                  padding: 0.5rem 0;
+                  margin: 0;
+                  max-height: 220px;
+                  overflow-y: auto;
+                  z-index: 1000;
+                  animation: dropdownSlide 0.2s ease;
+
+                  li {
+                    padding: 0.8rem 0.9rem;
                     cursor: pointer;
                     transition: $transition;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    &:hover {
-                        background: $background-light;
-                        color: $grooming-primary;
-                    }
-
-                    &:active {
-                        transform: scale(0.95);
-                    }
-                }
-
-                .peluqueria-today-btn {
-                    padding: 0.5rem 1rem;
+                    color: $text-color;
                     font-size: 0.9rem;
-                    font-weight: 600;
-                    border: 2px solid $grooming-primary;
-                    border-radius: $radius-md;
-                    background: transparent;
-                    color: $grooming-primary;
-                    cursor: pointer;
-                    transition: $transition;
-                    white-space: nowrap;
 
-                    &:hover {
-                        background: $grooming-primary;
-                        color: $white;
+                    &:hover:not(.no-results) {
+                      background: lighten($primary-color, 30%);
+                      color: $primary-dark;
                     }
-                }
 
-                .peluqueria-date-display {
-                    font-weight: 600;
-                    color: $text-color;
-                    font-size: 0.95rem;
-                    white-space: nowrap;
-
-                    @media (max-width: 640px) {
-                        font-size: 0.85rem;
+                    &.no-results {
+                      color: $text-lighter;
+                      cursor: default;
+                      text-align: center;
+                      font-style: italic;
                     }
+                  }
                 }
+              }
             }
-        }
-    }
+          }
 
-    .peluqueria-loading {
+          .agenda-services-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+            margin-top: 0.5rem;
+
+            .agenda-service-chip {
+              padding: 0.6rem 1.1rem;
+              font-size: 0.85rem;
+              font-weight: 600;
+              border: 2px solid $border-color;
+              border-radius: $radius-lg;
+              background: $white;
+              color: $text-color;
+              cursor: pointer;
+              transition: $transition;
+
+              &:hover:not(.selected) {
+                border-color: $primary-color;
+                color: $primary-color;
+                background: lighten($primary-color, 38%);
+              }
+
+              &.selected {
+                background: $primary-color;
+                border-color: $primary-color;
+                color: $white;
+                box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+              }
+            }
+          }
+        }
+      }
+
+      .agenda-modal-footer {
+        padding: 1.25rem 1.75rem;
+        border-top: 2px solid $border-light;
         display: flex;
-        flex-direction: column;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
-        padding: 4rem 2rem;
         gap: 1rem;
+        background: $background-light;
 
-        p {
-            color: $text-light;
-            font-size: 1.1rem;
-            margin: 0;
+        @media (max-width: 640px) {
+          flex-direction: column;
+          padding: 1.25rem 1.5rem;
         }
 
-        .peluqueria-spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid $border-color;
-            border-top-color: $grooming-primary;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-    }
+        .agenda-modal-actions-left,
+        .agenda-modal-actions-right {
+          display: flex;
+          gap: 0.75rem;
+          flex-wrap: wrap;
 
-    .peluqueria-calendar-grid {
-        display: grid;
-        gap: 1.5rem;
-
-        &.week {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-
-            @media (max-width: 1400px) {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            @media (max-width: 968px) {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            @media (max-width: 640px) {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        &.day {
-            grid-template-columns: 1fr;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .peluqueria-day-container {
-            background: $white;
-            border-radius: $radius-lg;
-            box-shadow: $shadow-sm;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: $transition;
-
-            &:hover {
-                box-shadow: $shadow-md;
-            }
-
-            .peluqueria-day-header {
-                padding: 1.25rem 1.5rem;
-                background: linear-gradient(135deg, $white 0%, $background-light 100%);
-                border-bottom: 2px solid $border-light;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 1rem;
-
-                &.today {
-                    background: linear-gradient(135deg, $grooming-primary-light 0%, $grooming-primary 100%);
-                    border-bottom-color: $grooming-primary-dark;
-
-                    .peluqueria-day-name,
-                    .peluqueria-day-number,
-                    .peluqueria-appointment-count {
-                        color: $white;
-                    }
-
-                    .peluqueria-add-btn {
-                        background: $white;
-                        color: $grooming-primary;
-
-                        &:hover {
-                            background: rgba($white, 0.9);
-                        }
-                    }
-                }
-
-                .peluqueria-day-info {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.25rem;
-
-                    .peluqueria-day-name {
-                        font-size: 0.9rem;
-                        font-weight: 600;
-                        text-transform: capitalize;
-                        color: $text-light;
-                    }
-
-                    .peluqueria-day-number {
-                        font-size: 2rem;
-                        font-weight: 700;
-                        color: $text-color;
-                        line-height: 1;
-                    }
-                }
-
-                .peluqueria-day-stats {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.75rem;
-
-                    .peluqueria-appointment-count {
-                        font-size: 0.85rem;
-                        font-weight: 600;
-                        color: $text-light;
-                        padding: 0.35rem 0.75rem;
-                        background: $background-light;
-                        border-radius: $radius-sm;
-                        white-space: nowrap;
-                    }
-
-                    .peluqueria-add-btn {
-                        width: 36px;
-                        height: 36px;
-                        border: none;
-                        border-radius: 50%;
-                        background: $grooming-primary;
-                        color: $white;
-                        font-size: 1rem;
-                        cursor: pointer;
-                        transition: $transition;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        box-shadow: 0 2px 8px rgba($grooming-primary, 0.3);
-
-                        &:hover {
-                            background: $grooming-primary-dark;
-                            transform: scale(1.1);
-                            box-shadow: 0 4px 12px rgba($grooming-primary, 0.4);
-                        }
-
-                        &:active {
-                            transform: scale(0.95);
-                        }
-                    }
-                }
-            }
-
-            .peluqueria-appointments-container {
-                flex: 1;
-                padding: 1.5rem;
-                min-height: 200px;
-                display: flex;
-                flex-direction: column;
-
-                .peluqueria-no-appointments {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 1rem;
-                    padding: 2rem;
-
-                    p {
-                        color: $text-lighter;
-                        font-size: 0.95rem;
-                        margin: 0;
-                    }
-
-                    .peluqueria-add-first-btn {
-                        padding: 0.75rem 1.5rem;
-                        font-size: 0.9rem;
-                        font-weight: 600;
-                        border: 2px dashed $border-color;
-                        border-radius: $radius-md;
-                        background: transparent;
-                        color: $text-light;
-                        cursor: pointer;
-                        transition: $transition;
-                        display: flex;
-                        align-items: center;
-                        gap: 0.5rem;
-
-                        &:hover {
-                            border-color: $grooming-primary;
-                            color: $grooming-primary;
-                            background: rgba($grooming-primary, 0.05);
-                        }
-                    }
-                }
-
-                .peluqueria-appointments-list {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.75rem;
-
-                    .peluqueria-appointment-card {
-                        background: linear-gradient(135deg, $white 0%, lighten($grooming-primary, 40%) 100%);
-                        border-left: 4px solid $grooming-primary;
-                        border-radius: $radius-md;
-                        padding: 1rem;
-                        cursor: pointer;
-                        transition: $transition;
-                        box-shadow: $shadow-sm;
-
-                        &:hover {
-                            transform: translateX(4px);
-                            box-shadow: $shadow-md;
-                            border-left-width: 6px;
-                            background: linear-gradient(135deg, lighten($grooming-primary, 42%) 0%, lighten($grooming-primary, 38%) 100%);
-                        }
-
-                        &:active {
-                            transform: translateX(2px);
-                        }
-
-                        &.day {
-                            background: linear-gradient(135deg, lighten($grooming-primary, 41%) 0%, lighten($grooming-primary, 39%) 100%);
-                        }
-
-                        .peluqueria-appointment-header {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            margin-bottom: 0.75rem;
-                            padding-bottom: 0.5rem;
-                            border-bottom: 1px solid rgba($grooming-primary, 0.15);
-
-                            .peluqueria-appointment-time {
-                                font-size: 0.85rem;
-                                font-weight: 700;
-                                color: $grooming-primary-dark;
-                                display: flex;
-                                align-items: center;
-                                gap: 0.4rem;
-
-                                svg {
-                                    font-size: 0.9rem;
-                                }
-                            }
-                        }
-
-                        .peluqueria-appointment-body {
-                            display: flex;
-                            flex-direction: column;
-                            gap: 0.4rem;
-
-                            p {
-                                margin: 0;
-                                font-size: 0.9rem;
-                                display: flex;
-                                align-items: center;
-                                gap: 0.5rem;
-                            }
-
-                            .peluqueria-appointment-patient {
-                                font-weight: 700;
-                                color: $text-color;
-                                font-size: 1rem !important;
-
-                                svg {
-                                    color: $grooming-primary;
-                                }
-                            }
-
-                            .peluqueria-appointment-tutor {
-                                color: $text-light;
-                                font-size: 0.85rem !important;
-
-                                svg {
-                                    font-size: 0.8rem;
-                                }
-                            }
-
-                            .peluqueria-appointment-groomer {
-                                color: $text-color;
-                                font-weight: 600;
-                                font-size: 0.9rem !important;
-
-                                svg {
-                                    color: $grooming-primary-dark;
-                                }
-                            }
-
-                            .peluqueria-appointment-service {
-                                color: $text-color;
-                                font-weight: 500;
-                                font-size: 0.85rem !important;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    .peluqueria-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(4px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        padding: 1rem;
-        animation: fadeIn 0.2s ease;
-
-        .peluqueria-modal-wrapper {
-            background: $white;
-            border-radius: $radius-lg;
-            box-shadow: $shadow-lg;
+          @media (max-width: 640px) {
             width: 100%;
-            max-width: 800px;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            justify-content: stretch;
 
-            @media (max-width: 768px) {
-                max-width: 100%;
-                max-height: 95vh;
+            .agenda-btn {
+              flex: 1;
             }
-
-            .peluqueria-modal-header {
-                padding: 2rem 2rem 1.5rem;
-                border-bottom: 2px solid $border-light;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-
-                @media (max-width: 640px) {
-                    padding: 1.5rem 1.5rem 1rem;
-                }
-
-                h3 {
-                    margin: 0;
-                    font-size: 1.75rem;
-                    font-weight: 700;
-                    color: $text-color;
-
-                    @media (max-width: 640px) {
-                        font-size: 1.4rem;
-                    }
-                }
-
-                .peluqueria-modal-close {
-                    width: 40px;
-                    height: 40px;
-                    border: none;
-                    border-radius: 50%;
-                    background: transparent;
-                    color: $text-light;
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    transition: $transition;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    &:hover {
-                        background: $background-light;
-                        color: $danger-color;
-                    }
-                }
-            }
-
-            .peluqueria-modal-form {
-                flex: 1;
-                overflow-y: auto;
-                padding: 2rem;
-
-                @media (max-width: 640px) {
-                    padding: 1.5rem;
-                }
-
-                .peluqueria-form-section {
-                    margin-bottom: 2rem;
-                    padding-bottom: 2rem;
-                    border-bottom: 1px solid $border-light;
-
-                    &:last-of-type {
-                        border-bottom: none;
-                    }
-
-                    .peluqueria-search-toggle {
-                        margin-bottom: 1.5rem;
-
-                        >label {
-                            display: block;
-                            font-weight: 600;
-                            color: $text-color;
-                            margin-bottom: 0.75rem;
-                            font-size: 0.95rem;
-                        }
-
-                        .peluqueria-toggle-buttons {
-                            display: flex;
-                            gap: 0.5rem;
-                            background: $background-light;
-                            padding: 4px;
-                            border-radius: $radius-md;
-
-                            .peluqueria-toggle-btn {
-                                flex: 1;
-                                padding: 0.75rem 1.5rem;
-                                font-size: 0.95rem;
-                                font-weight: 600;
-                                border: none;
-                                border-radius: $radius-sm;
-                                background: transparent;
-                                color: $text-light;
-                                cursor: pointer;
-                                transition: $transition;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                gap: 0.5rem;
-
-                                &:hover:not(.active) {
-                                    background: $white;
-                                    color: $grooming-primary;
-                                }
-
-                                &.active {
-                                    background: $grooming-primary;
-                                    color: $white;
-                                    box-shadow: 0 2px 8px rgba($grooming-primary, 0.3);
-                                }
-
-                                svg {
-                                    font-size: 1rem;
-                                }
-                            }
-                        }
-                    }
-
-                    .peluqueria-form-row {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                        gap: 1rem;
-                        margin-bottom: 1.5rem;
-
-                        @media (max-width: 640px) {
-                            grid-template-columns: 1fr;
-                        }
-
-                        .peluqueria-form-field {
-                            display: flex;
-                            flex-direction: column;
-                            gap: 0.5rem;
-
-                            label {
-                                font-weight: 600;
-                                color: $text-color;
-                                font-size: 0.95rem;
-                                display: flex;
-                                align-items: center;
-                                gap: 0.5rem;
-                            }
-
-                            input,
-                            textarea,
-                            select {
-                                padding: 0.875rem 1rem;
-                                font-size: 0.95rem;
-                                border: 2px solid $border-color;
-                                border-radius: $radius-md;
-                                background: $white;
-                                color: $text-color;
-                                transition: $transition;
-                                font-family: inherit;
-
-                                &::placeholder {
-                                    color: $text-lighter;
-                                }
-
-                                &:focus {
-                                    outline: none;
-                                    border-color: $grooming-primary;
-                                    box-shadow: 0 0 0 3px rgba($grooming-primary, 0.1);
-                                }
-
-                                &:disabled {
-                                    background: $background-light;
-                                    color: $text-lighter;
-                                    cursor: not-allowed;
-                                }
-                            }
-
-                            select {
-                                cursor: pointer;
-                            }
-
-                            textarea {
-                                resize: vertical;
-                                min-height: 100px;
-                                line-height: 1.5;
-                            }
-
-                            &.peluqueria-combobox {
-                                position: relative;
-
-                                .peluqueria-dropdown-list {
-                                    position: absolute;
-                                    top: calc(100% + 4px);
-                                    left: 0;
-                                    right: 0;
-                                    background: $white;
-                                    border: 2px solid $border-color;
-                                    border-radius: $radius-md;
-                                    box-shadow: $shadow-md;
-                                    list-style: none;
-                                    padding: 0.5rem 0;
-                                    margin: 0;
-                                    max-height: 250px;
-                                    overflow-y: auto;
-                                    z-index: 1000;
-                                    animation: dropdownSlide 0.2s ease;
-
-                                    li {
-                                        padding: 0.875rem 1rem;
-                                        cursor: pointer;
-                                        transition: $transition;
-                                        color: $text-color;
-                                        font-size: 0.95rem;
-
-                                        &:hover:not(.no-results) {
-                                            background: lighten($grooming-primary, 40%);
-                                            color: $grooming-primary-dark;
-                                        }
-
-                                        &.no-results {
-                                            color: $text-lighter;
-                                            cursor: default;
-                                            text-align: center;
-                                            font-style: italic;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    .peluqueria-services-grid {
-                        display: flex;
-                        flex-wrap: wrap;
-                        gap: 0.75rem;
-                        margin-top: 0.5rem;
-
-                        .peluqueria-service-chip {
-                            padding: 0.65rem 1.25rem;
-                            font-size: 0.9rem;
-                            font-weight: 600;
-                            border: 2px solid $border-color;
-                            border-radius: $radius-lg;
-                            background: $white;
-                            color: $text-color;
-                            cursor: pointer;
-                            transition: $transition;
-
-                            &:hover:not(.selected) {
-                                border-color: $grooming-primary;
-                                color: $grooming-primary;
-                                background: lighten($grooming-primary, 45%);
-                            }
-
-                            &.selected {
-                                background: $grooming-primary;
-                                border-color: $grooming-primary;
-                                color: $white;
-                                box-shadow: 0 2px 8px rgba($grooming-primary, 0.3);
-                            }
-                        }
-                    }
-                }
-            }
-
-            .peluqueria-modal-footer {
-                padding: 1.5rem 2rem;
-                border-top: 2px solid $border-light;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 1rem;
-                background: $background-light;
-
-                @media (max-width: 640px) {
-                    flex-direction: column;
-                    padding: 1.25rem 1.5rem;
-                }
-
-                .peluqueria-modal-actions-left,
-                .peluqueria-modal-actions-right {
-                    display: flex;
-                    gap: 0.75rem;
-                    flex-wrap: wrap;
-
-                    @media (max-width: 640px) {
-                        width: 100%;
-                        justify-content: stretch;
-
-                        .peluqueria-btn {
-                            flex: 1;
-                        }
-                    }
-                }
-
-                .peluqueria-btn {
-                    padding: 0.875rem 1.75rem;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    border: 2px solid transparent;
-                    border-radius: $radius-md;
-                    cursor: pointer;
-                    transition: $transition;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 0.5rem;
-                    white-space: nowrap;
-
-                    &:disabled {
-                        opacity: 0.5;
-                        cursor: not-allowed;
-                    }
-
-                    &:not(:disabled):active {
-                        transform: scale(0.98);
-                    }
-
-                    &.peluqueria-btn-primary {
-                        background: $grooming-primary;
-                        color: $white;
-                        border-color: $grooming-primary;
-                        box-shadow: 0 2px 8px rgba($grooming-primary, 0.3);
-
-                        &:hover:not(:disabled) {
-                            background: $grooming-primary-dark;
-                            border-color: $grooming-primary-dark;
-                            box-shadow: 0 4px 12px rgba($grooming-primary, 0.4);
-                        }
-                    }
-
-                    &.peluqueria-btn-secondary {
-                        background: $secondary-color;
-                        color: $white;
-                        border-color: $secondary-color;
-
-                        &:hover:not(:disabled) {
-                            background: $secondary-dark;
-                            border-color: $secondary-dark;
-                        }
-                    }
-
-                    &.peluqueria-btn-danger {
-                        background: $danger-color;
-                        color: $white;
-                        border-color: $danger-color;
-
-                        &:hover:not(:disabled) {
-                            background: $danger-dark;
-                            border-color: $danger-dark;
-                        }
-                    }
-
-                    &.peluqueria-btn-outline {
-                        background: transparent;
-                        color: $grooming-primary;
-                        border-color: $grooming-primary;
-
-                        &:hover:not(:disabled) {
-                            background: $grooming-primary;
-                            color: $white;
-                        }
-                    }
-                }
-            }
+          }
         }
+
+        .agenda-btn {
+          padding: 0.8rem 1.5rem;
+          font-size: 0.9rem;
+          font-weight: 600;
+          border: 2px solid transparent;
+          border-radius: $radius-md;
+          cursor: pointer;
+          transition: $transition;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          white-space: nowrap;
+
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+
+          &:not(:disabled):active {
+            transform: scale(0.98);
+          }
+
+          &.agenda-btn-primary {
+            background: $primary-color;
+            color: $white;
+            border-color: $primary-color;
+            box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+
+            &:hover:not(:disabled) {
+              background: $primary-dark;
+              border-color: $primary-dark;
+              box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+            }
+          }
+
+          &.agenda-btn-secondary {
+            background: $secondary-color;
+            color: $white;
+            border-color: $secondary-color;
+
+            &:hover:not(:disabled) {
+              background: $secondary-dark;
+              border-color: $secondary-dark;
+            }
+          }
+
+          &.agenda-btn-danger {
+            background: $danger-color;
+            color: $white;
+            border-color: $danger-color;
+
+            &:hover:not(:disabled) {
+              background: $danger-dark;
+              border-color: $danger-dark;
+            }
+          }
+
+          &.agenda-btn-outline {
+            background: transparent;
+            color: $primary-color;
+            border-color: $primary-color;
+
+            &:hover:not(:disabled) {
+              background: $primary-color;
+              color: $white;
+            }
+          }
+        }
+      }
     }
+  }
 }

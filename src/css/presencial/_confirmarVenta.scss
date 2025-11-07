@@ -1,4 +1,16 @@
-@import 'sharedStyles';
+$primary-color: #3498db;
+$primary-dark: #2980b9;
+$secondary-color: #95a5a6;
+$success-color: #2ecc71;
+$error-color: #e74c3c;
+$warning-color: #f39c12;
+$border-color: #e0e0e0;
+$text-color: #34495e;
+$text-light: #576677;
+$grey-dark: #7f8c8d;
+$background-light: #f8f9fa;
+$border-radius: 8px;
+$transition: all 0.2s ease;
 
 .confirmar-venta-container {
     max-width: 900px;
@@ -104,7 +116,7 @@
         input[type="checkbox"] {
             display: none;
 
-            +label {
+            + label {
                 display: flex;
                 align-items: center;
                 gap: 0.5rem;
@@ -115,43 +127,52 @@
                 font-size: 0.8rem;
                 font-weight: 500;
                 color: $grey-dark;
-                transition: all 0.2s ease;
+                transition: $transition;
 
                 svg {
                     font-size: 1rem;
                 }
             }
 
-            &:checked+label {
+            &:checked + label {
                 background-color: lighten($primary-color, 35%);
                 border-color: $primary-color;
                 color: $primary-dark;
             }
         }
     }
-    // --- NEW: Styles for Suministro Toggle Button ---
+
     .btn-suministro-toggle {
-        @extend .btn;
-        background-color: $text-light;
-        border-color: $text-light;
-        color: whitesmoke;
-        padding: 0.5rem; // Make it small and square-ish
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        margin-left: 1rem;
+        background-color: transparent;
+        border: 1px solid $border-color;
+        border-radius: 20px;
+        color: $text-light;
+        cursor: pointer;
+        transition: $transition;
         line-height: 1;
         font-size: 0.9rem;
-        margin-left: 1rem; // Space it out from the checkbox
+
+        &:hover {
+            border-color: $primary-color;
+            color: $primary-color;
+            background-color: lighten($primary-color, 45%);
+        }
 
         &.active {
-            background-color: $primary-color;
+            background-color: lighten($primary-color, 35%);
             border-color: $primary-color;
+            color: $primary-dark;
             box-shadow: 0 0 8px lighten($primary-color, 20%);
         }
 
-        &:hover {
-            opacity: 0.8;
-        }
-
         svg {
-            display: block; // Ensure icon is centered
+            display: block;
+            font-size: 1rem;
         }
     }
 
@@ -189,19 +210,21 @@
         }
     }
 
-    .summary-row.surcharge {
-        color: $warning-color;
-        font-weight: 500;
-    }
-    
-    .summary-row.discount {
-        color: $success-color;
-        font-weight: 500;
-    }
-    
-    .summary-row.debt {
-        color: $error-color;
-        font-weight: 500;
+    .summary-row {
+        &.surcharge {
+            color: $warning-color;
+            font-weight: 500;
+        }
+        
+        &.discount {
+            color: $success-color;
+            font-weight: 500;
+        }
+        
+        &.debt {
+            color: $error-color;
+            font-weight: 500;
+        }
     }
 
     .summary-total {
@@ -217,10 +240,56 @@
         justify-content: space-between;
         gap: 1rem;
 
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: $border-radius;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: $transition;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            &:not(:disabled):active {
+                transform: scale(0.98);
+            }
+        }
+
+        .btn-primary {
+            background-color: $primary-color;
+            color: white;
+
+            &:hover:not(:disabled) {
+                background-color: $primary-dark;
+            }
+        }
+
+        .btn-secondary {
+            background-color: $secondary-color;
+            color: white;
+
+            &:hover:not(:disabled) {
+                background-color: darken($secondary-color, 10%);
+            }
+        }
+
         .btn-confirm {
-            @extend .btn-primary;
+            background-color: $success-color;
+            color: white;
             padding: 0.8rem 1.5rem;
             font-size: 1.1rem;
+
+            &:hover:not(:disabled) {
+                background-color: darken($success-color, 10%);
+            }
         }
     }
 }

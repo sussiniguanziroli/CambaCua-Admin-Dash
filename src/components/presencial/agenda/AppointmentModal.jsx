@@ -522,40 +522,48 @@ const AppointmentModal = ({
             </div>
           </div>
 
+          {/* --- FIX 1 START --- */}
           <div className="agenda-form-section">
-            <div className="agenda-form-field">
-              <label>Servicios</label>
-              <div className="agenda-services-grid">
-                {availableServices.map((service) => (
-                  <button
-                    type="button"
-                    key={service.id}
-                    className={`agenda-service-chip ${
-                      formData.services?.some((s) => s.id === service.id)
-                        ? "selected"
-                        : ""
-                    }`}
-                    onClick={() => handleServiceToggle(service)}
-                  >
-                    {service.name || service.nombre}
-                  </button>
-                ))}
+            <div className="agenda-form-row">
+              <div className="agenda-form-field">
+                <label>Servicios</label>
+                <div className="agenda-services-grid">
+                  {availableServices.map((service) => (
+                    <button
+                      type="button"
+                      key={service.id}
+                      className={`agenda-service-chip ${
+                        formData.services?.some((s) => s.id === service.id)
+                          ? "selected"
+                          : ""
+                      }`}
+                      onClick={() => handleServiceToggle(service)}
+                    >
+                      {service.name || service.nombre}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
+          {/* --- FIX 1 END --- */}
 
+          {/* --- FIX 2 START --- */}
           <div className="agenda-form-section">
-            <div className="agenda-form-field">
-              <label>Notas</label>
-              <textarea
-                name="notes"
-                value={formData.notes || ""}
-                onChange={handleChange}
-                rows="4"
-                placeholder="Agregar notas adicionales..."
-              ></textarea>
+            <div className="agenda-form-row">
+              <div className="agenda-form-field">
+                <label>Notas</label>
+                <textarea
+                  name="notes"
+                  value={formData.notes || ""}
+                  onChange={handleChange}
+                  rows="4"
+                  placeholder="Agregar notas adicionales..."
+                ></textarea>
+              </div>
             </div>
           </div>
+          {/* --- FIX 2 END --- */}
 
           <div className="agenda-modal-footer">
             <div className="agenda-modal-actions-left">

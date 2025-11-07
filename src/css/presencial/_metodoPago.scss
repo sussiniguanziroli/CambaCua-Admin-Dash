@@ -1,68 +1,318 @@
-@import './sharedStyles';
+$primary-color: #3498db;
+$primary-dark: #2980b9;
+$secondary-color: #95a5a6;
+$success-color: #2ecc71;
+$error-color: #e74c3c;
+$warning-color: #f39c12;
+$border-color: #e0e0e0;
+$text-color: #34495e;
+$text-light: #576677;
+$grey-dark: #7f8c8d;
+$background-light: #f8f9fa;
+$border-radius: 8px;
+$transition: all 0.2s ease;
 
 .metodo-pago-container {
-    max-width: 900px; margin: 0 auto;
-    h2 { text-align: center; color: $primary-dark; margin-bottom: 2rem; font-size: 1.8rem; }
-    
-    .metodo-pago-layout { 
-        display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; 
-        @media (max-width: 992px) { grid-template-columns: 1fr; } 
+    max-width: 900px;
+    margin: 0 auto;
+
+    h2 {
+        text-align: center;
+        color: $primary-dark;
+        margin-bottom: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .metodo-pago-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+
+        @media (max-width: 992px) {
+            grid-template-columns: 1fr;
+        }
     }
 
     .payment-options-panel {
-        h4 { margin-top: 0; color: $text-color; border-bottom: 1px solid $border-color; padding-bottom: 0.75rem; margin-bottom: 1.5rem; }
+        h4 {
+            margin-top: 0;
+            color: $text-color;
+            border-bottom: 1px solid $border-color;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
     }
-    
+
     .payment-buttons {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
         margin-bottom: 2rem;
-        button { @extend .btn; background-color: white; border: 1px solid $border-color; &:hover { border-color: $primary-color; color: $primary-color; background-color: lighten($primary-color, 42%);} }
+
+        button {
+            padding: 0.7rem 1.2rem;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: $transition;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: white;
+            color: $text-color;
+
+            &:hover {
+                border-color: $primary-color;
+                color: $primary-color;
+                background-color: lighten($primary-color, 42%);
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            svg {
+                font-size: 1.2rem;
+            }
+        }
     }
-    
+
     .registered-payments {
         .payment-entry {
-            background-color: $background-light; border: 1px solid $border-color;
-            border-radius: $border-radius; padding: 1.5rem;
-            &:not(:last-child) { margin-bottom: 1rem; }
+            background-color: $background-light;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            padding: 1.5rem;
+
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
         }
     }
 
     .payment-input-group {
-        display: flex; align-items: center; gap: 1rem;
-        label { font-weight: 500; min-width: 140px; color: $text-color; }
-        input { flex-grow: 1; padding: 0.8rem; border: 1px solid $border-color; border-radius: $border-radius; font-size: 1.1rem; font-weight: 500; &:focus { outline: none; border-color: $primary-color; box-shadow: 0 0 0 3px lighten($primary-color, 35%); } }
-        .remove-btn { background-color: transparent; border: none; color: $error-color; font-size: 1.5rem; cursor: pointer; padding: 0 0.5rem; }
-    }
-    
-    .card-details {
-        margin-top: 1rem; padding-top: 1rem;
-        border-top: 1px dashed $border-color;
-        display: flex; justify-content: space-between; align-items: center;
-    }
-    .card-selector {
-        display: flex; gap: 0.5rem;
-        button { @extend .btn; background-color: #fff; border: 1px solid $border-color; color: $text-light; padding: 0.5rem 1rem; font-size: 0.9rem; svg { margin-right: 0.5rem; } &.active { border-color: $primary-dark; background-color: lighten($primary-color, 38%); color: $primary-dark; font-weight: 600; } }
-    }
-    .surcharge-info { font-size: 0.9rem; color: $warning-color; font-weight: 500; text-align: right; span { font-weight: 600; } }
+        display: flex;
+        align-items: center;
+        gap: 1rem;
 
-    .payment-summary-panel {
-        background-color: #fff; border-radius: $border-radius; padding: 1.5rem; border: 1px solid $border-color;
-        h3 { text-align: center; margin-top: 0; padding-bottom: 1rem; border-bottom: 1px solid $border-color; color: $primary-dark; }
-        .summary-row { display: flex; justify-content: space-between; padding: 0.8rem 0; font-size: 1rem; border-bottom: 1px solid $background-light; 
-            &.total { font-size: 1.2rem; font-weight: bold; border-top: 2px solid $border-color; margin-top: 0.5rem; padding-top: 1rem; } 
-            &.remaining { font-weight: bold; font-size: 1.3rem; &.debt { color: $error-color; } &.change { color: $success-color; } } 
-            &.surcharge { color: $warning-color; } 
+        label {
+            font-weight: 500;
+            min-width: 140px;
+            color: $text-color;
+        }
+
+        input {
+            flex-grow: 1;
+            padding: 0.8rem;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            font-size: 1.1rem;
+            font-weight: 500;
+
+            &:focus {
+                outline: none;
+                border-color: $primary-color;
+                box-shadow: 0 0 0 3px lighten($primary-color, 35%);
+            }
+        }
+
+        .remove-btn {
+            background-color: transparent;
+            border: none;
+            color: $error-color;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0 0.5rem;
+            transition: $transition;
+
+            &:hover {
+                color: darken($error-color, 10%);
+            }
         }
     }
 
-    .debt-info, .debt-error { margin-top: 1rem; padding: 1rem; text-align: center; border-radius: $border-radius; font-size: 0.9rem; }
-    .debt-info { background-color: lighten($warning-color, 30%); border: 1px solid lighten($warning-color, 20%); color: darken($warning-color, 20%); }
-    .debt-error { background-color: lighten($error-color, 35%); border: 1px solid lighten($error-color, 25%); color: darken($error-color, 20%); }
+    .card-details {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px dashed $border-color;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-selector {
+        display: flex;
+        gap: 0.5rem;
+
+        button {
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            color: $text-light;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: $transition;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            svg {
+                margin-right: 0.5rem;
+            }
+
+            &:hover {
+                border-color: $primary-color;
+                color: $primary-color;
+            }
+
+            &.active {
+                border-color: $primary-dark;
+                background-color: lighten($primary-color, 38%);
+                color: $primary-dark;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .surcharge-info {
+        font-size: 0.9rem;
+        color: $warning-color;
+        font-weight: 500;
+        text-align: right;
+
+        span {
+            font-weight: 600;
+        }
+    }
+
+    .payment-summary-panel {
+        background-color: #fff;
+        border-radius: $border-radius;
+        padding: 1.5rem;
+        border: 1px solid $border-color;
+
+        h3 {
+            text-align: center;
+            margin-top: 0;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid $border-color;
+            color: $primary-dark;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            font-size: 1rem;
+            border-bottom: 1px solid $background-light;
+
+            &.total {
+                font-size: 1.2rem;
+                font-weight: bold;
+                border-top: 2px solid $border-color;
+                margin-top: 0.5rem;
+                padding-top: 1rem;
+            }
+
+            &.remaining {
+                font-weight: bold;
+                font-size: 1.3rem;
+
+                &.debt {
+                    color: $error-color;
+                }
+
+                &.change {
+                    color: $success-color;
+                }
+            }
+
+            &.surcharge {
+                color: $warning-color;
+            }
+        }
+    }
+
+    .debt-info,
+    .debt-error {
+        margin-top: 1rem;
+        padding: 1rem;
+        text-align: center;
+        border-radius: $border-radius;
+        font-size: 0.9rem;
+    }
+
+    .debt-info {
+        background-color: lighten($warning-color, 30%);
+        border: 1px solid lighten($warning-color, 20%);
+        color: darken($warning-color, 20%);
+    }
+
+    .debt-error {
+        background-color: lighten($error-color, 35%);
+        border: 1px solid lighten($error-color, 25%);
+        color: darken($error-color, 20%);
+    }
 
     .navigator-buttons {
         margin-top: 2.5rem;
         display: flex;
         justify-content: space-between;
         gap: 1rem;
+
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: $border-radius;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: $transition;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            &:not(:disabled):active {
+                transform: scale(0.98);
+            }
+        }
+
+        .btn-primary {
+            background-color: $primary-color;
+            color: white;
+
+            &:hover:not(:disabled) {
+                background-color: $primary-dark;
+            }
+        }
+
+        .btn-secondary {
+            background-color: $secondary-color;
+            color: white;
+
+            &:hover:not(:disabled) {
+                background-color: darken($secondary-color, 10%);
+            }
+        }
+
+        .btn-success {
+            background-color: $success-color;
+            color: white;
+
+            &:hover:not(:disabled) {
+                background-color: darken($success-color, 10%);
+            }
+        }
     }
 }

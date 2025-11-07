@@ -1,9 +1,16 @@
-// _programarVencimientos.scss
-@import './sharedStyles';
+$primary-color: #3498db;
+$primary-dark: #2980b9;
+$secondary-color: #95a5a6;
+$success-color: #2ecc71;
+$error-color: #e74c3c;
+$border-color: #e0e0e0;
+$text-color: #34495e;
+$grey-dark: #7f8c8d;
+$background-light: #f8f9fa;
+$border-radius: 8px;
+$transition: all 0.2s ease;
 
 .programar-vencimientos-container {
-  @include step-container;
-
   h2 {
     text-align: center;
     margin-bottom: 1rem;
@@ -39,14 +46,13 @@
 
       .item-name { 
         font-weight: 600;
-        display: flex; // Use flex to align icon
+        display: flex;
         align-items: center;
         gap: 0.5rem;
       }
       .item-desc { font-size: 0.85rem; color: $grey-dark; }
     }
 
-    // --- NEW: Style for Suministro Indicator ---
     .suministro-indicator {
         color: $primary-color;
         font-size: 0.9rem;
@@ -63,6 +69,14 @@
         width: 80px;
         text-align: center;
         margin-bottom: 0.25rem;
+        padding: 0.5rem;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+        }
       }
 
       label {
@@ -80,7 +94,47 @@
   }
 
   .navigator-buttons {
-    @include navigator-buttons;
     margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+    button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: $border-radius;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      background-color: $primary-color;
+      color: white;
+      transition: $transition;
+
+      &:hover:not(:disabled) {
+        background-color: $primary-dark;
+      }
+
+      &:disabled {
+        background-color: $border-color;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      &.btn-secondary {
+        background-color: $secondary-color;
+
+        &:hover:not(:disabled) {
+          background-color: darken($secondary-color, 10%);
+        }
+      }
+
+      &.btn-confirm {
+        background-color: $success-color;
+
+        &:hover:not(:disabled) {
+          background-color: darken($success-color, 10%);
+        }
+      }
+    }
   }
 }

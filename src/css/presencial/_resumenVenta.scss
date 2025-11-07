@@ -1,4 +1,14 @@
-@import './sharedStyles';
+$primary-color: #3498db;
+$primary-dark: #2980b9;
+$success-color: #2ecc71;
+$error-color: #e74c3c;
+$warning-color: #f39c12;
+$border-color: #e0e0e0;
+$text-color: #34495e;
+$text-light: #576677;
+$background-light: #f8f9fa;
+$border-radius: 8px;
+$shadow-light: 0 2px 8px rgba(0, 0, 0, 0.05);
 
 .resumen-venta-container {
     max-width: 700px;
@@ -159,8 +169,25 @@
 
     .resumen-actions {
         margin-top: 2rem;
+        
         .btn {
             margin-left: 5px;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: $border-radius;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            
+            &.btn-primary {
+                background-color: $primary-color;
+                color: white;
+                
+                &:hover {
+                    background-color: $primary-dark;
+                }
+            }
         }
     }
 }
