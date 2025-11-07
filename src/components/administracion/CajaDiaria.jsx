@@ -71,6 +71,15 @@ const CajaDiaria = () => {
     const [saleToPayDebt, setSaleToPayDebt] = useState(null);
     const navigate = useNavigate();
 
+    // Helper function for currency formatting
+    const formatCurrency = (number) => {
+        const num = parseFloat(number) || 0;
+        return num.toLocaleString('es-AR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    };
+
     const fetchAndSetTransactions = useCallback(async (date) => {
         setIsLoading(true);
         const data = await fetchDailyTransactions(date);
@@ -156,57 +165,57 @@ const CajaDiaria = () => {
         });
 
         const formatBreakdown = (obj) => Object.entries(obj).map(([label, value]) => ({
-            label, value: `$${value.toFixed(2)}`
+            label, value: `$${formatCurrency(value)}`
         })).sort((a, b) => b.value.localeCompare(a.value));
 
         return {
             totalCaja: {
                 title: "Total en Caja",
-                total: `$${totalEnCaja.toFixed(2)}`,
+                total: `$${formatCurrency(totalEnCaja)}`,
                 breakdown: [
-                    { label: "Total Efectivo", value: `$${summary.totalEfectivo.toFixed(2)}` },
-                    { label: "Total Electrónico", value: `$${summary.totalElectronico.toFixed(2)}` }
+                    { label: "Total Efectivo", value: `$${formatCurrency(summary.totalEfectivo)}` },
+                    { label: "Total Electrónico", value: `$${formatCurrency(summary.totalElectronico)}` }
                 ]
             },
             totalElectronico: {
                 title: "Total Electrónico",
-                total: `$${summary.totalElectronico.toFixed(2)}`,
+                total: `$${formatCurrency(summary.totalElectronico)}`,
                 breakdown: formatBreakdown(metodosElectronicos)
             },
             totalEfectivo: {
                 title: "Total Efectivo",
-                total: `$${summary.totalEfectivo.toFixed(2)}`,
+                total: `$${formatCurrency(summary.totalEfectivo)}`,
                 breakdown: [
-                    { label: "Ingreso por Ventas", value: `$${ventasEfectivo.toFixed(2)}` },
-                    { label: "Ingreso por Cobranzas", value: `$${cobrosEfectivo.toFixed(2)}` }
+                    { label: "Ingreso por Ventas", value: `$${formatCurrency(ventasEfectivo)}` },
+                    { label: "Ingreso por Cobranzas", value: `$${formatCurrency(cobrosEfectivo)}` }
                 ]
             },
             balanceDiario: {
                 title: "Balance Diario (Ventas)",
-                total: `$${summary.balanceDiario.toFixed(2)}`,
+                total: `$${formatCurrency(summary.balanceDiario)}`,
                 breakdown: [
-                    { label: "Ventas Totales del Día", value: `$${ventasSubtotal.toFixed(2)}` },
-                    { label: "Generado en Cta. Cte.", value: `-$${ventasDeuda.toFixed(2)}` },
-                    { label: "Ventas Cobradas Hoy", value: `$${(ventasSubtotal - ventasDeuda).toFixed(2)}` }
+                    { label: "Ventas Totales del Día", value: `$${formatCurrency(ventasSubtotal)}` },
+                    { label: "Generado en Cta. Cte.", value: `-$${formatCurrency(ventasDeuda)}` },
+                    { label: "Ventas Cobradas Hoy", value: `$${formatCurrency(ventasSubtotal - ventasDeuda)}` }
                 ]
             },
             deudaCobrada: {
                 title: "Cobranza de Deuda",
-                total: `$${summary.deudaCobrada.toFixed(2)}`,
+                total: `$${formatCurrency(summary.deudaCobrada)}`,
                 breakdown: formatBreakdown(metodosCobranza)
             },
             deudaGenerada: {
                 title: "Deuda Generada",
-                total: `$${summary.deudaGenerada.toFixed(2)}`,
+                total: `$${formatCurrency(summary.deudaGenerada)}`,
                 breakdown: [
-                    { label: "Ventas en Cta. Cte.", value: `$${summary.deudaGenerada.toFixed(2)}` }
+                    { label: "Ventas en Cta. Cte.", value: `$${formatCurrency(summary.deudaGenerada)}` }
                 ]
             },
             descuentos: {
                 title: "Descuentos",
-                total: `-$${summary.totalDescuentos.toFixed(2)}`,
+                total: `-$${formatCurrency(summary.totalDescuentos)}`,
                 breakdown: [
-                    { label: "Descuentos Aplicados", value: `-$${summary.totalDescuentos.toFixed(2)}` }
+                    { label: "Descuentos Aplicados", value: `-$${formatCurrency(summary.totalDescuentos)}` }
                 ]
             }
         };
@@ -395,21 +404,21 @@ const CajaDiaria = () => {
                     onClick={() => setPopupData(summaryDetails.totalCaja)}
                 >
                     <span>Total en Caja</span>
-                    <strong>${totalEnCaja.toFixed(2)}</strong>
+                    <strong>${formatCurrency(totalEnCaja)}</strong>
                 </div>
                 <div 
                     className="caja-summary-card total-electronico"
                     onClick={() => setPopupData(summaryDetails.totalElectronico)}
                 >
                     <span>Total Electrónico</span>
-                    <strong>${summary.totalElectronico.toFixed(2)}</strong>
+                    <strong>${formatCurrency(summary.totalElectronico)}</strong>
                 </div>
                 <div 
                     className="caja-summary-card total-efectivo"
                     onClick={() => setPopupData(summaryDetails.totalEfectivo)}
                 >
                     <span>Total Efectivo</span>
-                    <strong>${summary.totalEfectivo.toFixed(2)}</strong>
+                    <strong>${formatCurrency(summary.totalEfectivo)}</strong>
                 </div>
             </div>
 
@@ -419,21 +428,21 @@ const CajaDiaria = () => {
                     onClick={() => setPopupData(summaryDetails.balanceDiario)}
                 >
                     <span>Balance Diario (Ventas)</span>
-                    <strong>${summary.balanceDiario.toFixed(2)}</strong>
+                    <strong>${formatCurrency(summary.balanceDiario)}</strong>
                 </div>
                 <div 
                     className="caja-summary-card deuda-cobrada"
                     onClick={() => setPopupData(summaryDetails.deudaCobrada)}
                 >
                     <span>Cobranza de Deuda</span>
-                    <strong>${summary.deudaCobrada.toFixed(2)}</strong>
+                    <strong>${formatCurrency(summary.deudaCobrada)}</strong>
                 </div>
                 <div 
                     className="caja-summary-card deuda-generada"
                     onClick={() => setPopupData(summaryDetails.deudaGenerada)}
                 >
                     <span>Deuda Generada</span>
-                    <strong>${summary.deudaGenerada.toFixed(2)}</strong>
+                    <strong>${formatCurrency(summary.deudaGenerada)}</strong>
                 </div>
                 {summary.totalDescuentos > 0 && (
                     <div 
@@ -441,7 +450,7 @@ const CajaDiaria = () => {
                         onClick={() => setPopupData(summaryDetails.descuentos)}
                     >
                         <span>Descuentos</span>
-                        <strong>-${summary.totalDescuentos.toFixed(2)}</strong>
+                        <strong>-${formatCurrency(summary.totalDescuentos)}</strong>
                     </div>
                 )}
             </div>
@@ -510,13 +519,13 @@ const CajaDiaria = () => {
                                                     <FaExclamationTriangle />
                                                     <span>
                                                         {paymentStatus === 'unpaid' && 'Sin Pagar'}
-                                                        {paymentStatus === 'partial' && `Deuda: $${trans.debt.toFixed(2)}`}
+                                                        {paymentStatus === 'partial' && `Deuda: $${formatCurrency(trans.debt)}`}
                                                     </span>
                                                 </div>
                                             )}
                                         </div>
                                         <div className="card-footer">
-                                            <span className="total">${(trans.total || trans.amount).toFixed(2)}</span>
+                                            <span className="total">${formatCurrency(trans.total || trans.amount)}</span>
                                             { (trans.type === 'Venta Presencial' || trans.type === 'Pedido Online') &&
                                                 <div className="card-actions">
                                                     {hasDebt && (
