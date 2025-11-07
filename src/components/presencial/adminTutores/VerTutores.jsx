@@ -129,16 +129,16 @@ const VerTutores = () => {
   const totalPages = Math.ceil(filteredTutores.length / itemsPerPage);
 
   return (
-    <div className="presential-container">
-      <div className="page-header">
+    <div className="tutor-list">
+      <div className="tutor-list__header">
         <h1>Gestión de Tutores</h1>
-        <Link to="/admin/add-tutor" className="btn btn-primary">
+        <Link to="/admin/add-tutor" className="tutor-list__btn tutor-list__btn--primary">
           <FaPlus /> Agregar Tutor
         </Link>
       </div>
 
-      <div className="filter-bar">
-        <div className="filter-group">
+      <div className="tutor-list__filters">
+        <div className="tutor-list__filter-group">
           <input
             type="text"
             placeholder="Buscar por nombre, DNI, email o teléfono..."
@@ -147,7 +147,7 @@ const VerTutores = () => {
             onChange={handleFilterChange}
           />
         </div>
-        <div className="filter-group">
+        <div className="tutor-list__filter-group">
           <select
             name="sortOrder"
             value={filters.sortOrder}
@@ -160,7 +160,7 @@ const VerTutores = () => {
             <option value="newest">Más nuevos</option>
           </select>
         </div>
-        <div className="filter-group">
+        <div className="tutor-list__filter-group">
           <label htmlFor="serviceType">Filtrar por Servicio</label>
           <select
             id="serviceType"
@@ -174,7 +174,7 @@ const VerTutores = () => {
             <option value="both">Ambos</option>
           </select>
         </div>
-        <div className="filter-group checkbox-group">
+        <div className="tutor-list__filter-group tutor-list__filter-group--checkbox">
           <input
             type="checkbox"
             id="showOnlyDebtors"
@@ -187,24 +187,24 @@ const VerTutores = () => {
       </div>
 
       {isLoading ? (
-        <p className="loading-message">Cargando...</p>
+        <p className="tutor-list__message">Cargando...</p>
       ) : (
         <>
-          <div className="tutor-cards-grid">
+          <div className="tutor-list__grid">
             {currentItems.map((tutor) => (
               <div
                 key={tutor.id}
-                className="tutor-card"
+                className="tutor-list__card"
                 onClick={() => navigate(`/admin/tutor-profile/${tutor.id}`)}
               >
-                <div className="tutor-card-header">
-                  <div className="tutor-avatar">
+                <div className="tutor-list__card-header">
+                  <div className="tutor-list__avatar">
                     <FaUserLarge />
                   </div>
-                  <div className="tutor-info">
-                    <p className="tutor-name">
+                  <div className="tutor-list__info">
+                    <p className="tutor-list__name">
                       <Link
-                        className="link-class"
+                        className="tutor-list__link"
                         to={`/admin/tutor-profile/${tutor.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -213,34 +213,34 @@ const VerTutores = () => {
                         {tutor.name}
                       </Link>
                     </p>
-                    <p className="tutor-contact">
+                    <p className="tutor-list__contact">
                       {tutor.phone || tutor.email || "Sin contacto"}
                     </p>
                   </div>
                 </div>
 
-                <div className="tutor-card-body">
-                  <div className="info-chip">
+                <div className="tutor-list__card-body">
+                  <div className="tutor-list__chip">
                     <FaDog />
                     <span>{tutor.pacientesIds?.length || 0} Pacientes</span>
                   </div>
                   <div
-                    className={`info-chip balance ${
-                      tutor.accountBalance < 0 ? "deudor" : ""
+                    className={`tutor-list__chip tutor-list__chip--balance ${
+                      tutor.accountBalance < 0 ? "tutor-list__chip--deudor" : ""
                     }`}
                   >
                     <span>${tutor.accountBalance?.toFixed?.(2) || "0.00"}</span>
                   </div>
                   {tutor.serviceTypes && tutor.serviceTypes.length > 0 && (
-                    <div className="service-chips-container">
+                    <div className="tutor-list__service-chips">
                       {tutor.serviceTypes.includes("clinical") && (
-                        <div className="service-chip clinical">
+                        <div className="tutor-list__service-chip tutor-list__service-chip--clinical">
                           <FaStethoscope />
                           <span>Clínica</span>
                         </div>
                       )}
                       {tutor.serviceTypes.includes("grooming") && (
-                        <div className="service-chip grooming">
+                        <div className="tutor-list__service-chip tutor-list__service-chip--grooming">
                           <PiBathtub />
                           <span>Peluquería</span>
                         </div>
@@ -249,10 +249,10 @@ const VerTutores = () => {
                   )}
                 </div>
 
-                <div className="tutor-card-actions">
+                <div className="tutor-list__card-actions">
                   <Link
                     to={`/admin/edit-tutor/${tutor.id}`}
-                    className="btn btn-edit"
+                    className="tutor-list__btn tutor-list__btn--edit"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <CiEdit />
@@ -262,7 +262,7 @@ const VerTutores = () => {
                       e.stopPropagation();
                       handleDelete(tutor.id, tutor.name);
                     }}
-                    className="btn btn-delete"
+                    className="tutor-list__btn tutor-list__btn--delete"
                   >
                     <MdDeleteOutline />
                   </button>
@@ -272,8 +272,9 @@ const VerTutores = () => {
           </div>
 
           {totalPages > 1 && (
-            <div className="pagination-controls">
+            <div className="tutor-list__pagination">
               <button
+                className="tutor-list__btn"
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
               >
@@ -283,6 +284,7 @@ const VerTutores = () => {
                 Página {currentPage} de {totalPages}
               </span>
               <button
+                className="tutor-list__btn"
                 onClick={() =>
                   setCurrentPage((p) => Math.min(totalPages, p + 1))
                 }

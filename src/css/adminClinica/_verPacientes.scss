@@ -8,22 +8,150 @@ $white-color: #fff;
 $shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 $transition-speed: 0.3s;
 $border-radius: 12px;
+$grey-light: #f8f9fa;
+$error-color: #e74c3c;
 
-// --- Main Grid for Paciente Cards ---
-.paciente-cards-grid {
+// --- Main Container ---
+.patient-list {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  // --- Button Library (Scoped) ---
+  .patient-list__btn {
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: $transition-speed;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    line-height: 1;
+
+    &--primary {
+      background-color: $primary-dark;
+      color: $white-color;
+      &:hover { background-color: darken($primary-dark, 10%); }
+    }
+    &--secondary {
+      background-color: $border-color;
+      color: $text-color;
+      &:hover { background-color: darken($border-color, 10%); }
+    }
+    &--edit {
+      background-color: #f39c12;
+      color: $white-color;
+      padding: 0.5rem;
+      font-size: 1.2rem;
+      &:hover { background-color: darken(#f39c12, 10%); }
+    }
+    &--delete {
+      background-color: $error-color;
+      color: $white-color;
+      padding: 0.5rem;
+      font-size: 1.2rem;
+      &:hover { background-color: darken($error-color, 10%); }
+    }
+    &:disabled {
+      background-color: $grey-light;
+      color: $text-light;
+      cursor: not-allowed;
+    }
+  }
+
+  // --- Header ---
+  .patient-list__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    
+    h1 {
+      color: $text-color;
+      margin: 0;
+    }
+  }
+
+  // --- Filter Bar ---
+  .patient-list__filters {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    padding: 1.5rem;
+    background-color: $white-color;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+
+    .patient-list__filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1 1 180px;
+
+      label { font-size: 0.8rem; font-weight: 500; color: $text-light; }
+      
+      input[type="text"], select {
+        padding: 0.75rem 1rem;
+        border: 1px solid $border-color;
+        border-radius: $border-radius * 0.75;
+        font-size: 0.95rem;
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        }
+      }
+
+      &--checkbox {
+        flex-direction: row;
+        align-items: center;
+        flex-grow: 0;
+        flex-basis: auto;
+        padding-bottom: 0.5rem;
+
+        label {
+          font-size: 0.9rem;
+          color: $text-color;
+        }
+        input[type="checkbox"] {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+
+  // --- Loading/Empty Message ---
+  .patient-list__message {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.1rem;
+    color: $text-light;
+  }
+
+  // --- Main Grid for Paciente Cards ---
+  .patient-list__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
     margin-top: 1rem;
 
     @media (max-width: 480px) {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+      grid-template-columns: 1fr;
+      gap: 1rem;
     }
-}
+  }
 
-// --- Modern Paciente Card Style ---
-.paciente-card {
+  // --- Modern Paciente Card Style ---
+  .patient-list__card {
     background: $white-color;
     border-radius: $border-radius;
     box-shadow: $shadow;
@@ -34,80 +162,99 @@ $border-radius: 12px;
     border-top: 4px solid $primary-color;
 
     &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
-}
+    
+    &--fallecido {
+        background-color: #f9f9f9;
+        opacity: 0.7;
+        border-top-color: $text-light;
+        .patient-list__avatar {
+            background-color: lighten($text-light, 30%);
+            color: $text-light;
+        }
+    }
+  }
 
-// --- Card Header Section ---
-.paciente-card-header {
+  // --- Card Header Section ---
+  .patient-list__card-header {
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 1.5rem;
+    position: relative;
 
-    @media (max-width: 480px) {
-        padding: 1rem;
+    @media (max-width: 480px) { padding: 1rem; }
+
+    .patient-list__avatar {
+      font-size: 2rem;
+      color: $primary-color;
+      background-color: lighten($primary-color, 30%);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      @media (max-width: 480px) {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+      }
     }
 
-    .paciente-avatar {
-        font-size: 2rem;
-        color: $primary-color;
-        background-color: lighten($primary-color, 30%);
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-
-        @media (max-width: 480px) {
-            width: 40px;
-            height: 40px;
-            font-size: 1.5rem;
-        }
+    .patient-list__info {
+      overflow: hidden;
+      .patient-list__name {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: $text-color;
+        margin: 0;
+      }
+      .patient-list__breed {
+        font-size: 0.9rem;
+        color: $text-light;
+        margin: 0.2rem 0 0 0;
+      }
     }
-
-    .paciente-info {
-        overflow: hidden;
-        .paciente-name {
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: $text-color;
-            margin: 0;
-            .link-class {
-                color: #1c2d43;
-            }
-        }
-        .paciente-breed {
-            font-size: 0.9rem;
-            color: $text-light;
-            margin: 0.2rem 0 0 0;
-        }
+    
+    .patient-list__fallecido-tag {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: $text-light;
+        background-color: $border-color;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
     }
-}
+  }
 
-// --- Card Body for Tutor Link ---
-.paciente-card-body {
+  // --- Card Body for Tutor Link ---
+  .patient-list__card-body {
     padding: 0 1.5rem 1.5rem 1.5rem;
     
-    @media (max-width: 480px) {
-        padding: 0 1rem 1rem 1rem;
-    }
+    @media (max-width: 480px) { padding: 0 1rem 1rem 1rem; }
 
-    .tutor-link {
+    .patient-list__tutor-link {
+      color: $text-color;
+      font-weight: 500;
+      margin: 0;
+    }
+    
+    .patient-list__link {
         color: $text-color;
-        font-weight: 500;
-        margin: 0;
-        .link-class {
-                color: #1c2d43;
-            }
+        text-decoration: none;
+        &:hover { text-decoration: underline; }
     }
-}
+  }
 
-// --- Card Actions Footer ---
-.paciente-card-actions {
+  // --- Card Actions Footer ---
+  .patient-list__card-actions {
     border-top: 1px solid $border-color;
     padding: 1rem 1.5rem;
     margin-top: auto;
@@ -117,78 +264,75 @@ $border-radius: 12px;
     gap: 0.75rem;
 
     @media (max-width: 576px) {
-        padding: 1rem;
-        flex-wrap: wrap;
-        justify-content: flex-start;
+      padding: 1rem;
+      flex-wrap: wrap;
+      justify-content: flex-start;
     }
 
-    .service-type-selector {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-right: auto; // Pushes this element to the far left
+    .patient-list__service-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-right: auto; // Pushes this element to the far left
 
-        @media (max-width: 576px) {
-            margin-right: 0;
-            flex-basis: 100%;
-            order: -1; // Moves it to the "top" when wrapped
-            padding-bottom: 0.5rem;
-            justify-content: center;
+      @media (max-width: 576px) {
+        margin-right: 0;
+        flex-basis: 100%;
+        order: -1; // Moves it to the "top" when wrapped
+        padding-bottom: 0.5rem;
+        justify-content: center;
+      }
+
+      svg {
+        color: $text-light;
+        font-size: 1.2rem;
+      }
+
+      .patient-list__service-dropdown {
+        background-color: transparent;
+        border: none;
+        font-family: inherit;
+        font-size: 0.9rem;
+        color: $text-color;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 4px;
+        transition: background-color $transition-speed;
+
+        &:hover { background-color: #f1f3f5; }
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px lighten($primary-color, 30%);
         }
-
-        svg {
-            color: $text-light;
-            font-size: 1.2rem;
-        }
-
-        .service-type-dropdown {
-            background-color: transparent;
-            border: none;
-            font-family: inherit;
-            font-size: 0.9rem;
-            color: $text-color;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 4px;
-            transition: background-color $transition-speed;
-
-            &:hover {
-                background-color: #f1f3f5;
-            }
-
-            &:focus {
-                outline: none;
-                box-shadow: 0 0 0 2px lighten($primary-color, 30%);
-            }
-        }
+      }
     }
-}
+  }
 
-// --- Pagination Controls ---
-.pagination-controls {
+  // --- Pagination Controls ---
+  .patient-list__pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
     margin-top: 2rem;
     
-    button { 
-        @extend .btn; // Reuse button styles
-        padding: 0.5rem 1rem;
+    .patient-list__btn { 
+      padding: 0.5rem 1rem;
+      background-color: $white-color;
+      border: 1px solid $border-color;
+      color: $text-color;
+
+      &:hover:not(:disabled) {
+        border-color: $primary-dark;
+        color: $primary-dark;
+        background-color: $white-color;
+      }
     }
     span { 
-        font-weight: 500; 
-        color: $text-light; 
-        @media (max-width: 480px) {
-            font-size: 0.9rem;
-        }
+      font-weight: 500; 
+      color: $text-light; 
+      @media (max-width: 480px) { font-size: 0.9rem; }
     }
-
-    @media (max-width: 480px) {
-        gap: 0.5rem;
-        button {
-            padding: 0.5rem 0.75rem;
-        }
-    }
+  }
 }

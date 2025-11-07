@@ -142,16 +142,16 @@ const VerPacientes = () => {
   const totalPages = Math.ceil(filteredPacientes.length / itemsPerPage);
 
   return (
-    <div className="presential-container">
-      <div className="page-header">
+    <div className="patient-list">
+      <div className="patient-list__header">
         <h1>Gestión de Pacientes</h1>
-        <Link to="/admin/add-paciente" className="btn btn-primary">
+        <Link to="/admin/add-paciente" className="patient-list__btn patient-list__btn--primary">
           <FaPlus /> Agregar Paciente
         </Link>
       </div>
 
-      <div className="filter-bar">
-        <div className="filter-group">
+      <div className="patient-list__filters">
+        <div className="patient-list__filter-group">
           <input
             type="text"
             placeholder="Buscar por nombre, tutor, especie o chip..."
@@ -160,14 +160,14 @@ const VerPacientes = () => {
             onChange={handleFilterChange}
           />
         </div>
-        <div className="filter-group">
+        <div className="patient-list__filter-group">
           <select name="sortOrder" value={filters.sortOrder} onChange={handleFilterChange}>
             <option value="name_asc">Nombre (A-Z)</option>
             <option value="name_desc">Nombre (Z-A)</option>
             <option value="tutor_asc">Tutor (A-Z)</option>
           </select>
         </div>
-        <div className="filter-group">
+        <div className="patient-list__filter-group">
           <label htmlFor="serviceType">Filtrar por Servicio</label>
           <select id="serviceType" name="serviceType" value={filters.serviceType} onChange={handleFilterChange}>
             <option value="todos">Todos</option>
@@ -176,30 +176,30 @@ const VerPacientes = () => {
             <option value="both">Ambos</option>
           </select>
         </div>
-        <div className="filter-group" style={{ alignItems: "center", flex: "0 1 auto" }}>
+        <div className="patient-list__filter-group patient-list__filter-group--checkbox">
           <input type="checkbox" id="showFallecidos" name="showFallecidos" checked={filters.showFallecidos} onChange={handleFilterChange} />
           <label htmlFor="showFallecidos">Mostrar fallecidos</label>
         </div>
       </div>
 
       {isLoading ? (
-        <p className="loading-message">Cargando...</p>
+        <p className="patient-list__message">Cargando...</p>
       ) : (
         <>
-          <div className="paciente-cards-grid">
+          <div className="patient-list__grid">
             {currentItems.map((p) => (
               <div
                 key={p.id}
-                className={`paciente-card ${p.fallecido ? "fallecido" : ""}`}
+                className={`patient-list__card ${p.fallecido ? "patient-list__card--fallecido" : ""}`}
                 onClick={() => navigate(`/admin/paciente-profile/${p.id}`)}
               >
-                <div className="paciente-card-header">
-                  <div className="paciente-avatar">
+                <div className="patient-list__card-header">
+                  <div className="patient-list__avatar">
                     {p.species?.toLowerCase().includes("canino") ? <FaDog /> : <FaCat />}
                   </div>
-                  <div className="paciente-info">
-                    <p className="paciente-name">
-                      <Link className="link-class"
+                  <div className="patient-list__info">
+                    <p className="patient-list__name">
+                      <Link className="patient-list__link"
                         to={`/admin/paciente-profile/${p.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -208,16 +208,16 @@ const VerPacientes = () => {
                         {p.name}
                       </Link>
                     </p>
-                    <p className="paciente-breed">{p.breed || p.species}</p>
+                    <p className="patient-list__breed">{p.breed || p.species}</p>
                   </div>
-                  {p.fallecido && <span className="fallecido-tag">Fallecido</span>}
+                  {p.fallecido && <span className="patient-list__fallecido-tag">Fallecido</span>}
                 </div>
 
-                <div className="paciente-card-body">
-                  <p className="tutor-link">
+                <div className="patient-list__card-body">
+                  <p className="patient-list__tutor-link">
                     Tutor:{" "}
                     {p.tutorId ? (
-                      <Link  className="link-class"
+                      <Link className="patient-list__link"
                         to={`/admin/tutor-profile/${p.tutorId}`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -232,10 +232,24 @@ const VerPacientes = () => {
                   </p>
                 </div>
 
-                <div className="paciente-card-actions">
+                <div className="patient-list__card-actions">
+                  <div className="patient-list__service-selector" onClick={(e) => e.stopPropagation()}>
+                    <MdMiscellaneousServices />
+                    <select
+                      value={getServiceValue(p.serviceTypes || [])}
+                      onChange={(e) => handleServiceChange(p, e.target.value)}
+                      className="patient-list__service-dropdown"
+                    >
+                      <option value="none">Ninguno</option>
+                      <option value="clinical">Clínica</option>
+                      <option value="grooming">Peluquería</option>
+                      <option value="both">Ambos</option>
+                    </select>
+                  </div>
+
                   <Link
                     to={`/admin/edit-paciente/${p.id}`}
-                    className="btn btn-edit"
+                    className="patient-list__btn patient-list__btn--edit"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <CiEdit />
@@ -246,38 +260,25 @@ const VerPacientes = () => {
                       e.stopPropagation();
                       handleDelete(p);
                     }}
-                    className="btn btn-delete"
+                    className="patient-list__btn patient-list__btn--delete"
                   >
                     <MdDeleteOutline />
                   </button>
-
-                  <div className="service-type-selector" onClick={(e) => e.stopPropagation()}>
-                    <MdMiscellaneousServices />
-                    <select
-                      value={getServiceValue(p.serviceTypes || [])}
-                      onChange={(e) => handleServiceChange(p, e.target.value)}
-                      className="service-type-dropdown"
-                    >
-                      <option value="none">Ninguno</option>
-                      <option value="clinical">Clínica</option>
-                      <option value="grooming">Peluquería</option>
-                      <option value="both">Ambos</option>
-                    </select>
-                  </div>
                 </div>
               </div>
             ))}
           </div>
 
           {totalPages > 1 && (
-            <div className="pagination-controls">
-              <button onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1}>
+            <div className="patient-list__pagination">
+              <button className="patient-list__btn" onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1}>
                 Anterior
               </button>
               <span>
                 Página {currentPage} de {totalPages}
               </span>
               <button
+                className="patient-list__btn"
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
               >

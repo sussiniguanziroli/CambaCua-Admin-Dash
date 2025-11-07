@@ -9,26 +9,153 @@ $error-color: #e74c3c;
 $shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 $transition-speed: 0.3s;
 $border-radius: 12px;
+$grey-light: #f8f9fa;
 
 // --- Service-specific colors ---
 $clinical-color: #2ECC71;
 $grooming-color: #9B59B6;
 
-// --- Main Grid for Tutor Cards ---
-.tutor-cards-grid {
+// --- Main Container ---
+.tutor-list {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  // --- Button Library (Scoped) ---
+  .tutor-list__btn {
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: $transition-speed;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    line-height: 1;
+
+    &--primary {
+      background-color: $primary-color;
+      color: $white-color;
+      &:hover { background-color: $primary-dark; }
+    }
+    &--secondary {
+      background-color: $border-color;
+      color: $text-color;
+      &:hover { background-color: darken($border-color, 10%); }
+    }
+    &--edit {
+      background-color: #f39c12;
+      color: $white-color;
+      padding: 0.5rem;
+      font-size: 1.2rem;
+      &:hover { background-color: darken(#f39c12, 10%); }
+    }
+    &--delete {
+      background-color: $error-color;
+      color: $white-color;
+      padding: 0.5rem;
+      font-size: 1.2rem;
+      &:hover { background-color: darken($error-color, 10%); }
+    }
+    &:disabled {
+      background-color: $grey-light;
+      color: $text-light;
+      cursor: not-allowed;
+    }
+  }
+
+  // --- Header ---
+  .tutor-list__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    
+    h1 {
+      color: $text-color;
+      margin: 0;
+    }
+  }
+
+  // --- Filter Bar ---
+  .tutor-list__filters {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    padding: 1.5rem;
+    background-color: $white-color;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+
+    .tutor-list__filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1 1 180px;
+
+      label { font-size: 0.8rem; font-weight: 500; color: $text-light; }
+      
+      input[type="text"], select {
+        padding: 0.75rem 1rem;
+        border: 1px solid $border-color;
+        border-radius: $border-radius * 0.75;
+        font-size: 0.95rem;
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba($primary-color, 0.15);
+        }
+      }
+
+      &--checkbox {
+        flex-direction: row;
+        align-items: center;
+        flex-grow: 0;
+        flex-basis: auto;
+        padding-bottom: 0.5rem;
+
+        label {
+          font-size: 0.9rem;
+          color: $text-color;
+        }
+        input[type="checkbox"] {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+
+  // --- Loading/Empty Message ---
+  .tutor-list__message {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.1rem;
+    color: $text-light;
+  }
+
+  // --- Main Grid for Tutor Cards ---
+  .tutor-list__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 1.5rem;
     margin-top: 1rem;
 
     @media (max-width: 480px) {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+      grid-template-columns: 1fr;
+      gap: 1rem;
     }
-}
+  }
 
-// --- Modern Tutor Card Style ---
-.tutor-card {
+  // --- Modern Tutor Card Style ---
+  .tutor-list__card {
     background: $white-color;
     border-radius: $border-radius;
     box-shadow: $shadow;
@@ -39,187 +166,168 @@ $grooming-color: #9B59B6;
     border-top: 4px solid $primary-color;
 
     &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
-}
+  }
 
-// --- Card Header Section ---
-.tutor-card-header {
+  // --- Card Header Section ---
+  .tutor-list__card-header {
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 1.5rem;
 
-    @media (max-width: 480px) {
-        padding: 1rem;
+    @media (max-width: 480px) { padding: 1rem; }
+
+    .tutor-list__avatar {
+      font-size: 2rem;
+      color: $primary-color;
+      background-color: lighten($primary-color, 38%);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      @media (max-width: 480px) {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+      }
     }
 
-    .tutor-avatar {
-        font-size: 2rem;
-        color: $primary-color;
-        background-color: lighten($primary-color, 38%);
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-
-        @media (max-width: 480px) {
-            width: 40px;
-            height: 40px;
-            font-size: 1.5rem;
-        }
-    }
-
-    .tutor-info {
+    .tutor-list__info {
+      overflow: hidden;
+      .tutor-list__name {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: $text-color;
+        margin: 0;
+        white-space: nowrap;
         overflow: hidden;
-        .tutor-name {
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: $text-color;
-            margin: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            .link-class {
-                color: #3c4858;
-            }
-        }
-        .tutor-contact {
-            font-size: 0.9rem;
-            color: $text-light;
-            margin: 0.2rem 0 0 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        text-overflow: ellipsis;
+      }
+      .tutor-list__link {
+          color: $text-color;
+          text-decoration: none;
+          &:hover { text-decoration: underline; }
+      }
+      .tutor-list__contact {
+        font-size: 0.9rem;
+        color: $text-light;
+        margin: 0.2rem 0 0 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
-}
+  }
 
-// --- Card Body for Info Chips ---
-.tutor-card-body {
+  // --- Card Body for Info Chips ---
+  .tutor-list__card-body {
     padding: 0 1.5rem 1.5rem 1.5rem;
     display: flex;
     gap: 0.75rem;
-    flex-wrap: wrap; // Allows content to wrap to the next line
+    flex-wrap: wrap;
     
-    @media (max-width: 480px) {
-        padding: 0 1rem 1rem 1rem;
-        gap: 0.5rem;
-    }
+    @media (max-width: 480px) { padding: 0 1rem 1rem 1rem; gap: 0.5rem; }
 
-    .info-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        background-color: #f1f3f5;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: $text-light;
+    .tutor-list__chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #f1f3f5;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: $text-light;
 
-        svg {
-            color: $primary-color;
-        }
+      svg { color: $primary-color; }
 
-        @media (max-width: 480px) {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.85rem;
-        }
-    }
-
-    .balance {
+      @media (max-width: 480px) { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+      
+      &--balance {
         color: $primary-dark;
-        &.deudor {
-            background-color: lighten($error-color, 30%);
-            color: $error-color;
-            font-weight: 600;
-        }
-    }
-
-    .service-chips-container {
-        display: flex;
-        gap: 0.75rem;
-        width: 100%;
-        margin-top: 0.5rem;
-        @media (max-width: 480px) {
-            gap: 0.5rem;
-        }
-    }
-
-    .service-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
+      }
+      &--deudor {
+        background-color: lighten($error-color, 30%);
+        color: $error-color;
         font-weight: 600;
-
-        @media (max-width: 480px) {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.8rem;
-        }
-
-        svg {
-            font-size: 1rem;
-        }
-
-        &.clinical {
-            background-color: lighten($clinical-color, 38%);
-            color: darken($clinical-color, 15%);
-            svg { color: darken($clinical-color, 15%); }
-        }
-
-        &.grooming {
-            background-color: lighten($grooming-color, 35%);
-            color: darken($grooming-color, 15%);
-            svg { color: darken($grooming-color, 15%); }
-        }
+      }
     }
-}
 
-// --- Card Actions Footer ---
-.tutor-card-actions {
+    .tutor-list__service-chips {
+      display: flex;
+      gap: 0.75rem;
+      width: 100%;
+      margin-top: 0.5rem;
+      @media (max-width: 480px) { gap: 0.5rem; }
+    }
+
+    .tutor-list__service-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+
+      @media (max-width: 480px) { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+      svg { font-size: 1rem; }
+
+      &--clinical {
+        background-color: lighten($clinical-color, 38%);
+        color: darken($clinical-color, 15%);
+        svg { color: darken($clinical-color, 15%); }
+      }
+      &--grooming {
+        background-color: lighten($grooming-color, 35%);
+        color: darken($grooming-color, 15%);
+        svg { color: darken($grooming-color, 15%); }
+      }
+    }
+  }
+
+  // --- Card Actions Footer ---
+  .tutor-list__card-actions {
     border-top: 1px solid $border-color;
     padding: 1rem 1.5rem;
     display: flex;
     justify-content: flex-end;
     gap: 0.75rem;
 
-    @media (max-width: 480px) {
-        padding: 1rem;
-    }
-}
+    @media (max-width: 480px) { padding: 1rem; }
+  }
 
-// --- Pagination Controls ---
-.pagination-controls {
+  // --- Pagination Controls ---
+  .tutor-list__pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
     margin-top: 2rem;
     
-    button { 
-        @extend .btn; // Reuse button styles
-        padding: 0.5rem 1rem;
+    .tutor-list__btn { 
+      padding: 0.5rem 1rem;
+      background-color: $white-color;
+      border: 1px solid $border-color;
+      color: $text-color;
+
+      &:hover:not(:disabled) {
+        border-color: $primary-color;
+        color: $primary-color;
+        background-color: $white-color;
+      }
     }
     span { 
-        font-weight: 500; 
-        color: $text-light; 
-        @media (max-width: 480px) {
-            font-size: 0.9rem;
-        }
+      font-weight: 500; 
+      color: $text-light; 
+      @media (max-width: 480px) { font-size: 0.9rem; }
     }
-
-    @media (max-width: 480px) {
-        gap: 0.5rem;
-        button {
-            padding: 0.5rem 0.75rem;
-        }
-    }
+  }
 }
