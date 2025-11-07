@@ -16,45 +16,45 @@ import {
   FaStethoscope,
   FaRegCalendarAlt,
   FaRegClock,
+  FaUser,
+  FaPlus,
 } from "react-icons/fa";
 import AppointmentModal from "./AppointmentModal";
 
 const AppointmentCard = ({ appointment, onClick, viewMode }) => {
-  const getCardPosition = () => {
-    const startHour = appointment.startTime.getHours();
-    const startMinute = appointment.startTime.getMinutes();
-    const top = (startHour - 8) * 60 + startMinute;
-    let height = 60;
-    if (appointment.endTime) {
-      const durationMinutes =
-        (appointment.endTime - appointment.startTime) / (1000 * 60);
-      height = Math.max(30, durationMinutes);
-    }
-    return { top: `${top}px`, height: `${height}px` };
-  };
-
   const tutor = appointment.tutorName || "Genérico";
   const paciente = appointment.pacienteName || "Genérico";
+  const startTime = appointment.startTime.toLocaleTimeString("es-AR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const endTime = appointment.endTime
+    ? appointment.endTime.toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : null;
 
   return (
-    <div
-      className={`appointment-card view-${viewMode}`}
-      style={viewMode === "day" ? getCardPosition() : {}}
-      onClick={onClick}
-    >
-      <p className="patient-name">
-        {paciente} ({tutor})
-      </p>
-      <p className="service-name">
-        <FaStethoscope /> {appointment.services?.[0]?.nombre || "Consulta"}
-      </p>
-      <p className="time-range">
-        <FaRegClock />{" "}
-        {appointment.startTime.toLocaleTimeString("es-AR", {
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
-      </p>
+    <div className={`agenda-appointment-card ${viewMode}`} onClick={onClick}>
+      <div className="agenda-appointment-header">
+        <span className="agenda-appointment-time">
+          <FaRegClock />
+          {startTime}
+          {endTime && ` - ${endTime}`}
+        </span>
+      </div>
+      <div className="agenda-appointment-body">
+        <p className="agenda-appointment-patient">
+          <FaUser />
+          {paciente}
+        </p>
+        <p className="agenda-appointment-tutor">{tutor}</p>
+        <p className="agenda-appointment-service">
+          <FaStethoscope />
+          {appointment.services?.[0]?.nombre || "Consulta"}
+        </p>
+      </div>
     </div>
   );
 };
@@ -67,8 +67,6 @@ const Agenda = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDateForModal, setSelectedDateForModal] = useState(null);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
-
-  const timeSlots = Array.from({ length: 13 }, (_, i) => `${i + 8}:00`);
 
   const dateRange = useMemo(() => {
     const start = new Date(currentDate);
@@ -123,11 +121,13 @@ const Agenda = () => {
     setSelectedAppointment(null);
     setIsModalOpen(true);
   };
+
   const handleOpenModalForEdit = (appointment) => {
     setSelectedAppointment(appointment);
     setSelectedDateForModal(appointment.startTime);
     setIsModalOpen(true);
   };
+
   const handleCloseModal = () => setIsModalOpen(false);
 
   const handleSave = async (formData, appointmentId) => {
@@ -221,8 +221,10 @@ const Agenda = () => {
       newDate.setDate(prev.getDate() + (viewMode === "week" ? 7 : 1) * amount);
       return newDate;
     });
+
   const isToday = (someDate) =>
     new Date().toDateString() === someDate.toDateString();
+
   const renderHeaderDate = () =>
     viewMode === "week"
       ? `${dateRange[0].toLocaleDateString(
@@ -235,8 +237,19 @@ const Agenda = () => {
           day: "numeric",
         });
 
+  const groupedAppointments = useMemo(() => {
+    const grouped = {};
+    dateRange.forEach((day) => {
+      const dayKey = day.toDateString();
+      grouped[dayKey] = appointments
+        .filter((a) => a.startTime.toDateString() === dayKey)
+        .sort((a, b) => a.startTime - b.startTime);
+    });
+    return grouped;
+  }, [appointments, dateRange]);
+
   return (
-    <div className="agenda-container">
+    <div className="agenda-main-container">
       <AppointmentModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
@@ -245,76 +258,128 @@ const Agenda = () => {
         onSave={handleSave}
         onDelete={handleDelete}
       />
-      <div className="page-header">
-        <h1>
-          <FaRegCalendarAlt /> Agenda Clínica
-        </h1>
-        <div className="view-switcher">
-          <button
-            className={`btn ${viewMode === "day" ? "btn-primary" : ""}`}
-            onClick={() => setViewMode("day")}
-          >
-            Día
-          </button>
-          <button
-            className={`btn ${viewMode === "week" ? "btn-primary" : ""}`}
-            onClick={() => setViewMode("week")}
-          >
-            Semana
-          </button>
+
+      <div className="agenda-page-header">
+        <div className="agenda-header-left">
+          <h1 className="agenda-title">
+            <FaRegCalendarAlt />
+            Agenda Clínica
+          </h1>
         </div>
-        <div className="week-navigator">
-          <button onClick={() => changeDate(-1)}>&lt;</button>
-          <button
-            className="today-btn"
-            onClick={() => setCurrentDate(new Date())}
-          >
-            Hoy
-          </button>
-          <span className="week-display">{renderHeaderDate()}</span>
-          <button onClick={() => changeDate(1)}>&gt;</button>
+
+        <div className="agenda-header-controls">
+          <div className="agenda-view-switcher">
+            <button
+              className={`agenda-view-btn ${
+                viewMode === "day" ? "active" : ""
+              }`}
+              onClick={() => setViewMode("day")}
+            >
+              Día
+            </button>
+            <button
+              className={`agenda-view-btn ${
+                viewMode === "week" ? "active" : ""
+              }`}
+              onClick={() => setViewMode("week")}
+            >
+              Semana
+            </button>
+          </div>
+
+          <div className="agenda-navigator">
+            <button
+              className="agenda-nav-btn"
+              onClick={() => changeDate(-1)}
+              aria-label="Anterior"
+            >
+              ‹
+            </button>
+            <button
+              className="agenda-today-btn"
+              onClick={() => setCurrentDate(new Date())}
+            >
+              Hoy
+            </button>
+            <span className="agenda-date-display">{renderHeaderDate()}</span>
+            <button
+              className="agenda-nav-btn"
+              onClick={() => changeDate(1)}
+              aria-label="Siguiente"
+            >
+              ›
+            </button>
+          </div>
         </div>
       </div>
+
       {isLoading ? (
-        <p>Cargando...</p>
+        <div className="agenda-loading">
+          <div className="agenda-spinner"></div>
+          <p>Cargando citas...</p>
+        </div>
       ) : (
-        <div className={`agenda-grid view-${viewMode}`}>
-          <div className="time-column">
-            <div className="time-slot-header">Hora</div>
-            {timeSlots.map((time) => (
-              <div key={time} className="time-slot">
-                {time}
+        <div className={`agenda-calendar-grid ${viewMode}`}>
+          {dateRange.map((day) => {
+            const dayKey = day.toDateString();
+            const dayAppointments = groupedAppointments[dayKey] || [];
+            const appointmentCount = dayAppointments.length;
+
+            return (
+              <div key={dayKey} className="agenda-day-container">
+                <div
+                  className={`agenda-day-header ${
+                    isToday(day) ? "today" : ""
+                  }`}
+                >
+                  <div className="agenda-day-info">
+                    <span className="agenda-day-name">
+                      {day.toLocaleDateString("es-AR", { weekday: "long" })}
+                    </span>
+                    <span className="agenda-day-number">{day.getDate()}</span>
+                  </div>
+                  <div className="agenda-day-stats">
+                    <span className="agenda-appointment-count">
+                      {appointmentCount}{" "}
+                      {appointmentCount === 1 ? "cita" : "citas"}
+                    </span>
+                    <button
+                      className="agenda-add-btn"
+                      onClick={() => handleOpenModalForNew(day)}
+                      title="Agregar cita"
+                    >
+                      <FaPlus />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="agenda-appointments-container">
+                  {dayAppointments.length === 0 ? (
+                    <div className="agenda-no-appointments">
+                      <p>Sin citas programadas</p>
+                      <button
+                        className="agenda-add-first-btn"
+                        onClick={() => handleOpenModalForNew(day)}
+                      >
+                        <FaPlus /> Agregar cita
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="agenda-appointments-list">
+                      {dayAppointments.map((app) => (
+                        <AppointmentCard
+                          key={app.id}
+                          appointment={app}
+                          onClick={() => handleOpenModalForEdit(app)}
+                          viewMode={viewMode}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            ))}
-          </div>
-          {dateRange.map((day) => (
-            <div key={day.toISOString()} className="day-column">
-              <div
-                className={`day-header ${isToday(day) ? "current-day" : ""}`}
-                onClick={() => handleOpenModalForNew(day)}
-              >
-                <span className="day-name">
-                  {day.toLocaleDateString("es-AR", { weekday: "short" })}
-                </span>
-                <span className="day-number">{day.getDate()}</span>
-              </div>
-              <div className="appointments-area">
-                {appointments
-                  .filter(
-                    (a) => a.startTime.toDateString() === day.toDateString()
-                  )
-                  .sort((a, b) => a.startTime - b.startTime)
-                  .map((app) => (
-                    <AppointmentCard
-                      key={app.id}
-                      appointment={app}
-                      onClick={() => handleOpenModalForEdit(app)}
-                      viewMode={viewMode}
-                    />
-                  ))}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

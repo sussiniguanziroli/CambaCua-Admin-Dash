@@ -3288,7 +3288,7 @@ button.btn-reset:hover {
   margin: 0;
 }
 
-.btn, .monitor-clinica-container .pagination-controls button, .recipe-modal .add-line-btn, .monitor-vencimientos-container .pagination-controls button, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .btn-custom-date, .btn-suministrado, .agenda-container .week-navigator .today-btn, .pagination-controls button, .confirmar-venta-container .btn-suministro-toggle, .metodo-pago-container .card-selector button, .metodo-pago-container .payment-buttons button {
+.btn, .monitor-clinica-container .pagination-controls button, .recipe-modal .add-line-btn, .monitor-vencimientos-container .pagination-controls button, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .btn-custom-date, .btn-suministrado, .pagination-controls button, .confirmar-venta-container .btn-suministro-toggle, .metodo-pago-container .card-selector button, .metodo-pago-container .payment-buttons button {
   padding: 0.7rem 1.2rem;
   border: none;
   border-radius: 8px;
@@ -3301,50 +3301,50 @@ button.btn-reset:hover {
   gap: 0.5rem;
   text-decoration: none;
 }
-.btn.btn-primary, .recipe-modal .btn-primary.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .btn-primary.view-mode-toggle, .btn-primary.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-delete-note, .btn-primary.btn-custom-date, .btn-primary.btn-suministrado, .agenda-container .week-navigator .btn-primary.today-btn, .pagination-controls button.btn-primary, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-note, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-custom-date, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn, .confirmar-venta-container .navigator-buttons .pagination-controls button.btn-confirm, .pagination-controls .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .btn-primary.btn-suministro-toggle, .confirmar-venta-container .navigator-buttons .btn-suministro-toggle.btn-confirm, .metodo-pago-container .card-selector button.btn-primary, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm, .metodo-pago-container .payment-buttons button.btn-primary, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm {
+.btn.btn-primary, .recipe-modal .btn-primary.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .btn-primary.view-mode-toggle, .btn-primary.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-delete-note, .btn-primary.btn-custom-date, .btn-primary.btn-suministrado, .pagination-controls button.btn-primary, .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-note, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-custom-date, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .pagination-controls button.btn-confirm, .pagination-controls .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .btn-primary.btn-suministro-toggle, .confirmar-venta-container .navigator-buttons .btn-suministro-toggle.btn-confirm, .metodo-pago-container .card-selector button.btn-primary, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm, .metodo-pago-container .payment-buttons button.btn-primary, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm {
   background-color: #3498db;
   color: white;
 }
-.btn.btn-primary:hover, .recipe-modal .btn-primary.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .btn-primary.view-mode-toggle:hover, .btn-primary.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-delete-note:hover, .btn-primary.btn-custom-date:hover, .btn-primary.btn-suministrado:hover, .agenda-container .week-navigator .btn-primary.today-btn:hover, .pagination-controls button.btn-primary:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn:hover, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn:hover, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle:hover, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small:hover, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-note:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-custom-date:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .btn-confirm.today-btn:hover, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .btn-confirm.today-btn:hover, .confirmar-venta-container .navigator-buttons .pagination-controls button.btn-confirm:hover, .pagination-controls .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .btn-primary.btn-suministro-toggle:hover, .confirmar-venta-container .navigator-buttons .btn-suministro-toggle.btn-confirm:hover, .metodo-pago-container .card-selector button.btn-primary:hover, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm:hover, .metodo-pago-container .payment-buttons button.btn-primary:hover, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm:hover {
+.btn.btn-primary:hover, .recipe-modal .btn-primary.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .btn-primary.view-mode-toggle:hover, .btn-primary.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-delete-note:hover, .btn-primary.btn-custom-date:hover, .btn-primary.btn-suministrado:hover, .pagination-controls button.btn-primary:hover, .confirmar-venta-container .navigator-buttons .btn.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn:hover, .recipe-modal .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn:hover, .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle:hover, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small:hover, .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-note:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-custom-date:hover, .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado:hover, .confirmar-venta-container .navigator-buttons .pagination-controls button.btn-confirm:hover, .pagination-controls .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .btn-primary.btn-suministro-toggle:hover, .confirmar-venta-container .navigator-buttons .btn-suministro-toggle.btn-confirm:hover, .metodo-pago-container .card-selector button.btn-primary:hover, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm:hover, .metodo-pago-container .payment-buttons button.btn-primary:hover, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm:hover, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm:hover {
   background-color: #2980b9;
 }
-.btn.btn-secondary, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn, .monitor-vencimientos-container .btn-secondary.view-mode-toggle, .btn-secondary.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-secondary.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .recipe-modal .btn-delete-note.add-line-btn, .recipe-modal .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note.add-line-btn, .btn-secondary.btn-custom-date, .btn-secondary.btn-suministrado, .agenda-container .week-navigator .btn-secondary.today-btn, .agenda-container .week-navigator .recipe-modal .today-btn.add-line-btn, .recipe-modal .agenda-container .week-navigator .today-btn.add-line-btn, .pagination-controls button.btn-secondary, .confirmar-venta-container .btn-secondary.btn-suministro-toggle, .metodo-pago-container .card-selector button.btn-secondary, .metodo-pago-container .card-selector .recipe-modal button.add-line-btn, .recipe-modal .metodo-pago-container .card-selector button.add-line-btn, .metodo-pago-container .payment-buttons button.btn-secondary, .metodo-pago-container .payment-buttons .recipe-modal button.add-line-btn, .recipe-modal .metodo-pago-container .payment-buttons button.add-line-btn {
+.btn.btn-secondary, .recipe-modal .add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn, .monitor-vencimientos-container .btn-secondary.view-mode-toggle, .btn-secondary.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-secondary.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .recipe-modal .btn-delete-note.add-line-btn, .recipe-modal .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note.add-line-btn, .btn-secondary.btn-custom-date, .btn-secondary.btn-suministrado, .pagination-controls button.btn-secondary, .confirmar-venta-container .btn-secondary.btn-suministro-toggle, .metodo-pago-container .card-selector button.btn-secondary, .metodo-pago-container .card-selector .recipe-modal button.add-line-btn, .recipe-modal .metodo-pago-container .card-selector button.add-line-btn, .metodo-pago-container .payment-buttons button.btn-secondary, .metodo-pago-container .payment-buttons .recipe-modal button.add-line-btn, .recipe-modal .metodo-pago-container .payment-buttons button.add-line-btn {
   background-color: #e0e0e0;
   color: #34495e;
 }
-.btn.btn-secondary:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn:hover, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn:hover, .monitor-vencimientos-container .btn-secondary.view-mode-toggle:hover, .btn-secondary.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-secondary.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .recipe-modal .btn-delete-note.add-line-btn:hover, .recipe-modal .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note.add-line-btn:hover, .btn-secondary.btn-custom-date:hover, .btn-secondary.btn-suministrado:hover, .agenda-container .week-navigator .btn-secondary.today-btn:hover, .pagination-controls button.btn-secondary:hover, .confirmar-venta-container .btn-secondary.btn-suministro-toggle:hover, .metodo-pago-container .card-selector button.btn-secondary:hover, .metodo-pago-container .payment-buttons button.btn-secondary:hover {
+.btn.btn-secondary:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-secondary.action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-modal .action-btn.add-line-btn:hover, .recipe-modal .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn.add-line-btn:hover, .monitor-vencimientos-container .btn-secondary.view-mode-toggle:hover, .btn-secondary.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-secondary.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .recipe-modal .btn-delete-note.add-line-btn:hover, .recipe-modal .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note.add-line-btn:hover, .btn-secondary.btn-custom-date:hover, .btn-secondary.btn-suministrado:hover, .pagination-controls button.btn-secondary:hover, .confirmar-venta-container .btn-secondary.btn-suministro-toggle:hover, .metodo-pago-container .card-selector button.btn-secondary:hover, .metodo-pago-container .payment-buttons button.btn-secondary:hover {
   background-color: rgb(198.5, 198.5, 198.5);
 }
-.btn.btn-success, .recipe-modal .btn-success.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn, .monitor-vencimientos-container .btn-success.view-mode-toggle, .btn-success.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-delete-note, .btn-success.btn-custom-date, .btn-success.btn-suministrado, .agenda-container .week-navigator .btn-success.today-btn, .pagination-controls button.btn-success, .confirmar-venta-container .btn-success.btn-suministro-toggle, .metodo-pago-container .card-selector button.btn-success, .metodo-pago-container .payment-buttons button.btn-success {
+.btn.btn-success, .recipe-modal .btn-success.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn, .monitor-vencimientos-container .btn-success.view-mode-toggle, .btn-success.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-delete-note, .btn-success.btn-custom-date, .btn-success.btn-suministrado, .pagination-controls button.btn-success, .confirmar-venta-container .btn-success.btn-suministro-toggle, .metodo-pago-container .card-selector button.btn-success, .metodo-pago-container .payment-buttons button.btn-success {
   background-color: #2ecc71;
   color: white;
 }
-.btn.btn-success:hover, .recipe-modal .btn-success.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .monitor-vencimientos-container .btn-success.view-mode-toggle:hover, .btn-success.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-delete-note:hover, .btn-success.btn-custom-date:hover, .btn-success.btn-suministrado:hover, .agenda-container .week-navigator .btn-success.today-btn:hover, .pagination-controls button.btn-success:hover, .confirmar-venta-container .btn-success.btn-suministro-toggle:hover, .metodo-pago-container .card-selector button.btn-success:hover, .metodo-pago-container .payment-buttons button.btn-success:hover {
+.btn.btn-success:hover, .recipe-modal .btn-success.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .monitor-vencimientos-container .btn-success.view-mode-toggle:hover, .btn-success.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-delete-note:hover, .btn-success.btn-custom-date:hover, .btn-success.btn-suministrado:hover, .pagination-controls button.btn-success:hover, .confirmar-venta-container .btn-success.btn-suministro-toggle:hover, .metodo-pago-container .card-selector button.btn-success:hover, .metodo-pago-container .payment-buttons button.btn-success:hover {
   background-color: rgb(36.616, 162.384, 89.948);
 }
-.btn.btn-danger, .recipe-modal .btn-danger.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn, .monitor-vencimientos-container .btn-danger.view-mode-toggle, .btn-danger.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-delete-note, .btn-danger.btn-custom-date, .btn-danger.btn-suministrado, .agenda-container .week-navigator .btn-danger.today-btn, .pagination-controls button.btn-danger, .confirmar-venta-container .btn-danger.btn-suministro-toggle, .metodo-pago-container .card-selector button.btn-danger, .metodo-pago-container .payment-buttons button.btn-danger {
+.btn.btn-danger, .recipe-modal .btn-danger.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn, .monitor-vencimientos-container .btn-danger.view-mode-toggle, .btn-danger.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-delete-note, .btn-danger.btn-custom-date, .btn-danger.btn-suministrado, .pagination-controls button.btn-danger, .confirmar-venta-container .btn-danger.btn-suministro-toggle, .metodo-pago-container .card-selector button.btn-danger, .metodo-pago-container .payment-buttons button.btn-danger {
   background-color: #e74c3c;
   color: white;
 }
-.btn.btn-danger:hover, .recipe-modal .btn-danger.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn:hover, .monitor-vencimientos-container .btn-danger.view-mode-toggle:hover, .btn-danger.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-delete-note:hover, .btn-danger.btn-custom-date:hover, .btn-danger.btn-suministrado:hover, .agenda-container .week-navigator .btn-danger.today-btn:hover, .pagination-controls button.btn-danger:hover, .confirmar-venta-container .btn-danger.btn-suministro-toggle:hover, .metodo-pago-container .card-selector button.btn-danger:hover, .metodo-pago-container .payment-buttons button.btn-danger:hover {
+.btn.btn-danger:hover, .recipe-modal .btn-danger.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-danger.action-btn:hover, .monitor-vencimientos-container .btn-danger.view-mode-toggle:hover, .btn-danger.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-danger.btn-delete-note:hover, .btn-danger.btn-custom-date:hover, .btn-danger.btn-suministrado:hover, .pagination-controls button.btn-danger:hover, .confirmar-venta-container .btn-danger.btn-suministro-toggle:hover, .metodo-pago-container .card-selector button.btn-danger:hover, .metodo-pago-container .payment-buttons button.btn-danger:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
-.btn.btn-edit, .recipe-modal .btn-edit.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn, .monitor-vencimientos-container .btn-edit.view-mode-toggle, .btn-edit.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-delete-note, .btn-edit.btn-custom-date, .btn-edit.btn-suministrado, .agenda-container .week-navigator .btn-edit.today-btn, .pagination-controls button.btn-edit, .confirmar-venta-container .btn-edit.btn-suministro-toggle, .metodo-pago-container .card-selector button.btn-edit, .metodo-pago-container .payment-buttons button.btn-edit {
+.btn.btn-edit, .recipe-modal .btn-edit.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn, .monitor-vencimientos-container .btn-edit.view-mode-toggle, .btn-edit.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-delete-note, .btn-edit.btn-custom-date, .btn-edit.btn-suministrado, .pagination-controls button.btn-edit, .confirmar-venta-container .btn-edit.btn-suministro-toggle, .metodo-pago-container .card-selector button.btn-edit, .metodo-pago-container .payment-buttons button.btn-edit {
   background-color: #f39c12;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-edit:hover, .recipe-modal .btn-edit.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn:hover, .monitor-vencimientos-container .btn-edit.view-mode-toggle:hover, .btn-edit.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-delete-note:hover, .btn-edit.btn-custom-date:hover, .btn-edit.btn-suministrado:hover, .agenda-container .week-navigator .btn-edit.today-btn:hover, .pagination-controls button.btn-edit:hover, .confirmar-venta-container .btn-edit.btn-suministro-toggle:hover, .metodo-pago-container .card-selector button.btn-edit:hover, .metodo-pago-container .payment-buttons button.btn-edit:hover {
+.btn.btn-edit:hover, .recipe-modal .btn-edit.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-edit.action-btn:hover, .monitor-vencimientos-container .btn-edit.view-mode-toggle:hover, .btn-edit.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-edit.btn-delete-note:hover, .btn-edit.btn-custom-date:hover, .btn-edit.btn-suministrado:hover, .pagination-controls button.btn-edit:hover, .confirmar-venta-container .btn-edit.btn-suministro-toggle:hover, .metodo-pago-container .card-selector button.btn-edit:hover, .metodo-pago-container .payment-buttons button.btn-edit:hover {
   background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
 }
-.btn.btn-delete, .recipe-modal .btn-delete.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .monitor-vencimientos-container .btn-delete.view-mode-toggle, .btn-delete.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-delete-note, .btn-delete.btn-custom-date, .btn-delete.btn-suministrado, .agenda-container .week-navigator .btn-delete.today-btn, .pagination-controls button.btn-delete, .confirmar-venta-container .btn-delete.btn-suministro-toggle, .metodo-pago-container .card-selector button.btn-delete, .metodo-pago-container .payment-buttons button.btn-delete {
+.btn.btn-delete, .recipe-modal .btn-delete.add-line-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .monitor-vencimientos-container .btn-delete.view-mode-toggle, .btn-delete.btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-delete-note, .btn-delete.btn-custom-date, .btn-delete.btn-suministrado, .pagination-controls button.btn-delete, .confirmar-venta-container .btn-delete.btn-suministro-toggle, .metodo-pago-container .card-selector button.btn-delete, .metodo-pago-container .payment-buttons button.btn-delete {
   background-color: #e74c3c;
   color: white;
   padding: 0.5rem;
   font-size: 1rem;
 }
-.btn.btn-delete:hover, .recipe-modal .btn-delete.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .monitor-vencimientos-container .btn-delete.view-mode-toggle:hover, .btn-delete.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-delete-note:hover, .btn-delete.btn-custom-date:hover, .btn-delete.btn-suministrado:hover, .agenda-container .week-navigator .btn-delete.today-btn:hover, .pagination-controls button.btn-delete:hover, .confirmar-venta-container .btn-delete.btn-suministro-toggle:hover, .metodo-pago-container .card-selector button.btn-delete:hover, .metodo-pago-container .payment-buttons button.btn-delete:hover {
+.btn.btn-delete:hover, .recipe-modal .btn-delete.add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .monitor-vencimientos-container .btn-delete.view-mode-toggle:hover, .btn-delete.btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-delete-note:hover, .btn-delete.btn-custom-date:hover, .btn-delete.btn-suministrado:hover, .pagination-controls button.btn-delete:hover, .confirmar-venta-container .btn-delete.btn-suministro-toggle:hover, .metodo-pago-container .card-selector button.btn-delete:hover, .metodo-pago-container .payment-buttons button.btn-delete:hover {
   background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
 }
 
@@ -3681,6 +3681,22 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
+}
+
 .sale-summary-box {
   background-color: #f8f9fa;
   border: 1px solid #e0e0e0;
@@ -3714,6 +3730,22 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2980b9;
+}
+
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .venta-navigator-container {
@@ -3962,6 +3994,22 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2980b9;
+}
+
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .seleccionar-producto-container h2 {
@@ -4396,6 +4444,22 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
+}
+
 .programar-vencimientos-container h2 {
   text-align: center;
   color: #2980b9;
@@ -4528,6 +4592,22 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2980b9;
+}
+
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .metodo-pago-container {
@@ -4748,6 +4828,22 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
+}
+
 .resumen-venta-container {
   max-width: 700px;
   margin: 2rem auto;
@@ -4896,7 +4992,7 @@ button.btn-reset:hover {
 .resumen-venta-container .resumen-actions {
   margin-top: 2rem;
 }
-.resumen-venta-container .resumen-actions .btn, .resumen-venta-container .resumen-actions .recipe-modal .add-line-btn, .recipe-modal .resumen-venta-container .resumen-actions .add-line-btn, .resumen-venta-container .resumen-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .resumen-venta-container .resumen-actions .action-btn, .resumen-venta-container .resumen-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .resumen-venta-container .resumen-actions .view-mode-toggle, .resumen-venta-container .resumen-actions .btn-delete-small, .resumen-venta-container .resumen-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .resumen-venta-container .resumen-actions .btn-delete-note, .resumen-venta-container .resumen-actions .btn-custom-date, .resumen-venta-container .resumen-actions .btn-suministrado, .resumen-venta-container .resumen-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .resumen-venta-container .resumen-actions .today-btn, .resumen-venta-container .resumen-actions .pagination-controls button, .pagination-controls .resumen-venta-container .resumen-actions button, .resumen-venta-container .resumen-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .resumen-venta-container .resumen-actions .btn-suministro-toggle, .resumen-venta-container .resumen-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .resumen-venta-container .resumen-actions button, .resumen-venta-container .resumen-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .resumen-venta-container .resumen-actions button {
+.resumen-venta-container .resumen-actions .btn, .resumen-venta-container .resumen-actions .recipe-modal .add-line-btn, .recipe-modal .resumen-venta-container .resumen-actions .add-line-btn, .resumen-venta-container .resumen-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .resumen-venta-container .resumen-actions .action-btn, .resumen-venta-container .resumen-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .resumen-venta-container .resumen-actions .view-mode-toggle, .resumen-venta-container .resumen-actions .btn-delete-small, .resumen-venta-container .resumen-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .resumen-venta-container .resumen-actions .btn-delete-note, .resumen-venta-container .resumen-actions .btn-custom-date, .resumen-venta-container .resumen-actions .btn-suministrado, .resumen-venta-container .resumen-actions .pagination-controls button, .pagination-controls .resumen-venta-container .resumen-actions button, .resumen-venta-container .resumen-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .resumen-venta-container .resumen-actions .btn-suministro-toggle, .resumen-venta-container .resumen-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .resumen-venta-container .resumen-actions button, .resumen-venta-container .resumen-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .resumen-venta-container .resumen-actions button {
   margin-left: 5px;
 }
 
@@ -4933,6 +5029,22 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2980b9;
+}
+
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .confirmar-venta-container {
@@ -5161,6 +5273,22 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
+}
+
 .precio-modal-overlay {
   position: fixed;
   top: 0;
@@ -5383,7 +5511,7 @@ button.btn-reset:hover {
   gap: 0.75rem;
   margin-bottom: 1rem;
 }
-.precio-modal-actions .btn, .precio-modal-actions .recipe-modal .add-line-btn, .recipe-modal .precio-modal-actions .add-line-btn, .precio-modal-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .precio-modal-actions .action-btn, .precio-modal-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .precio-modal-actions .view-mode-toggle, .precio-modal-actions .btn-delete-small, .precio-modal-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .precio-modal-actions .btn-delete-note, .precio-modal-actions .btn-custom-date, .precio-modal-actions .btn-suministrado, .precio-modal-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .precio-modal-actions .today-btn, .precio-modal-actions .pagination-controls button, .pagination-controls .precio-modal-actions button, .precio-modal-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .precio-modal-actions button, .precio-modal-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .precio-modal-actions button, .precio-modal-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .precio-modal-actions .btn-suministro-toggle {
+.precio-modal-actions .btn, .precio-modal-actions .recipe-modal .add-line-btn, .recipe-modal .precio-modal-actions .add-line-btn, .precio-modal-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .precio-modal-actions .action-btn, .precio-modal-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .precio-modal-actions .view-mode-toggle, .precio-modal-actions .btn-delete-small, .precio-modal-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .precio-modal-actions .btn-delete-note, .precio-modal-actions .btn-custom-date, .precio-modal-actions .btn-suministrado, .precio-modal-actions .pagination-controls button, .pagination-controls .precio-modal-actions button, .precio-modal-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .precio-modal-actions button, .precio-modal-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .precio-modal-actions button, .precio-modal-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .precio-modal-actions .btn-suministro-toggle {
   padding: 0.8rem 1rem;
   border: none;
   border-radius: 8px;
@@ -5392,7 +5520,7 @@ button.btn-reset:hover {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.precio-modal-actions .btn:disabled, .precio-modal-actions .recipe-modal .add-line-btn:disabled, .recipe-modal .precio-modal-actions .add-line-btn:disabled, .precio-modal-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .precio-modal-actions .action-btn:disabled, .precio-modal-actions .monitor-vencimientos-container .view-mode-toggle:disabled, .monitor-vencimientos-container .precio-modal-actions .view-mode-toggle:disabled, .precio-modal-actions .btn-delete-small:disabled, .precio-modal-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:disabled, .clinical-history-list .clinical-entry-card .entry-header .precio-modal-actions .btn-delete-note:disabled, .precio-modal-actions .btn-custom-date:disabled, .precio-modal-actions .btn-suministrado:disabled, .precio-modal-actions .agenda-container .week-navigator .today-btn:disabled, .agenda-container .week-navigator .precio-modal-actions .today-btn:disabled, .precio-modal-actions .pagination-controls button:disabled, .pagination-controls .precio-modal-actions button:disabled, .precio-modal-actions .metodo-pago-container .payment-buttons button:disabled, .metodo-pago-container .payment-buttons .precio-modal-actions button:disabled, .precio-modal-actions .metodo-pago-container .card-selector button:disabled, .metodo-pago-container .card-selector .precio-modal-actions button:disabled, .precio-modal-actions .confirmar-venta-container .btn-suministro-toggle:disabled, .confirmar-venta-container .precio-modal-actions .btn-suministro-toggle:disabled {
+.precio-modal-actions .btn:disabled, .precio-modal-actions .recipe-modal .add-line-btn:disabled, .recipe-modal .precio-modal-actions .add-line-btn:disabled, .precio-modal-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .precio-modal-actions .action-btn:disabled, .precio-modal-actions .monitor-vencimientos-container .view-mode-toggle:disabled, .monitor-vencimientos-container .precio-modal-actions .view-mode-toggle:disabled, .precio-modal-actions .btn-delete-small:disabled, .precio-modal-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:disabled, .clinical-history-list .clinical-entry-card .entry-header .precio-modal-actions .btn-delete-note:disabled, .precio-modal-actions .btn-custom-date:disabled, .precio-modal-actions .btn-suministrado:disabled, .precio-modal-actions .pagination-controls button:disabled, .pagination-controls .precio-modal-actions button:disabled, .precio-modal-actions .metodo-pago-container .payment-buttons button:disabled, .metodo-pago-container .payment-buttons .precio-modal-actions button:disabled, .precio-modal-actions .metodo-pago-container .card-selector button:disabled, .metodo-pago-container .card-selector .precio-modal-actions button:disabled, .precio-modal-actions .confirmar-venta-container .btn-suministro-toggle:disabled, .confirmar-venta-container .precio-modal-actions .btn-suministro-toggle:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -5647,7 +5775,7 @@ button.btn-reset:hover {
   }
 }
 @media (max-width: 768px) {
-  .profile-header .profile-actions .btn, .profile-header .profile-actions .recipe-modal .add-line-btn, .recipe-modal .profile-header .profile-actions .add-line-btn, .profile-header .profile-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .profile-header .profile-actions .action-btn, .profile-header .profile-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .profile-header .profile-actions .view-mode-toggle, .profile-header .profile-actions .btn-delete-small, .profile-header .profile-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .profile-header .profile-actions .btn-delete-note, .profile-header .profile-actions .btn-custom-date, .profile-header .profile-actions .btn-suministrado, .profile-header .profile-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .profile-header .profile-actions .today-btn, .profile-header .profile-actions .pagination-controls button, .pagination-controls .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .profile-header .profile-actions button, .profile-header .profile-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .profile-header .profile-actions .btn-suministro-toggle {
+  .profile-header .profile-actions .btn, .profile-header .profile-actions .recipe-modal .add-line-btn, .recipe-modal .profile-header .profile-actions .add-line-btn, .profile-header .profile-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .profile-header .profile-actions .action-btn, .profile-header .profile-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .profile-header .profile-actions .view-mode-toggle, .profile-header .profile-actions .btn-delete-small, .profile-header .profile-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .profile-header .profile-actions .btn-delete-note, .profile-header .profile-actions .btn-custom-date, .profile-header .profile-actions .btn-suministrado, .profile-header .profile-actions .pagination-controls button, .pagination-controls .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .profile-header .profile-actions button, .profile-header .profile-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .profile-header .profile-actions .btn-suministro-toggle {
     flex-grow: 1;
     text-align: center;
   }
@@ -5902,7 +6030,7 @@ button.btn-reset:hover {
     justify-content: space-between;
     flex-wrap: wrap;
   }
-  .compras-list .compra-card .compra-actions .btn, .compras-list .compra-card .compra-actions .recipe-modal .add-line-btn, .recipe-modal .compras-list .compra-card .compra-actions .add-line-btn, .compras-list .compra-card .compra-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .compras-list .compra-card .compra-actions .action-btn, .compras-list .compra-card .compra-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .compras-list .compra-card .compra-actions .view-mode-toggle, .compras-list .compra-card .compra-actions .btn-delete-small, .compras-list .compra-card .compra-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .compras-list .compra-card .compra-actions .btn-delete-note, .compras-list .compra-card .compra-actions .btn-custom-date, .compras-list .compra-card .compra-actions .btn-suministrado, .compras-list .compra-card .compra-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .compras-list .compra-card .compra-actions .today-btn, .compras-list .compra-card .compra-actions .pagination-controls button, .pagination-controls .compras-list .compra-card .compra-actions button, .compras-list .compra-card .compra-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .compras-list .compra-card .compra-actions button, .compras-list .compra-card .compra-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .compras-list .compra-card .compra-actions button, .compras-list .compra-card .compra-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .compras-list .compra-card .compra-actions .btn-suministro-toggle {
+  .compras-list .compra-card .compra-actions .btn, .compras-list .compra-card .compra-actions .recipe-modal .add-line-btn, .recipe-modal .compras-list .compra-card .compra-actions .add-line-btn, .compras-list .compra-card .compra-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .compras-list .compra-card .compra-actions .action-btn, .compras-list .compra-card .compra-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .compras-list .compra-card .compra-actions .view-mode-toggle, .compras-list .compra-card .compra-actions .btn-delete-small, .compras-list .compra-card .compra-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .compras-list .compra-card .compra-actions .btn-delete-note, .compras-list .compra-card .compra-actions .btn-custom-date, .compras-list .compra-card .compra-actions .btn-suministrado, .compras-list .compra-card .compra-actions .pagination-controls button, .pagination-controls .compras-list .compra-card .compra-actions button, .compras-list .compra-card .compra-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .compras-list .compra-card .compra-actions button, .compras-list .compra-card .compra-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .compras-list .compra-card .compra-actions button, .compras-list .compra-card .compra-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .compras-list .compra-card .compra-actions .btn-suministro-toggle {
     flex: 1;
   }
 }
@@ -6106,7 +6234,7 @@ button.btn-reset:hover {
   }
 }
 @media (max-width: 768px) {
-  .tutor-profile-tab-content .tutor-account-summary .btn, .tutor-profile-tab-content .tutor-account-summary .recipe-modal .add-line-btn, .recipe-modal .tutor-profile-tab-content .tutor-account-summary .add-line-btn, .tutor-profile-tab-content .tutor-account-summary .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .tutor-profile-tab-content .tutor-account-summary .action-btn, .tutor-profile-tab-content .tutor-account-summary .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .tutor-profile-tab-content .tutor-account-summary .view-mode-toggle, .tutor-profile-tab-content .tutor-account-summary .btn-delete-small, .tutor-profile-tab-content .tutor-account-summary .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .tutor-profile-tab-content .tutor-account-summary .btn-delete-note, .tutor-profile-tab-content .tutor-account-summary .btn-custom-date, .tutor-profile-tab-content .tutor-account-summary .btn-suministrado, .tutor-profile-tab-content .tutor-account-summary .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .tutor-profile-tab-content .tutor-account-summary .today-btn, .tutor-profile-tab-content .tutor-account-summary .pagination-controls button, .pagination-controls .tutor-profile-tab-content .tutor-account-summary button, .tutor-profile-tab-content .tutor-account-summary .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .tutor-profile-tab-content .tutor-account-summary button, .tutor-profile-tab-content .tutor-account-summary .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .tutor-profile-tab-content .tutor-account-summary button, .tutor-profile-tab-content .tutor-account-summary .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .tutor-profile-tab-content .tutor-account-summary .btn-suministro-toggle {
+  .tutor-profile-tab-content .tutor-account-summary .btn, .tutor-profile-tab-content .tutor-account-summary .recipe-modal .add-line-btn, .recipe-modal .tutor-profile-tab-content .tutor-account-summary .add-line-btn, .tutor-profile-tab-content .tutor-account-summary .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .tutor-profile-tab-content .tutor-account-summary .action-btn, .tutor-profile-tab-content .tutor-account-summary .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .tutor-profile-tab-content .tutor-account-summary .view-mode-toggle, .tutor-profile-tab-content .tutor-account-summary .btn-delete-small, .tutor-profile-tab-content .tutor-account-summary .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .tutor-profile-tab-content .tutor-account-summary .btn-delete-note, .tutor-profile-tab-content .tutor-account-summary .btn-custom-date, .tutor-profile-tab-content .tutor-account-summary .btn-suministrado, .tutor-profile-tab-content .tutor-account-summary .pagination-controls button, .pagination-controls .tutor-profile-tab-content .tutor-account-summary button, .tutor-profile-tab-content .tutor-account-summary .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .tutor-profile-tab-content .tutor-account-summary button, .tutor-profile-tab-content .tutor-account-summary .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .tutor-profile-tab-content .tutor-account-summary button, .tutor-profile-tab-content .tutor-account-summary .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .tutor-profile-tab-content .tutor-account-summary .btn-suministro-toggle {
     text-align: center;
   }
 }
@@ -6414,405 +6542,1605 @@ button.btn-reset:hover {
   }
 }
 
-.btn, .monitor-clinica-container .pagination-controls button, .recipe-modal .add-line-btn, .monitor-vencimientos-container .pagination-controls button, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .view-mode-toggle, .btn-delete-small, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .btn-custom-date, .btn-suministrado, .agenda-container .week-navigator .today-btn, .metodo-pago-container .payment-buttons button, .metodo-pago-container .card-selector button, .confirmar-venta-container .btn-suministro-toggle, .pagination-controls button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 6px;
-  border: 1px solid #e0e6ed;
-  background-color: #fff;
-  color: #3c4858;
-  cursor: pointer;
-  transition: all 0.2s ease;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
-.btn:disabled, .recipe-modal .add-line-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:disabled, .monitor-vencimientos-container .view-mode-toggle:disabled, .btn-delete-small:disabled, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:disabled, .btn-custom-date:disabled, .btn-suministrado:disabled, .agenda-container .week-navigator .today-btn:disabled, .metodo-pago-container .payment-buttons button:disabled, .metodo-pago-container .card-selector button:disabled, .confirmar-venta-container .btn-suministro-toggle:disabled, .pagination-controls button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.btn:hover, .recipe-modal .add-line-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .monitor-vencimientos-container .view-mode-toggle:hover, .btn-delete-small:hover, .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:hover, .btn-custom-date:hover, .btn-suministrado:hover, .agenda-container .week-navigator .today-btn:hover, .metodo-pago-container .payment-buttons button:hover, .metodo-pago-container .card-selector button:hover, .confirmar-venta-container .btn-suministro-toggle:hover, .pagination-controls button:hover {
-  background-color: #f1f3f5;
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-
-.btn-primary, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .confirmar-venta-container .navigator-buttons .btn-confirm {
-  background-color: #3498db;
-  border-color: #3498db;
-  color: #fff;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
-.btn-primary:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:hover, .confirmar-venta-container .navigator-buttons .btn-confirm:hover {
-  background-color: #2980b9;
-  border-color: #2980b9;
-}
-
-.btn-secondary, .recipe-modal .add-line-btn {
-  background-color: #6c757d;
-  border-color: #6c757d;
-  color: #fff;
-}
-.btn-secondary:hover, .recipe-modal .add-line-btn:hover {
-  background-color: #5a6268;
-  border-color: #5a6268;
-}
-
-.btn-danger-outline {
-  background-color: transparent;
-  color: #e74c3c;
-  border-color: #e74c3c;
-}
-.btn-danger-outline:hover {
-  background-color: #e74c3c;
-  color: #fff;
-}
-
-.btn-outline {
-  background-color: transparent;
-  color: #3498db;
-  border-color: #3498db;
-}
-.btn-outline:hover {
-  background-color: #3498db;
-  color: #fff;
-}
-
-.agenda-container {
+.agenda-main-container {
+  min-height: 100vh;
+  background: #ecf0f1;
   padding: 2rem;
-  background-color: #f8f9fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
-.agenda-container .page-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1.5rem;
+@media (max-width: 768px) {
+  .agenda-main-container {
+    padding: 1rem;
+  }
 }
-.agenda-container .page-header h1 {
-  color: #3c4858;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 0;
-  flex-grow: 1;
-}
-.agenda-container .view-switcher {
-  display: flex;
-  background-color: #fff;
-  border-radius: 6px;
-  padding: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-.agenda-container .view-switcher .btn, .agenda-container .view-switcher .recipe-modal .add-line-btn, .recipe-modal .agenda-container .view-switcher .add-line-btn, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle, .agenda-container .view-switcher .btn-delete-small, .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-delete-note, .agenda-container .view-switcher .btn-custom-date, .agenda-container .view-switcher .btn-suministrado, .agenda-container .view-switcher .week-navigator .today-btn, .agenda-container .week-navigator .view-switcher .today-btn, .agenda-container .view-switcher .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .agenda-container .view-switcher button, .agenda-container .view-switcher .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .agenda-container .view-switcher button, .agenda-container .view-switcher .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .agenda-container .view-switcher .btn-suministro-toggle, .agenda-container .view-switcher .pagination-controls button, .pagination-controls .agenda-container .view-switcher button {
-  border: none;
-  padding: 8px 16px;
-}
-.agenda-container .view-switcher .btn:not(.btn-primary), .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary), .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary), .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary), .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary), .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary), .agenda-container .view-switcher .btn-delete-small:not(.btn-primary), .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:not(.btn-primary), .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-delete-note:not(.btn-primary), .agenda-container .view-switcher .btn-custom-date:not(.btn-primary), .agenda-container .view-switcher .btn-suministrado:not(.btn-primary), .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary), .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary), .agenda-container .view-switcher .metodo-pago-container .payment-buttons button:not(.btn-primary), .metodo-pago-container .payment-buttons .agenda-container .view-switcher button:not(.btn-primary), .agenda-container .view-switcher .metodo-pago-container .card-selector button:not(.btn-primary), .metodo-pago-container .card-selector .agenda-container .view-switcher button:not(.btn-primary), .agenda-container .view-switcher .confirmar-venta-container .btn-suministro-toggle:not(.btn-primary), .confirmar-venta-container .agenda-container .view-switcher .btn-suministro-toggle:not(.btn-primary), .agenda-container .view-switcher .pagination-controls button:not(.btn-primary), .pagination-controls .agenda-container .view-switcher button:not(.btn-primary) {
-  background-color: transparent;
-  color: #8492a6;
-}
-.agenda-container .view-switcher .btn:not(.btn-primary):hover, .agenda-container .view-switcher .recipe-modal .add-line-btn:not(.btn-primary):hover, .recipe-modal .agenda-container .view-switcher .add-line-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn:not(.btn-primary):hover, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-container .view-switcher .action-btn:not(.btn-primary):hover, .agenda-container .view-switcher .monitor-vencimientos-container .view-mode-toggle:not(.btn-primary):hover, .monitor-vencimientos-container .agenda-container .view-switcher .view-mode-toggle:not(.btn-primary):hover, .agenda-container .view-switcher .btn-delete-small:not(.btn-primary):hover, .agenda-container .view-switcher .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:not(.btn-primary):hover, .clinical-history-list .clinical-entry-card .entry-header .agenda-container .view-switcher .btn-delete-note:not(.btn-primary):hover, .agenda-container .view-switcher .btn-custom-date:not(.btn-primary):hover, .agenda-container .view-switcher .btn-suministrado:not(.btn-primary):hover, .agenda-container .view-switcher .week-navigator .today-btn:not(.btn-primary):hover, .agenda-container .week-navigator .view-switcher .today-btn:not(.btn-primary):hover, .agenda-container .view-switcher .metodo-pago-container .payment-buttons button:not(.btn-primary):hover, .metodo-pago-container .payment-buttons .agenda-container .view-switcher button:not(.btn-primary):hover, .agenda-container .view-switcher .metodo-pago-container .card-selector button:not(.btn-primary):hover, .metodo-pago-container .card-selector .agenda-container .view-switcher button:not(.btn-primary):hover, .agenda-container .view-switcher .confirmar-venta-container .btn-suministro-toggle:not(.btn-primary):hover, .confirmar-venta-container .agenda-container .view-switcher .btn-suministro-toggle:not(.btn-primary):hover, .agenda-container .view-switcher .pagination-controls button:not(.btn-primary):hover, .pagination-controls .agenda-container .view-switcher button:not(.btn-primary):hover {
-  background-color: #f8f9fa;
-}
-.agenda-container .week-navigator {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background: #fff;
-  padding: 8px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-.agenda-container .week-navigator button {
-  background: transparent;
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  color: #8492a6;
-  cursor: pointer;
-}
-.agenda-container .week-navigator button:hover {
-  background-color: #f8f9fa;
-  color: #3498db;
-}
-.agenda-container .week-navigator .today-btn {
-  padding: 6px 12px;
-  font-size: 0.9rem;
-}
-.agenda-container .week-navigator .week-display {
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.agenda-grid {
-  display: grid;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-}
-.agenda-grid.view-week {
-  grid-template-columns: 70px repeat(7, 1fr);
-}
-.agenda-grid.view-day {
-  grid-template-columns: 70px 1fr;
-}
-.agenda-grid .time-slot-header, .agenda-grid .day-header {
-  text-align: center;
-  padding: 1rem 0.5rem;
-  background-color: #fff;
-  border-bottom: 1px solid #e0e6ed;
-  font-weight: 600;
-  color: #8492a6;
-}
-.agenda-grid .time-column {
-  border-right: 1px solid #e0e6ed;
-}
-.agenda-grid .time-column .time-slot {
-  height: 60px;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #8492a6;
-  padding-top: 5px;
-  border-bottom: 1px dotted #e0e6ed;
-}
-.agenda-grid .time-column .time-slot:last-child {
-  border-bottom: none;
-}
-.agenda-grid .day-column {
-  border-left: 1px solid #e0e6ed;
-}
-.agenda-grid .day-column .day-header {
-  cursor: pointer;
-  position: relative;
-}
-.agenda-grid .day-column .day-header.current-day .day-number {
-  background-color: #3498db;
-  color: #fff;
-}
-.agenda-grid .day-column .day-header .day-name {
-  font-size: 0.9rem;
-}
-.agenda-grid .day-column .day-header .day-number {
-  font-size: 1.4rem;
-  color: #2980b9;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: inline-block;
-  line-height: 32px;
-  margin: 4px auto 0;
-  transition: all 0.2s;
-}
-.agenda-grid .day-column .appointments-area {
-  position: relative;
-  height: 780px;
-  background-image: linear-gradient(to bottom, #e0e6ed 1px, transparent 1px);
-  background-size: 100% 60px;
-}
-
-.appointment-card {
-  position: absolute;
-  left: 5px;
-  right: 5px;
-  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
-  border-left: 4px solid #3498db;
-  border-radius: 4px;
-  padding: 0.5rem;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.2s;
-  z-index: 10;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-.appointment-card:hover {
-  background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
-  border-left-color: #2980b9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  transform: scale(1.02);
-  z-index: 11;
-}
-.appointment-card p {
-  margin: 0;
-  line-height: 1.3;
-}
-.appointment-card .patient-name {
-  font-weight: 600;
-  color: #2980b9;
-}
-.appointment-card .service-name, .appointment-card .time-range {
-  font-size: 0.8rem;
-  color: rgb(31.7477876106, 99.1150442478, 143.2522123894);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.appointment-card.view-week {
-  position: relative;
-  margin: 4px;
-  left: 0;
-  right: 0;
-}
-
-.agenda-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1050;
-  backdrop-filter: blur(5px);
-}
-
-.agenda-modal-content {
-  background: #fff;
-  padding: 2.5rem;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 750px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-.agenda-modal-content .modal-header {
+.agenda-main-container .agenda-page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
-.agenda-modal-content .modal-header h3 {
+@media (max-width: 968px) {
+  .agenda-main-container .agenda-page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+.agenda-main-container .agenda-page-header .agenda-header-left {
+  flex: 0 0 auto;
+}
+.agenda-main-container .agenda-page-header .agenda-header-left .agenda-title {
   margin: 0;
-  color: #3c4858;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
-.agenda-modal-content .modal-header .close-btn {
-  background: none;
+.agenda-main-container .agenda-page-header .agenda-header-left .agenda-title svg {
+  color: #3498db;
+  font-size: 1.75rem;
+}
+@media (max-width: 768px) {
+  .agenda-main-container .agenda-page-header .agenda-header-left .agenda-title {
+    font-size: 1.5rem;
+  }
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+@media (max-width: 968px) {
+  .agenda-main-container .agenda-page-header .agenda-header-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+@media (max-width: 640px) {
+  .agenda-main-container .agenda-page-header .agenda-header-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-view-switcher {
+  display: flex;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  gap: 4px;
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-view-switcher .agenda-view-btn {
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-view-switcher .agenda-view-btn:hover {
+  background: #f8f9fa;
+  color: #3498db;
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-view-switcher .agenda-view-btn.active {
+  background: #3498db;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(52, 152, 219, 0.3);
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-navigator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+@media (max-width: 640px) {
+  .agenda-main-container .agenda-page-header .agenda-header-controls .agenda-navigator {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-navigator .agenda-nav-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #7f8c8d;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #8492a6;
-}
-.agenda-modal-content .form-row {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-navigator .agenda-nav-btn:hover {
+  background: #f8f9fa;
+  color: #3498db;
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-navigator .agenda-nav-btn:active {
+  transform: scale(0.95);
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-navigator .agenda-today-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px solid #3498db;
+  border-radius: 10px;
+  background: transparent;
+  color: #3498db;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-navigator .agenda-today-btn:hover {
+  background: #3498db;
+  color: #ffffff;
+}
+.agenda-main-container .agenda-page-header .agenda-header-controls .agenda-navigator .agenda-date-display {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .agenda-main-container .agenda-page-header .agenda-header-controls .agenda-navigator .agenda-date-display {
+    font-size: 0.85rem;
+  }
+}
+.agenda-main-container .agenda-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+.agenda-main-container .agenda-loading p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0;
+}
+.agenda-main-container .agenda-loading .agenda-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #dfe6e9;
+  border-top-color: #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.agenda-main-container .agenda-calendar-grid {
+  display: grid;
   gap: 1.5rem;
+}
+.agenda-main-container .agenda-calendar-grid.week {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+@media (max-width: 1400px) {
+  .agenda-main-container .agenda-calendar-grid.week {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (max-width: 968px) {
+  .agenda-main-container .agenda-calendar-grid.week {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .agenda-main-container .agenda-calendar-grid.week {
+    grid-template-columns: 1fr;
+  }
+}
+.agenda-main-container .agenda-calendar-grid.day {
+  grid-template-columns: 1fr;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header {
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-bottom: 2px solid #ecf0f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header.today {
+  background: linear-gradient(135deg, #5dade2 0%, #3498db 100%);
+  border-bottom-color: #2980b9;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header.today .agenda-day-name,
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header.today .agenda-day-number,
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header.today .agenda-appointment-count {
+  color: #ffffff;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header.today .agenda-add-btn {
+  background: #ffffff;
+  color: #3498db;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header.today .agenda-add-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header.today .agenda-add-btn svg {
+  font-size: 1.2em;
+  vertical-align: middle;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header .agenda-day-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header .agenda-day-info .agenda-day-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #7f8c8d;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header .agenda-day-info .agenda-day-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  line-height: 1;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header .agenda-day-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header .agenda-day-stats .agenda-appointment-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #7f8c8d;
+  padding: 0.35rem 0.75rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header .agenda-day-stats .agenda-add-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: #3498db;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header .agenda-day-stats .agenda-add-btn:hover {
+  background: #2980b9;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-day-header .agenda-day-stats .agenda-add-btn:active {
+  transform: scale(0.95);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container {
+  flex: 1;
+  padding: 1.5rem;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-no-appointments {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-no-appointments p {
+  color: #bdc3c7;
+  font-size: 0.95rem;
+  margin: 0;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-no-appointments .agenda-add-first-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px dashed #dfe6e9;
+  border-radius: 10px;
+  background: transparent;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-no-appointments .agenda-add-first-btn:hover {
+  border-color: #3498db;
+  color: #3498db;
+  background: rgba(52, 152, 219, 0.05);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card {
+  background: linear-gradient(135deg, #ffffff 0%, rgb(246.9309623431, 250.9058577406, 253.5690376569) 100%);
+  border-left: 4px solid #3498db;
+  border-radius: 10px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-left-width: 6px;
+  background: linear-gradient(135deg, white 0%, rgb(233.9355648536, 244.3121338912, 251.2644351464) 100%);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card:active {
+  transform: translateX(2px);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card.day {
+  background: linear-gradient(135deg, white 0%, rgb(242.5991631799, 248.7079497908, 252.8008368201) 100%);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(52, 152, 219, 0.15);
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-header .agenda-appointment-time {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2980b9;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-header .agenda-appointment-time svg {
+  font-size: 0.9rem;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-body p {
+  margin: 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-body .agenda-appointment-patient {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 1rem !important;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-body .agenda-appointment-patient svg {
+  color: #3498db;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-body .agenda-appointment-tutor {
+  color: #7f8c8d;
+  font-size: 0.85rem !important;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-body .agenda-appointment-service {
+  color: #2c3e50;
+  font-weight: 500;
+}
+.agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-body .agenda-appointment-service svg {
+  color: #27ae60;
+}
+.agenda-main-container .agenda-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (max-width: 768px) {
+  .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper {
+    max-width: 100%;
+    max-height: 95vh;
+  }
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-header {
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 2px solid #ecf0f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-header {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-header h3 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+@media (max-width: 640px) {
+  .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-header h3 {
+    font-size: 1.4rem;
+  }
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-header .agenda-modal-close {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #7f8c8d;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-header .agenda-modal-close:hover {
+  background: #f8f9fa;
+  color: #e74c3c;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+}
+@media (max-width: 640px) {
+  .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form {
+    padding: 1.5rem;
+  }
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section:last-of-type {
+  border-bottom: none;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
   margin-bottom: 1.5rem;
 }
-.agenda-modal-content .form-group {
-  flex: 1;
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-checkbox-group input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #3498db;
 }
-.agenda-modal-content .form-group label {
-  font-weight: 500;
-  margin-bottom: 0.5rem;
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-checkbox-group label {
+  margin: 0;
+  font-weight: 600;
+  color: #2c3e50;
+  cursor: pointer;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-search-toggle {
+  margin-bottom: 1.5rem;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-search-toggle > label {
   display: block;
-  color: #3c4858;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
 }
-.agenda-modal-content .form-group input, .agenda-modal-content .form-group select, .agenda-modal-content .form-group textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #e0e6ed;
-  border-radius: 6px;
-  font-size: 1rem;
-  background-color: #fdfdff;
-}
-.agenda-modal-content .form-group input:focus, .agenda-modal-content .form-group select:focus, .agenda-modal-content .form-group textarea:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-}
-.agenda-modal-content .form-group textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-.agenda-modal-content .search-by-toggle {
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-search-toggle .agenda-toggle-buttons {
   display: flex;
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid #e0e6ed;
+  gap: 0.5rem;
+  background: #f8f9fa;
+  padding: 4px;
+  border-radius: 10px;
 }
-.agenda-modal-content .search-by-toggle .btn, .agenda-modal-content .search-by-toggle .recipe-modal .add-line-btn, .recipe-modal .agenda-modal-content .search-by-toggle .add-line-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-modal-content .search-by-toggle .action-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .view-mode-toggle, .agenda-modal-content .search-by-toggle .btn-delete-small, .agenda-modal-content .search-by-toggle .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-modal-content .search-by-toggle .btn-delete-note, .agenda-modal-content .search-by-toggle .btn-custom-date, .agenda-modal-content .search-by-toggle .btn-suministrado, .agenda-modal-content .search-by-toggle .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .agenda-modal-content .search-by-toggle button, .agenda-modal-content .search-by-toggle .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .agenda-modal-content .search-by-toggle button, .agenda-modal-content .search-by-toggle .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .agenda-modal-content .search-by-toggle .btn-suministro-toggle, .agenda-modal-content .search-by-toggle .pagination-controls button, .pagination-controls .agenda-modal-content .search-by-toggle button, .agenda-modal-content .search-by-toggle .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .agenda-modal-content .search-by-toggle .today-btn {
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-search-toggle .agenda-toggle-buttons .agenda-toggle-btn {
   flex: 1;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   border: none;
-  border-radius: 0;
-  padding: 10px 16px;
-  font-weight: 500;
+  border-radius: 6px;
+  background: transparent;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
 }
-.agenda-modal-content .search-by-toggle .btn.btn-outline, .agenda-modal-content .search-by-toggle .recipe-modal .btn-outline.add-line-btn, .recipe-modal .agenda-modal-content .search-by-toggle .btn-outline.add-line-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .vencimiento-card .card-footer .btn-outline.action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-modal-content .search-by-toggle .btn-outline.action-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .btn-outline.view-mode-toggle, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .btn-outline.view-mode-toggle, .agenda-modal-content .search-by-toggle .btn-outline.btn-delete-small, .agenda-modal-content .search-by-toggle .clinical-history-list .clinical-entry-card .entry-header .btn-outline.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-modal-content .search-by-toggle .btn-outline.btn-delete-note, .agenda-modal-content .search-by-toggle .btn-outline.btn-custom-date, .agenda-modal-content .search-by-toggle .btn-outline.btn-suministrado, .agenda-modal-content .search-by-toggle .metodo-pago-container .payment-buttons button.btn-outline, .metodo-pago-container .payment-buttons .agenda-modal-content .search-by-toggle button.btn-outline, .agenda-modal-content .search-by-toggle .metodo-pago-container .card-selector button.btn-outline, .metodo-pago-container .card-selector .agenda-modal-content .search-by-toggle button.btn-outline, .agenda-modal-content .search-by-toggle .confirmar-venta-container .btn-outline.btn-suministro-toggle, .confirmar-venta-container .agenda-modal-content .search-by-toggle .btn-outline.btn-suministro-toggle, .agenda-modal-content .search-by-toggle .pagination-controls button.btn-outline, .pagination-controls .agenda-modal-content .search-by-toggle button.btn-outline, .agenda-modal-content .search-by-toggle .agenda-container .week-navigator .btn-outline.today-btn, .agenda-container .week-navigator .agenda-modal-content .search-by-toggle .btn-outline.today-btn {
-  color: #8492a6;
-  border-color: transparent;
-}
-.agenda-modal-content .search-by-toggle .btn.btn-outline:hover, .agenda-modal-content .search-by-toggle .recipe-modal .btn-outline.add-line-btn:hover, .recipe-modal .agenda-modal-content .search-by-toggle .btn-outline.add-line-btn:hover, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .vencimiento-card .card-footer .btn-outline.action-btn:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-modal-content .search-by-toggle .btn-outline.action-btn:hover, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .btn-outline.view-mode-toggle:hover, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .btn-outline.view-mode-toggle:hover, .agenda-modal-content .search-by-toggle .btn-outline.btn-delete-small:hover, .agenda-modal-content .search-by-toggle .clinical-history-list .clinical-entry-card .entry-header .btn-outline.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .agenda-modal-content .search-by-toggle .btn-outline.btn-delete-note:hover, .agenda-modal-content .search-by-toggle .btn-outline.btn-custom-date:hover, .agenda-modal-content .search-by-toggle .btn-outline.btn-suministrado:hover, .agenda-modal-content .search-by-toggle .metodo-pago-container .payment-buttons button.btn-outline:hover, .metodo-pago-container .payment-buttons .agenda-modal-content .search-by-toggle button.btn-outline:hover, .agenda-modal-content .search-by-toggle .metodo-pago-container .card-selector button.btn-outline:hover, .metodo-pago-container .card-selector .agenda-modal-content .search-by-toggle button.btn-outline:hover, .agenda-modal-content .search-by-toggle .confirmar-venta-container .btn-outline.btn-suministro-toggle:hover, .confirmar-venta-container .agenda-modal-content .search-by-toggle .btn-outline.btn-suministro-toggle:hover, .agenda-modal-content .search-by-toggle .pagination-controls button.btn-outline:hover, .pagination-controls .agenda-modal-content .search-by-toggle button.btn-outline:hover, .agenda-modal-content .search-by-toggle .agenda-container .week-navigator .btn-outline.today-btn:hover, .agenda-container .week-navigator .agenda-modal-content .search-by-toggle .btn-outline.today-btn:hover {
-  background-color: #f8f9fa;
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-search-toggle .agenda-toggle-buttons .agenda-toggle-btn:hover:not(.active) {
+  background: #ffffff;
   color: #3498db;
 }
-.agenda-modal-content .search-by-toggle .btn.btn-primary, .agenda-modal-content .search-by-toggle .recipe-modal .btn-primary.add-line-btn, .recipe-modal .agenda-modal-content .search-by-toggle .btn-primary.add-line-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .agenda-modal-content .search-by-toggle .action-btn, .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .btn-primary.view-mode-toggle, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .btn-primary.view-mode-toggle, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .vencimiento-card .card-footer .view-mode-toggle.action-btn, .agenda-modal-content .search-by-toggle .btn-primary.btn-delete-small, .agenda-modal-content .search-by-toggle .clinical-history-list .clinical-entry-card .entry-header .btn-primary.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-modal-content .search-by-toggle .btn-primary.btn-delete-note, .agenda-modal-content .search-by-toggle .btn-primary.btn-custom-date, .agenda-modal-content .search-by-toggle .btn-primary.btn-suministrado, .agenda-modal-content .search-by-toggle .metodo-pago-container .payment-buttons button.btn-primary, .metodo-pago-container .payment-buttons .agenda-modal-content .search-by-toggle button.btn-primary, .agenda-modal-content .search-by-toggle .metodo-pago-container .card-selector button.btn-primary, .metodo-pago-container .card-selector .agenda-modal-content .search-by-toggle button.btn-primary, .agenda-modal-content .search-by-toggle .confirmar-venta-container .btn-primary.btn-suministro-toggle, .confirmar-venta-container .agenda-modal-content .search-by-toggle .btn-primary.btn-suministro-toggle, .agenda-modal-content .search-by-toggle .pagination-controls button.btn-primary, .pagination-controls .agenda-modal-content .search-by-toggle button.btn-primary, .agenda-modal-content .search-by-toggle .agenda-container .week-navigator .btn-primary.today-btn, .agenda-container .week-navigator .agenda-modal-content .search-by-toggle .btn-primary.today-btn, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn.btn-confirm, .monitor-clinica-container .pagination-controls .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.add-line-btn, .monitor-vencimientos-container .pagination-controls .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.view-mode-toggle, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-small, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.btn-delete-note, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.btn-custom-date, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-confirm.btn-suministrado, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn.btn-confirm, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .monitor-clinica-container .pagination-controls button.btn-confirm, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .recipe-modal .btn-confirm.add-line-btn, .recipe-modal .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.add-line-btn, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .pagination-controls button.btn-confirm, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .monitor-vencimientos-container .btn-confirm.view-mode-toggle, .monitor-vencimientos-container .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.view-mode-toggle, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.btn-delete-small, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .clinical-history-list .clinical-entry-card .entry-header .btn-confirm.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.btn-delete-note, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.btn-custom-date, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-confirm.btn-suministrado, .agenda-modal-content .search-by-toggle .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons button.btn-confirm, .metodo-pago-container .payment-buttons .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .payment-buttons .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons button.btn-confirm, .metodo-pago-container .card-selector .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector button.btn-confirm, .confirmar-venta-container .navigator-buttons .metodo-pago-container .card-selector .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .btn-suministro-toggle.btn-confirm, .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .btn-suministro-toggle.btn-confirm, .agenda-modal-content .search-by-toggle .pagination-controls .confirmar-venta-container .navigator-buttons button.btn-confirm, .pagination-controls .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .pagination-controls button.btn-confirm, .confirmar-venta-container .navigator-buttons .pagination-controls .agenda-modal-content .search-by-toggle button.btn-confirm, .agenda-modal-content .search-by-toggle .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .today-btn.btn-confirm, .agenda-container .week-navigator .confirmar-venta-container .navigator-buttons .agenda-modal-content .search-by-toggle .today-btn.btn-confirm, .agenda-modal-content .search-by-toggle .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .today-btn.btn-confirm, .confirmar-venta-container .navigator-buttons .agenda-container .week-navigator .agenda-modal-content .search-by-toggle .today-btn.btn-confirm {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-search-toggle .agenda-toggle-buttons .agenda-toggle-btn.active {
+  background: #3498db;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
 }
-.agenda-modal-content .combobox-container {
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-search-toggle .agenda-toggle-buttons .agenda-toggle-btn svg {
+  font-size: 1rem;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 640px) {
+  .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field label {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field input,
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field textarea,
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field select {
+  padding: 0.875rem 1rem;
+  font-size: 0.95rem;
+  border: 2px solid #dfe6e9;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #2c3e50;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field input::placeholder,
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field textarea::placeholder,
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field select::placeholder {
+  color: #bdc3c7;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field input:focus,
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field textarea:focus,
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field input:disabled,
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field textarea:disabled,
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field select:disabled {
+  background: #f8f9fa;
+  color: #bdc3c7;
+  cursor: not-allowed;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field select {
+  cursor: pointer;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field.agenda-combobox {
   position: relative;
-  z-index: 10;
 }
-.agenda-modal-content .combobox-container .combobox-results {
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field.agenda-combobox .agenda-dropdown-list {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
   right: 0;
-  background-color: #fff;
-  border: 1px solid #e0e6ed;
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border: 2px solid #dfe6e9;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   list-style: none;
-  padding: 0;
-  margin: -2px 0 0 0;
-  max-height: 200px;
+  padding: 0.5rem 0;
+  margin: 0;
+  max-height: 250px;
   overflow-y: auto;
-  z-index: 1060;
+  z-index: 1000;
+  animation: dropdownSlide 0.2s ease;
 }
-.agenda-modal-content .combobox-container .combobox-results li {
-  padding: 12px;
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field.agenda-combobox .agenda-dropdown-list li {
+  padding: 0.875rem 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
-  color: #3c4858;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #2c3e50;
+  font-size: 0.95rem;
 }
-.agenda-modal-content .combobox-container .combobox-results li:hover {
-  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field.agenda-combobox .agenda-dropdown-list li:hover:not(.no-results) {
+  background: rgb(246.9309623431, 250.9058577406, 253.5690376569);
   color: #2980b9;
 }
-.agenda-modal-content .combobox-container .combobox-results li.no-results {
-  color: #8492a6;
-  cursor: not-allowed;
-  background-color: #fff;
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field.agenda-combobox .agenda-dropdown-list li.no-results {
+  color: #bdc3c7;
+  cursor: default;
+  text-align: center;
+  font-style: italic;
 }
-.agenda-modal-content .services-list {
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-services-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+  margin-top: 0.5rem;
 }
-.agenda-modal-content .service-chip {
-  padding: 8px 16px;
-  border: 1px solid #e0e6ed;
-  background-color: #fff;
-  color: #3c4858;
-  border-radius: 20px;
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-services-grid .agenda-service-chip {
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px solid #dfe6e9;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #2c3e50;
   cursor: pointer;
-  font-weight: 500;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.agenda-modal-content .service-chip.selected {
-  background-color: #3498db;
-  color: #fff;
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-services-grid .agenda-service-chip:hover:not(.selected) {
   border-color: #3498db;
+  color: #3498db;
+  background: white;
 }
-.agenda-modal-content .service-chip:hover:not(.selected) {
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-services-grid .agenda-service-chip.selected {
+  background: #3498db;
   border-color: #3498db;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
 }
-.agenda-modal-content .modal-footer {
-  margin-top: 2rem;
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer {
+  padding: 1.5rem 2rem;
+  border-top: 2px solid #ecf0f1;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  background: #f8f9fa;
+}
+@media (max-width: 640px) {
+  .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer {
+    flex-direction: column;
+    padding: 1.25rem 1.5rem;
+  }
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-modal-actions-left,
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-modal-actions-right {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+@media (max-width: 640px) {
+  .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-modal-actions-left,
+  .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-modal-actions-right {
+    width: 100%;
+    justify-content: stretch;
+  }
+  .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-modal-actions-left .agenda-btn,
+  .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-modal-actions-right .agenda-btn {
+    flex: 1;
+  }
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn {
+  padding: 0.875rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn:not(:disabled):active {
+  transform: scale(0.98);
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn.agenda-btn-primary {
+  background: #3498db;
+  color: #ffffff;
+  border-color: #3498db;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn.agenda-btn-primary:hover:not(:disabled) {
+  background: #2980b9;
+  border-color: #2980b9;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn.agenda-btn-secondary {
+  background: #95a5a6;
+  color: #ffffff;
+  border-color: #95a5a6;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn.agenda-btn-secondary:hover:not(:disabled) {
+  background: #7f8c8d;
+  border-color: #7f8c8d;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn.agenda-btn-danger {
+  background: #e74c3c;
+  color: #ffffff;
+  border-color: #e74c3c;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn.agenda-btn-danger:hover:not(:disabled) {
+  background: #c0392b;
+  border-color: #c0392b;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn.agenda-btn-outline {
+  background: transparent;
+  color: #3498db;
+  border-color: #3498db;
+}
+.agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-footer .agenda-btn.agenda-btn-outline:hover:not(:disabled) {
+  background: #3498db;
+  color: #ffffff;
+}
+
+.peluqueria-main-container {
+  min-height: 100vh;
+  background: #ecf0f1;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (max-width: 768px) {
+  .peluqueria-main-container {
+    padding: 1rem;
+  }
+}
+.peluqueria-main-container .peluqueria-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+@media (max-width: 968px) {
+  .peluqueria-main-container .peluqueria-page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-left {
+  flex: 0 0 auto;
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-left .peluqueria-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-left .peluqueria-title svg {
+  color: #e67e22;
+  font-size: 1.75rem;
+}
+@media (max-width: 768px) {
+  .peluqueria-main-container .peluqueria-page-header .peluqueria-header-left .peluqueria-title {
+    font-size: 1.5rem;
+  }
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+@media (max-width: 968px) {
+  .peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+@media (max-width: 640px) {
+  .peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-view-switcher {
+  display: flex;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  gap: 4px;
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-view-switcher .peluqueria-view-btn {
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-view-switcher .peluqueria-view-btn:hover {
+  background: #f8f9fa;
+  color: #e67e22;
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-view-switcher .peluqueria-view-btn.active {
+  background: #e67e22;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(230, 126, 34, 0.3);
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-navigator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+@media (max-width: 640px) {
+  .peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-navigator {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-navigator .peluqueria-nav-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #7f8c8d;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-navigator .peluqueria-nav-btn:hover {
+  background: #f8f9fa;
+  color: #e67e22;
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-navigator .peluqueria-nav-btn:active {
+  transform: scale(0.95);
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-navigator .peluqueria-today-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px solid #e67e22;
+  border-radius: 10px;
+  background: transparent;
+  color: #e67e22;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-navigator .peluqueria-today-btn:hover {
+  background: #e67e22;
+  color: #ffffff;
+}
+.peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-navigator .peluqueria-date-display {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .peluqueria-main-container .peluqueria-page-header .peluqueria-header-controls .peluqueria-navigator .peluqueria-date-display {
+    font-size: 0.85rem;
+  }
+}
+.peluqueria-main-container .peluqueria-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+.peluqueria-main-container .peluqueria-loading p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0;
+}
+.peluqueria-main-container .peluqueria-loading .peluqueria-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #dfe6e9;
+  border-top-color: #e67e22;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.peluqueria-main-container .peluqueria-calendar-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid.week {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+@media (max-width: 1400px) {
+  .peluqueria-main-container .peluqueria-calendar-grid.week {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (max-width: 968px) {
+  .peluqueria-main-container .peluqueria-calendar-grid.week {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .peluqueria-main-container .peluqueria-calendar-grid.week {
+    grid-template-columns: 1fr;
+  }
+}
+.peluqueria-main-container .peluqueria-calendar-grid.day {
+  grid-template-columns: 1fr;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header {
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-bottom: 2px solid #ecf0f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header.today {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  border-bottom-color: #d35400;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header.today .peluqueria-day-name,
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header.today .peluqueria-day-number,
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header.today .peluqueria-appointment-count {
+  color: #ffffff;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header.today .peluqueria-add-btn {
+  background: #ffffff;
+  color: #e67e22;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header.today .peluqueria-add-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header .peluqueria-day-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header .peluqueria-day-info .peluqueria-day-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #7f8c8d;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header .peluqueria-day-info .peluqueria-day-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  line-height: 1;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header .peluqueria-day-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header .peluqueria-day-stats .peluqueria-appointment-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #7f8c8d;
+  padding: 0.35rem 0.75rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header .peluqueria-day-stats .peluqueria-add-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: #e67e22;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(230, 126, 34, 0.3);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header .peluqueria-day-stats .peluqueria-add-btn:hover {
+  background: #d35400;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(230, 126, 34, 0.4);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-day-header .peluqueria-day-stats .peluqueria-add-btn:active {
+  transform: scale(0.95);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container {
+  flex: 1;
+  padding: 1.5rem;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-no-appointments {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-no-appointments p {
+  color: #bdc3c7;
+  font-size: 0.95rem;
+  margin: 0;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-no-appointments .peluqueria-add-first-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px dashed #dfe6e9;
+  border-radius: 10px;
+  background: transparent;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-no-appointments .peluqueria-add-first-btn:hover {
+  border-color: #e67e22;
+  color: #e67e22;
+  background: rgba(230, 126, 34, 0.05);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card {
+  background: linear-gradient(135deg, #ffffff 0%, rgb(250.7317073171, 232.9756097561, 217.2682926829) 100%);
+  border-left: 4px solid #e67e22;
+  border-radius: 10px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-left-width: 6px;
+  background: linear-gradient(135deg, rgb(251.7682926829, 238.3243902439, 226.4317073171) 0%, rgb(249.6951219512, 227.6268292683, 208.1048780488) 100%);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card:active {
+  transform: translateX(2px);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card.day {
+  background: linear-gradient(135deg, rgb(251.25, 235.65, 221.85) 0%, rgb(250.2134146341, 230.3012195122, 212.6865853659) 100%);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(230, 126, 34, 0.15);
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-header .peluqueria-appointment-time {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #d35400;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-header .peluqueria-appointment-time svg {
+  font-size: 0.9rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-body p {
+  margin: 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-body .peluqueria-appointment-patient {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 1rem !important;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-body .peluqueria-appointment-patient svg {
+  color: #e67e22;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-body .peluqueria-appointment-tutor {
+  color: #7f8c8d;
+  font-size: 0.85rem !important;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-body .peluqueria-appointment-tutor svg {
+  font-size: 0.8rem;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-body .peluqueria-appointment-groomer {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 0.9rem !important;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-body .peluqueria-appointment-groomer svg {
+  color: #d35400;
+}
+.peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-body .peluqueria-appointment-service {
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 0.85rem !important;
+}
+.peluqueria-main-container .peluqueria-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (max-width: 768px) {
+  .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper {
+    max-width: 100%;
+    max-height: 95vh;
+  }
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-header {
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 2px solid #ecf0f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-header {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-header h3 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+@media (max-width: 640px) {
+  .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-header h3 {
+    font-size: 1.4rem;
+  }
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-header .peluqueria-modal-close {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #7f8c8d;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-header .peluqueria-modal-close:hover {
+  background: #f8f9fa;
+  color: #e74c3c;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+}
+@media (max-width: 640px) {
+  .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form {
+    padding: 1.5rem;
+  }
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section:last-of-type {
+  border-bottom: none;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-search-toggle {
+  margin-bottom: 1.5rem;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-search-toggle > label {
+  display: block;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-search-toggle .peluqueria-toggle-buttons {
+  display: flex;
+  gap: 0.5rem;
+  background: #f8f9fa;
+  padding: 4px;
+  border-radius: 10px;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-search-toggle .peluqueria-toggle-buttons .peluqueria-toggle-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-search-toggle .peluqueria-toggle-buttons .peluqueria-toggle-btn:hover:not(.active) {
+  background: #ffffff;
+  color: #e67e22;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-search-toggle .peluqueria-toggle-buttons .peluqueria-toggle-btn.active {
+  background: #e67e22;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(230, 126, 34, 0.3);
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-search-toggle .peluqueria-toggle-buttons .peluqueria-toggle-btn svg {
+  font-size: 1rem;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 640px) {
+  .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field label {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field input,
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field textarea,
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field select {
+  padding: 0.875rem 1rem;
+  font-size: 0.95rem;
+  border: 2px solid #dfe6e9;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #2c3e50;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field input::placeholder,
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field textarea::placeholder,
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field select::placeholder {
+  color: #bdc3c7;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field input:focus,
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field textarea:focus,
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field select:focus {
+  outline: none;
+  border-color: #e67e22;
+  box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field input:disabled,
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field textarea:disabled,
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field select:disabled {
+  background: #f8f9fa;
+  color: #bdc3c7;
+  cursor: not-allowed;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field select {
+  cursor: pointer;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field.peluqueria-combobox {
+  position: relative;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field.peluqueria-combobox .peluqueria-dropdown-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 2px solid #dfe6e9;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1000;
+  animation: dropdownSlide 0.2s ease;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field.peluqueria-combobox .peluqueria-dropdown-list li {
+  padding: 0.875rem 1rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #2c3e50;
+  font-size: 0.95rem;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field.peluqueria-combobox .peluqueria-dropdown-list li:hover:not(.no-results) {
+  background: rgb(250.7317073171, 232.9756097561, 217.2682926829);
+  color: #d35400;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field.peluqueria-combobox .peluqueria-dropdown-list li.no-results {
+  color: #bdc3c7;
+  cursor: default;
+  text-align: center;
+  font-style: italic;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-services-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-services-grid .peluqueria-service-chip {
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px solid #dfe6e9;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-services-grid .peluqueria-service-chip:hover:not(.selected) {
+  border-color: #e67e22;
+  color: #e67e22;
+  background: rgb(253.3231707317, 246.3475609756, 240.1768292683);
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-services-grid .peluqueria-service-chip.selected {
+  background: #e67e22;
+  border-color: #e67e22;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(230, 126, 34, 0.3);
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer {
+  padding: 1.5rem 2rem;
+  border-top: 2px solid #ecf0f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background: #f8f9fa;
+}
+@media (max-width: 640px) {
+  .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer {
+    flex-direction: column;
+    padding: 1.25rem 1.5rem;
+  }
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-modal-actions-left,
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-modal-actions-right {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+@media (max-width: 640px) {
+  .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-modal-actions-left,
+  .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-modal-actions-right {
+    width: 100%;
+    justify-content: stretch;
+  }
+  .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-modal-actions-left .peluqueria-btn,
+  .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-modal-actions-right .peluqueria-btn {
+    flex: 1;
+  }
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn {
+  padding: 0.875rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn:not(:disabled):active {
+  transform: scale(0.98);
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn.peluqueria-btn-primary {
+  background: #e67e22;
+  color: #ffffff;
+  border-color: #e67e22;
+  box-shadow: 0 2px 8px rgba(230, 126, 34, 0.3);
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn.peluqueria-btn-primary:hover:not(:disabled) {
+  background: #d35400;
+  border-color: #d35400;
+  box-shadow: 0 4px 12px rgba(230, 126, 34, 0.4);
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn.peluqueria-btn-secondary {
+  background: #95a5a6;
+  color: #ffffff;
+  border-color: #95a5a6;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn.peluqueria-btn-secondary:hover:not(:disabled) {
+  background: #7f8c8d;
+  border-color: #7f8c8d;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn.peluqueria-btn-danger {
+  background: #e74c3c;
+  color: #ffffff;
+  border-color: #e74c3c;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn.peluqueria-btn-danger:hover:not(:disabled) {
+  background: #c0392b;
+  border-color: #c0392b;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn.peluqueria-btn-outline {
+  background: transparent;
+  color: #e67e22;
+  border-color: #e67e22;
+}
+.peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-footer .peluqueria-btn.peluqueria-btn-outline:hover:not(:disabled) {
+  background: #e67e22;
+  color: #ffffff;
 }
 
 .sale-summary-box {
@@ -6848,6 +8176,22 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2980b9;
+}
+
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .profile-container.paciente-profile {
@@ -6942,7 +8286,7 @@ button.btn-reset:hover {
     flex-direction: column;
     gap: 0.5rem;
   }
-  .profile-header .profile-actions .btn, .profile-header .profile-actions .recipe-modal .add-line-btn, .recipe-modal .profile-header .profile-actions .add-line-btn, .profile-header .profile-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .profile-header .profile-actions .action-btn, .profile-header .profile-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .profile-header .profile-actions .view-mode-toggle, .profile-header .profile-actions .btn-delete-small, .profile-header .profile-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .profile-header .profile-actions .btn-delete-note, .profile-header .profile-actions .btn-custom-date, .profile-header .profile-actions .btn-suministrado, .profile-header .profile-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .profile-header .profile-actions button, .profile-header .profile-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .profile-header .profile-actions .btn-suministro-toggle, .profile-header .profile-actions .pagination-controls button, .pagination-controls .profile-header .profile-actions button, .profile-header .profile-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .profile-header .profile-actions .today-btn {
+  .profile-header .profile-actions .btn, .profile-header .profile-actions .recipe-modal .add-line-btn, .recipe-modal .profile-header .profile-actions .add-line-btn, .profile-header .profile-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .profile-header .profile-actions .action-btn, .profile-header .profile-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .profile-header .profile-actions .view-mode-toggle, .profile-header .profile-actions .btn-delete-small, .profile-header .profile-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .profile-header .profile-actions .btn-delete-note, .profile-header .profile-actions .btn-custom-date, .profile-header .profile-actions .btn-suministrado, .profile-header .profile-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .profile-header .profile-actions button, .profile-header .profile-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .profile-header .profile-actions button, .profile-header .profile-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .profile-header .profile-actions .btn-suministro-toggle, .profile-header .profile-actions .pagination-controls button, .pagination-controls .profile-header .profile-actions button {
     width: 100%;
     justify-content: center;
   }
@@ -7597,7 +8941,7 @@ button.btn-reset:hover {
   .supply-actions {
     width: 100%;
   }
-  .supply-actions .btn, .supply-actions .recipe-modal .add-line-btn, .recipe-modal .supply-actions .add-line-btn, .supply-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .supply-actions .action-btn, .supply-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .supply-actions .view-mode-toggle, .supply-actions .btn-delete-small, .supply-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .supply-actions .btn-delete-note, .supply-actions .btn-custom-date, .supply-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .supply-actions button, .supply-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .supply-actions button, .supply-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .supply-actions .btn-suministro-toggle, .supply-actions .pagination-controls button, .pagination-controls .supply-actions button, .supply-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .supply-actions .today-btn, .supply-actions .btn-suministrado {
+  .supply-actions .btn, .supply-actions .recipe-modal .add-line-btn, .recipe-modal .supply-actions .add-line-btn, .supply-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .supply-actions .action-btn, .supply-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .supply-actions .view-mode-toggle, .supply-actions .btn-delete-small, .supply-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .supply-actions .btn-delete-note, .supply-actions .btn-custom-date, .supply-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .supply-actions button, .supply-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .supply-actions button, .supply-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .supply-actions .btn-suministro-toggle, .supply-actions .pagination-controls button, .pagination-controls .supply-actions button, .supply-actions .btn-suministrado {
     flex: 1;
   }
 }
@@ -7644,7 +8988,7 @@ button.btn-reset:hover {
   .custom-date-supply-form input[type=date] {
     flex-grow: 1;
   }
-  .custom-date-supply-form .btn, .custom-date-supply-form .recipe-modal .add-line-btn, .recipe-modal .custom-date-supply-form .add-line-btn, .custom-date-supply-form .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .custom-date-supply-form .action-btn, .custom-date-supply-form .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .custom-date-supply-form .view-mode-toggle, .custom-date-supply-form .btn-delete-small, .custom-date-supply-form .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .custom-date-supply-form .btn-delete-note, .custom-date-supply-form .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .custom-date-supply-form button, .custom-date-supply-form .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .custom-date-supply-form button, .custom-date-supply-form .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .custom-date-supply-form .btn-suministro-toggle, .custom-date-supply-form .pagination-controls button, .pagination-controls .custom-date-supply-form button, .custom-date-supply-form .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .custom-date-supply-form .today-btn, .custom-date-supply-form .btn-suministrado, .custom-date-supply-form .btn-custom-date {
+  .custom-date-supply-form .btn, .custom-date-supply-form .recipe-modal .add-line-btn, .recipe-modal .custom-date-supply-form .add-line-btn, .custom-date-supply-form .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .custom-date-supply-form .action-btn, .custom-date-supply-form .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .custom-date-supply-form .view-mode-toggle, .custom-date-supply-form .btn-delete-small, .custom-date-supply-form .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .custom-date-supply-form .btn-delete-note, .custom-date-supply-form .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .custom-date-supply-form button, .custom-date-supply-form .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .custom-date-supply-form button, .custom-date-supply-form .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .custom-date-supply-form .btn-suministro-toggle, .custom-date-supply-form .pagination-controls button, .pagination-controls .custom-date-supply-form button, .custom-date-supply-form .btn-suministrado, .custom-date-supply-form .btn-custom-date {
     flex: 1;
   }
 }
@@ -7695,7 +9039,7 @@ button.btn-reset:hover {
   .recipe-actions {
     width: 100%;
   }
-  .recipe-actions .btn, .recipe-actions .recipe-modal .add-line-btn, .recipe-modal .recipe-actions .add-line-btn, .recipe-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-actions .action-btn, .recipe-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .recipe-actions .view-mode-toggle, .recipe-actions .btn-delete-small, .recipe-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .recipe-actions .btn-delete-note, .recipe-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .recipe-actions button, .recipe-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .recipe-actions button, .recipe-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .recipe-actions .btn-suministro-toggle, .recipe-actions .pagination-controls button, .pagination-controls .recipe-actions button, .recipe-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .recipe-actions .today-btn, .recipe-actions .btn-suministrado, .recipe-actions .btn-custom-date {
+  .recipe-actions .btn, .recipe-actions .recipe-modal .add-line-btn, .recipe-modal .recipe-actions .add-line-btn, .recipe-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .recipe-actions .action-btn, .recipe-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .recipe-actions .view-mode-toggle, .recipe-actions .btn-delete-small, .recipe-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .recipe-actions .btn-delete-note, .recipe-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .recipe-actions button, .recipe-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .recipe-actions button, .recipe-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .recipe-actions .btn-suministro-toggle, .recipe-actions .pagination-controls button, .pagination-controls .recipe-actions button, .recipe-actions .btn-suministrado, .recipe-actions .btn-custom-date {
     flex: 1;
   }
 }
@@ -8034,6 +9378,22 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
+}
+
 .monitor-vencimientos-container {
   padding: 2rem;
   max-width: 1400px;
@@ -8344,6 +9704,22 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2980b9;
+}
+
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .agenda-modal-overlay {
@@ -8846,6 +10222,22 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2980b9;
+}
+
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .monitor-clinica-container {
@@ -9624,7 +11016,7 @@ button.btn-reset:hover {
   display: flex;
   gap: 0.5rem;
 }
-.card-footer .card-actions .btn, .card-footer .card-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .card-footer .card-actions button, .card-footer .card-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .card-footer .card-actions button, .card-footer .card-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .btn-suministro-toggle, .card-footer .card-actions .pagination-controls button, .pagination-controls .card-footer .card-actions button, .card-footer .card-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .card-footer .card-actions .today-btn, .card-footer .card-actions .btn-suministrado, .card-footer .card-actions .btn-custom-date, .card-footer .card-actions .btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .action-btn, .card-footer .card-actions .recipe-modal .add-line-btn, .recipe-modal .card-footer .card-actions .add-line-btn {
+.card-footer .card-actions .btn, .card-footer .card-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .card-footer .card-actions button, .card-footer .card-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .card-footer .card-actions button, .card-footer .card-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .btn-suministro-toggle, .card-footer .card-actions .pagination-controls button, .pagination-controls .card-footer .card-actions button, .card-footer .card-actions .btn-suministrado, .card-footer .card-actions .btn-custom-date, .card-footer .card-actions .btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .action-btn, .card-footer .card-actions .recipe-modal .add-line-btn, .recipe-modal .card-footer .card-actions .add-line-btn {
   padding: 0.5rem;
   border-radius: 6px;
   border: none;
@@ -9634,31 +11026,31 @@ button.btn-reset:hover {
   align-items: center;
   justify-content: center;
 }
-.card-footer .card-actions .btn svg, .card-footer .card-actions .metodo-pago-container .payment-buttons button svg, .metodo-pago-container .payment-buttons .card-footer .card-actions button svg, .card-footer .card-actions .metodo-pago-container .card-selector button svg, .metodo-pago-container .card-selector .card-footer .card-actions button svg, .card-footer .card-actions .confirmar-venta-container .btn-suministro-toggle svg, .confirmar-venta-container .card-footer .card-actions .btn-suministro-toggle svg, .card-footer .card-actions .pagination-controls button svg, .pagination-controls .card-footer .card-actions button svg, .card-footer .card-actions .agenda-container .week-navigator .today-btn svg, .agenda-container .week-navigator .card-footer .card-actions .today-btn svg, .card-footer .card-actions .btn-suministrado svg, .card-footer .card-actions .btn-custom-date svg, .card-footer .card-actions .btn-delete-small svg, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note svg, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .btn-delete-note svg, .card-footer .card-actions .monitor-vencimientos-container .view-mode-toggle svg, .monitor-vencimientos-container .card-footer .card-actions .view-mode-toggle svg, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .action-btn svg, .card-footer .card-actions .recipe-modal .add-line-btn svg, .recipe-modal .card-footer .card-actions .add-line-btn svg {
+.card-footer .card-actions .btn svg, .card-footer .card-actions .metodo-pago-container .payment-buttons button svg, .metodo-pago-container .payment-buttons .card-footer .card-actions button svg, .card-footer .card-actions .metodo-pago-container .card-selector button svg, .metodo-pago-container .card-selector .card-footer .card-actions button svg, .card-footer .card-actions .confirmar-venta-container .btn-suministro-toggle svg, .confirmar-venta-container .card-footer .card-actions .btn-suministro-toggle svg, .card-footer .card-actions .pagination-controls button svg, .pagination-controls .card-footer .card-actions button svg, .card-footer .card-actions .btn-suministrado svg, .card-footer .card-actions .btn-custom-date svg, .card-footer .card-actions .btn-delete-small svg, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note svg, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .btn-delete-note svg, .card-footer .card-actions .monitor-vencimientos-container .view-mode-toggle svg, .monitor-vencimientos-container .card-footer .card-actions .view-mode-toggle svg, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .action-btn svg, .card-footer .card-actions .recipe-modal .add-line-btn svg, .recipe-modal .card-footer .card-actions .add-line-btn svg {
   width: 0.9rem;
   height: 0.9rem;
 }
-.card-footer .card-actions .btn.pay-debt, .card-footer .card-actions .metodo-pago-container .payment-buttons button.pay-debt, .metodo-pago-container .payment-buttons .card-footer .card-actions button.pay-debt, .card-footer .card-actions .metodo-pago-container .card-selector button.pay-debt, .metodo-pago-container .card-selector .card-footer .card-actions button.pay-debt, .card-footer .card-actions .confirmar-venta-container .pay-debt.btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .pay-debt.btn-suministro-toggle, .card-footer .card-actions .pagination-controls button.pay-debt, .pagination-controls .card-footer .card-actions button.pay-debt, .card-footer .card-actions .agenda-container .week-navigator .pay-debt.today-btn, .agenda-container .week-navigator .card-footer .card-actions .pay-debt.today-btn, .card-footer .card-actions .pay-debt.btn-suministrado, .card-footer .card-actions .pay-debt.btn-custom-date, .card-footer .card-actions .pay-debt.btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .pay-debt.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .pay-debt.btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .pay-debt.view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .pay-debt.view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .pay-debt.action-btn, .card-footer .card-actions .recipe-modal .pay-debt.add-line-btn, .recipe-modal .card-footer .card-actions .pay-debt.add-line-btn {
+.card-footer .card-actions .btn.pay-debt, .card-footer .card-actions .metodo-pago-container .payment-buttons button.pay-debt, .metodo-pago-container .payment-buttons .card-footer .card-actions button.pay-debt, .card-footer .card-actions .metodo-pago-container .card-selector button.pay-debt, .metodo-pago-container .card-selector .card-footer .card-actions button.pay-debt, .card-footer .card-actions .confirmar-venta-container .pay-debt.btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .pay-debt.btn-suministro-toggle, .card-footer .card-actions .pagination-controls button.pay-debt, .pagination-controls .card-footer .card-actions button.pay-debt, .card-footer .card-actions .pay-debt.btn-suministrado, .card-footer .card-actions .pay-debt.btn-custom-date, .card-footer .card-actions .pay-debt.btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .pay-debt.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .pay-debt.btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .pay-debt.view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .pay-debt.view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .pay-debt.action-btn, .card-footer .card-actions .recipe-modal .pay-debt.add-line-btn, .recipe-modal .card-footer .card-actions .pay-debt.add-line-btn {
   background: #27ae60;
   color: white;
 }
-.card-footer .card-actions .btn.pay-debt:hover, .card-footer .card-actions .metodo-pago-container .payment-buttons button.pay-debt:hover, .metodo-pago-container .payment-buttons .card-footer .card-actions button.pay-debt:hover, .card-footer .card-actions .metodo-pago-container .card-selector button.pay-debt:hover, .metodo-pago-container .card-selector .card-footer .card-actions button.pay-debt:hover, .card-footer .card-actions .confirmar-venta-container .pay-debt.btn-suministro-toggle:hover, .confirmar-venta-container .card-footer .card-actions .pay-debt.btn-suministro-toggle:hover, .card-footer .card-actions .pagination-controls button.pay-debt:hover, .pagination-controls .card-footer .card-actions button.pay-debt:hover, .card-footer .card-actions .agenda-container .week-navigator .pay-debt.today-btn:hover, .agenda-container .week-navigator .card-footer .card-actions .pay-debt.today-btn:hover, .card-footer .card-actions .pay-debt.btn-suministrado:hover, .card-footer .card-actions .pay-debt.btn-custom-date:hover, .card-footer .card-actions .pay-debt.btn-delete-small:hover, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .pay-debt.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .pay-debt.btn-delete-note:hover, .card-footer .card-actions .monitor-vencimientos-container .pay-debt.view-mode-toggle:hover, .monitor-vencimientos-container .card-footer .card-actions .pay-debt.view-mode-toggle:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .pay-debt.action-btn:hover, .card-footer .card-actions .recipe-modal .pay-debt.add-line-btn:hover, .recipe-modal .card-footer .card-actions .pay-debt.add-line-btn:hover {
+.card-footer .card-actions .btn.pay-debt:hover, .card-footer .card-actions .metodo-pago-container .payment-buttons button.pay-debt:hover, .metodo-pago-container .payment-buttons .card-footer .card-actions button.pay-debt:hover, .card-footer .card-actions .metodo-pago-container .card-selector button.pay-debt:hover, .metodo-pago-container .card-selector .card-footer .card-actions button.pay-debt:hover, .card-footer .card-actions .confirmar-venta-container .pay-debt.btn-suministro-toggle:hover, .confirmar-venta-container .card-footer .card-actions .pay-debt.btn-suministro-toggle:hover, .card-footer .card-actions .pagination-controls button.pay-debt:hover, .pagination-controls .card-footer .card-actions button.pay-debt:hover, .card-footer .card-actions .pay-debt.btn-suministrado:hover, .card-footer .card-actions .pay-debt.btn-custom-date:hover, .card-footer .card-actions .pay-debt.btn-delete-small:hover, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .pay-debt.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .pay-debt.btn-delete-note:hover, .card-footer .card-actions .monitor-vencimientos-container .pay-debt.view-mode-toggle:hover, .monitor-vencimientos-container .card-footer .card-actions .pay-debt.view-mode-toggle:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .pay-debt.action-btn:hover, .card-footer .card-actions .recipe-modal .pay-debt.add-line-btn:hover, .recipe-modal .card-footer .card-actions .pay-debt.add-line-btn:hover {
   background: #229954;
   transform: scale(1.05);
 }
-.card-footer .card-actions .btn.edit, .card-footer .card-actions .metodo-pago-container .payment-buttons button.edit, .metodo-pago-container .payment-buttons .card-footer .card-actions button.edit, .card-footer .card-actions .metodo-pago-container .card-selector button.edit, .metodo-pago-container .card-selector .card-footer .card-actions button.edit, .card-footer .card-actions .confirmar-venta-container .edit.btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .edit.btn-suministro-toggle, .card-footer .card-actions .pagination-controls button.edit, .pagination-controls .card-footer .card-actions button.edit, .card-footer .card-actions .agenda-container .week-navigator .edit.today-btn, .agenda-container .week-navigator .card-footer .card-actions .edit.today-btn, .card-footer .card-actions .edit.btn-suministrado, .card-footer .card-actions .edit.btn-custom-date, .card-footer .card-actions .edit.btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .edit.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .edit.btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .edit.view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .edit.view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .edit.action-btn, .card-footer .card-actions .recipe-modal .edit.add-line-btn, .recipe-modal .card-footer .card-actions .edit.add-line-btn {
+.card-footer .card-actions .btn.edit, .card-footer .card-actions .metodo-pago-container .payment-buttons button.edit, .metodo-pago-container .payment-buttons .card-footer .card-actions button.edit, .card-footer .card-actions .metodo-pago-container .card-selector button.edit, .metodo-pago-container .card-selector .card-footer .card-actions button.edit, .card-footer .card-actions .confirmar-venta-container .edit.btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .edit.btn-suministro-toggle, .card-footer .card-actions .pagination-controls button.edit, .pagination-controls .card-footer .card-actions button.edit, .card-footer .card-actions .edit.btn-suministrado, .card-footer .card-actions .edit.btn-custom-date, .card-footer .card-actions .edit.btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .edit.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .edit.btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .edit.view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .edit.view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .edit.action-btn, .card-footer .card-actions .recipe-modal .edit.add-line-btn, .recipe-modal .card-footer .card-actions .edit.add-line-btn {
   background: #3498db;
   color: white;
 }
-.card-footer .card-actions .btn.edit:hover, .card-footer .card-actions .metodo-pago-container .payment-buttons button.edit:hover, .metodo-pago-container .payment-buttons .card-footer .card-actions button.edit:hover, .card-footer .card-actions .metodo-pago-container .card-selector button.edit:hover, .metodo-pago-container .card-selector .card-footer .card-actions button.edit:hover, .card-footer .card-actions .confirmar-venta-container .edit.btn-suministro-toggle:hover, .confirmar-venta-container .card-footer .card-actions .edit.btn-suministro-toggle:hover, .card-footer .card-actions .pagination-controls button.edit:hover, .pagination-controls .card-footer .card-actions button.edit:hover, .card-footer .card-actions .agenda-container .week-navigator .edit.today-btn:hover, .agenda-container .week-navigator .card-footer .card-actions .edit.today-btn:hover, .card-footer .card-actions .edit.btn-suministrado:hover, .card-footer .card-actions .edit.btn-custom-date:hover, .card-footer .card-actions .edit.btn-delete-small:hover, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .edit.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .edit.btn-delete-note:hover, .card-footer .card-actions .monitor-vencimientos-container .edit.view-mode-toggle:hover, .monitor-vencimientos-container .card-footer .card-actions .edit.view-mode-toggle:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .edit.action-btn:hover, .card-footer .card-actions .recipe-modal .edit.add-line-btn:hover, .recipe-modal .card-footer .card-actions .edit.add-line-btn:hover {
+.card-footer .card-actions .btn.edit:hover, .card-footer .card-actions .metodo-pago-container .payment-buttons button.edit:hover, .metodo-pago-container .payment-buttons .card-footer .card-actions button.edit:hover, .card-footer .card-actions .metodo-pago-container .card-selector button.edit:hover, .metodo-pago-container .card-selector .card-footer .card-actions button.edit:hover, .card-footer .card-actions .confirmar-venta-container .edit.btn-suministro-toggle:hover, .confirmar-venta-container .card-footer .card-actions .edit.btn-suministro-toggle:hover, .card-footer .card-actions .pagination-controls button.edit:hover, .pagination-controls .card-footer .card-actions button.edit:hover, .card-footer .card-actions .edit.btn-suministrado:hover, .card-footer .card-actions .edit.btn-custom-date:hover, .card-footer .card-actions .edit.btn-delete-small:hover, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .edit.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .edit.btn-delete-note:hover, .card-footer .card-actions .monitor-vencimientos-container .edit.view-mode-toggle:hover, .monitor-vencimientos-container .card-footer .card-actions .edit.view-mode-toggle:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .edit.action-btn:hover, .card-footer .card-actions .recipe-modal .edit.add-line-btn:hover, .recipe-modal .card-footer .card-actions .edit.add-line-btn:hover {
   background: #2980b9;
   transform: scale(1.05);
 }
-.card-footer .card-actions .btn.delete, .card-footer .card-actions .metodo-pago-container .payment-buttons button.delete, .metodo-pago-container .payment-buttons .card-footer .card-actions button.delete, .card-footer .card-actions .metodo-pago-container .card-selector button.delete, .metodo-pago-container .card-selector .card-footer .card-actions button.delete, .card-footer .card-actions .confirmar-venta-container .delete.btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .delete.btn-suministro-toggle, .card-footer .card-actions .pagination-controls button.delete, .pagination-controls .card-footer .card-actions button.delete, .card-footer .card-actions .agenda-container .week-navigator .delete.today-btn, .agenda-container .week-navigator .card-footer .card-actions .delete.today-btn, .card-footer .card-actions .delete.btn-suministrado, .card-footer .card-actions .delete.btn-custom-date, .card-footer .card-actions .delete.btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .delete.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .delete.btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .delete.view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .delete.view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .delete.action-btn, .card-footer .card-actions .recipe-modal .delete.add-line-btn, .recipe-modal .card-footer .card-actions .delete.add-line-btn {
+.card-footer .card-actions .btn.delete, .card-footer .card-actions .metodo-pago-container .payment-buttons button.delete, .metodo-pago-container .payment-buttons .card-footer .card-actions button.delete, .card-footer .card-actions .metodo-pago-container .card-selector button.delete, .metodo-pago-container .card-selector .card-footer .card-actions button.delete, .card-footer .card-actions .confirmar-venta-container .delete.btn-suministro-toggle, .confirmar-venta-container .card-footer .card-actions .delete.btn-suministro-toggle, .card-footer .card-actions .pagination-controls button.delete, .pagination-controls .card-footer .card-actions button.delete, .card-footer .card-actions .delete.btn-suministrado, .card-footer .card-actions .delete.btn-custom-date, .card-footer .card-actions .delete.btn-delete-small, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .delete.btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .delete.btn-delete-note, .card-footer .card-actions .monitor-vencimientos-container .delete.view-mode-toggle, .monitor-vencimientos-container .card-footer .card-actions .delete.view-mode-toggle, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .delete.action-btn, .card-footer .card-actions .recipe-modal .delete.add-line-btn, .recipe-modal .card-footer .card-actions .delete.add-line-btn {
   background: #e74c3c;
   color: white;
 }
-.card-footer .card-actions .btn.delete:hover, .card-footer .card-actions .metodo-pago-container .payment-buttons button.delete:hover, .metodo-pago-container .payment-buttons .card-footer .card-actions button.delete:hover, .card-footer .card-actions .metodo-pago-container .card-selector button.delete:hover, .metodo-pago-container .card-selector .card-footer .card-actions button.delete:hover, .card-footer .card-actions .confirmar-venta-container .delete.btn-suministro-toggle:hover, .confirmar-venta-container .card-footer .card-actions .delete.btn-suministro-toggle:hover, .card-footer .card-actions .pagination-controls button.delete:hover, .pagination-controls .card-footer .card-actions button.delete:hover, .card-footer .card-actions .agenda-container .week-navigator .delete.today-btn:hover, .agenda-container .week-navigator .card-footer .card-actions .delete.today-btn:hover, .card-footer .card-actions .delete.btn-suministrado:hover, .card-footer .card-actions .delete.btn-custom-date:hover, .card-footer .card-actions .delete.btn-delete-small:hover, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .delete.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .delete.btn-delete-note:hover, .card-footer .card-actions .monitor-vencimientos-container .delete.view-mode-toggle:hover, .monitor-vencimientos-container .card-footer .card-actions .delete.view-mode-toggle:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .delete.action-btn:hover, .card-footer .card-actions .recipe-modal .delete.add-line-btn:hover, .recipe-modal .card-footer .card-actions .delete.add-line-btn:hover {
+.card-footer .card-actions .btn.delete:hover, .card-footer .card-actions .metodo-pago-container .payment-buttons button.delete:hover, .metodo-pago-container .payment-buttons .card-footer .card-actions button.delete:hover, .card-footer .card-actions .metodo-pago-container .card-selector button.delete:hover, .metodo-pago-container .card-selector .card-footer .card-actions button.delete:hover, .card-footer .card-actions .confirmar-venta-container .delete.btn-suministro-toggle:hover, .confirmar-venta-container .card-footer .card-actions .delete.btn-suministro-toggle:hover, .card-footer .card-actions .pagination-controls button.delete:hover, .pagination-controls .card-footer .card-actions button.delete:hover, .card-footer .card-actions .delete.btn-suministrado:hover, .card-footer .card-actions .delete.btn-custom-date:hover, .card-footer .card-actions .delete.btn-delete-small:hover, .card-footer .card-actions .clinical-history-list .clinical-entry-card .entry-header .delete.btn-delete-note:hover, .clinical-history-list .clinical-entry-card .entry-header .card-footer .card-actions .delete.btn-delete-note:hover, .card-footer .card-actions .monitor-vencimientos-container .delete.view-mode-toggle:hover, .monitor-vencimientos-container .card-footer .card-actions .delete.view-mode-toggle:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .card-actions .delete.action-btn:hover, .card-footer .card-actions .recipe-modal .delete.add-line-btn:hover, .recipe-modal .card-footer .card-actions .delete.add-line-btn:hover {
   background: #c0392b;
   transform: scale(1.05);
 }
@@ -10205,7 +11597,7 @@ button.btn-reset:hover {
   border-top: 1px solid #e0e0e0;
   flex-shrink: 0;
 }
-.form-actions .btn, .form-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .form-actions button, .form-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .form-actions button, .form-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .form-actions .btn-suministro-toggle, .form-actions .pagination-controls button, .pagination-controls .form-actions button, .form-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .form-actions .today-btn, .form-actions .btn-suministrado, .form-actions .btn-custom-date, .form-actions .btn-delete-small, .form-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .form-actions .btn-delete-note, .form-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .form-actions .view-mode-toggle, .form-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .form-actions .action-btn, .form-actions .recipe-modal .add-line-btn, .recipe-modal .form-actions .add-line-btn {
+.form-actions .btn, .form-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .form-actions button, .form-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .form-actions button, .form-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .form-actions .btn-suministro-toggle, .form-actions .pagination-controls button, .pagination-controls .form-actions button, .form-actions .btn-suministrado, .form-actions .btn-custom-date, .form-actions .btn-delete-small, .form-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .form-actions .btn-delete-note, .form-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .form-actions .view-mode-toggle, .form-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .form-actions .action-btn, .form-actions .recipe-modal .add-line-btn, .recipe-modal .form-actions .add-line-btn {
   padding: 0.7rem 1.5rem;
   font-size: 0.95rem;
 }
@@ -10226,7 +11618,7 @@ button.btn-reset:hover {
   .form-actions {
     flex-direction: column;
   }
-  .form-actions .btn, .form-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .form-actions button, .form-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .form-actions button, .form-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .form-actions .btn-suministro-toggle, .form-actions .pagination-controls button, .pagination-controls .form-actions button, .form-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .form-actions .today-btn, .form-actions .btn-suministrado, .form-actions .btn-custom-date, .form-actions .btn-delete-small, .form-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .form-actions .btn-delete-note, .form-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .form-actions .view-mode-toggle, .form-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .form-actions .action-btn, .form-actions .recipe-modal .add-line-btn, .recipe-modal .form-actions .add-line-btn {
+  .form-actions .btn, .form-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .form-actions button, .form-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .form-actions button, .form-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .form-actions .btn-suministro-toggle, .form-actions .pagination-controls button, .pagination-controls .form-actions button, .form-actions .btn-suministrado, .form-actions .btn-custom-date, .form-actions .btn-delete-small, .form-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .form-actions .btn-delete-note, .form-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .form-actions .view-mode-toggle, .form-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .form-actions .action-btn, .form-actions .recipe-modal .add-line-btn, .recipe-modal .form-actions .add-line-btn {
     width: 100%;
   }
 }
@@ -10282,6 +11674,22 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2980b9;
+}
+
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .clinic-dashboard-container {
@@ -10531,6 +11939,22 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
+}
+
 .resumen-semanal-container {
   padding: 2rem;
   max-width: 1200px;
@@ -10655,6 +12079,22 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2980b9;
+}
+
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .sale-detail-modal-overlay {
@@ -10863,7 +12303,7 @@ button.btn-reset:hover {
   margin-top: 2rem;
   flex-shrink: 0;
 }
-.sale-detail-actions .btn, .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-actions button, .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-actions button, .sale-detail-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .sale-detail-actions .btn-suministro-toggle, .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-actions button, .sale-detail-actions .agenda-container .week-navigator .today-btn, .agenda-container .week-navigator .sale-detail-actions .today-btn, .sale-detail-actions .btn-suministrado, .sale-detail-actions .btn-custom-date, .sale-detail-actions .btn-delete-small, .sale-detail-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .sale-detail-actions .btn-delete-note, .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-actions .view-mode-toggle, .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-actions .action-btn, .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-actions .add-line-btn, .sale-detail-actions .btn-primary, .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .sale-detail-actions .btn-confirm {
+.sale-detail-actions .btn, .sale-detail-actions .metodo-pago-container .payment-buttons button, .metodo-pago-container .payment-buttons .sale-detail-actions button, .sale-detail-actions .metodo-pago-container .card-selector button, .metodo-pago-container .card-selector .sale-detail-actions button, .sale-detail-actions .confirmar-venta-container .btn-suministro-toggle, .confirmar-venta-container .sale-detail-actions .btn-suministro-toggle, .sale-detail-actions .pagination-controls button, .pagination-controls .sale-detail-actions button, .sale-detail-actions .btn-suministrado, .sale-detail-actions .btn-custom-date, .sale-detail-actions .btn-delete-small, .sale-detail-actions .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .clinical-history-list .clinical-entry-card .entry-header .sale-detail-actions .btn-delete-note, .sale-detail-actions .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .sale-detail-actions .view-mode-toggle, .sale-detail-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .sale-detail-actions .action-btn, .sale-detail-actions .recipe-modal .add-line-btn, .recipe-modal .sale-detail-actions .add-line-btn, .sale-detail-actions .btn-primary, .sale-detail-actions .confirmar-venta-container .navigator-buttons .btn-confirm, .confirmar-venta-container .navigator-buttons .sale-detail-actions .btn-confirm {
   flex: 1;
   padding: 0.75rem 1rem;
 }
@@ -10901,6 +12341,22 @@ button.btn-reset:hover {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2980b9;
+}
+
+.agenda-form-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.agenda-form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .peluquero-profile .profile-nav {

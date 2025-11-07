@@ -132,4 +132,24 @@ $text-light: #576677;
         color: $primary-dark;
     }
 }
+//fixeo nefasto pero que funciona
 
+.agenda-form-field {
+    label {
+    margin-bottom: 0.5rem; // Espacio entre la etiqueta y el textarea
+    font-weight: 600;
+    color: #333; // $text-color
+  }
+
+  textarea {
+    width: 100%; // Ocupa todo el ancho disponible
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc; // $grey-border
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    min-height: 100px;
+    resize: vertical;
+}
+}
+              
