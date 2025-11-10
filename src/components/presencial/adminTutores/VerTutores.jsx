@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
@@ -9,9 +9,13 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { PiBathtub } from "react-icons/pi";
 
+// Cache for tutores data
+let tutoresCache = null;
+let cacheTimestamp = null;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 const VerTutores = () => {
   const [tutores, setTutores] = useState([]);
-  const [filteredTutores, setFilteredTutores] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
     searchTerm: "",
@@ -23,43 +27,62 @@ const VerTutores = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
 
-  const fetchTutores = useCallback(async () => {
+  // Check if cache is valid
+  const isCacheValid = useCallback(() => {
+    return tutoresCache && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION);
+  }, []);
+
+  const fetchTutores = useCallback(async (forceRefresh = false) => {
+    // Use cache if valid and not forcing refresh
+    if (!forceRefresh && isCacheValid()) {
+      setTutores(tutoresCache);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const snapshot = await getDocs(collection(db, "tutores"));
       const tutorsList = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+      
+      // Update cache
+      tutoresCache = tutorsList;
+      cacheTimestamp = Date.now();
+      
       setTutores(tutorsList);
-    } catch {
+    } catch (error) {
+      console.error("Error fetching tutores:", error);
       Swal.fire("Error", "No se pudieron cargar los tutores.", "error");
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [isCacheValid]);
 
   useEffect(() => {
     fetchTutores();
   }, [fetchTutores]);
 
-  useEffect(() => {
+  // Memoized filtered and sorted tutores
+  const filteredTutores = useMemo(() => {
     let filtered = [...tutores];
 
+    // Service type filter
     if (filters.serviceType !== "todos") {
       filtered = filtered.filter((t) => {
         const services = t.serviceTypes || [];
-        if (filters.serviceType === "clinical")
-          return services.includes("clinical");
-        if (filters.serviceType === "grooming")
-          return services.includes("grooming");
-        if (filters.serviceType === "both")
-          return services.includes("clinical") && services.includes("grooming");
+        if (filters.serviceType === "clinical") return services.includes("clinical");
+        if (filters.serviceType === "grooming") return services.includes("grooming");
+        if (filters.serviceType === "both") return services.includes("clinical") && services.includes("grooming");
         return true;
       });
     }
 
+    // Debtors filter
     if (filters.showOnlyDebtors) {
       filtered = filtered.filter((t) => (t.accountBalance || 0) < 0);
     }
 
+    // Search filter
     const term = filters.searchTerm.toLowerCase();
     if (term) {
       filtered = filtered.filter(
@@ -71,6 +94,7 @@ const VerTutores = () => {
       );
     }
 
+    // Sort
     filtered.sort((a, b) => {
       const balanceA = a.accountBalance || 0;
       const balanceB = b.accountBalance || 0;
@@ -81,9 +105,7 @@ const VerTutores = () => {
         case "name_desc":
           return (b.name || "").localeCompare(a.name || "");
         case "newest":
-          return (
-            (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0)
-          );
+          return (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0);
         case "debt_asc":
           return balanceA - balanceB;
         case "debt_desc":
@@ -93,8 +115,18 @@ const VerTutores = () => {
       }
     });
 
-    setFilteredTutores(filtered);
+    return filtered;
   }, [filters, tutores]);
+
+  // Memoized current page items
+  const { currentItems, totalPages } = useMemo(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const items = filteredTutores.slice(indexOfFirstItem, indexOfLastItem);
+    const pages = Math.ceil(filteredTutores.length / itemsPerPage);
+    
+    return { currentItems: items, totalPages: pages };
+  }, [filteredTutores, currentPage, itemsPerPage]);
 
   const handleDelete = async (tutorId, tutorName) => {
     const result = await Swal.fire({
@@ -105,28 +137,34 @@ const VerTutores = () => {
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
     });
+    
     if (result.isConfirmed) {
       try {
         await deleteDoc(doc(db, "tutores", tutorId));
+        
+        // Invalidate cache and refresh
+        tutoresCache = null;
+        cacheTimestamp = null;
+        
         Swal.fire("Eliminado", `${tutorName} ha sido eliminado.`, "success");
-        fetchTutores();
-      } catch {
+        fetchTutores(true);
+      } catch (error) {
+        console.error("Error deleting tutor:", error);
         Swal.fire("Error", `No se pudo eliminar a ${tutorName}.`, "error");
       }
     }
   };
 
-  const handleFilterChange = (e) => {
+  const handleFilterChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
     setFilters((prev) => ({ ...prev, [name]: newValue }));
     setCurrentPage(1);
-  };
+  }, []);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredTutores.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredTutores.length / itemsPerPage);
+  const handleCardClick = useCallback((tutorId) => {
+    navigate(`/admin/tutor-profile/${tutorId}`);
+  }, [navigate]);
 
   return (
     <div className="tutor-list">
@@ -192,82 +230,12 @@ const VerTutores = () => {
         <>
           <div className="tutor-list__grid">
             {currentItems.map((tutor) => (
-              <div
+              <TutorCard
                 key={tutor.id}
-                className="tutor-list__card"
-                onClick={() => navigate(`/admin/tutor-profile/${tutor.id}`)}
-              >
-                <div className="tutor-list__card-header">
-                  <div className="tutor-list__avatar">
-                    <FaUserLarge />
-                  </div>
-                  <div className="tutor-list__info">
-                    <p className="tutor-list__name">
-                      <Link
-                        className="tutor-list__link"
-                        to={`/admin/tutor-profile/${tutor.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {tutor.name}
-                      </Link>
-                    </p>
-                    <p className="tutor-list__contact">
-                      {tutor.phone || tutor.email || "Sin contacto"}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="tutor-list__card-body">
-                  <div className="tutor-list__chip">
-                    <FaDog />
-                    <span>{tutor.pacientesIds?.length || 0} Pacientes</span>
-                  </div>
-                  <div
-                    className={`tutor-list__chip tutor-list__chip--balance ${
-                      tutor.accountBalance < 0 ? "tutor-list__chip--deudor" : ""
-                    }`}
-                  >
-                    <span>${tutor.accountBalance?.toFixed?.(2) || "0.00"}</span>
-                  </div>
-                  {tutor.serviceTypes && tutor.serviceTypes.length > 0 && (
-                    <div className="tutor-list__service-chips">
-                      {tutor.serviceTypes.includes("clinical") && (
-                        <div className="tutor-list__service-chip tutor-list__service-chip--clinical">
-                          <FaStethoscope />
-                          <span>Clínica</span>
-                        </div>
-                      )}
-                      {tutor.serviceTypes.includes("grooming") && (
-                        <div className="tutor-list__service-chip tutor-list__service-chip--grooming">
-                          <PiBathtub />
-                          <span>Peluquería</span>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <div className="tutor-list__card-actions">
-                  <Link
-                    to={`/admin/edit-tutor/${tutor.id}`}
-                    className="tutor-list__btn tutor-list__btn--edit"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <CiEdit />
-                  </Link>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(tutor.id, tutor.name);
-                    }}
-                    className="tutor-list__btn tutor-list__btn--delete"
-                  >
-                    <MdDeleteOutline />
-                  </button>
-                </div>
-              </div>
+                tutor={tutor}
+                onCardClick={handleCardClick}
+                onDelete={handleDelete}
+              />
             ))}
           </div>
 
@@ -285,9 +253,7 @@ const VerTutores = () => {
               </span>
               <button
                 className="tutor-list__btn"
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(totalPages, p + 1))
-                }
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
               >
                 Siguiente
@@ -299,5 +265,91 @@ const VerTutores = () => {
     </div>
   );
 };
+
+// Memoized card component to prevent unnecessary re-renders
+const TutorCard = React.memo(({ tutor, onCardClick, onDelete }) => {
+  const handleClick = useCallback(() => {
+    onCardClick(tutor.id);
+  }, [tutor.id, onCardClick]);
+
+  const handleDeleteClick = useCallback((e) => {
+    e.stopPropagation();
+    onDelete(tutor.id, tutor.name);
+  }, [tutor.id, tutor.name, onDelete]);
+
+  return (
+    <div className="tutor-list__card" onClick={handleClick}>
+      <div className="tutor-list__card-header">
+        <div className="tutor-list__avatar">
+          <FaUserLarge />
+        </div>
+        <div className="tutor-list__info">
+          <p className="tutor-list__name">
+            <Link
+              className="tutor-list__link"
+              to={`/admin/tutor-profile/${tutor.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {tutor.name}
+            </Link>
+          </p>
+          <p className="tutor-list__contact">
+            {tutor.phone || tutor.email || "Sin contacto"}
+          </p>
+        </div>
+      </div>
+
+      <div className="tutor-list__card-body">
+        <div className="tutor-list__chip">
+          <FaDog />
+          <span>{tutor.pacientesIds?.length || 0} Pacientes</span>
+        </div>
+        <div
+          className={`tutor-list__chip tutor-list__chip--balance ${
+            tutor.accountBalance < 0 ? "tutor-list__chip--deudor" : ""
+          }`}
+        >
+          <span>${tutor.accountBalance?.toFixed?.(2) || "0.00"}</span>
+        </div>
+        {tutor.serviceTypes && tutor.serviceTypes.length > 0 && (
+          <div className="tutor-list__service-chips">
+            {tutor.serviceTypes.includes("clinical") && (
+              <div className="tutor-list__service-chip tutor-list__service-chip--clinical">
+                <FaStethoscope />
+                <span>Clínica</span>
+              </div>
+            )}
+            {tutor.serviceTypes.includes("grooming") && (
+              <div className="tutor-list__service-chip tutor-list__service-chip--grooming">
+                <PiBathtub />
+                <span>Peluquería</span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="tutor-list__card-actions">
+        <Link
+          to={`/admin/edit-tutor/${tutor.id}`}
+          className="tutor-list__btn tutor-list__btn--edit"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <CiEdit />
+        </Link>
+        <button
+          onClick={handleDeleteClick}
+          className="tutor-list__btn tutor-list__btn--delete"
+        >
+          <MdDeleteOutline />
+        </button>
+      </div>
+    </div>
+  );
+});
+
+TutorCard.displayName = 'TutorCard';
 
 export default VerTutores;

@@ -5,6 +5,13 @@ import Swal from 'sweetalert2';
 import SeleccionarPrecioModal from './SeleccionarPrecioModal';
 import { Timestamp } from 'firebase/firestore';
 
+// Cache for products data
+let productsCache = null;
+let categoriesCache = null;
+let serviceCategoriesCache = null;
+let cacheTimestamp = null;
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes (products change less frequently)
+
 const DosageModal = ({ isOpen, onClose, onConfirm, item }) => {
     const [amount, setAmount] = useState('');
     if (!isOpen) return null;
@@ -57,8 +64,26 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
     const [itemToEditPrice, setItemToEditPrice] = useState(null);
 
-    // Fetch data - keep original field names
-    const fetchData = useCallback(async () => {
+    // Check if cache is valid
+    const isCacheValid = useCallback(() => {
+        return productsCache && 
+               categoriesCache && 
+               serviceCategoriesCache && 
+               cacheTimestamp && 
+               (Date.now() - cacheTimestamp < CACHE_DURATION);
+    }, []);
+
+    // Optimized fetch with caching
+    const fetchData = useCallback(async (forceRefresh = false) => {
+        // Use cache if valid and not forcing refresh
+        if (!forceRefresh && isCacheValid()) {
+            setAllProducts(productsCache);
+            setCategories(categoriesCache);
+            setServiceCategories(serviceCategoriesCache);
+            setIsLoading(false);
+            return;
+        }
+
         setIsLoading(true);
         try {
             const [onlineSnap, presentialSnap, catSnap, serviceCatSnap] = await Promise.all([ 
@@ -72,11 +97,11 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             const onlineData = onlineSnap.docs.map(doc => {
                 const data = doc.data();
                 return {
-                    ...data, // Keep all original fields
+                    ...data,
                     id: doc.id,
                     source: 'online',
-                    displayName: data.nombre || data.name, // For display only
-                    displayPrice: data.precio || data.price, // For display only
+                    displayName: data.nombre || data.name,
+                    displayPrice: data.precio || data.price,
                     displayCategory: data.categoryAdress || data.categoria,
                 };
             });
@@ -85,7 +110,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             const presentialData = presentialSnap.docs.map(doc => {
                 const data = doc.data();
                 return {
-                    ...data, // Keep all original fields
+                    ...data,
                     id: doc.id,
                     source: 'presential',
                     displayName: data.name || data.nombre,
@@ -94,23 +119,32 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 };
             });
             
-            // Combine both into single list
+            // Combine and cache
             const combined = [...onlineData, ...presentialData];
+            const cats = catSnap.docs.map(doc => doc.data());
+            const serviceCats = serviceCatSnap.docs.map(doc => doc.data());
             
-            setAllProducts(combined); 
-            setCategories(catSnap.docs.map(doc => doc.data())); 
-            setServiceCategories(serviceCatSnap.docs.map(doc => doc.data()));
-        } catch (error) { 
+            productsCache = combined;
+            categoriesCache = cats;
+            serviceCategoriesCache = serviceCats;
+            cacheTimestamp = Date.now();
+            
+            setAllProducts(combined);
+            setCategories(cats);
+            setServiceCategories(serviceCats);
+        } catch (error) {
             console.error('Error fetching products:', error);
             Swal.fire('Error', 'No se pudieron cargar los productos.', 'error'); 
         } finally { 
             setIsLoading(false); 
         }
-    }, []);
+    }, [isCacheValid]);
 
-    useEffect(() => { fetchData(); }, [fetchData]);
+    useEffect(() => { 
+        fetchData(); 
+    }, [fetchData]);
 
-    const handleFilterChange = (e) => {
+    const handleFilterChange = useCallback((e) => {
         const { name, value } = e.target;
         setFilters(prev => { 
             const newFilters = { ...prev, [name]: value }; 
@@ -119,8 +153,9 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             } 
             return newFilters; 
         });
-    };
+    }, []);
 
+    // Memoized filtered and sorted products
     const filteredAndSortedData = useMemo(() => {
         let tempItems = [...allProducts]; 
         const lowerText = filters.text.toLowerCase();
@@ -134,7 +169,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             ); 
         }
         
-        // Type filter (producto/servicio)
+        // Type filter
         if (filters.tipo !== 'todos') {
             tempItems = tempItems.filter(p => p.tipo === filters.tipo); 
         }
@@ -166,6 +201,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         return tempItems;
     }, [filters, sort, allProducts]);
 
+    // Memoized cart summary
     const cartSummary = useMemo(() => {
         const subtotal = cart.reduce((sum, item) => sum + item.priceBeforeDiscount, 0);
         const totalDiscount = cart.reduce((sum, item) => sum + item.discountAmount, 0);
@@ -173,22 +209,35 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         return { subtotal, totalDiscount, total };
     }, [cart]);
 
-    const handleAddToCart = (item) => {
-        // NO stock check for presential sales - can sell anything
-        
+    const handleAddToCart = useCallback((item) => {
         if (item.isDoseable) { 
             setItemToDose(item); 
             setIsDosageModalOpen(true);
         } else { 
             const existingItem = cart.find(cartItem => cartItem.id === item.id); 
             if (existingItem) { 
-                changeQuantity(item.id, existingItem.quantity + 1); 
+                setCart(prevCart => prevCart.map(cartItem => {
+                    if (cartItem.id !== item.id) return cartItem;
+                    const newQuantity = cartItem.quantity + 1;
+                    const newPriceBeforeDiscount = cartItem.originalPrice * newQuantity;
+                    let newDiscountAmount = 0;
+                    if (cartItem.discountType === 'percentage') {
+                        newDiscountAmount = newPriceBeforeDiscount * (cartItem.discountValue / 100);
+                    } else if (cartItem.discountType === 'fixed') {
+                        newDiscountAmount = cartItem.discountValue;
+                    }
+                    return {
+                        ...cartItem,
+                        quantity: newQuantity,
+                        priceBeforeDiscount: newPriceBeforeDiscount,
+                        discountAmount: newDiscountAmount,
+                        price: newPriceBeforeDiscount - newDiscountAmount
+                    };
+                }));
             } else {
-                // Use displayPrice for the price, keep original object structure
                 const itemPrice = item.displayPrice || 0;
-                
                 setCart(prevCart => [...prevCart, { 
-                    ...item, // Keep ALL original fields
+                    ...item,
                     quantity: 1, 
                     originalPrice: itemPrice,
                     priceBeforeDiscount: itemPrice,
@@ -199,12 +248,12 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 }]); 
             } 
         }
-    };
+    }, [cart]);
 
-    const handleConfirmDose = (dose) => {
+    const handleConfirmDose = useCallback((dose) => {
         const finalPrice = dose * itemToDose.pricePerML;
         setCart(prev => [...prev, { 
-            ...itemToDose, // Keep ALL original fields
+            ...itemToDose,
             quantity: dose,
             unit: 'ml', 
             id: `${itemToDose.id}-${Date.now()}`,
@@ -217,11 +266,11 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         }]);
         setIsDosageModalOpen(false); 
         setItemToDose(null);
-    };
+    }, [itemToDose]);
     
-    const changeQuantity = (itemId, newQuantity) => {
+    const changeQuantity = useCallback((itemId, newQuantity) => {
         if (newQuantity < 1) { 
-            removeFromCart(itemId);
+            setCart(prevCart => prevCart.filter(item => item.id !== itemId));
         } else { 
             setCart(prevCart => prevCart.map(item => {
                 if (item.id !== itemId) return item;
@@ -246,16 +295,18 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 };
             })); 
         }
-    };
+    }, []);
 
-    const removeFromCart = (itemId) => setCart(prevCart => prevCart.filter(item => item.id !== itemId));
+    const removeFromCart = useCallback((itemId) => {
+        setCart(prevCart => prevCart.filter(item => item.id !== itemId));
+    }, []);
     
-    const handleOpenPriceModal = (item) => {
+    const handleOpenPriceModal = useCallback((item) => {
         setItemToEditPrice(item);
         setIsPriceModalOpen(true);
-    };
+    }, []);
 
-    const recalculatePrice = (item, newUnitBasePrice) => {
+    const recalculatePrice = useCallback((item, newUnitBasePrice) => {
         const priceBeforeDiscount = newUnitBasePrice * item.quantity;
         let discountAmount = 0;
 
@@ -274,9 +325,9 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             discountAmount,
             price
         };
-    };
+    }, []);
 
-    const handleUpdateCartPrice = (itemId, newUnitPrice) => {
+    const handleUpdateCartPrice = useCallback((itemId, newUnitPrice) => {
         setCart(prevCart => prevCart.map(item => {
             if (item.id === itemId) {
                 const priceField = item.isDoseable ? 'pricePerML' : 'originalPrice';
@@ -284,9 +335,9 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             }
             return item;
         }));
-    };
+    }, [recalculatePrice]);
 
-    const handleUpdateProductPrice = (itemId, newUnitPrice) => {
+    const handleUpdateProductPrice = useCallback((itemId, newUnitPrice) => {
         setCart(prevCart => prevCart.map(item => {
             if (item.id === itemId) {
                 const priceField = item.isDoseable ? 'pricePerML' : 'originalPrice';
@@ -300,7 +351,6 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 if (p.isDoseable) {
                     return { ...p, pricePerML: newUnitPrice, displayPrice: newUnitPrice };
                 } else {
-                    // Update both original field names and display
                     const updated = { ...p, displayPrice: newUnitPrice };
                     if (p.source === 'online') {
                         updated.precio = newUnitPrice;
@@ -312,9 +362,29 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             }
             return p;
         }));
-    };
+        
+        // Update cache
+        if (productsCache) {
+            productsCache = productsCache.map(p => {
+                if (p.id === itemId) {
+                    if (p.isDoseable) {
+                        return { ...p, pricePerML: newUnitPrice, displayPrice: newUnitPrice };
+                    } else {
+                        const updated = { ...p, displayPrice: newUnitPrice };
+                        if (p.source === 'online') {
+                            updated.precio = newUnitPrice;
+                        } else {
+                            updated.price = newUnitPrice;
+                        }
+                        return updated;
+                    }
+                }
+                return p;
+            });
+        }
+    }, [recalculatePrice]);
 
-    const handleApplyDiscount = (itemId, discountType, discountValue) => {
+    const handleApplyDiscount = useCallback((itemId, discountType, discountValue) => {
         setCart(prevCart => prevCart.map(item => {
             if (item.id !== itemId) return item;
 
@@ -337,16 +407,16 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 price: newFinalPrice
             };
         }));
-    };
+    }, []);
 
-    const formatDateForInput = (date) => {
+    const formatDateForInput = useCallback((date) => {
         const d = new Date(date);
         const offset = d.getTimezoneOffset();
         const adjustedDate = new Date(d.getTime() - (offset*60*1000));
         return adjustedDate.toISOString().split('T')[0];
-    };
+    }, []);
 
-    const handleChangeSaleDate = () => {
+    const handleChangeSaleDate = useCallback(() => {
         const currentDate = saleData.saleTimestamp.toDate();
         
         Swal.fire({
@@ -382,7 +452,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 );
             }
         });
-    };
+    }, [saleData.saleTimestamp, formatDateForInput, onSaleDateChange]);
     
     // Icons
     const CheckIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>;
@@ -458,62 +528,14 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                         {isLoading ? (
                             <p>Cargando productos...</p>
                         ) : (
-                            filteredAndSortedData.map(item => { 
-                                const isInCart = !item.isDoseable && cart.some(cartItem => cartItem.id === item.id); 
-                                const stockValue = item.stock || 0;
-                                
-                                return (
-                                    <div 
-                                        key={item.id} 
-                                        className={`producto-list-item ${isInCart ? 'in-cart' : ''}`}
-                                    >
-                                        <div className="item-details">
-                                            <span className="item-name">
-                                                {item.displayName}
-                                                {item.isDoseable && (
-                                                    <span className="doseable-badge">
-                                                        <SyringeIcon /> ML
-                                                    </span>
-                                                )}
-                                            </span>
-                                            <div className="item-meta">
-                                                <span className="item-category">
-                                                    {item.displayCategory || ''}
-                                                </span>
-                                                {/* Source badge */}
-                                                <span className={`source-badge ${item.source}`}>
-                                                    {item.source === 'online' ? 'Online' : 'Presencial'}
-                                                </span>
-                                                {/* Type badge */}
-                                                {item.tipo && (
-                                                    <span className={`type-badge ${item.tipo}`}>
-                                                        {item.tipo === 'servicio' ? 'Servicio' : 'Producto'}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="item-actions">
-                                            {/* Show stock info but don't prevent sale */}
-                                            <span className={`item-stock ${stockValue <= 5 && stockValue > 0 ? 'low-stock' : ''} ${stockValue === 0 ? 'no-stock-indicator' : ''}`}>
-                                                {stockValue === 0 ? '0 u.' : `${stockValue} u.`}
-                                            </span>
-                                            <span className="item-price">
-                                                {item.isDoseable 
-                                                    ? `$${(item.pricePerML || 0).toFixed(2)}/ml` 
-                                                    : `$${(item.displayPrice || 0).toFixed(2)}`
-                                                }
-                                            </span>
-                                            <button 
-                                                className="add-item-btn" 
-                                                onClick={() => handleAddToCart(item)} 
-                                                disabled={isInCart}
-                                            >
-                                                {isInCart ? <CheckIcon/> : '+'}
-                                            </button>
-                                        </div>
-                                    </div>
-                                );
-                            })
+                            filteredAndSortedData.map(item => (
+                                <ProductListItem
+                                    key={item.id}
+                                    item={item}
+                                    isInCart={!item.isDoseable && cart.some(cartItem => cartItem.id === item.id)}
+                                    onAddToCart={handleAddToCart}
+                                />
+                            ))
                         )}
                     </div>
                 </div>
@@ -529,42 +551,13 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                         ) : (
                             <div className="cart-items-list">
                                 {cart.map(item => (
-                                    <div key={item.id} className="cart-item-card">
-                                        <div className="card-item-info">
-                                            <span className="card-item-name">{item.displayName}</span>
-                                            <span className="card-item-price-unit">
-                                                {item.isDoseable 
-                                                    ? `${item.quantity} ml @ $${(item.originalPrice || item.pricePerML).toFixed(2)}/ml`
-                                                    : `${item.quantity} u. @ $${item.originalPrice.toFixed(2)}/u.`
-                                                }
-                                            </span>
-                                        </div>
-                                        {item.discountAmount > 0 && (
-                                            <div className="card-item-discount-info">
-                                                <span>Precio original: ${item.priceBeforeDiscount.toFixed(2)}</span>
-                                                <span>Descuento: -${item.discountAmount.toFixed(2)}</span>
-                                            </div>
-                                        )}
-                                        <div className="card-item-controls">
-                                            {!item.isDoseable && (
-                                                <div className="quantity-stepper">
-                                                    <button onClick={() => changeQuantity(item.id, item.quantity - 1)}>-</button>
-                                                    <span>{item.quantity}</span>
-                                                    <button onClick={() => changeQuantity(item.id, item.quantity + 1)}>+</button>
-                                                </div>
-                                            )}
-                                            <span 
-                                                className={`card-item-subtotal clickable-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}
-                                                onClick={() => handleOpenPriceModal(item)}
-                                                title="Click para modificar precio/descuento"
-                                            >
-                                                ${(item.price).toFixed(2)}
-                                            </span>
-                                            <button className="remove-item-btn" onClick={() => removeFromCart(item.id)}>
-                                                <TrashIcon/>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <CartItem
+                                        key={item.id}
+                                        item={item}
+                                        onChangeQuantity={changeQuantity}
+                                        onOpenPriceModal={handleOpenPriceModal}
+                                        onRemove={removeFromCart}
+                                    />
                                 ))}
                             </div>
                         )}
@@ -610,5 +603,126 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         </div>
     );
 };
+
+// Memoized product list item
+const ProductListItem = React.memo(({ item, isInCart, onAddToCart }) => {
+    const handleClick = useCallback(() => {
+        onAddToCart(item);
+    }, [item, onAddToCart]);
+
+    const stockValue = item.stock || 0;
+    const CheckIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>;
+    const SyringeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="14" height="14" fill="currentColor"><path d="M495.9 166.1l-11.4-11.4c-12.5-12.5-32.8-12.5-45.3 0l-71.1 71.1-128-128c-12.5-12.5-32.8-12.5-45.3 0l-11.4 11.4c-12.5 12.5-12.5 32.8 0 45.3l128 128-71.1 71.1c-12.5 12.5-12.5 32.8 0 45.3l11.4 11.4c12.5 12.5 32.8 12.5 45.3 0l71.1-71.1 128 128c12.5 12.5 32.8 12.5 45.3 0l11.4-11.4c12.5-12.5 12.5-32.8 0-45.3l-128-128 71.1-71.1c12.5-12.5 12.5-32.8 0-45.3zM224 288L96 160l-45.3 45.3L160 313.8 224 288zm96 96l-33.8 33.8L416 544l45.3-45.3L320 384z"/></svg>;
+
+    return (
+        <div className={`producto-list-item ${isInCart ? 'in-cart' : ''}`}>
+            <div className="item-details">
+                <span className="item-name">
+                    {item.displayName}
+                    {item.isDoseable && (
+                        <span className="doseable-badge">
+                            <SyringeIcon /> ML
+                        </span>
+                    )}
+                </span>
+                <div className="item-meta">
+                    <span className="item-category">
+                        {item.displayCategory || ''}
+                    </span>
+                    <span className={`source-badge ${item.source}`}>
+                        {item.source === 'online' ? 'Online' : 'Presencial'}
+                    </span>
+                    {item.tipo && (
+                        <span className={`type-badge ${item.tipo}`}>
+                            {item.tipo === 'servicio' ? 'Servicio' : 'Producto'}
+                        </span>
+                    )}
+                </div>
+            </div>
+            <div className="item-actions">
+                <span className={`item-stock ${stockValue <= 5 && stockValue > 0 ? 'low-stock' : ''} ${stockValue === 0 ? 'no-stock-indicator' : ''}`}>
+                    {stockValue === 0 ? '0 u.' : `${stockValue} u.`}
+                </span>
+                <span className="item-price">
+                    {item.isDoseable 
+                        ? `$${(item.pricePerML || 0).toFixed(2)}/ml` 
+                        : `$${(item.displayPrice || 0).toFixed(2)}`
+                    }
+                </span>
+                <button 
+                    className="add-item-btn" 
+                    onClick={handleClick} 
+                    disabled={isInCart}
+                >
+                    {isInCart ? <CheckIcon/> : '+'}
+                </button>
+            </div>
+        </div>
+    );
+});
+
+ProductListItem.displayName = 'ProductListItem';
+
+// Memoized cart item
+const CartItem = React.memo(({ item, onChangeQuantity, onOpenPriceModal, onRemove }) => {
+    const handleDecrease = useCallback(() => {
+        onChangeQuantity(item.id, item.quantity - 1);
+    }, [item.id, item.quantity, onChangeQuantity]);
+
+    const handleIncrease = useCallback(() => {
+        onChangeQuantity(item.id, item.quantity + 1);
+    }, [item.id, item.quantity, onChangeQuantity]);
+
+    const handlePriceClick = useCallback(() => {
+        onOpenPriceModal(item);
+    }, [item, onOpenPriceModal]);
+
+    const handleRemove = useCallback(() => {
+        onRemove(item.id);
+    }, [item.id, onRemove]);
+
+    const TrashIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>;
+
+    return (
+        <div className="cart-item-card">
+            <div className="card-item-info">
+                <span className="card-item-name">{item.displayName}</span>
+                <span className="card-item-price-unit">
+                    {item.isDoseable 
+                        ? `${item.quantity} ml @ $${(item.originalPrice || item.pricePerML).toFixed(2)}/ml`
+                        : `${item.quantity} u. @ $${item.originalPrice.toFixed(2)}/u.`
+                    }
+                </span>
+            </div>
+            {item.discountAmount > 0 && (
+                <div className="card-item-discount-info">
+                    <span>Precio original: ${item.priceBeforeDiscount.toFixed(2)}</span>
+                    <span>Descuento: -${item.discountAmount.toFixed(2)}</span>
+                </div>
+            )}
+            <div className="card-item-controls">
+                {!item.isDoseable && (
+                    <div className="quantity-stepper">
+                        <button onClick={handleDecrease}>-</button>
+                        <span>{item.quantity}</span>
+                        <button onClick={handleIncrease}>+</button>
+                    </div>
+                )}
+                <span 
+                    className={`card-item-subtotal clickable-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}
+                    onClick={handlePriceClick}
+                    title="Click para modificar precio/descuento"
+                >
+                    ${(item.price).toFixed(2)}
+                </span>
+                <button className="remove-item-btn" onClick={handleRemove}>
+                    <TrashIcon/>
+                </button>
+            </div>
+        </div>
+    );
+});
+
+CartItem.displayName = 'CartItem';
 
 export default SeleccionarProducto;
