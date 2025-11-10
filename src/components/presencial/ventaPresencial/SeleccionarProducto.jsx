@@ -21,7 +21,7 @@ const DosageModal = ({ isOpen, onClose, onConfirm, item }) => {
     return (
         <div className="dosage-modal-overlay">
             <div className="dosage-modal-content">
-                <h3>Dosificar: {item.name}</h3>
+                <h3>Dosificar: {item.displayName}</h3>
                 <p>Ingrese la cantidad en mililitros (ml) a vender.</p>
                 <div className="dosage-input-group">
                     <input type="number" value={amount} onChange={e => setAmount(e.target.value)} placeholder="Ej: 0.4" autoFocus/>
@@ -41,16 +41,14 @@ const DosageModal = ({ isOpen, onClose, onConfirm, item }) => {
 };
 
 const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleData, onSaleDateChange }) => {
-    const [onlineProducts, setOnlineProducts] = useState([]);
-    const [presentialProducts, setPresentialProducts] = useState([]);
+    const [allProducts, setAllProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [serviceCategories, setServiceCategories] = useState([]);
     
-    const [viewMode, setViewMode] = useState('presential');
     const [isLoading, setIsLoading] = useState(true);
     const [cart, setCart] = useState(initialCart || []);
     
-    const [filters, setFilters] = useState({ text: '', category: 'todas', status: 'true', tipo: 'todos' });
+    const [filters, setFilters] = useState({ text: '', category: 'todas', tipo: 'todos' });
     const [sort, setSort] = useState('name-asc');
     
     const [isDosageModalOpen, setIsDosageModalOpen] = useState(false);
@@ -59,6 +57,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
     const [itemToEditPrice, setItemToEditPrice] = useState(null);
 
+    // Fetch data - keep original field names
     const fetchData = useCallback(async () => {
         setIsLoading(true);
         try {
@@ -68,25 +67,41 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 getDocs(collection(db, 'categories')), 
                 getDocs(collection(db, 'services_categories')) 
             ]);
-            const onlineData = onlineSnap.docs.map(doc => ({ 
-                ...doc.data(), 
-                id: doc.id, 
-                name: doc.data().nombre, 
-                price: doc.data().precio, 
-                source: 'online' 
-            }));
-            const presentialData = presentialSnap.docs.map(doc => ({ 
-                ...doc.data(), 
-                id: doc.id, 
-                name: doc.data().name, 
-                price: doc.data().price, 
-                source: 'presential' 
-            }));
-            setOnlineProducts(onlineData); 
-            setPresentialProducts(presentialData); 
+            
+            // Online products - keep original structure, add display fields
+            const onlineData = onlineSnap.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    ...data, // Keep all original fields
+                    id: doc.id,
+                    source: 'online',
+                    displayName: data.nombre || data.name, // For display only
+                    displayPrice: data.precio || data.price, // For display only
+                    displayCategory: data.categoryAdress || data.categoria,
+                };
+            });
+            
+            // Presential products - keep original structure, add display fields
+            const presentialData = presentialSnap.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    ...data, // Keep all original fields
+                    id: doc.id,
+                    source: 'presential',
+                    displayName: data.name || data.nombre,
+                    displayPrice: data.price || data.precio,
+                    displayCategory: data.category || data.categoria,
+                };
+            });
+            
+            // Combine both into single list
+            const combined = [...onlineData, ...presentialData];
+            
+            setAllProducts(combined); 
             setCategories(catSnap.docs.map(doc => doc.data())); 
             setServiceCategories(serviceCatSnap.docs.map(doc => doc.data()));
         } catch (error) { 
+            console.error('Error fetching products:', error);
             Swal.fire('Error', 'No se pudieron cargar los productos.', 'error'); 
         } finally { 
             setIsLoading(false); 
@@ -106,38 +121,39 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         });
     };
 
-    const handleViewChange = (mode) => { 
-        setViewMode(mode); 
-        setFilters({ text: '', category: 'todas', status: 'true', tipo: 'todos' }); 
-    };
-
     const filteredAndSortedData = useMemo(() => {
-        const sourceData = viewMode === 'online' ? onlineProducts : presentialProducts;
-        let tempItems = [...sourceData]; 
+        let tempItems = [...allProducts]; 
         const lowerText = filters.text.toLowerCase();
         
+        // Text search
         if (filters.text) { 
             tempItems = tempItems.filter(p => 
-                (p.name && p.name.toLowerCase().includes(lowerText)) || 
-                (p.categoryAdress && p.categoryAdress.toLowerCase().includes(lowerText)) || 
-                (p.categoria && p.categoria.toLowerCase().includes(lowerText)) || 
+                (p.displayName && p.displayName.toLowerCase().includes(lowerText)) || 
+                (p.displayCategory && p.displayCategory.toLowerCase().includes(lowerText)) || 
                 (p.subcategoria && p.subcategoria.toLowerCase().includes(lowerText))
             ); 
         }
         
-        if (viewMode === 'online') { 
-            if (filters.status) tempItems = tempItems.filter(p => p.activo === (filters.status === 'true')); 
-            if (filters.category !== 'todas') tempItems = tempItems.filter(p => p.categoryAdress === filters.category);
-        } else { 
-            if (filters.tipo !== 'todos') tempItems = tempItems.filter(p => p.tipo === filters.tipo); 
-            if (filters.category !== 'todas') tempItems = tempItems.filter(p => p.category === filters.category); 
+        // Type filter (producto/servicio)
+        if (filters.tipo !== 'todos') {
+            tempItems = tempItems.filter(p => p.tipo === filters.tipo); 
         }
         
+        // Category filter
+        if (filters.category !== 'todas') {
+            tempItems = tempItems.filter(p => 
+                p.categoryAdress === filters.category || 
+                p.category === filters.category ||
+                p.displayCategory === filters.category
+            ); 
+        }
+        
+        // Sort
         tempItems.sort((a, b) => { 
-            const nameA = a.name || ''; 
-            const nameB = b.name || ''; 
-            const priceA = a.price || 0; 
-            const priceB = b.price || 0; 
+            const nameA = a.displayName || ''; 
+            const nameB = b.displayName || ''; 
+            const priceA = a.displayPrice || 0; 
+            const priceB = b.displayPrice || 0; 
             switch (sort) { 
                 case 'name-asc': return nameA.localeCompare(nameB); 
                 case 'name-desc': return nameB.localeCompare(nameA); 
@@ -148,7 +164,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         });
         
         return tempItems;
-    }, [filters, sort, viewMode, onlineProducts, presentialProducts]);
+    }, [filters, sort, allProducts]);
 
     const cartSummary = useMemo(() => {
         const subtotal = cart.reduce((sum, item) => sum + item.priceBeforeDiscount, 0);
@@ -158,10 +174,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     }, [cart]);
 
     const handleAddToCart = (item) => {
-        if (item.source === 'online' && (item.stock === undefined || item.stock <= 0)) {
-            Swal.fire('Sin Stock', 'Este producto no se encuentra disponible.', 'warning');
-            return;
-        }
+        // NO stock check for presential sales - can sell anything
         
         if (item.isDoseable) { 
             setItemToDose(item); 
@@ -170,13 +183,16 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             const existingItem = cart.find(cartItem => cartItem.id === item.id); 
             if (existingItem) { 
                 changeQuantity(item.id, existingItem.quantity + 1); 
-            } else { 
+            } else {
+                // Use displayPrice for the price, keep original object structure
+                const itemPrice = item.displayPrice || 0;
+                
                 setCart(prevCart => [...prevCart, { 
-                    ...item, 
+                    ...item, // Keep ALL original fields
                     quantity: 1, 
-                    originalPrice: item.price,
-                    priceBeforeDiscount: item.price,
-                    price: item.price,
+                    originalPrice: itemPrice,
+                    priceBeforeDiscount: itemPrice,
+                    price: itemPrice,
                     discountType: null,
                     discountValue: 0,
                     discountAmount: 0,
@@ -188,7 +204,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     const handleConfirmDose = (dose) => {
         const finalPrice = dose * itemToDose.pricePerML;
         setCart(prev => [...prev, { 
-            ...itemToDose, 
+            ...itemToDose, // Keep ALL original fields
             quantity: dose,
             unit: 'ml', 
             id: `${itemToDose.id}-${Date.now()}`,
@@ -204,16 +220,6 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
     };
     
     const changeQuantity = (itemId, newQuantity) => {
-        const itemInCart = cart.find(item => item.id === itemId);
-        if (!itemInCart) return;
-
-        const originalItem = onlineProducts.find(p => p.id === itemId) || presentialProducts.find(p => p.id === itemId);
-        
-        if (originalItem && originalItem.source === 'online' && newQuantity > originalItem.stock) {
-            Swal.fire('Stock Insuficiente', `Solo quedan ${originalItem.stock} unidades de este producto.`, 'warning');
-            return;
-        }
-
         if (newQuantity < 1) { 
             removeFromCart(itemId);
         } else { 
@@ -289,20 +295,23 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             return item;
         }));
 
-        const updateProductList = (products) => 
-            products.map(p => {
-                if (p.id === itemId) {
-                    if (p.isDoseable) {
-                        return { ...p, pricePerML: newUnitPrice };
+        setAllProducts(prev => prev.map(p => {
+            if (p.id === itemId) {
+                if (p.isDoseable) {
+                    return { ...p, pricePerML: newUnitPrice, displayPrice: newUnitPrice };
+                } else {
+                    // Update both original field names and display
+                    const updated = { ...p, displayPrice: newUnitPrice };
+                    if (p.source === 'online') {
+                        updated.precio = newUnitPrice;
                     } else {
-                        return { ...p, price: newUnitPrice, precio: newUnitPrice };
+                        updated.price = newUnitPrice;
                     }
+                    return updated;
                 }
-                return p;
-            });
-
-        setOnlineProducts(prev => updateProductList(prev));
-        setPresentialProducts(prev => updateProductList(prev));
+            }
+            return p;
+        }));
     };
 
     const handleApplyDiscount = (itemId, discountType, discountValue) => {
@@ -348,19 +357,20 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             confirmButtonText: 'Confirmar',
             cancelButtonText: 'Cancelar',
             preConfirm: () => {
-                const dateValue = document.getElementById('swal-sale-date').value;
-                if (!dateValue) {
+                const dateInput = document.getElementById('swal-sale-date');
+                if (!dateInput || !dateInput.value) {
                     Swal.showValidationMessage('Por favor seleccione una fecha');
                     return false;
                 }
-                return dateValue;
+                return dateInput.value;
             }
         }).then((result) => {
-            if (result.isConfirmed) {
-                const dateString = result.value;
-                const newDate = new Date(dateString);
-                const offset = newDate.getTimezoneOffset() * 60000;
-                const adjustedDate = new Date(newDate.getTime() + offset);
+            if (result.isConfirmed && result.value) {
+                const selectedDate = new Date(result.value);
+                const now = new Date();
+                selectedDate.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
+                
+                const adjustedDate = new Date(selectedDate.getTime() + selectedDate.getTimezoneOffset() * 60000);
                 
                 const newTimestamp = Timestamp.fromDate(adjustedDate);
                 onSaleDateChange(newTimestamp);
@@ -374,6 +384,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         });
     };
     
+    // Icons
     const CheckIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>;
     const CartIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>;
     const TrashIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>;
@@ -399,37 +410,43 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
             <div className="seleccionar-producto-layout">
                 <div className="producto-browser-panel">
                     <div className="browser-controls">
-                        <div className="venta-view-switcher">
-                            <button onClick={() => handleViewChange('presential')} className={viewMode === 'presential' ? 'active' : ''}>Items Presenciales</button>
-                            <button onClick={() => handleViewChange('online')} className={viewMode === 'online' ? 'active' : ''}>Productos Online</button>
-                        </div>
                         <div className="venta-filters">
-                            <input className="filter-input" type="text" name="text" placeholder="Buscar..." value={filters.text} onChange={handleFilterChange} />
-                            {viewMode === 'presential' ? (
-                                <>
-                                    <select className="filter-select" name="tipo" value={filters.tipo} onChange={handleFilterChange}>
-                                        <option value="todos">Todos</option>
-                                        <option value="producto">Producto</option>
-                                        <option value="servicio">Servicio</option>
-                                    </select>
-                                    <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange} disabled={filters.tipo === 'todos'}>
-                                        <option value="todas">Categorías</option>
-                                        {(filters.tipo === 'servicio' ? serviceCategories : categories).map(c => <option key={c.adress} value={c.adress}>{c.nombre}</option>)}
-                                    </select>
-                                </>
-                            ) : (
-                                <>
-                                    <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}>
-                                        <option value="todas">Categorías Online</option>
-                                        {categories.map(c => <option key={c.adress} value={c.adress}>{c.nombre}</option>)}
-                                    </select>
-                                    <select className="filter-select" name="status" value={filters.status} onChange={handleFilterChange}>
-                                        <option value="true">Activos</option>
-                                        <option value="false">Inactivos</option>
-                                    </select>
-                                </>
-                            )}
-                            <select className="filter-select" name="sort" value={sort} onChange={(e) => setSort(e.target.value)}>
+                            <input 
+                                className="filter-input" 
+                                type="text" 
+                                name="text" 
+                                placeholder="Buscar..." 
+                                value={filters.text} 
+                                onChange={handleFilterChange} 
+                            />
+                            <select 
+                                className="filter-select" 
+                                name="tipo" 
+                                value={filters.tipo} 
+                                onChange={handleFilterChange}
+                            >
+                                <option value="todos">Todos los Tipos</option>
+                                <option value="producto">Productos</option>
+                                <option value="servicio">Servicios</option>
+                            </select>
+                            <select 
+                                className="filter-select" 
+                                name="category" 
+                                value={filters.category} 
+                                onChange={handleFilterChange} 
+                                disabled={filters.tipo === 'todos'}
+                            >
+                                <option value="todas">Todas las Categorías</option>
+                                {(filters.tipo === 'servicio' ? serviceCategories : categories).map(c => (
+                                    <option key={c.adress} value={c.adress}>{c.nombre}</option>
+                                ))}
+                            </select>
+                            <select 
+                                className="filter-select" 
+                                name="sort" 
+                                value={sort} 
+                                onChange={(e) => setSort(e.target.value)}
+                            >
                                 <option value="name-asc">A-Z</option>
                                 <option value="name-desc">Z-A</option>
                                 <option value="price-asc">Menor Precio</option>
@@ -438,38 +455,66 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                         </div>
                     </div>
                     <div className="producto-list">
-                        {isLoading ? <p>Cargando...</p> : filteredAndSortedData.map(item => { 
-                            const isInCart = !item.isDoseable && cart.some(cartItem => cartItem.id === item.id); 
-                            const isOutOfStock = item.source === 'online' && (item.stock === undefined || item.stock <= 0); 
-                            return (
-                                <div key={item.id} className={`producto-list-item ${isInCart ? 'in-cart' : ''} ${isOutOfStock ? 'out-of-stock' : ''}`}>
-                                    <div className="item-details">
-                                        <span className="item-name">
-                                            {item.name} 
-                                            {item.isDoseable && <span className="doseable-badge"><SyringeIcon /> ML</span>}
-                                        </span>
-                                        <span className="item-category">{item.categoria || item.category || ''}</span>
-                                    </div>
-                                    <div className="item-actions">
-                                        {item.source === 'online' && (
-                                            <span className={`item-stock ${item.stock <= 5 ? 'low-stock' : ''}`}>
-                                                {isOutOfStock ? 'Sin Stock' : `${item.stock} u.`}
+                        {isLoading ? (
+                            <p>Cargando productos...</p>
+                        ) : (
+                            filteredAndSortedData.map(item => { 
+                                const isInCart = !item.isDoseable && cart.some(cartItem => cartItem.id === item.id); 
+                                const stockValue = item.stock || 0;
+                                
+                                return (
+                                    <div 
+                                        key={item.id} 
+                                        className={`producto-list-item ${isInCart ? 'in-cart' : ''}`}
+                                    >
+                                        <div className="item-details">
+                                            <span className="item-name">
+                                                {item.displayName}
+                                                {item.isDoseable && (
+                                                    <span className="doseable-badge">
+                                                        <SyringeIcon /> ML
+                                                    </span>
+                                                )}
                                             </span>
-                                        )}
-                                        <span className="item-price">
-                                            {item.isDoseable ? `$${(item.pricePerML || 0).toFixed(2)}/ml` : `$${(item.price || 0).toFixed(2)}`}
-                                        </span>
-                                        <button 
-                                            className="add-item-btn" 
-                                            onClick={() => handleAddToCart(item)} 
-                                            disabled={isInCart || isOutOfStock}
-                                        >
-                                            {isInCart ? <CheckIcon/> : '+'}
-                                        </button>
+                                            <div className="item-meta">
+                                                <span className="item-category">
+                                                    {item.displayCategory || ''}
+                                                </span>
+                                                {/* Source badge */}
+                                                <span className={`source-badge ${item.source}`}>
+                                                    {item.source === 'online' ? 'Online' : 'Presencial'}
+                                                </span>
+                                                {/* Type badge */}
+                                                {item.tipo && (
+                                                    <span className={`type-badge ${item.tipo}`}>
+                                                        {item.tipo === 'servicio' ? 'Servicio' : 'Producto'}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="item-actions">
+                                            {/* Show stock info but don't prevent sale */}
+                                            <span className={`item-stock ${stockValue <= 5 && stockValue > 0 ? 'low-stock' : ''} ${stockValue === 0 ? 'no-stock-indicator' : ''}`}>
+                                                {stockValue === 0 ? '0 u.' : `${stockValue} u.`}
+                                            </span>
+                                            <span className="item-price">
+                                                {item.isDoseable 
+                                                    ? `$${(item.pricePerML || 0).toFixed(2)}/ml` 
+                                                    : `$${(item.displayPrice || 0).toFixed(2)}`
+                                                }
+                                            </span>
+                                            <button 
+                                                className="add-item-btn" 
+                                                onClick={() => handleAddToCart(item)} 
+                                                disabled={isInCart}
+                                            >
+                                                {isInCart ? <CheckIcon/> : '+'}
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })
+                        )}
                     </div>
                 </div>
                 <div className="smart-cart-panel">
@@ -486,7 +531,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                                 {cart.map(item => (
                                     <div key={item.id} className="cart-item-card">
                                         <div className="card-item-info">
-                                            <span className="card-item-name">{item.name}</span>
+                                            <span className="card-item-name">{item.displayName}</span>
                                             <span className="card-item-price-unit">
                                                 {item.isDoseable 
                                                     ? `${item.quantity} ml @ $${(item.originalPrice || item.pricePerML).toFixed(2)}/ml`

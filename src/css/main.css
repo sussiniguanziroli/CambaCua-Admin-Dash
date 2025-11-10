@@ -4117,6 +4117,60 @@ button.btn-reset:hover {
   border-radius: 8px;
   font-weight: 600;
 }
+.seleccionar-producto-container .item-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+.seleccionar-producto-container .source-badge,
+.seleccionar-producto-container .type-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.seleccionar-producto-container .source-badge.online {
+  background-color: rgb(229.6861924686, 212.9790794979, 236.5209205021);
+  color: rgb(127.949790795, 67.1966527197, 152.8033472803);
+  border: 1px solid rgb(208.3472803347, 177.5564853556, 220.9435146444);
+}
+.seleccionar-producto-container .source-badge.presential {
+  background-color: rgb(251.6024096386, 226.9698795181, 187.8975903614);
+  color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
+  border: 1px solid rgb(249.1445783133, 206.6927710843, 139.3554216867);
+}
+.seleccionar-producto-container .type-badge.producto {
+  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  color: #2980b9;
+  border: 1px solid rgb(173.290376569, 213.5414225941, 240.509623431);
+}
+.seleccionar-producto-container .type-badge.servicio {
+  background-color: rgb(209.304, 244.696, 224.312);
+  color: rgb(41.308, 183.192, 101.474);
+  border: 1px solid rgb(167.688, 235.312, 196.364);
+}
+.seleccionar-producto-container .item-stock {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  background-color: rgb(200.9808, 242.8192, 218.7224);
+  color: rgb(41.308, 183.192, 101.474);
+}
+.seleccionar-producto-container .item-stock.low-stock {
+  background-color: rgb(251.6024096386, 226.9698795181, 187.8975903614);
+  color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
+}
+.seleccionar-producto-container .item-stock.no-stock-indicator {
+  background-color: rgb(232.1692307692, 235.6153846154, 235.8307692308);
+  color: #7f8c8d;
+}
 .seleccionar-producto-container .smart-cart-panel {
   padding: 1.5rem;
 }
