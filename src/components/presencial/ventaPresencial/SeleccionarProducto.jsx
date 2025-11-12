@@ -238,6 +238,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                 const itemPrice = item.displayPrice || 0;
                 setCart(prevCart => [...prevCart, { 
                     ...item,
+                    name: item.displayName,  // ✅ CRITICAL FIX: Add name field
                     quantity: 1, 
                     originalPrice: itemPrice,
                     priceBeforeDiscount: itemPrice,
@@ -254,6 +255,7 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         const finalPrice = dose * itemToDose.pricePerML;
         setCart(prev => [...prev, { 
             ...itemToDose,
+            name: itemToDose.displayName,  // ✅ CRITICAL FIX: Add name field
             quantity: dose,
             unit: 'ml', 
             id: `${itemToDose.id}-${Date.now()}`,

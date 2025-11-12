@@ -8,7 +8,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { db } from '../../firebase/config';
 import { doc, writeBatch, increment, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
-import { FaFileInvoiceDollar, FaHandHoldingUsd, FaPencilAlt, FaTrash, FaSave, FaExclamationTriangle, FaMoneyBillWave } from 'react-icons/fa';
+import { FaFileInvoiceDollar, FaHandHoldingUsd, FaPencilAlt, FaTrash, FaSave, FaExclamationTriangle, FaMoneyBillWave, FaTh, FaList } from 'react-icons/fa';
 
 const cancelSale = async (sale) => {
     if (sale.type !== 'Venta Presencial' && sale.type !== 'Pedido Online') {
@@ -69,6 +69,7 @@ const CajaDiaria = () => {
     const [popupData, setPopupData] = useState(null);
     const [isVentasGuardadasOpen, setIsVentasGuardadasOpen] = useState(false);
     const [saleToPayDebt, setSaleToPayDebt] = useState(null);
+    const [viewMode, setViewMode] = useState('grid');
     const navigate = useNavigate();
 
     // Helper function for currency formatting
@@ -383,7 +384,8 @@ const CajaDiaria = () => {
                     </div>
                 </div>
             </div>
-             <div className="caja-filters">
+
+            <div className="caja-filters">
                 <select value={filterType} onChange={e => setFilterType(e.target.value)}>
                     {uniqueTypes.map(type => <option key={type} value={type}>{type}</option>)}
                 </select>
@@ -396,6 +398,13 @@ const CajaDiaria = () => {
                     <option value="partial">Pago Parcial</option>
                     <option value="unpaid">Sin Pagar</option>
                 </select>
+                <button 
+                    className="btn-view-toggle"
+                    onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                    title={viewMode === 'grid' ? 'Vista de Lista' : 'Vista de Cajas'}
+                >
+                    {viewMode === 'grid' ? <FaList /> : <FaTh />}
+                </button>
             </div>
 
             <div className="caja-summary-main">
@@ -459,7 +468,7 @@ const CajaDiaria = () => {
                 <h3>Transacciones del Día ({filteredTransactions.length})</h3>
                 {isLoading ? <p>Cargando...</p> : (
                     filteredTransactions.length > 0 ? (
-                        <div className="caja-grid">
+                        <div className={viewMode === 'grid' ? 'caja-grid' : 'caja-list'}>
                             {filteredTransactions.map(trans => {
                                 const paymentStatus = getPaymentStatus(trans);
                                 const hasDebt = (trans.debt || 0) > 0;
@@ -481,7 +490,7 @@ const CajaDiaria = () => {
                                             <p className="customer">
                                                 {trans.tutorInfo?.id ? (
                                                     <Link 
-                                                    className='link-class'
+                                                        className='link-class'
                                                         to={`/admin/tutor-profile/${trans.tutorInfo.id}`} 
                                                         target="_blank" 
                                                         rel="noopener noreferrer" 
@@ -498,7 +507,7 @@ const CajaDiaria = () => {
                                                 {trans.patientInfo?.id && (
                                                     <>
                                                         <Link 
-                                                        className='link-class'
+                                                            className='link-class'
                                                             to={`/admin/paciente-profile/${trans.patientInfo.id}`} 
                                                             target="_blank" 
                                                             rel="noopener noreferrer" 

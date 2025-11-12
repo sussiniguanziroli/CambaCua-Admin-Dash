@@ -92,7 +92,7 @@
 .product-form-container h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: rgb(46.475, 136.6083333333, 207.025);
+  color: #2e89cf;
   font-weight: 600;
 }
 .product-form-container .product-form {
@@ -224,7 +224,7 @@
   gap: 0.5rem;
 }
 .product-form-container .product-form .btn-submit:hover {
-  background-color: rgb(46.475, 136.6083333333, 207.025);
+  background-color: #2e89cf;
 }
 .product-form-container .product-form .btn-submit:disabled {
   background-color: #e0e0e0;
@@ -275,7 +275,7 @@ button:hover {
 .loading-container .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgb(253.775, 254.3083333333, 254.725);
+  border: 3px solid #fefeff;
   border-top-color: #6CACDE;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -376,7 +376,7 @@ button:hover {
   background-color: #2980b9;
 }
 .login-form .login-button:disabled {
-  background-color: rgb(116.9769874477, 184.9686192469, 230.5230125523);
+  background-color: #75b9e7;
   cursor: not-allowed;
 }
 .login-form .error-message {
@@ -473,7 +473,7 @@ button:hover {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease;
-  background-color: rgb(38.5709677419, 54.35, 70.1290322581);
+  background-color: #273646;
 }
 .dashboard-container .sidebar .menu-category .submenu a {
   display: flex;
@@ -498,7 +498,7 @@ button:hover {
   color: #fff;
 }
 .dashboard-container .sidebar .menu-category .submenu a.disabled-link {
-  color: rgb(104.6774193548, 138.5, 172.3225806452);
+  color: #698bac;
   cursor: not-allowed;
 }
 .dashboard-container .sidebar .menu-category .submenu a.disabled-link:hover {
@@ -635,7 +635,7 @@ button:hover {
 }
 .product-item h3 {
   margin: 0 0 0.8rem 0;
-  color: rgb(35.5272277228, 126.0643564356, 195.9727722772);
+  color: #247ec4;
   font-size: 1.15rem;
   font-weight: 600;
   white-space: nowrap;
@@ -670,7 +670,7 @@ button:hover {
   margin: 0.3rem 0;
   font-size: 0.88rem;
   line-height: 1.4;
-  color: rgb(89.25, 89.25, 89.25);
+  color: #595959;
 }
 .product-item p strong {
   color: #333;
@@ -728,14 +728,14 @@ button:hover {
   color: white;
 }
 .btn-toggle.btn-activate:hover {
-  background-color: rgb(69.3913043478, 182.6086956522, 75.4782608696);
+  background-color: #45b74b;
 }
 .btn-toggle.btn-deactivate {
   background-color: #f5ad41;
   color: white;
 }
 .btn-toggle.btn-deactivate:hover {
-  background-color: rgb(242.45, 152.09, 16.55);
+  background-color: #f29811;
 }
 
 .btn-delete {
@@ -743,7 +743,7 @@ button:hover {
   color: white;
 }
 .btn-delete:hover {
-  background-color: rgb(224.4893617021, 46.5106382979, 46.5106382979);
+  background-color: #e02f2f;
 }
 
 .btn-edit {
@@ -751,7 +751,7 @@ button:hover {
   color: white;
 }
 .btn-edit:hover {
-  background-color: rgb(127.1732673267, 186.2277227723, 231.8267326733);
+  background-color: #7fbae8;
   color: white;
 }
 
@@ -836,7 +836,7 @@ button:hover {
 .product-form-container h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: rgb(46.475, 136.6083333333, 207.025);
+  color: #2e89cf;
   font-weight: 600;
 }
 .product-form-container .product-form {
@@ -958,7 +958,7 @@ button:hover {
   gap: 0.5rem;
 }
 .product-form-container .product-form .btn-submit:hover {
-  background-color: rgb(46.475, 136.6083333333, 207.025);
+  background-color: #2e89cf;
 }
 .product-form-container .product-form .btn-submit:disabled {
   background-color: #e0e0e0;
@@ -1106,7 +1106,7 @@ button[type=submit]:focus {
   }
 }
 .btn-clear-filters:hover {
-  background-color: rgb(203.6, 203.6, 203.6);
+  background-color: #cccccc;
   color: #333;
 }
 
@@ -1117,7 +1117,7 @@ button[type=submit]:focus {
 }
 .pedidos-container h2 {
   font-size: 2.2em;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   margin-bottom: 1.8rem;
   font-weight: 600;
   position: relative;
@@ -1158,7 +1158,7 @@ button[type=submit]:focus {
 }
 .pedido-box h3 {
   margin-top: 0;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   font-size: 1.4rem;
   border-bottom: 1px solid #eee;
   padding-bottom: 0.8rem;
@@ -1258,7 +1258,7 @@ button[type=submit]:focus {
 }
 .productos-list h4 {
   font-size: 1.1rem;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   margin-bottom: 0.8rem;
 }
 .productos-list li {
@@ -1267,7 +1267,7 @@ button[type=submit]:focus {
   background-color: #f8f9fa;
   border-radius: 0.5rem;
   font-size: 0.92rem;
-  border-left: 3px solid rgb(95.3179916318, 173.9790794979, 226.6820083682);
+  border-left: 3px solid #5faee3;
 }
 .productos-list li .product-main-info {
   display: flex;
@@ -1276,7 +1276,7 @@ button[type=submit]:focus {
   margin-bottom: 0.3rem;
 }
 .productos-list li strong {
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   font-weight: 600;
 }
 .productos-list li .promo-badge-admin {
@@ -1330,7 +1330,7 @@ button {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 button:hover {
-  background-color: rgb(95.3179916318, 173.9790794979, 226.6820083682);
+  background-color: #5faee3;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -1344,25 +1344,25 @@ button.btn-pendiente {
   background-color: #8e44ad;
 }
 button.btn-pendiente:hover {
-  background-color: rgb(117.9601659751, 56.487966805, 143.712033195);
+  background-color: #763890;
 }
 button.btn-cancelar {
   background-color: #e74c3c;
 }
 button.btn-cancelar:hover {
-  background-color: rgb(222.7808219178, 45.698630137, 27.4191780822);
+  background-color: #df2e1b;
 }
 button.btn-pagado {
   background-color: #f39c12;
 }
 button.btn-pagado:hover {
-  background-color: rgb(209.5879518072, 132.6506024096, 10.6120481928);
+  background-color: #d2850b;
 }
 button.btn-completar {
   background-color: #2ecc71;
 }
 button.btn-completar:hover {
-  background-color: rgb(38.4928, 170.7072, 94.5584);
+  background-color: #26ab5f;
 }
 
 .no-orders {
@@ -1496,7 +1496,7 @@ button.btn-completar:hover {
   transition: all 0.2s ease-in-out;
 }
 .filtros-container .btn-reset:hover {
-  background-color: rgb(84.3605150215, 91.3905579399, 97.6394849785);
+  background-color: #545b62;
   transform: translateY(-1px);
 }
 @media (max-width: 768px) {
@@ -1554,7 +1554,7 @@ button.btn-completar:hover {
 }
 .pedidos-container h2 {
   font-size: 2.2em;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   margin-bottom: 1.8rem;
   font-weight: 600;
   position: relative;
@@ -1598,7 +1598,7 @@ button.btn-completar:hover {
 }
 .pedido-box h3 {
   margin-top: 0;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   font-size: 1.4rem;
   border-bottom: 1px solid #eee;
   padding-bottom: 0.8rem;
@@ -1683,7 +1683,7 @@ button.btn-completar:hover {
 }
 .productos-list h4 {
   font-size: 1.1rem;
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   margin-bottom: 0.8rem;
   font-weight: 600;
 }
@@ -1693,7 +1693,7 @@ button.btn-completar:hover {
   background-color: #f8f9fa;
   border-radius: 0.5rem;
   font-size: 0.92rem;
-  border-left: 3px solid rgb(95.3179916318, 173.9790794979, 226.6820083682);
+  border-left: 3px solid #5faee3;
 }
 .productos-list li .product-main-info {
   display: flex;
@@ -1702,7 +1702,7 @@ button.btn-completar:hover {
   margin-bottom: 0.3rem;
 }
 .productos-list li strong {
-  color: rgb(29.2970711297, 110.6778242678, 165.2029288703);
+  color: #1d6fa5;
   font-weight: 600;
 }
 .productos-list li .promo-badge-admin {
@@ -1800,7 +1800,7 @@ button.btn-reset {
   font-size: 0.95rem;
 }
 button.btn-reset:hover {
-  background-color: rgb(107.0280991736, 119.2330578512, 120.1719008264);
+  background-color: #6b7778;
 }
 
 .no-orders {
@@ -2014,7 +2014,7 @@ button.btn-reset:hover {
 .admin-modal .admin-modal-carousel-column .admin-carousel .flickity-prev-next-button:hover {
   background: #fff;
   transform: scale(1.08);
-  color: rgb(46.475, 136.6083333333, 207.025);
+  color: #2e89cf;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .admin-modal .admin-modal-carousel-column .admin-carousel .flickity-prev-next-button:active {
@@ -2086,7 +2086,7 @@ button.btn-reset:hover {
 .admin-modal .admin-modal-info-column .admin-modal-header h2 {
   font-size: 1.6rem;
   font-weight: 600;
-  color: rgb(46.475, 136.6083333333, 207.025);
+  color: #2e89cf;
   line-height: 1.3;
   margin: 0;
   flex-grow: 1;
@@ -2208,7 +2208,7 @@ button.btn-reset:hover {
   min-height: 150px;
 }
 .loader-container h3 {
-  color: rgb(149.65, 195.5166666667, 231.35);
+  color: #96c4e7;
 }
 
 .user-list-container {
@@ -2260,7 +2260,7 @@ button.btn-reset:hover {
   transition: all 0.3s ease;
 }
 .user-sort-select:hover {
-  border-color: rgb(192.9827586207, 200.5, 208.0172413793);
+  border-color: #c1c9d0;
 }
 .user-sort-select:focus {
   outline: none;
@@ -2501,14 +2501,14 @@ button.btn-reset:hover {
   color: #fff;
 }
 .user-modal-content .role-actions .role-change-btn.assign:hover {
-  background-color: rgb(7.6407185629, 37.5089820359, 108.3592814371);
+  background-color: #08266c;
 }
 .user-modal-content .role-actions .role-change-btn.revoke {
   background-color: #dc3545;
   color: #fff;
 }
 .user-modal-content .role-actions .role-change-btn.revoke:hover {
-  background-color: rgb(189.2151898734, 32.7848101266, 47.7721518987);
+  background-color: #bd2130;
 }
 .user-modal-content .points-input-group {
   display: flex;
@@ -2746,13 +2746,13 @@ button.btn-reset:hover {
   background-color: #27ae60;
 }
 .promo-panel .promo-controls button.btn-apply:hover {
-  background-color: rgb(29.661971831, 132.338028169, 73.014084507);
+  background-color: #1e8449;
 }
 .promo-panel .promo-controls button.btn-remove {
   background-color: #e74c3c;
 }
 .promo-panel .promo-controls button.btn-remove:hover {
-  background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
+  background-color: #d62c1a;
 }
 .promo-panel .promo-controls button:disabled {
   background-color: #95a5a6;
@@ -2831,7 +2831,7 @@ button.btn-reset:hover {
   }
 }
 .btn-clear-filters:hover {
-  background-color: rgb(203.6, 203.6, 203.6);
+  background-color: #cccccc;
   color: #333;
 }
 
@@ -2847,7 +2847,7 @@ button.btn-reset:hover {
   cursor: pointer;
 }
 .product-list-header button:hover {
-  background-color: rgb(46.475, 136.6083333333, 207.025);
+  background-color: #2e89cf;
 }
 
 .product-list-promo {
@@ -2871,7 +2871,7 @@ button.btn-reset:hover {
   box-shadow: 0 4px 12px rgba(108, 172, 222, 0.2);
 }
 .product-list-promo .product-item-promo:hover {
-  border-color: rgb(191.3, 219.0333333333, 240.7);
+  border-color: #bfdbf1;
 }
 .product-list-promo .product-item-promo input[type=checkbox] {
   margin-right: 1rem;
@@ -2903,8 +2903,8 @@ button.btn-reset:hover {
   width: fit-content;
 }
 .product-list-promo .product-item-promo .product-info .promo-badge {
-  background-color: rgb(217.2692307692, 238.2307692308, 218.1675824176);
-  color: rgb(61.6923076923, 138.8076923077, 64.9972527473);
+  background-color: #d9eeda;
+  color: #3e8b41;
 }
 .product-list-promo .product-item-promo .product-info .no-promo-badge {
   background-color: #f8f9fa;
@@ -2952,7 +2952,7 @@ button.btn-reset:hover {
   border-color: #0b369c;
 }
 .coupon-admin-container .view-switcher button:hover:not(.active) {
-  background-color: rgb(233.125, 236.25, 239.375);
+  background-color: #e9ecef;
 }
 .coupon-admin-container .coupon-form {
   display: flex;
@@ -3070,7 +3070,7 @@ button.btn-reset:hover {
   gap: 0.5rem;
 }
 .coupon-admin-container .generated-coupons-display button:hover {
-  background-color: rgb(30.1449275362, 125.8550724638, 52);
+  background-color: #1e7e34;
 }
 .coupon-admin-container table {
   width: 100%;
@@ -3111,7 +3111,7 @@ button.btn-reset:hover {
 }
 .coupon-admin-container table .details-btn:hover {
   background-color: #dee2e6;
-  border-color: rgb(192.9827586207, 200.5, 208.0172413793);
+  border-color: #c1c9d0;
 }
 .coupon-admin-container table .toggle-btn {
   background: none;
@@ -3143,21 +3143,21 @@ button.btn-reset:hover {
   text-transform: uppercase;
 }
 .coupon-admin-container table .status-badge.active {
-  background-color: rgb(154.5579710145, 230.9420289855, 172);
-  color: rgb(25.2173913043, 105.2826086957, 43.5);
+  background-color: #9be7ac;
+  color: #19692c;
 }
 .coupon-admin-container table .status-badge.inactive {
   background-color: #f8f9fa;
   color: #6c757d;
 }
 .coupon-admin-container table .status-badge.expired {
-  background-color: rgb(255, 23, 65.1818181818);
-  color: rgb(48.5, 0, 8.8181818182);
+  background-color: #ff1741;
+  color: #310009;
 }
 .coupon-admin-container .batch-details-row td {
   padding: 0;
   background-color: #f9fafb;
-  border-bottom: 1px solid rgb(192.9827586207, 200.5, 208.0172413793);
+  border-bottom: 1px solid #c1c9d0;
 }
 .coupon-admin-container .batch-details-content {
   padding: 1.5rem;
@@ -3237,12 +3237,12 @@ button.btn-reset:hover {
   border-radius: 12px;
 }
 .coupon-admin-container .batch-details-content .coupon-codes-section .coupon-code-item .coupon-status-badge.available {
-  background-color: rgb(255, 244.8876404494, 230);
-  color: rgb(204.5, 121.7808988764, 0);
+  background-color: #fff5e6;
+  color: #cd7a00;
 }
 .coupon-admin-container .batch-details-content .coupon-codes-section .coupon-code-item .coupon-status-badge.claimed {
-  background-color: rgb(154.5579710145, 230.9420289855, 172);
-  color: rgb(25.2173913043, 105.2826086957, 43.5);
+  background-color: #9be7ac;
+  color: #19692c;
 }
 .coupon-admin-container .batch-details-content .coupon-codes-section .coupon-code-item .copy-code-btn {
   background: none;
@@ -3296,21 +3296,21 @@ button.btn-reset:hover {
   color: #34495e;
 }
 .item-list .item-list__btn--secondary:hover {
-  background-color: rgb(198.5, 198.5, 198.5);
+  background-color: #c7c7c7;
 }
 .item-list .item-list__btn--success {
   background-color: #2ecc71;
   color: #ffffff;
 }
 .item-list .item-list__btn--success:hover {
-  background-color: rgb(36.616, 162.384, 89.948);
+  background-color: #25a25a;
 }
 .item-list .item-list__btn--danger {
   background-color: #e74c3c;
   color: #ffffff;
 }
 .item-list .item-list__btn--danger:hover {
-  background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
+  background-color: #d62c1a;
 }
 .item-list .item-list__btn--edit {
   background-color: #f39c12;
@@ -3319,7 +3319,7 @@ button.btn-reset:hover {
   font-size: 1rem;
 }
 .item-list .item-list__btn--edit:hover {
-  background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
+  background-color: #c87f0a;
 }
 .item-list .item-list__btn--delete {
   background-color: #e74c3c;
@@ -3328,7 +3328,7 @@ button.btn-reset:hover {
   font-size: 1rem;
 }
 .item-list .item-list__btn--delete:hover {
-  background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
+  background-color: #d62c1a;
 }
 .item-list .item-list__btn:disabled {
   opacity: 0.6;
@@ -3390,7 +3390,7 @@ button.btn-reset:hover {
   margin-bottom: 2rem;
   border: 1px solid #3498db;
   border-radius: 8px;
-  background-color: rgb(225.2719665272, 239.9163179916, 249.7280334728);
+  background-color: #e1f0fa;
 }
 .item-list__bulk-actions h4 {
   margin-top: 0;
@@ -3456,7 +3456,7 @@ button.btn-reset:hover {
   padding: 1rem 1.5rem;
 }
 .item-card--selected {
-  background-color: rgb(233.9355648536, 244.3121338912, 251.2644351464);
+  background-color: #eaf4fb;
   border-color: #3498db;
 }
 .item-card__header {
@@ -3480,12 +3480,12 @@ button.btn-reset:hover {
   gap: 0.4rem;
 }
 .item-card__badge--producto {
-  background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  background-color: #cce5f6;
   color: #2980b9;
 }
 .item-card__badge--servicio {
-  background-color: rgb(188.496, 240.004, 210.338);
-  color: rgb(31.924, 141.576, 78.422);
+  background-color: #bcf0d2;
+  color: #208e4e;
 }
 .item-card__title {
   margin: 0;
@@ -3573,7 +3573,7 @@ button.btn-reset:hover {
   transform: scale(0.98);
 }
 .pagination__button:disabled {
-  background-color: rgb(239.075, 241.35, 243.625);
+  background-color: #eff1f4;
   color: #7f8c8d;
   border-color: #e0e0e0;
   cursor: not-allowed;
@@ -3633,7 +3633,7 @@ button.btn-reset:hover {
 .item-form-container .item-form__group input[type=number]:disabled,
 .item-form-container .item-form__group textarea:disabled,
 .item-form-container .item-form__group select:disabled {
-  background-color: rgb(236.75, 236.75, 236.75);
+  background-color: #ededed;
 }
 .item-form-container .item-form__group textarea {
   min-height: 120px;
@@ -3699,7 +3699,7 @@ button.btn-reset:hover {
   background-color: #2980b9;
 }
 .item-form-container .item-form__submit-btn:disabled {
-  background-color: rgb(198.5, 198.5, 198.5);
+  background-color: #c7c7c7;
   cursor: not-allowed;
 }
 
@@ -3771,7 +3771,7 @@ button.btn-reset:hover {
 }
 .venta-navigator-container .venta-step-indicator .venta-step-indicator-bar {
   height: 100%;
-  background: linear-gradient(90deg, #3498db, rgb(116.9769874477, 184.9686192469, 230.5230125523));
+  background: linear-gradient(90deg, #3498db, #75b9e7);
   border-radius: 4px;
   transition: width 0.4s ease-in-out;
 }
@@ -3839,7 +3839,7 @@ button.btn-reset:hover {
   background-color: #f8f9fa;
 }
 .venta-selection-container .venta-selection-list li.selected {
-  background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  background-color: #cce5f6;
   color: #2980b9;
 }
 .venta-selection-container .venta-context-info {
@@ -4037,7 +4037,7 @@ button.btn-reset:hover {
 .seleccionar-producto-container .venta-filters .filter-select:focus {
   outline: none;
   border-color: #3498db;
-  box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  box-shadow: 0 0 0 3px #cce5f6;
 }
 .seleccionar-producto-container .producto-list {
   flex-grow: 1;
@@ -4056,7 +4056,7 @@ button.btn-reset:hover {
   background-color: #f8f9fa;
 }
 .seleccionar-producto-container .producto-list-item.in-cart {
-  background-color: rgb(230.112, 249.388, 238.286);
+  background-color: #e6f9ee;
 }
 .seleccionar-producto-container .producto-list-item.in-cart .item-name {
   color: #2ecc71;
@@ -4110,7 +4110,7 @@ button.btn-reset:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  background-color: #cce5f6;
   color: #2980b9;
   font-size: 0.7rem;
   padding: 2px 6px;
@@ -4136,39 +4136,39 @@ button.btn-reset:hover {
   letter-spacing: 0.5px;
 }
 .seleccionar-producto-container .source-badge.online {
-  background-color: rgb(229.6861924686, 212.9790794979, 236.5209205021);
-  color: rgb(127.949790795, 67.1966527197, 152.8033472803);
-  border: 1px solid rgb(208.3472803347, 177.5564853556, 220.9435146444);
+  background-color: #e6d5ed;
+  color: #804399;
+  border: 1px solid #d0b2dd;
 }
 .seleccionar-producto-container .source-badge.presential {
-  background-color: rgb(251.6024096386, 226.9698795181, 187.8975903614);
-  color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
-  border: 1px solid rgb(249.1445783133, 206.6927710843, 139.3554216867);
+  background-color: #fce3bc;
+  color: #c87f0a;
+  border: 1px solid #f9cf8b;
 }
 .seleccionar-producto-container .type-badge.producto {
-  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  background-color: #d9ecf8;
   color: #2980b9;
-  border: 1px solid rgb(173.290376569, 213.5414225941, 240.509623431);
+  border: 1px solid #add6f1;
 }
 .seleccionar-producto-container .type-badge.servicio {
-  background-color: rgb(209.304, 244.696, 224.312);
-  color: rgb(41.308, 183.192, 101.474);
-  border: 1px solid rgb(167.688, 235.312, 196.364);
+  background-color: #d1f5e0;
+  color: #29b765;
+  border: 1px solid #a8ebc4;
 }
 .seleccionar-producto-container .item-stock {
   font-size: 0.85rem;
   font-weight: 600;
   padding: 0.25rem 0.6rem;
   border-radius: 4px;
-  background-color: rgb(200.9808, 242.8192, 218.7224);
-  color: rgb(41.308, 183.192, 101.474);
+  background-color: #c9f3db;
+  color: #29b765;
 }
 .seleccionar-producto-container .item-stock.low-stock {
-  background-color: rgb(251.6024096386, 226.9698795181, 187.8975903614);
-  color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
+  background-color: #fce3bc;
+  color: #c87f0a;
 }
 .seleccionar-producto-container .item-stock.no-stock-indicator {
-  background-color: rgb(232.1692307692, 235.6153846154, 235.8307692308);
+  background-color: #e8ecec;
   color: #7f8c8d;
 }
 .seleccionar-producto-container .smart-cart-panel {
@@ -4274,7 +4274,7 @@ button.btn-reset:hover {
   color: #fff;
 }
 .seleccionar-producto-container .cart-item-card .card-item-controls .quantity-stepper button:hover {
-  background-color: rgb(65.4611650485, 76.7475728155, 89.5388349515);
+  background-color: #414d5a;
 }
 .seleccionar-producto-container .cart-item-card .card-item-controls .quantity-stepper span {
   font-weight: 600;
@@ -4296,7 +4296,7 @@ button.btn-reset:hover {
   cursor: pointer;
 }
 .seleccionar-producto-container .cart-item-card .card-item-controls .remove-item-btn:hover {
-  color: rgb(213.698630137, 43.8356164384, 26.301369863);
+  color: #d62c1a;
 }
 .seleccionar-producto-container .cart-summary-footer {
   padding-top: 1.5rem;
@@ -4520,13 +4520,13 @@ button.btn-reset:hover {
   background-color: #95a5a6;
 }
 .programar-vencimientos-container .navigator-buttons button.btn-secondary:hover:not(:disabled), .programar-vencimientos-container .navigator-buttons .recipe-modal button.add-line-btn:hover:not(:disabled), .recipe-modal .programar-vencimientos-container .navigator-buttons button.add-line-btn:hover:not(:disabled) {
-  background-color: rgb(121.2769230769, 141.4615384615, 142.7230769231);
+  background-color: #798d8f;
 }
 .programar-vencimientos-container .navigator-buttons button.btn-confirm {
   background-color: #2ecc71;
 }
 .programar-vencimientos-container .navigator-buttons button.btn-confirm:hover:not(:disabled) {
-  background-color: rgb(36.616, 162.384, 89.948);
+  background-color: #25a25a;
 }
 
 .metodo-pago-container {
@@ -4580,7 +4580,7 @@ button.btn-reset:hover {
 .metodo-pago-container .payment-buttons button:hover {
   border-color: #3498db;
   color: #3498db;
-  background-color: rgb(233.9355648536, 244.3121338912, 251.2644351464);
+  background-color: #eaf4fb;
 }
 .metodo-pago-container .payment-buttons button:disabled {
   opacity: 0.5;
@@ -4619,7 +4619,7 @@ button.btn-reset:hover {
 .metodo-pago-container .payment-input-group input:focus {
   outline: none;
   border-color: #3498db;
-  box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  box-shadow: 0 0 0 3px #cce5f6;
 }
 .metodo-pago-container .payment-input-group .remove-btn {
   background-color: transparent;
@@ -4631,7 +4631,7 @@ button.btn-reset:hover {
   transition: all 0.2s ease;
 }
 .metodo-pago-container .payment-input-group .remove-btn:hover {
-  color: rgb(213.698630137, 43.8356164384, 26.301369863);
+  color: #d62c1a;
 }
 .metodo-pago-container .card-details {
   margin-top: 1rem;
@@ -4667,7 +4667,7 @@ button.btn-reset:hover {
 }
 .metodo-pago-container .card-selector button.active {
   border-color: #2980b9;
-  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  background-color: #d9ecf8;
   color: #2980b9;
   font-weight: 600;
 }
@@ -4729,14 +4729,14 @@ button.btn-reset:hover {
   font-size: 0.9rem;
 }
 .metodo-pago-container .debt-info {
-  background-color: rgb(250.3734939759, 216.8313253012, 163.6265060241);
-  border: 1px solid rgb(247.9156626506, 196.5542168675, 115.0843373494);
-  color: rgb(151.3373493976, 95.7831325301, 7.6626506024);
+  background-color: #fad9a4;
+  border: 1px solid #f8c573;
+  color: #976008;
 }
 .metodo-pago-container .debt-error {
-  background-color: rgb(250.5616438356, 221.897260274, 218.9383561644);
-  border: 1px solid rgb(244.9726027397, 180.2123287671, 173.5273972603);
-  color: rgb(168.2876712329, 34.5205479452, 20.7123287671);
+  background-color: #fbdedb;
+  border: 1px solid #f5b4ae;
+  color: #a82315;
 }
 .metodo-pago-container .navigator-buttons {
   margin-top: 2.5rem;
@@ -4776,14 +4776,14 @@ button.btn-reset:hover {
   color: white;
 }
 .metodo-pago-container .navigator-buttons .btn-secondary:hover:not(:disabled), .metodo-pago-container .navigator-buttons .recipe-modal .add-line-btn:hover:not(:disabled), .recipe-modal .metodo-pago-container .navigator-buttons .add-line-btn:hover:not(:disabled) {
-  background-color: rgb(121.2769230769, 141.4615384615, 142.7230769231);
+  background-color: #798d8f;
 }
 .metodo-pago-container .navigator-buttons .btn-success {
   background-color: #2ecc71;
   color: white;
 }
 .metodo-pago-container .navigator-buttons .btn-success:hover:not(:disabled) {
-  background-color: rgb(36.616, 162.384, 89.948);
+  background-color: #25a25a;
 }
 
 .resumen-venta-container {
@@ -4800,7 +4800,7 @@ button.btn-reset:hover {
   height: 80px;
   line-height: 80px;
   border-radius: 50%;
-  background-color: rgb(188.496, 240.004, 210.338);
+  background-color: #bcf0d2;
   color: #2ecc71;
   font-size: 3rem;
   margin-bottom: 1rem;
@@ -5059,7 +5059,7 @@ button.btn-reset:hover {
   font-size: 1rem;
 }
 .confirmar-venta-container .clinical-history-toggle input[type=checkbox]:checked + label {
-  background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  background-color: #cce5f6;
   border-color: #3498db;
   color: #2980b9;
 }
@@ -5081,13 +5081,13 @@ button.btn-reset:hover {
 .confirmar-venta-container .btn-suministro-toggle:hover {
   border-color: #3498db;
   color: #3498db;
-  background-color: rgb(246.9309623431, 250.9058577406, 253.5690376569);
+  background-color: #f7fbfe;
 }
 .confirmar-venta-container .btn-suministro-toggle.active {
-  background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  background-color: #cce5f6;
   border-color: #3498db;
   color: #2980b9;
-  box-shadow: 0 0 8px rgb(138.6359832636, 195.9581589958, 234.3640167364);
+  box-shadow: 0 0 8px #8bc4ea;
 }
 .confirmar-venta-container .btn-suministro-toggle svg {
   display: block;
@@ -5180,7 +5180,7 @@ button.btn-reset:hover {
   color: white;
 }
 .confirmar-venta-container .navigator-buttons .btn-secondary:hover:not(:disabled), .confirmar-venta-container .navigator-buttons .recipe-modal .add-line-btn:hover:not(:disabled), .recipe-modal .confirmar-venta-container .navigator-buttons .add-line-btn:hover:not(:disabled) {
-  background-color: rgb(121.2769230769, 141.4615384615, 142.7230769231);
+  background-color: #798d8f;
 }
 .confirmar-venta-container .navigator-buttons .btn-confirm {
   background-color: #2ecc71;
@@ -5189,7 +5189,7 @@ button.btn-reset:hover {
   font-size: 1.1rem;
 }
 .confirmar-venta-container .navigator-buttons .btn-confirm:hover:not(:disabled) {
-  background-color: rgb(36.616, 162.384, 89.948);
+  background-color: #25a25a;
 }
 
 .precio-modal-overlay {
@@ -5296,7 +5296,7 @@ button.btn-reset:hover {
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  background-color: rgb(233.9355648536, 244.3121338912, 251.2644351464);
+  background-color: #eaf4fb;
   border-radius: 8px;
   margin-bottom: 1.5rem;
 }
@@ -5372,10 +5372,10 @@ button.btn-reset:hover {
 .precio-input-group .input-wrapper input:focus {
   outline: none;
   border-color: #3498db;
-  box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  box-shadow: 0 0 0 3px #cce5f6;
 }
 .precio-input-group .input-wrapper input::placeholder {
-  color: rgb(180.9504132231, 188.4710743802, 189.0495867769);
+  color: #b5bcbd;
 }
 
 .precio-preview {
@@ -5432,7 +5432,7 @@ button.btn-reset:hover {
   color: white;
 }
 .precio-modal-actions .btn-secondary:hover:not(:disabled), .precio-modal-actions .recipe-modal .add-line-btn:hover:not(:disabled), .recipe-modal .precio-modal-actions .add-line-btn:hover:not(:disabled) {
-  background-color: rgb(126.8215384615, 146.1692307692, 147.3784615385);
+  background-color: #7f9293;
 }
 .precio-modal-actions .btn-outline {
   background-color: white;
@@ -5440,7 +5440,7 @@ button.btn-reset:hover {
   border: 2px solid #3498db;
 }
 .precio-modal-actions .btn-outline:hover:not(:disabled) {
-  background-color: rgb(233.9355648536, 244.3121338912, 251.2644351464);
+  background-color: #eaf4fb;
 }
 .precio-modal-actions .btn-primary, .precio-modal-actions .monitor-vencimientos-container .vencimiento-card .card-footer .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .precio-modal-actions .action-btn {
   background-color: #3498db;
@@ -5451,7 +5451,7 @@ button.btn-reset:hover {
 }
 
 .precio-modal-note {
-  background-color: rgb(246.9309623431, 250.9058577406, 253.5690376569);
+  background-color: #f7fbfe;
   border-left: 4px solid #3498db;
   padding: 1rem;
   border-radius: 4px;
@@ -5472,7 +5472,7 @@ button.btn-reset:hover {
   border-radius: 4px;
 }
 .clickable-price:hover {
-  background-color: rgb(233.9355648536, 244.3121338912, 251.2644351464);
+  background-color: #eaf4fb;
   color: #2980b9;
   transform: scale(1.05);
 }
@@ -5603,7 +5603,7 @@ button.btn-reset:hover {
 .profile-container .profile-header .profile-avatar {
   font-size: 4rem;
   color: #3498db;
-  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  background-color: #d9ecf8;
   border-radius: 50%;
   width: 100px;
   height: 100px;
@@ -5653,18 +5653,18 @@ button.btn-reset:hover {
   font-size: 1rem;
 }
 .profile-container .profile-header .service-chip.clinical {
-  background-color: rgb(200.9808, 242.8192, 218.7224);
-  color: rgb(31.924, 141.576, 78.422);
+  background-color: #c9f3db;
+  color: #208e4e;
 }
 .profile-container .profile-header .service-chip.clinical svg {
-  color: rgb(31.924, 141.576, 78.422);
+  color: #208e4e;
 }
 .profile-container .profile-header .service-chip.grooming {
-  background-color: rgb(229.6861924686, 212.9790794979, 236.5209205021);
-  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
+  background-color: #e6d5ed;
+  color: #713b87;
 }
 .profile-container .profile-header .service-chip.grooming svg {
-  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
+  color: #713b87;
 }
 .profile-container .profile-header .profile-actions {
   display: flex;
@@ -6101,7 +6101,7 @@ button.btn-reset:hover {
 .profile-container .payment-modal .form-group input:focus, .profile-container .payment-modal .form-group select:focus {
   outline: none;
   border-color: #3498db;
-  box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  box-shadow: 0 0 0 3px #cce5f6;
 }
 .profile-container .tutor-profile-tab-content .tutor-account-summary {
   display: flex;
@@ -6251,7 +6251,7 @@ button.btn-reset:hover {
   color: #3c4858;
 }
 .tutor-list .tutor-list__btn--secondary:hover {
-  background-color: rgb(191.7346938776, 203.9795918367, 218.2653061224);
+  background-color: #c0ccda;
 }
 .tutor-list .tutor-list__btn--edit {
   background-color: #f39c12;
@@ -6260,7 +6260,7 @@ button.btn-reset:hover {
   font-size: 1.2rem;
 }
 .tutor-list .tutor-list__btn--edit:hover {
-  background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
+  background-color: #c87f0a;
 }
 .tutor-list .tutor-list__btn--delete {
   background-color: #e74c3c;
@@ -6269,7 +6269,7 @@ button.btn-reset:hover {
   font-size: 1.2rem;
 }
 .tutor-list .tutor-list__btn--delete:hover {
-  background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
+  background-color: #d62c1a;
 }
 .tutor-list .tutor-list__btn:disabled {
   background-color: #f8f9fa;
@@ -6382,7 +6382,7 @@ button.btn-reset:hover {
 .tutor-list .tutor-list__card-header .tutor-list__avatar {
   font-size: 2rem;
   color: #3498db;
-  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  background-color: #d9ecf8;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -6461,7 +6461,7 @@ button.btn-reset:hover {
   color: #2980b9;
 }
 .tutor-list .tutor-list__card-body .tutor-list__chip--deudor {
-  background-color: rgb(247.7671232877, 201.0547945205, 196.2328767123);
+  background-color: #f8c9c4;
   color: #e74c3c;
   font-weight: 600;
 }
@@ -6495,18 +6495,18 @@ button.btn-reset:hover {
   font-size: 1rem;
 }
 .tutor-list .tutor-list__card-body .tutor-list__service-chip--clinical {
-  background-color: rgb(200.9808, 242.8192, 218.7224);
-  color: rgb(31.924, 141.576, 78.422);
+  background-color: #c9f3db;
+  color: #208e4e;
 }
 .tutor-list .tutor-list__card-body .tutor-list__service-chip--clinical svg {
-  color: rgb(31.924, 141.576, 78.422);
+  color: #208e4e;
 }
 .tutor-list .tutor-list__card-body .tutor-list__service-chip--grooming {
-  background-color: rgb(229.6861924686, 212.9790794979, 236.5209205021);
-  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
+  background-color: #e6d5ed;
+  color: #713b87;
 }
 .tutor-list .tutor-list__card-body .tutor-list__service-chip--grooming svg {
-  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
+  color: #713b87;
 }
 .tutor-list .tutor-list__card-actions {
   border-top: 1px solid #e0e6ed;
@@ -6927,7 +6927,7 @@ button.btn-reset:hover {
   gap: 0.65rem;
 }
 .agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card {
-  background: linear-gradient(135deg, rgb(235.5567567568, 245.8086486486, 252.6432432432) 0%, rgb(203.7162162162, 230.7567567568, 248.7837837838) 100%);
+  background: linear-gradient(135deg, #ecf6fd 0%, #cce7f9 100%);
   border-left: 4px solid #5ab1eb;
   border-radius: 10px;
   padding: 0.85rem;
@@ -6939,13 +6939,13 @@ button.btn-reset:hover {
   transform: translateX(4px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   border-left-width: 6px;
-  background: linear-gradient(135deg, rgb(217.3621621622, 237.2075675676, 250.4378378378) 0%, rgb(190.0702702703, 224.3059459459, 247.1297297297) 100%);
+  background: linear-gradient(135deg, #d9edfa 0%, #bee0f7 100%);
 }
 .agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card:active {
   transform: translateX(2px);
 }
 .agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card.day {
-  background: linear-gradient(135deg, rgb(226.4594594595, 241.5081081081, 251.5405405405) 0%, rgb(199.1675675676, 228.6064864865, 248.2324324324) 100%);
+  background: linear-gradient(135deg, #e2f2fc 0%, #c7e5f8 100%);
 }
 .agenda-main-container .agenda-calendar-grid .agenda-day-container .agenda-appointments-container .agenda-appointments-list .agenda-appointment-card .agenda-appointment-header {
   display: flex;
@@ -7245,7 +7245,7 @@ button.btn-reset:hover {
   font-size: 0.9rem;
 }
 .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field.agenda-combobox .agenda-dropdown-list li:hover:not(.no-results) {
-  background: rgb(226.4594594595, 241.5081081081, 251.5405405405);
+  background: #e2f2fc;
   color: #1e5a8a;
 }
 .agenda-main-container .agenda-modal-overlay .agenda-modal-wrapper .agenda-modal-form .agenda-form-section .agenda-form-row .agenda-form-field.agenda-combobox .agenda-dropdown-list li.no-results {
@@ -7715,7 +7715,7 @@ button.btn-reset:hover {
   gap: 0.75rem;
 }
 .peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card {
-  background: linear-gradient(135deg, #ffffff 0%, rgb(250.7317073171, 232.9756097561, 217.2682926829) 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #fbe9d9 100%);
   border-left: 4px solid #e67e22;
   border-radius: 10px;
   padding: 1rem;
@@ -7727,13 +7727,13 @@ button.btn-reset:hover {
   transform: translateX(4px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   border-left-width: 6px;
-  background: linear-gradient(135deg, rgb(251.7682926829, 238.3243902439, 226.4317073171) 0%, rgb(249.6951219512, 227.6268292683, 208.1048780488) 100%);
+  background: linear-gradient(135deg, #fceee2 0%, #fae4d0 100%);
 }
 .peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card:active {
   transform: translateX(2px);
 }
 .peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card.day {
-  background: linear-gradient(135deg, rgb(251.25, 235.65, 221.85) 0%, rgb(250.2134146341, 230.3012195122, 212.6865853659) 100%);
+  background: linear-gradient(135deg, #fbecde 0%, #fae6d5 100%);
 }
 .peluqueria-main-container .peluqueria-calendar-grid .peluqueria-day-container .peluqueria-appointments-container .peluqueria-appointments-list .peluqueria-appointment-card .peluqueria-appointment-header {
   display: flex;
@@ -8021,7 +8021,7 @@ button.btn-reset:hover {
   font-size: 0.95rem;
 }
 .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field.peluqueria-combobox .peluqueria-dropdown-list li:hover:not(.no-results) {
-  background: rgb(250.7317073171, 232.9756097561, 217.2682926829);
+  background: #fbe9d9;
   color: #d35400;
 }
 .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-form-row .peluqueria-form-field.peluqueria-combobox .peluqueria-dropdown-list li.no-results {
@@ -8050,7 +8050,7 @@ button.btn-reset:hover {
 .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-services-grid .peluqueria-service-chip:hover:not(.selected) {
   border-color: #e67e22;
   color: #e67e22;
-  background: rgb(253.3231707317, 246.3475609756, 240.1768292683);
+  background: #fdf6f0;
 }
 .peluqueria-main-container .peluqueria-modal-overlay .peluqueria-modal-wrapper .peluqueria-modal-form .peluqueria-form-section .peluqueria-services-grid .peluqueria-service-chip.selected {
   background: #e67e22;
@@ -8188,7 +8188,7 @@ button.btn-reset:hover {
   border: 1px solid #28a745;
 }
 .btn.btn-success:hover, .monitor-clinica-container .pagination-controls button.btn-success:hover, .recipe-modal .btn-success.add-line-btn:hover, .monitor-vencimientos-container .pagination-controls button.btn-success:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-success.action-btn:hover, .monitor-vencimientos-container .btn-success.view-mode-toggle:hover, .profile-container.paciente-profile .pagination-controls button.btn-success:hover, .profile-container.paciente-profile .btn-success.btn-delete-small:hover, .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .btn-success.btn-delete-note:hover, .profile-container.paciente-profile .btn-success.btn-custom-date:hover, .profile-container.paciente-profile .btn-success.btn-suministrado:hover {
-  background-color: rgb(30.1449275362, 125.8550724638, 52);
+  background-color: #1e7e34;
 }
 .btn.btn-delete, .monitor-clinica-container .pagination-controls button.btn-delete, .recipe-modal .btn-delete.add-line-btn, .monitor-vencimientos-container .pagination-controls button.btn-delete, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn, .monitor-vencimientos-container .btn-delete.view-mode-toggle, .profile-container.paciente-profile .pagination-controls button.btn-delete, .profile-container.paciente-profile .btn-delete.btn-delete-small, .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-delete-note, .profile-container.paciente-profile .btn-delete.btn-custom-date, .profile-container.paciente-profile .btn-delete.btn-suministrado {
   background-color: #dc3545;
@@ -8196,7 +8196,7 @@ button.btn-reset:hover {
   border: 1px solid #dc3545;
 }
 .btn.btn-delete:hover, .monitor-clinica-container .pagination-controls button.btn-delete:hover, .recipe-modal .btn-delete.add-line-btn:hover, .monitor-vencimientos-container .pagination-controls button.btn-delete:hover, .monitor-vencimientos-container .vencimiento-card .card-footer .btn-delete.action-btn:hover, .monitor-vencimientos-container .btn-delete.view-mode-toggle:hover, .profile-container.paciente-profile .pagination-controls button.btn-delete:hover, .profile-container.paciente-profile .btn-delete.btn-delete-small:hover, .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .btn-delete.btn-delete-note:hover, .profile-container.paciente-profile .btn-delete.btn-custom-date:hover, .profile-container.paciente-profile .btn-delete.btn-suministrado:hover {
-  background-color: rgb(189.2151898734, 32.7848101266, 47.7721518987);
+  background-color: #bd2130;
 }
 
 .profile-container.paciente-profile {
@@ -8232,7 +8232,7 @@ button.btn-reset:hover {
 .profile-container.paciente-profile .profile-header .profile-avatar {
   font-size: 3rem;
   color: #3498db;
-  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  background-color: #d9ecf8;
   border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -8296,7 +8296,7 @@ button.btn-reset:hover {
   }
 }
 .profile-container.paciente-profile .fallecido-banner {
-  background-color: rgb(246.3607594937, 205.1392405063, 209.0886075949);
+  background-color: #f6cdd1;
   color: #dc3545;
   padding: 1rem;
   text-align: center;
@@ -8374,18 +8374,18 @@ button.btn-reset:hover {
   }
 }
 .profile-container.paciente-profile .details-bar .service-chip.clinical {
-  background-color: rgb(200.9808, 242.8192, 218.7224);
-  color: rgb(31.924, 141.576, 78.422);
+  background-color: #c9f3db;
+  color: #208e4e;
 }
 .profile-container.paciente-profile .details-bar .service-chip.clinical svg {
-  color: rgb(31.924, 141.576, 78.422);
+  color: #208e4e;
 }
 .profile-container.paciente-profile .details-bar .service-chip.grooming {
-  background-color: rgb(229.6861924686, 212.9790794979, 236.5209205021);
-  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
+  background-color: #e6d5ed;
+  color: #713b87;
 }
 .profile-container.paciente-profile .details-bar .service-chip.grooming svg {
-  color: rgb(113.1192468619, 59.4079497908, 135.0920502092);
+  color: #713b87;
 }
 .profile-container.paciente-profile .profile-nav {
   display: flex;
@@ -8922,8 +8922,8 @@ button.btn-reset:hover {
   border-color: #8492a6;
 }
 .profile-container.paciente-profile .btn-suministrado.supplied:hover {
-  background-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
-  border-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
+  background-color: #68788f;
+  border-color: #68788f;
 }
 .profile-container.paciente-profile .supply-actions {
   display: flex;
@@ -8946,8 +8946,8 @@ button.btn-reset:hover {
   line-height: 1;
 }
 .profile-container.paciente-profile .btn-custom-date:hover {
-  background-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
-  border-color: rgb(103.6933962264, 120.0047169811, 143.3066037736);
+  background-color: #68788f;
+  border-color: #68788f;
 }
 .profile-container.paciente-profile .custom-date-supply-form {
   display: flex;
@@ -9037,7 +9037,7 @@ button.btn-reset:hover {
   font-size: 1rem;
 }
 .profile-container.paciente-profile .btn-delete-small:hover, .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:hover {
-  background-color: rgb(246.3607594937, 205.1392405063, 209.0886075949);
+  background-color: #f6cdd1;
 }
 @media (max-width: 768px) {
   .profile-container.paciente-profile .btn-delete-small, .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note {
@@ -9121,13 +9121,13 @@ button.btn-reset:hover {
   }
 }
 .profile-container.paciente-profile .custom-alert.alert-success {
-  background-color: rgb(175.1304347826, 235.8695652174, 189);
-  color: rgb(20.2898550725, 84.7101449275, 35);
+  background-color: #afecbd;
+  color: #145523;
   border: 1px solid #28a745;
 }
 .profile-container.paciente-profile .custom-alert.alert-error {
-  background-color: rgb(250.1265822785, 226.8734177215, 229.1012658228);
-  color: rgb(145.746835443, 25.253164557, 36.7974683544);
+  background-color: #fae3e5;
+  color: #921925;
   border: 1px solid #dc3545;
 }
 .profile-container.paciente-profile .custom-alert button {
@@ -9174,14 +9174,14 @@ button.btn-reset:hover {
   color: #fff;
 }
 .patient-list .patient-list__btn--primary:hover {
-  background-color: rgb(33.1380753138, 125.1882845188, 186.8619246862);
+  background-color: #217dbb;
 }
 .patient-list .patient-list__btn--secondary {
   background-color: #e0e6ed;
   color: #3c4858;
 }
 .patient-list .patient-list__btn--secondary:hover {
-  background-color: rgb(191.7346938776, 203.9795918367, 218.2653061224);
+  background-color: #c0ccda;
 }
 .patient-list .patient-list__btn--edit {
   background-color: #f39c12;
@@ -9190,7 +9190,7 @@ button.btn-reset:hover {
   font-size: 1.2rem;
 }
 .patient-list .patient-list__btn--edit:hover {
-  background-color: rgb(199.8795180723, 126.5060240964, 10.1204819277);
+  background-color: #c87f0a;
 }
 .patient-list .patient-list__btn--delete {
   background-color: #e74c3c;
@@ -9199,7 +9199,7 @@ button.btn-reset:hover {
   font-size: 1.2rem;
 }
 .patient-list .patient-list__btn--delete:hover {
-  background-color: rgb(213.698630137, 43.8356164384, 26.301369863);
+  background-color: #d62c1a;
 }
 .patient-list .patient-list__btn:disabled {
   background-color: #f8f9fa;
@@ -9304,7 +9304,7 @@ button.btn-reset:hover {
   border-top-color: #8492a6;
 }
 .patient-list .patient-list__card--fallecido .patient-list__avatar {
-  background-color: rgb(220.7688679245, 224.6650943396, 230.2311320755);
+  background-color: #dde1e6;
   color: #8492a6;
 }
 .patient-list .patient-list__card-header {
@@ -9322,7 +9322,7 @@ button.btn-reset:hover {
 .patient-list .patient-list__card-header .patient-list__avatar {
   font-size: 2rem;
   color: #5DADE2;
-  background-color: rgb(222.7696335079, 238.6858638743, 249.2303664921);
+  background-color: #dfeff9;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -9435,7 +9435,7 @@ button.btn-reset:hover {
 }
 .patient-list .patient-list__card-actions .patient-list__service-selector .patient-list__service-dropdown:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgb(222.7696335079, 238.6858638743, 249.2303664921);
+  box-shadow: 0 0 0 2px #dfeff9;
 }
 .patient-list .patient-list__pagination {
   display: flex;
@@ -9554,7 +9554,7 @@ button.btn-reset:hover {
 .monitor-vencimientos-container .monitor-filter-bar select:focus {
   outline: none;
   border-color: #3498db;
-  box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  box-shadow: 0 0 0 3px #cce5f6;
 }
 .monitor-vencimientos-container .view-mode-toggle {
   background-color: #3498db;
@@ -10116,7 +10116,7 @@ button.btn-reset:hover {
   background-color: #f8f9fa;
 }
 .vencimiento-item-card.selected {
-  background-color: rgb(216.6083682008, 235.5205020921, 248.1916317992);
+  background-color: #d9ecf8;
   border-left: 3px solid #3498db;
   font-weight: bold;
 }
@@ -10149,7 +10149,7 @@ button.btn-reset:hover {
 
 .selected-product-item {
   background-color: #fff;
-  border: 1px solid rgb(211.25, 211.25, 211.25);
+  border: 1px solid lightgray;
   border-radius: 6px;
   padding: 0.75rem;
   display: flex;
@@ -10173,7 +10173,7 @@ button.btn-reset:hover {
   padding: 0.25rem;
 }
 .selected-product-item .product-main-line .remove-product-btn:hover {
-  color: rgb(213.698630137, 43.8356164384, 26.301369863);
+  color: #d62c1a;
 }
 .selected-product-item .product-options {
   display: flex;
@@ -10251,7 +10251,7 @@ button.btn-reset:hover {
   border-radius: 50%;
 }
 .recipe-modal .prescription-item .remove-line-btn:hover {
-  background-color: rgb(250.5616438356, 221.897260274, 218.9383561644);
+  background-color: #fbdedb;
 }
 .recipe-modal .add-line-btn {
   padding: 0.5rem 1rem;
@@ -10397,7 +10397,7 @@ button.btn-reset:hover {
 .monitor-clinica-container .monitor-filter-bar input:focus, .monitor-clinica-container .monitor-filter-bar select:focus {
   outline: none;
   border-color: #3498db;
-  box-shadow: 0 0 0 3px rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  box-shadow: 0 0 0 3px #cce5f6;
 }
 .monitor-clinica-container .monitor-content {
   background-color: #fff;
@@ -10430,7 +10430,7 @@ button.btn-reset:hover {
   transition: background-color 0.2s ease;
 }
 .monitor-clinica-container .history-entry-card:hover {
-  background-color: rgb(225.2719665272, 239.9163179916, 249.7280334728);
+  background-color: #e1f0fa;
 }
 .monitor-clinica-container .history-entry-card .col-patient {
   display: flex;
@@ -10487,13 +10487,13 @@ button.btn-reset:hover {
   color: #3498db;
 }
 .monitor-clinica-container .history-entry-card .col-actions .action-btn.view:hover {
-  background-color: rgb(203.6129707113, 228.9267782427, 245.8870292887);
+  background-color: #cce5f6;
 }
 .monitor-clinica-container .history-entry-card .col-actions .action-btn.edit {
   color: #f39c12;
 }
 .monitor-clinica-container .history-entry-card .col-actions .action-btn.edit:hover {
-  background-color: rgb(251.6024096386, 226.9698795181, 187.8975903614);
+  background-color: #fce3bc;
 }
 .monitor-clinica-container .sale-link-btn {
   background-color: #2ecc71;
@@ -10511,7 +10511,7 @@ button.btn-reset:hover {
   margin-left: 1rem;
 }
 .monitor-clinica-container .sale-link-btn:hover {
-  background-color: rgb(36.616, 162.384, 89.948);
+  background-color: #25a25a;
 }
 @media (max-width: 992px) {
   .monitor-clinica-container .history-list-header {
@@ -10669,10 +10669,10 @@ button.btn-reset:hover {
   transition: background-color 0.2s ease;
 }
 .paciente-form-submit-btn:hover {
-  background-color: rgb(49.7434554974, 151.1047120419, 218.2565445026);
+  background-color: #3297da;
 }
 .paciente-form-submit-btn:disabled {
-  background-color: rgb(157.8848167539, 205.8429319372, 237.6151832461);
+  background-color: #9eceee;
   cursor: not-allowed;
 }
 
@@ -10841,10 +10841,10 @@ button.btn-reset:hover {
   transition: background-color 0.2s ease;
 }
 .tutor-form-submit-btn:hover {
-  background-color: rgb(33.1380753138, 125.1882845188, 186.8619246862);
+  background-color: #217dbb;
 }
 .tutor-form-submit-btn:disabled {
-  background-color: rgb(116.9769874477, 184.9686192469, 230.5230125523);
+  background-color: #75b9e7;
   cursor: not-allowed;
 }
 
@@ -10925,6 +10925,29 @@ button.btn-reset:hover {
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
+.btn-view-toggle {
+  padding: 0.6rem 1rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #34495e;
+}
+.btn-view-toggle:hover {
+  background: #f8f9fa;
+  border-color: #3498db;
+  color: #3498db;
+}
+.btn-view-toggle svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 .caja-summary-main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -10993,6 +11016,65 @@ button.btn-reset:hover {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.25rem;
+}
+
+.caja-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.caja-list .caja-transaction-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.25rem;
+}
+.caja-list .caja-transaction-card .card-header {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 180px;
+}
+.caja-list .caja-transaction-card .card-header .type-badge {
+  width: fit-content;
+}
+.caja-list .caja-transaction-card .card-body {
+  margin: 0;
+  flex: 1;
+}
+.caja-list .caja-transaction-card .card-body .customer {
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+}
+.caja-list .caja-transaction-card .card-body .details {
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+}
+.caja-list .caja-transaction-card .card-body .payment-status-indicator {
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.8rem;
+  width: fit-content;
+}
+.caja-list .caja-transaction-card .card-footer {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.caja-list .caja-transaction-card .card-footer .total {
+  font-size: 1.3rem;
+  min-width: 120px;
+  text-align: right;
+}
+.caja-list .caja-transaction-card::before {
+  border-radius: 10px 0 0 10px;
 }
 
 .caja-transaction-card {
@@ -11210,6 +11292,35 @@ button.btn-reset:hover {
   }
   .caja-filters select {
     width: 100%;
+  }
+  .caja-filters .btn-view-toggle {
+    width: 100%;
+  }
+  .caja-list .caja-transaction-card {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .caja-list .caja-transaction-card .card-header {
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #ecf0f1;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    min-width: auto;
+  }
+  .caja-list .caja-transaction-card .card-footer {
+    padding-top: 0.5rem;
+    border-top: 1px solid #ecf0f1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .caja-list .caja-transaction-card .card-footer .total {
+    text-align: left;
+  }
+  .caja-list .caja-transaction-card .card-footer .card-actions {
+    width: 100%;
+    justify-content: flex-end;
   }
 }
 .caja-popup-overlay {

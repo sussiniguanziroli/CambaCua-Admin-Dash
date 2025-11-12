@@ -1,413 +1,545 @@
 .caja-diaria-container {
-  padding: 2rem;
-  max-width: 1600px;
-  margin: 0 auto;
-}
-
-.caja-page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-
-  h1 {
-    font-size: 2rem;
-    color: #2c3e50;
-    margin: 0;
+    padding: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
   }
-}
-
-.caja-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.caja-date-picker {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  label {
-    font-weight: 500;
-    color: #34495e;
-  }
-
-  input[type="date"] {
-    padding: 0.5rem 1rem;
-    border: 1px solid #bdc3c7;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-      border-color: #3498db;
-    }
-
-    &:focus {
-      outline: none;
-      border-color: #3498db;
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  
+  .caja-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  
+    h1 {
+      font-size: 2rem;
+      color: #2c3e50;
+      margin: 0;
     }
   }
-}
-
-.caja-filters {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-
-  select {
+  
+  .caja-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .caja-date-picker {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  
+    label {
+      font-weight: 500;
+      color: #34495e;
+    }
+  
+    input[type="date"] {
+      padding: 0.5rem 1rem;
+      border: 1px solid #bdc3c7;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+  
+      &:hover {
+        border-color: #3498db;
+      }
+  
+      &:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+      }
+    }
+  }
+  
+  .caja-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  
+    select {
+      padding: 0.6rem 1rem;
+      border: 1px solid #bdc3c7;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+  
+      &:hover {
+        border-color: #3498db;
+      }
+  
+      &:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+      }
+    }
+  }
+  
+  .btn-view-toggle {
     padding: 0.6rem 1rem;
     border: 1px solid #bdc3c7;
     border-radius: 6px;
-    font-size: 0.95rem;
     background: white;
     cursor: pointer;
     transition: all 0.2s ease;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #34495e;
+  
     &:hover {
+      background: #f8f9fa;
       border-color: #3498db;
+      color: #3498db;
     }
-
-    &:focus {
-      outline: none;
-      border-color: #3498db;
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  
+    svg {
+      width: 1rem;
+      height: 1rem;
     }
   }
-}
-
-.caja-summary-main {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.caja-summary-secondary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.caja-summary-card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  }
-
-  span {
-    font-size: 0.95rem;
-    color: #7f8c8d;
-    font-weight: 500;
-  }
-
-  strong {
-    font-size: 1.8rem;
-    color: #2c3e50;
-    font-weight: 700;
-  }
-
-  &.total-caja strong {
-    color: #27ae60;
-  }
-
-  &.total-electronico strong {
-    color: #3498db;
-  }
-
-  &.total-efectivo strong {
-    color: #16a085;
-  }
-
-  &.deuda-cobrada strong {
-    color: #27ae60;
-  }
-
-  &.deuda-generada strong {
-    color: #e67e22;
-  }
-
-  &.descuentos strong {
-    color: #e74c3c;
-  }
-}
-
-.caja-transactions-list {
-  h3 {
-    font-size: 1.3rem;
-    color: #2c3e50;
+  
+  .caja-summary-main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
     margin-bottom: 1.5rem;
   }
-}
-
-.caja-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.25rem;
-}
-
-.caja-transaction-card {
-  background: white;
-  border-radius: 10px;
-  padding: 1.25rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 2px solid transparent;
-  position: relative;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  
+  .caja-summary-secondary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
   }
 
-  &.unpaid {
-    border-color: #e74c3c;
-    background: #fff5f5;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: #e74c3c;
-      border-radius: 10px 0 0 10px;
-    }
-  }
-
-  &.partial-payment {
-    border-color: #f39c12;
-    background: #fffbf0;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: #f39c12;
-      border-radius: 10px 0 0 10px;
-    }
-  }
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid #ecf0f1;
-}
-
-.type-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-
-  &.venta {
-    background: #e3f2fd;
-    color: #1976d2;
-  }
-
-  &.cobro {
-    background: #e8f5e9;
-    color: #388e3c;
-  }
-
-  svg {
-    width: 0.9rem;
-    height: 0.9rem;
-  }
-}
-
-.time {
-  font-size: 0.85rem;
-  color: #95a5a6;
-  font-weight: 500;
-}
-
-.card-body {
-  margin-bottom: 1rem;
-
-  .customer {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-  }
-
-  .details {
-    font-size: 0.9rem;
-    color: #7f8c8d;
-    margin-bottom: 0.5rem;
-  }
-
-  .link-class {
-    color: #3498db;
-    text-decoration: none;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: #2980b9;
-      text-decoration: underline;
-    }
-  }
-}
-
-.payment-status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  background: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeeba;
-
-  .caja-transaction-card.unpaid & {
-    background: #f8d7da;
-    color: #721c24;
-    border-color: #f5c6cb;
-  }
-
-  svg {
-    width: 1rem;
-    height: 1rem;
-  }
-}
-
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 0.75rem;
-  border-top: 1px solid #ecf0f1;
-
-  .total {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #27ae60;
-  }
-
-  .card-actions {
+  .caja-summary-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: all 0.2s ease;
     display: flex;
+    flex-direction: column;
     gap: 0.5rem;
 
-    .btn {
-      padding: 0.5rem;
-      border-radius: 6px;
-      border: none;
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
+    
+      span {
+        font-size: 0.95rem;
+        color: #7f8c8d;
+        font-weight: 500;
+      }
+    
+      strong {
+        font-size: 1.8rem;
+        color: #2c3e50;
+        font-weight: 700;
+      }
+    
+      &.total-caja strong {
+        color: #27ae60;
+      }
+    
+      &.total-electronico strong {
+        color: #3498db;
+      }
+    
+      &.total-efectivo strong {
+        color: #16a085;
+      }
+    
+      &.deuda-cobrada strong {
+        color: #27ae60;
+      }
+    
+      &.deuda-generada strong {
+        color: #e67e22;
+      }
+    
+      &.descuentos strong {
+        color: #e74c3c;
+      }
+    }
+    
+    .caja-transactions-list {
+      h3 {
+        font-size: 1.3rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+      }
+    }
+    
+    .caja-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+    
+    .caja-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    
+      .caja-transaction-card {
+        display: grid;
+        grid-template-columns: auto 1fr auto auto;
+        gap: 1rem;
+        align-items: center;
+        padding: 1rem 1.25rem;
+    
+        .card-header {
+          border: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+          min-width: 180px;
+    
+          .type-badge {
+            width: fit-content;
+          }
+        }
+    
+        .card-body {
+          margin: 0;
+          flex: 1;
+    
+          .customer {
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+          }
+    
+          .details {
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+          }
+    
+          .payment-status-indicator {
+            margin-top: 0.5rem;
+            padding: 0.35rem 0.6rem;
+            font-size: 0.8rem;
+            width: fit-content;
+          }
+        }
+    
+        .card-footer {
+          border: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          gap: 1rem;
+          align-items: center;
+    
+          .total {
+            font-size: 1.3rem;
+            min-width: 120px;
+            text-align: right;
+          }
+        }
+    
+        &::before {
+          border-radius: 10px 0 0 10px;
+        }
+      }
+    }
+    
+    .caja-transaction-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       cursor: pointer;
       transition: all 0.2s ease;
+      border: 2px solid transparent;
+      position: relative;
+    
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
+    
+      &.unpaid {
+        border-color: #e74c3c;
+        background: #fff5f5;
+    
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: #e74c3c;
+          border-radius: 10px 0 0 10px;
+        }
+      }
+    
+      &.partial-payment {
+        border-color: #f39c12;
+        background: #fffbf0;
+    
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: #f39c12;
+          border-radius: 10px 0 0 10px;
+        }
+      }
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #ecf0f1;
+    }
+    
+    .type-badge {
       display: flex;
       align-items: center;
-      justify-content: center;
-
+      gap: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    
+      &.venta {
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+    
+      &.cobro {
+        background: #e8f5e9;
+        color: #388e3c;
+      }
+    
       svg {
         width: 0.9rem;
         height: 0.9rem;
       }
-
-      &.pay-debt {
-        background: #27ae60;
-        color: white;
-
-        &:hover {
-          background: #229954;
-          transform: scale(1.05);
-        }
+    }
+    
+    .time {
+      font-size: 0.85rem;
+      color: #95a5a6;
+      font-weight: 500;
+    }
+    
+    .card-body {
+      margin-bottom: 1rem;
+    
+      .customer {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
       }
-
-      &.edit {
-        background: #3498db;
-        color: white;
-
-        &:hover {
-          background: #2980b9;
-          transform: scale(1.05);
-        }
+    
+      .details {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-bottom: 0.5rem;
       }
-
-      &.delete {
-        background: #e74c3c;
-        color: white;
-
+    
+      .link-class {
+        color: #3498db;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    
         &:hover {
-          background: #c0392b;
-          transform: scale(1.05);
+          color: #2980b9;
+          text-decoration: underline;
         }
       }
     }
-  }
-}
-
-.no-results-message {
-  text-align: center;
-  color: #95a5a6;
-  padding: 3rem;
-  font-size: 1.1rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-@media (max-width: 768px) {
-  .caja-diaria-container {
-    padding: 1rem;
-  }
-
-  .caja-page-header {
-    flex-direction: column;
-    align-items: flex-start;
-
-    h1 {
-      font-size: 1.5rem;
+    
+    .payment-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+    
+      .caja-transaction-card.unpaid & {
+        background: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+      }
+    
+      svg {
+        width: 1rem;
+        height: 1rem;
+      }
     }
-  }
-
-  .caja-summary-main,
-  .caja-summary-secondary {
-    grid-template-columns: 1fr;
-  }
-
-  .caja-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .caja-filters {
-    flex-direction: column;
-
-    select {
-      width: 100%;
+    
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.75rem;
+      border-top: 1px solid #ecf0f1;
+    
+      .total {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #27ae60;
+      }
+    
+      .card-actions {
+        display: flex;
+        gap: 0.5rem;
+    
+        .btn {
+          padding: 0.5rem;
+          border-radius: 6px;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+    
+          svg {
+            width: 0.9rem;
+            height: 0.9rem;
+          }
+    
+          &.pay-debt {
+            background: #27ae60;
+            color: white;
+    
+            &:hover {
+              background: #229954;
+              transform: scale(1.05);
+            }
+          }
+    
+          &.edit {
+            background: #3498db;
+            color: white;
+    
+            &:hover {
+              background: #2980b9;
+              transform: scale(1.05);
+            }
+          }
+    
+          &.delete {
+            background: #e74c3c;
+            color: white;
+    
+            &:hover {
+              background: #c0392b;
+              transform: scale(1.05);
+            }
+          }
+        }
+      }
     }
-  }
-}
+    
+    .no-results-message {
+      text-align: center;
+      color: #95a5a6;
+      padding: 3rem;
+      font-size: 1.1rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    @media (max-width: 768px) {
+      .caja-diaria-container {
+        padding: 1rem;
+      }
+    
+      .caja-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
+    
+      .caja-summary-main,
+      .caja-summary-secondary {
+        grid-template-columns: 1fr;
+      }
+    
+      .caja-grid {
+        grid-template-columns: 1fr;
+      }
+    
+      .caja-filters {
+        flex-direction: column;
+    
+        select {
+          width: 100%;
+        }
+    
+        .btn-view-toggle {
+          width: 100%;
+        }
+      }
+    
+      .caja-list {
+        .caja-transaction-card {
+          grid-template-columns: 1fr;
+          gap: 0.75rem;
+    
+          .card-header {
+            flex-direction: row;
+            justify-content: space-between;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+            min-width: auto;
+          }
+    
+          .card-footer {
+            padding-top: 0.5rem;
+            border-top: 1px solid #ecf0f1;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+    
+            .total {
+              text-align: left;
+            }
+    
+            .card-actions {
+              width: 100%;
+              justify-content: flex-end;
+            }
+          }
+        }
+      }
+    }
