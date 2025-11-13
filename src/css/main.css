@@ -10925,6 +10925,29 @@ button.btn-reset:hover {
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
+.btn-view-toggle {
+  padding: 0.6rem 1rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #34495e;
+}
+.btn-view-toggle:hover {
+  background: #f8f9fa;
+  border-color: #3498db;
+  color: #3498db;
+}
+.btn-view-toggle svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 .caja-summary-main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -10993,6 +11016,65 @@ button.btn-reset:hover {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.25rem;
+}
+
+.caja-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.caja-list .caja-transaction-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.25rem;
+}
+.caja-list .caja-transaction-card .card-header {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 180px;
+}
+.caja-list .caja-transaction-card .card-header .type-badge {
+  width: fit-content;
+}
+.caja-list .caja-transaction-card .card-body {
+  margin: 0;
+  flex: 1;
+}
+.caja-list .caja-transaction-card .card-body .customer {
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+}
+.caja-list .caja-transaction-card .card-body .details {
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+}
+.caja-list .caja-transaction-card .card-body .payment-status-indicator {
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.8rem;
+  width: fit-content;
+}
+.caja-list .caja-transaction-card .card-footer {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.caja-list .caja-transaction-card .card-footer .total {
+  font-size: 1.3rem;
+  min-width: 120px;
+  text-align: right;
+}
+.caja-list .caja-transaction-card::before {
+  border-radius: 10px 0 0 10px;
 }
 
 .caja-transaction-card {
@@ -11210,6 +11292,35 @@ button.btn-reset:hover {
   }
   .caja-filters select {
     width: 100%;
+  }
+  .caja-filters .btn-view-toggle {
+    width: 100%;
+  }
+  .caja-list .caja-transaction-card {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .caja-list .caja-transaction-card .card-header {
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #ecf0f1;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    min-width: auto;
+  }
+  .caja-list .caja-transaction-card .card-footer {
+    padding-top: 0.5rem;
+    border-top: 1px solid #ecf0f1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .caja-list .caja-transaction-card .card-footer .total {
+    text-align: left;
+  }
+  .caja-list .caja-transaction-card .card-footer .card-actions {
+    width: 100%;
+    justify-content: flex-end;
   }
 }
 .caja-popup-overlay {
