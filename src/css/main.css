@@ -11625,13 +11625,32 @@ button.btn-reset:hover {
     justify-content: center;
   }
 }
+.pay-debt-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5000;
+  padding: 1rem;
+}
+
 .pay-debt-modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   max-width: 550px;
   width: 90%;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding: 1.5rem;
+  position: relative;
 }
 .pay-debt-modal h3 {
   margin: 0 0 1rem 0;

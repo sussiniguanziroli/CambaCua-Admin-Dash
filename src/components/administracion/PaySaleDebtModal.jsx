@@ -96,9 +96,8 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
     };
 
     return (
-        <div className="payment-modal-overlay">
-            <div className="payment-modal pay-debt-modal">
-                <button className="close-btn" onClick={onClose}>×</button>
+        <div className="pay-debt-modal-overlay" onClick={onClose}>
+            <div className="pay-debt-modal" onClick={(e) => e.stopPropagation()}>
                 <h3>Cobrar Deuda de Venta</h3>
 
                 <form onSubmit={handleSubmit}>
