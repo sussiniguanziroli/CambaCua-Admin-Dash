@@ -4536,8 +4536,32 @@ button.btn-reset:hover {
 .metodo-pago-container h2 {
   text-align: center;
   color: #2980b9;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-size: 1.8rem;
+}
+.metodo-pago-container .venta-context-info {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+.metodo-pago-container .venta-context-info span {
+  color: #34495e;
+}
+.metodo-pago-container .venta-context-info span strong {
+  color: #2980b9;
+  font-weight: 600;
+}
+@media (max-width: 768px) {
+  .metodo-pago-container .venta-context-info {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
 }
 .metodo-pago-container .metodo-pago-layout {
   display: grid;
@@ -4930,6 +4954,15 @@ button.btn-reset:hover {
   font-size: 1.5rem;
   font-weight: 700;
   color: #2980b9;
+}
+.resumen-venta-container .resumen-link {
+  color: #3498db;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.resumen-venta-container .resumen-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
 }
 .resumen-venta-container .resumen-actions {
   margin-top: 2rem;

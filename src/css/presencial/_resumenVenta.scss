@@ -166,6 +166,16 @@ $shadow-light: 0 2px 8px rgba(0, 0, 0, 0.05);
         font-weight: 700;
         color: $primary-dark;
     }
+    .resumen-link {
+    color: $primary-color;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        color: $primary-dark;
+        text-decoration: underline;
+    }
+}
 
     .resumen-actions {
         margin-top: 2rem;

@@ -19,8 +19,34 @@ $transition: all 0.2s ease;
     h2 {
         text-align: center;
         color: $primary-dark;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         font-size: 1.8rem;
+    }
+
+    .venta-context-info {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        padding: 1rem;
+        background: $background-light;
+        border-radius: $border-radius;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+
+        span {
+            color: $text-color;
+
+            strong {
+                color: $primary-dark;
+                font-weight: 600;
+            }
+        }
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: center;
+        }
     }
 
     .metodo-pago-layout {

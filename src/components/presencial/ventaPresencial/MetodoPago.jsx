@@ -89,6 +89,12 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
     return (
         <div className="metodo-pago-container">
             <h2>Paso 4: Método de Pago</h2>
+            
+            <div className="venta-context-info">
+                <span><strong>Tutor:</strong> {saleData.tutor?.name || 'Cliente Genérico'}</span>
+                <span><strong>Paciente:</strong> {saleData.patient?.name || 'N/A'}</span>
+            </div>
+
             <div className="metodo-pago-layout">
                 <div className="payment-options-panel">
                     <div className="payment-adder">

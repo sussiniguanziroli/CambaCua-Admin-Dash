@@ -1,10 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ResumenVenta = ({ saleData, onReset }) => {
     const totalPaid = saleData.payments.reduce((sum, p) => sum + parseFloat(p.amount), 0);
     const totalSurcharges = saleData.payments.reduce((acc, p) => acc + (p.surchargeAmount || 0), 0);
 
-    // Usamos los valores calculados y guardados en saleData
     const subtotal = saleData.subtotal || 0;
     const totalDiscount = saleData.discount || 0;
 
@@ -41,7 +41,7 @@ const ResumenVenta = ({ saleData, onReset }) => {
                 if (it.discountAmount > 0) {
                     name += ` (Dto: -$${it.discountAmount.toFixed(2)})`;
                 }
-                const price = `$${it.price.toFixed(2)}`; // 'price' es el subtotal final del item
+                const price = `$${it.price.toFixed(2)}`;
                 return [quantity, name, price];
             });
 
@@ -118,8 +118,40 @@ const ResumenVenta = ({ saleData, onReset }) => {
                 </div>
 
                 <div className="resumen-section">
-                    <div className="summary-row"><span>Tutor:</span><strong>{saleData.tutor?.name || 'Cliente Genérico'}</strong></div>
-                    <div className="summary-row"><span>Paciente:</span><strong>{saleData.patient?.name || 'N/A'}</strong></div>
+                    <div className="summary-row">
+                        <span>Tutor:</span>
+                        <strong>
+                            {saleData.tutor?.id ? (
+                                <Link 
+                                    to={`/admin/tutor-profile/${saleData.tutor.id}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="resumen-link"
+                                >
+                                    {saleData.tutor.name}
+                                </Link>
+                            ) : (
+                                saleData.tutor?.name || 'Cliente Genérico'
+                            )}
+                        </strong>
+                    </div>
+                    <div className="summary-row">
+                        <span>Paciente:</span>
+                        <strong>
+                            {saleData.patient?.id ? (
+                                <Link 
+                                    to={`/admin/paciente-profile/${saleData.patient.id}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="resumen-link"
+                                >
+                                    {saleData.patient.name}
+                                </Link>
+                            ) : (
+                                saleData.patient?.name || 'N/A'
+                            )}
+                        </strong>
+                    </div>
                 </div>
 
                 <div className="resumen-section">
