@@ -2,91 +2,671 @@
 
 .resumen-semanal-container {
     padding: 2rem;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
+    min-height: calc(100vh - 100px);
 
     .page-header {
+        margin-bottom: 2rem;
+        
+        h1 {
+            font-size: 2rem;
+            color: $primary-dark;
+            margin: 0;
+        }
+    }
+
+    .main-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid $border-color;
+        overflow-x: auto;
+        
+        .main-tab {
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: $grey-dark;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+
+            &:hover {
+                color: $primary-dark;
+                background-color: rgba($primary-color, 0.05);
+            }
+
+            &.active {
+                color: $primary-dark;
+                border-bottom-color: $primary-color;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .main-content {
+        background-color: #fff;
+        border-radius: $border-radius;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        padding: 2rem;
+        min-height: 400px;
+    }
+
+    .resumen-tab-content {
+        .date-picker-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: #fff;
+            padding: 0.8rem 1.2rem;
+            border-radius: $border-radius;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 2rem;
+            width: fit-content;
+
+            label {
+                font-weight: 500;
+                color: $text-color;
+                margin: 0;
+            }
+
+            input[type="date"] {
+                padding: 0.5rem;
+                border: 1px solid $border-color;
+                border-radius: 4px;
+                font-size: 1rem;
+            }
+        }
+        
+        .week-total-summary {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, $primary-dark 0%, darken($primary-dark, 10%) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: $border-radius;
+            margin-bottom: 2.5rem;
+            gap: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+            .icon {
+                font-size: 3rem;
+                opacity: 0.9;
+            }
+
+            .details {
+                flex-grow: 1;
+                
+                .label { 
+                    font-size: 1.2rem; 
+                    font-weight: 500;
+                    display: block;
+                    margin-bottom: 0.3rem;
+                }
+                
+                .dates { 
+                    display: block; 
+                    opacity: 0.85;
+                    font-size: 0.95rem;
+                }
+            }
+
+            .total-value {
+                font-size: 2.5rem;
+                font-weight: 700;
+            }
+        }
+
+        .week-view {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+
+            @media (max-width: 992px) {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+            @media (max-width: 576px) {
+                grid-template-columns: 1fr;
+            }
+
+            .day-card {
+                background-color: #fff;
+                padding: 1.5rem;
+                border-radius: $border-radius;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                border-top: 4px solid $primary-color;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+                }
+                
+                .day-name {
+                    font-weight: 600;
+                    color: $primary-dark;
+                    text-transform: capitalize;
+                    font-size: 0.95rem;
+                }
+                
+                .day-date {
+                    color: $grey-dark;
+                    font-size: 0.9rem;
+                }
+                
+                .day-total {
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    color: $text-color;
+                    margin-top: 0.5rem;
+                }
+            }
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            gap: 1rem;
+
+            p {
+                color: $grey-dark;
+                font-size: 1rem;
+            }
+        }
+    }
+
+    .stats-controls {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
-    }
-
-    .date-picker-group {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        background-color: #fff;
-        padding: 0.8rem 1.2rem;
-        border-radius: $border-radius;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    
-    .week-total-summary {
-        display: flex;
-        align-items: center;
-        background-color: $primary-dark;
-        color: white;
-        padding: 2rem;
-        border-radius: $border-radius;
-        margin-bottom: 2.5rem;
-        gap: 1.5rem;
-
-        .icon {
-            font-size: 3rem;
-            opacity: 0.8;
-        }
-
-        .details {
-            flex-grow: 1;
-            .label { font-size: 1.2rem; font-weight: 500; }
-            .dates { display: block; opacity: 0.8; }
-        }
-
-        .total-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
-    }
-
-    .week-view {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 1rem;
-
-        @media (max-width: 992px) {
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        }
-        @media (max-width: 576px) {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .day-card {
-        background-color: #fff;
         padding: 1.5rem;
+        background-color: #f8f9fa;
         border-radius: $border-radius;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        border-top: 4px solid $border-color;
-        text-align: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        .controls-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+
+            .control-item {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                label {
+                    font-weight: 500;
+                    color: $text-color;
+                    white-space: nowrap;
+                }
+
+                select {
+                    padding: 0.5rem 1rem;
+                    border: 1px solid $border-color;
+                    border-radius: 4px;
+                    font-size: 0.95rem;
+                    background-color: white;
+                    cursor: pointer;
+                    transition: border-color 0.2s ease;
+
+                    &:hover {
+                        border-color: $primary-color;
+                    }
+
+                    &:focus {
+                        outline: none;
+                        border-color: $primary-color;
+                        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+                    }
+                }
+            }
+        }
+
+        .controls-actions {
+            display: flex;
+            gap: 0.75rem;
+
+            .btn-control {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.6rem 1.2rem;
+                border: none;
+                border-radius: 4px;
+                font-size: 0.95rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
+
+                &.btn-recalculate {
+                    background-color: $primary-color;
+                    color: white;
+
+                    &:hover:not(:disabled) {
+                        background-color: darken($primary-color, 5%);
+                    }
+
+                    svg.spinning {
+                        animation: spin 1s linear infinite;
+                    }
+                }
+
+                &.btn-export {
+                    background-color: $success-color;
+                    color: white;
+
+                    &:hover:not(:disabled) {
+                        background-color: darken($success-color, 5%);
+                    }
+                }
+            }
+        }
+    }
+
+    .stats-loading-container {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+        gap: 2rem;
+
+        .loading-progress {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+
+            .progress-bar {
+                width: 100%;
+                height: 8px;
+                background-color: #e0e0e0;
+                border-radius: 10px;
+                overflow: hidden;
+                margin-bottom: 1rem;
+
+                .progress-fill {
+                    height: 100%;
+                    background: linear-gradient(90deg, $primary-color 0%, lighten($primary-color, 10%) 100%);
+                    transition: width 0.3s ease;
+                    border-radius: 10px;
+                }
+            }
+
+            .progress-message {
+                font-size: 1rem;
+                color: $text-color;
+                margin: 0.5rem 0;
+                font-weight: 500;
+            }
+
+            .progress-percentage {
+                font-size: 1.5rem;
+                color: $primary-dark;
+                font-weight: 700;
+                margin: 0;
+            }
+        }
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+}
+
+.top-customers-tab {
+    .tab-header {
+        margin-bottom: 2rem;
         
-        .day-name {
-            font-weight: 600;
+        h2 {
+            font-size: 1.8rem;
             color: $primary-dark;
-            text-transform: capitalize;
+            margin: 0 0 0.5rem 0;
         }
-        .day-date {
+
+        .tab-subtitle {
             color: $grey-dark;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            margin: 0;
         }
-        .day-total {
-            font-size: 1.5rem;
+    }
+
+    .rankings-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .ranking-section {
+        background-color: #fff;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        overflow: hidden;
+        transition: all 0.3s ease;
+
+        &.expanded {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .ranking-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: #e9ecef;
+            }
+
+            .header-left {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .section-icon {
+                    font-size: 1.5rem;
+                    color: $primary-color;
+                }
+
+                h3 {
+                    margin: 0;
+                    font-size: 1.2rem;
+                    color: $primary-dark;
+                }
+            }
+
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .section-count {
+                    color: $grey-dark;
+                    font-size: 0.9rem;
+                    background-color: white;
+                    padding: 0.3rem 0.8rem;
+                    border-radius: 12px;
+                }
+
+                .expand-arrow {
+                    transition: transform 0.3s ease;
+                    color: $grey-dark;
+
+                    &.expanded {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+        }
+
+        .ranking-section-content {
+            padding: 1.5rem;
+            animation: fadeIn 0.3s ease;
+
+            .ranking-list {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .empty-ranking {
+                text-align: center;
+                padding: 2rem;
+                color: $grey-dark;
+            }
+
+            .ranking-actions {
+                display: flex;
+                justify-content: center;
+                gap: 1rem;
+                margin-top: 1.5rem;
+
+                button {
+                    padding: 0.6rem 1.5rem;
+                    border: 1px solid $border-color;
+                    border-radius: 4px;
+                    background-color: white;
+                    color: $text-color;
+                    font-size: 0.95rem;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+
+                    &:hover {
+                        background-color: $primary-color;
+                        color: white;
+                        border-color: $primary-color;
+                    }
+                }
+            }
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+.ranking-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem;
+    background-color: white;
+    border: 1px solid $border-color;
+    border-left: 4px solid $border-color;
+    border-radius: $border-radius;
+    transition: all 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transform: translateX(4px);
+    }
+
+    &.up {
+        border-left-color: $success-color;
+        background-color: rgba($success-color, 0.02);
+    }
+
+    &.down {
+        border-left-color: $error-color;
+        background-color: rgba($error-color, 0.02);
+    }
+
+    &.stable {
+        border-left-color: #6c757d;
+    }
+
+    .ranking-position {
+        flex-shrink: 0;
+        
+        .position-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 10%) 100%);
+            color: white;
+            font-size: 1.2rem;
             font-weight: 700;
+            border-radius: 50%;
+        }
+    }
+
+    .ranking-content {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .customer-info {
+            flex-grow: 1;
+
+            .customer-name {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: $primary-dark;
+                margin: 0 0 0.3rem 0;
+            }
+
+            .customer-meta {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                color: $grey-dark;
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+
+                .meta-separator {
+                    opacity: 0.5;
+                }
+            }
+
+            .species-badges {
+                display: flex;
+                gap: 0.5rem;
+
+                .species-badge {
+                    padding: 0.2rem 0.6rem;
+                    border-radius: 12px;
+                    font-size: 0.8rem;
+                    font-weight: 500;
+
+                    &.canino {
+                        background-color: #e3f2fd;
+                        color: #1976d2;
+                    }
+
+                    &.felino {
+                        background-color: #fce4ec;
+                        color: #c2185b;
+                    }
+                }
+            }
+        }
+
+        .ranking-metric {
+            text-align: right;
+
+            .metric-value {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 1.3rem;
+                font-weight: 700;
+                color: $primary-dark;
+                margin-bottom: 0.3rem;
+
+                .trend-badge {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.25rem;
+                    padding: 0.2rem 0.5rem;
+                    border-radius: 12px;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+
+                    &.up {
+                        background-color: rgba($success-color, 0.1);
+                        color: $success-color;
+                    }
+
+                    &.down {
+                        background-color: rgba($error-color, 0.1);
+                        color: $error-color;
+                    }
+
+                    .trend-icon {
+                        font-size: 0.75rem;
+                    }
+                }
+            }
+
+            .engagement-breakdown {
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
+                color: $grey-dark;
+                font-size: 0.85rem;
+            }
+        }
+    }
+
+    .ranking-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid $border-color;
+            border-radius: 4px;
+            background-color: white;
             color: $text-color;
-            margin-top: 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            }
+
+            &.btn-detail:hover {
+                background-color: $primary-color;
+                color: white;
+                border-color: $primary-color;
+            }
+
+            &.btn-profile:hover {
+                background-color: $secondary-color;
+                color: white;
+                border-color: $secondary-color;
+            }
+
+            span {
+                @media (max-width: 992px) {
+                    display: none;
+                }
+            }
         }
     }
 }

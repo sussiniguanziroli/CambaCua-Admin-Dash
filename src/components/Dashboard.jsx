@@ -157,7 +157,7 @@ const Dashboard = ({ user, handleLogout }) => {
                 { path: '/admin/users', label: 'Ver Usuarios', icon: <FaUsers /> },
                 { path: '/admin/coupons', label: 'Admin Cupones', icon: <FaTicketAlt /> },
                 { path: '/admin/caja-diaria', label: 'Caja Diaria', icon: <FaCashRegister /> },
-                { path: '/admin/resumen-semanal', label: 'Resumen Semanal', icon: <FaChartBar /> },
+                { path: '/admin/resumen-semanal', label: 'Estadisticas', icon: <FaChartBar /> },
             ]
         },
         {
