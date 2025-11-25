@@ -1,8 +1,12 @@
 import React from 'react';
 import { FaFilePdf, FaFileWord, FaFileAlt, FaImage } from 'react-icons/fa';
 
-const ViewClinicalNoteModal = ({ isOpen, onClose, onEdit, note }) => {
+const ViewClinicalNoteModal = ({ isOpen, onClose, onEdit, note, patientName, tutorName }) => {
     if (!isOpen || !note) return null;
+
+    // Lógica robusta: Toma el nombre de las props (si viene de Perfil) o de la nota (si viene de Monitor)
+    const displayPatient = patientName || note.pacienteName;
+    const displayTutor = tutorName || note.tutorName;
 
     const getFileIcon = (fileType) => {
         if (fileType.startsWith('image/')) return <FaImage />;
@@ -15,7 +19,15 @@ const ViewClinicalNoteModal = ({ isOpen, onClose, onEdit, note }) => {
         <div className="agenda-modal-overlay">
             <div className="agenda-modal-content view-note-modal">
                 <div className="modal-header">
-                    <h3>Detalle de Nota Clínica</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <h3 style={{ margin: 0 }}>Detalle de Nota Clínica</h3>
+                        {/* AQUI ESTÁ EL NOMBRE Y TUTOR SIEMPRE VISIBLE */}
+                        {displayPatient && (
+                            <span style={{ fontSize: '0.9em', color: '#4a4a4a', fontWeight: '500' }}>
+                                {displayPatient} {displayTutor ? <span style={{ color: '#888', fontWeight: 'normal' }}>({displayTutor})</span> : ''}
+                            </span>
+                        )}
+                    </div>
                     <button className="close-btn" onClick={onClose}>&times;</button>
                 </div>
                 <div className="view-note-body">

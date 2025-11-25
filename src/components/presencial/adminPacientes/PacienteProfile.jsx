@@ -76,15 +76,36 @@ const PacienteProfile = () => {
         getDocs(historyQuery), 
         getDocs(groomingNotesQuery), 
         getDocs(recipesQuery), 
-        getDocs(citasQuery), // <-- Error estaba aquí: decía getDocs(citasSnap)
+        getDocs(citasQuery), 
         getDocs(groomingAppointmentsQuery), 
         getDocs(vencQuery) 
       ]);
 
       if (!pacienteSnap.exists()) { setPaciente(null); setAlert({ message: 'Paciente no encontrado.', type: 'error' }); return; }
       setPaciente({ id: pacienteSnap.id, ...pacienteSnap.data() });
-      setClinicalHistory(historySnap.docs.map((d) => ({ id: d.id, ...d.data(), date: d.data().createdAt.toDate().toLocaleDateString('es-AR') })));
-      setGroomingNotes(groomingNotesSnap.docs.map((d) => ({ id: d.id, ...d.data(), date: d.data().createdAt.toDate().toLocaleDateString('es-AR') })));
+
+      // FIX: Protección contra fechas inválidas
+      setClinicalHistory(historySnap.docs.map((d) => {
+          const data = d.data();
+          const createdDate = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+          return { 
+              id: d.id, 
+              ...data, 
+              createdAt: data.createdAt, 
+              date: createdDate.toLocaleDateString('es-AR') 
+          };
+      }));
+
+      setGroomingNotes(groomingNotesSnap.docs.map((d) => {
+          const data = d.data();
+          const createdDate = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+          return { 
+              id: d.id, 
+              ...data, 
+              date: createdDate.toLocaleDateString('es-AR') 
+          };
+      }));
+
       setRecipes(recipesSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
       
       const clinicalAppointments = citasSnap.docs.map(d => ({ ...d.data(), id: d.id, appointmentType: 'clinical', startTime: d.data().startTime.toDate() }));
@@ -98,12 +119,32 @@ const PacienteProfile = () => {
 
   useEffect(() => { fetchAllData(); }, [fetchAllData]);
 
-  const handleSaveClinicalNote = async (formData, originalNote) => { try { if (originalNote) { await updateDoc(doc(db, `pacientes/${id}/clinical_history`, originalNote.id), formData); setAlert({ message: 'Nota clínica actualizada.', type: 'success' }); } else { await addDoc(collection(db, `pacientes/${id}/clinical_history`), { ...formData, createdAt: Timestamp.now() }); setAlert({ message: 'Nota agregada.', type: 'success' }); } handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la nota.', type: 'error' }); } };
+  const handleSaveClinicalNote = async (formData, originalNote) => { 
+      try { 
+          // formData ya trae 'createdAt' como objeto Date correcto del modal
+          if (originalNote) { 
+              await updateDoc(doc(db, `pacientes/${id}/clinical_history`, originalNote.id), formData); 
+              setAlert({ message: 'Nota clínica actualizada.', type: 'success' }); 
+          } else { 
+              const dataToSave = {
+                  ...formData,
+                  createdAt: formData.createdAt ? formData.createdAt : Timestamp.now()
+              };
+              await addDoc(collection(db, `pacientes/${id}/clinical_history`), dataToSave); 
+              setAlert({ message: 'Nota agregada.', type: 'success' }); 
+          } 
+          handleCloseModals(); 
+          await fetchAllData(); 
+      } catch (error) { 
+          console.error(error);
+          setAlert({ message: 'No se pudo guardar la nota.', type: 'error' }); 
+      } 
+  };
   
   const handleDeleteClinicalNote = async (note) => {
     const { isConfirmed } = await Swal.fire({
       title: '¿Eliminar Nota Clínica?',
-      text: `Se eliminará la nota "${note.reason || 'Sin motivo'}" del ${note.date}. Se borrarán también los archivos adjuntos. Esta acción no se puede deshacer.`,
+      text: `Se eliminará la nota "${note.reason || 'Sin motivo'}" del ${note.date}.`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
@@ -114,21 +155,15 @@ const PacienteProfile = () => {
       try {
         if (note.media && note.media.length > 0) {
           const deletePromises = note.media.map(file => {
-            try {
-              return deleteObject(ref(storage, file.url));
-            } catch (storageError) {
-              console.warn("Error al intentar borrar archivo de storage:", storageError);
-              return Promise.resolve();
-            }
+            try { return deleteObject(ref(storage, file.url)); } 
+            catch (storageError) { console.warn("Error borrando archivo:", storageError); return Promise.resolve(); }
           });
           await Promise.all(deletePromises);
         }
         await deleteDoc(doc(db, `pacientes/${id}/clinical_history`, note.id));
         setAlert({ message: 'Nota clínica eliminada.', type: 'success' });
         await fetchAllData();
-      } catch (error) {
-        setAlert({ message: 'No se pudo eliminar la nota o sus archivos.', type: 'error' });
-      }
+      } catch (error) { setAlert({ message: 'No se pudo eliminar la nota.', type: 'error' }); }
     }
   };
 
@@ -149,10 +184,13 @@ const PacienteProfile = () => {
   const handleCitasFilterChange = (e) => { const { name, value } = e.target; setCitasFilters(prev => ({ ...prev, [name]: value })); setCitasCurrentPage(1); };
   const handleGroomingNotesFilterChange = (e) => { const { name, value } = e.target; setGroomingNotesFilters((prev) => ({ ...prev, [name]: value })); setGroomingNotesCurrentPage(1); };
 
-  const filteredAndSortedHistory = useMemo(() => { let filtered = [...clinicalHistory]; if (historyFilters.startDate) { const start = new Date(historyFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter((e) => e.createdAt.toDate() >= start); } if (historyFilters.endDate) { const end = new Date(historyFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter((e) => e.createdAt.toDate() <= end); } if (historyFilters.searchTerm) { const term = historyFilters.searchTerm.toLowerCase(); filtered = filtered.filter((e) => (e.reason || '').toLowerCase().includes(term) || (e.diagnosis || '').toLowerCase().includes(term) || (e.treatment || '').toLowerCase().includes(term)); } filtered.sort((a, b) => { if (historyFilters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis(); return a.createdAt.toMillis() - b.createdAt.toMillis(); }); return filtered; }, [clinicalHistory, historyFilters]);
-  const filteredAndSortedRecipes = useMemo(() => { let filtered = [...recipes]; if (recipeFilters.startDate) { const start = new Date(recipeFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter((r) => r.createdAt.toDate() >= start); } if (recipeFilters.endDate) { const end = new Date(recipeFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter((r) => r.createdAt.toDate() <= end); } if (recipeFilters.searchTerm) { const term = recipeFilters.searchTerm.toLowerCase(); filtered = filtered.filter((r) => (r.prescribedBy || '').toLowerCase().includes(term) || (r.prescriptions || []).some((p) => (p.productName || '').toLowerCase().includes(term))); } filtered.sort((a, b) => { if (recipeFilters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis(); return a.createdAt.toMillis() - b.createdAt.toMillis(); }); return filtered; }, [recipes, recipeFilters]);
+  const filteredAndSortedHistory = useMemo(() => { let filtered = [...clinicalHistory]; if (historyFilters.startDate) { const start = new Date(historyFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter((e) => e.createdAt && e.createdAt.toDate ? e.createdAt.toDate() >= start : false); } if (historyFilters.endDate) { const end = new Date(historyFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter((e) => e.createdAt && e.createdAt.toDate ? e.createdAt.toDate() <= end : false); } if (historyFilters.searchTerm) { const term = historyFilters.searchTerm.toLowerCase(); filtered = filtered.filter((e) => (e.reason || '').toLowerCase().includes(term) || (e.diagnosis || '').toLowerCase().includes(term) || (e.treatment || '').toLowerCase().includes(term)); } filtered.sort((a, b) => { if (!a.createdAt || !b.createdAt) return 0; if (historyFilters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis(); return a.createdAt.toMillis() - b.createdAt.toMillis(); }); return filtered; }, [clinicalHistory, historyFilters]);
+  
+  const filteredAndSortedRecipes = useMemo(() => { let filtered = [...recipes]; if (recipeFilters.startDate) { const start = new Date(recipeFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter((r) => r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() >= start : false); } if (recipeFilters.endDate) { const end = new Date(recipeFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter((r) => r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() <= end : false); } if (recipeFilters.searchTerm) { const term = recipeFilters.searchTerm.toLowerCase(); filtered = filtered.filter((r) => (r.prescribedBy || '').toLowerCase().includes(term) || (r.prescriptions || []).some((p) => (p.productName || '').toLowerCase().includes(term))); } filtered.sort((a, b) => { if (!a.createdAt || !b.createdAt) return 0; if (recipeFilters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis(); return a.createdAt.toMillis() - b.createdAt.toMillis(); }); return filtered; }, [recipes, recipeFilters]);
+  
   const filteredAppointments = useMemo(() => { let filtered = [...allAppointments]; if (citasFilters.serviceType !== 'todos') { filtered = filtered.filter(a => a.appointmentType === citasFilters.serviceType); } if (citasFilters.startDate) { const start = new Date(citasFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter(a => a.startTime >= start); } if (citasFilters.endDate) { const end = new Date(citasFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter(a => a.startTime <= end); } return filtered; }, [allAppointments, citasFilters]);
-  const filteredGroomingNotes = useMemo(() => { let filtered = [...groomingNotes]; if (groomingNotesFilters.startDate) { const start = new Date(groomingNotesFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter((e) => e.createdAt.toDate() >= start); } if (groomingNotesFilters.endDate) { const end = new Date(groomingNotesFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter((e) => e.createdAt.toDate() <= end); } if (groomingNotesFilters.searchTerm) { const term = groomingNotesFilters.searchTerm.toLowerCase(); filtered = filtered.filter((e) => (e.title || '').toLowerCase().includes(term) || (e.description || '').toLowerCase().includes(term)); } filtered.sort((a, b) => { if (groomingNotesFilters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis(); return a.createdAt.toMillis() - b.createdAt.toMillis(); }); return filtered; }, [groomingNotes, groomingNotesFilters]);
+  
+  const filteredGroomingNotes = useMemo(() => { let filtered = [...groomingNotes]; if (groomingNotesFilters.startDate) { const start = new Date(groomingNotesFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter((e) => e.createdAt && e.createdAt.toDate ? e.createdAt.toDate() >= start : false); } if (groomingNotesFilters.endDate) { const end = new Date(groomingNotesFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter((e) => e.createdAt && e.createdAt.toDate ? e.createdAt.toDate() <= end : false); } if (groomingNotesFilters.searchTerm) { const term = groomingNotesFilters.searchTerm.toLowerCase(); filtered = filtered.filter((e) => (e.title || '').toLowerCase().includes(term) || (e.description || '').toLowerCase().includes(term)); } filtered.sort((a, b) => { if (!a.createdAt || !b.createdAt) return 0; if (groomingNotesFilters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis(); return a.createdAt.toMillis() - b.createdAt.toMillis(); }); return filtered; }, [groomingNotes, groomingNotesFilters]);
   
   const calculateAge = (birthDateStr) => { if (!birthDateStr) return 'N/A'; const bd = new Date(birthDateStr); if (isNaN(bd.getTime())) return 'N/A'; const now = new Date(); let years = now.getFullYear() - bd.getFullYear(); let months = now.getMonth() - bd.getMonth(); if (now.getDate() < bd.getDate()) months--; if (months < 0) { years--; months += 12; } if (years < 0) return 'N/A'; return years === 0 ? `${months} meses` : `${years} año${years > 1 ? 's' : ''}${months ? `, ${months} meses` : ''}`; };
   const handleStartSale = () => { navigate('/admin/vender', { state: { tutor: { id: paciente.tutorId, name: paciente.tutorName }, patient: { id: paciente.id, name: paciente.name } } }); };
@@ -186,7 +224,7 @@ const PacienteProfile = () => {
   const renderRecetas = () => {
     const totalPages = Math.ceil(filteredAndSortedRecipes.length / itemsPerPage);
     const currentItems = filteredAndSortedRecipes.slice((recipesCurrentPage - 1) * itemsPerPage, recipesCurrentPage * itemsPerPage);
-    return (<div className="tab-content"><div className="recipe-controls">{!paciente.fallecido && (<button className="btn btn-primary" onClick={() => setIsCreateRecipeModalOpen(true)}>+ Nueva Receta</button>)}<div className="filters-group"><input type="text" name="searchTerm" placeholder="Buscar por doctor o producto..." value={recipeFilters.searchTerm} onChange={handleRecipeFilterChange} /><input type="date" name="startDate" value={recipeFilters.startDate} onChange={handleRecipeFilterChange} /><input type="date" name="endDate" value={recipeFilters.endDate} onChange={handleRecipeFilterChange} /><select name="sortOrder" value={recipeFilters.sortOrder} onChange={handleRecipeFilterChange}><option value="date-desc">Más Recientes</option><option value="date-asc">Más Antiguas</option></select></div></div><div className="recipe-list">{currentItems.length > 0 ? (currentItems.map((recipe) => (<div key={recipe.id} className="recipe-list-item"><span>Receta del{" "}{recipe.createdAt.toDate().toLocaleDateString("es-AR")}</span><div className="recipe-actions"><button className="btn btn-secondary" onClick={() => setSelectedRecipe(recipe)}>Ver/Imprimir</button>{!paciente.fallecido && (<button className="btn btn-delete-small" onClick={() => handleDeleteRecipe(recipe.id)}><FaTrash /></button>)}</div></div>))) : (<p className="no-results-message">No hay recetas.</p>)}{renderPagination(recipesCurrentPage, totalPages, setRecipesCurrentPage)}</div></div>);
+    return (<div className="tab-content"><div className="recipe-controls">{!paciente.fallecido && (<button className="btn btn-primary" onClick={() => setIsCreateRecipeModalOpen(true)}>+ Nueva Receta</button>)}<div className="filters-group"><input type="text" name="searchTerm" placeholder="Buscar por doctor o producto..." value={recipeFilters.searchTerm} onChange={handleRecipeFilterChange} /><input type="date" name="startDate" value={recipeFilters.startDate} onChange={handleRecipeFilterChange} /><input type="date" name="endDate" value={recipeFilters.endDate} onChange={handleRecipeFilterChange} /><select name="sortOrder" value={recipeFilters.sortOrder} onChange={handleRecipeFilterChange}><option value="date-desc">Más Recientes</option><option value="date-asc">Más Antiguas</option></select></div></div><div className="recipe-list">{currentItems.length > 0 ? (currentItems.map((recipe) => (<div key={recipe.id} className="recipe-list-item"><span>Receta del{" "}{recipe.createdAt && recipe.createdAt.toDate ? recipe.createdAt.toDate().toLocaleDateString("es-AR") : 'N/A'}</span><div className="recipe-actions"><button className="btn btn-secondary" onClick={() => setSelectedRecipe(recipe)}>Ver/Imprimir</button>{!paciente.fallecido && (<button className="btn btn-delete-small" onClick={() => handleDeleteRecipe(recipe.id)}><FaTrash /></button>)}</div></div>))) : (<p className="no-results-message">No hay recetas.</p>)}{renderPagination(recipesCurrentPage, totalPages, setRecipesCurrentPage)}</div></div>);
   };
   
   const renderNotasPeluqueria = () => {
@@ -212,8 +250,29 @@ const PacienteProfile = () => {
   return (
     <div className="profile-container paciente-profile">
       <CustomAlert message={alert.message} type={alert.type} onClose={handleAlertClose} />
-      <ViewClinicalNoteModal isOpen={isViewModalOpen} onClose={handleCloseModals} onEdit={() => handleEditNote(selectedNote)} note={selectedNote} />
-      <ClinicalNoteModal isOpen={isEditModalOpen} onClose={handleCloseModals} onSave={handleSaveClinicalNote} note={selectedNote} pacienteId={id} />
+      
+      {/* AQUÍ ESTÁ LA MAGIA: 
+         Pasamos patientName y tutorName a AMBOS modales 
+      */}
+      <ViewClinicalNoteModal 
+        isOpen={isViewModalOpen} 
+        onClose={handleCloseModals} 
+        onEdit={() => handleEditNote(selectedNote)} 
+        note={selectedNote} 
+        patientName={paciente?.name}
+        tutorName={paciente?.tutorName}
+      />
+      
+      <ClinicalNoteModal 
+        isOpen={isEditModalOpen} 
+        onClose={handleCloseModals} 
+        onSave={handleSaveClinicalNote} 
+        note={selectedNote} 
+        pacienteId={id} 
+        patientName={paciente?.name} 
+        tutorName={paciente?.tutorName} 
+      />
+
       <AddVencimientoModal isOpen={isAddVencimientoModalOpen} onClose={() => setIsAddVencimientoModalOpen(false)} onSave={() => { setIsAddVencimientoModalOpen(false); fetchAllData(); }} pacienteId={id} tutorId={paciente.tutorId} tutorName={paciente.tutorName} pacienteName={paciente.name} />
       <CreateRecipeModal isOpen={isCreateRecipeModalOpen} onClose={handleCloseModals} onSave={handleSaveRecipe} paciente={paciente} />
       <ViewRecipeModal isOpen={!!selectedRecipe} onClose={handleCloseModals} onPrint={handlePrintRecipe} recipe={selectedRecipe} paciente={paciente} />
@@ -244,4 +303,3 @@ const PacienteProfile = () => {
 };
 
 export default PacienteProfile;
-

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { db } from '../../firebase/config';
 import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
 import { FaCalendarWeek, FaDownload, FaSyncAlt } from 'react-icons/fa';
-import { calculateTopCustomers, clearStatsCache } from '../../services/statsService';
+import { calculateAllTopCustomers, clearStatsCache } from '../../services/statsService';
 import TopCustomersTab from './TopCustomersTab';
 import CustomerDetailModal from './CustomerDetailModal';
 import ExportDataModal from './ExportDataModal';
@@ -98,32 +98,29 @@ const ResumenSemanal = () => {
         }
     }, []);
 
-    const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
-        if (forceRefresh) {
-            clearStatsCache();
-        }
+    // Cambia línea 96-111 por:
 
-        setIsLoadingStats(true);
-        setLoadingProgress({ step: 'start', progress: 0, message: 'Iniciando análisis...' });
+const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
+    if (forceRefresh) {
+        clearStatsCache();
+    }
 
-        try {
-            const [perros, gatos, all] = await Promise.all([
-                calculateTopCustomers('Canino', period, topLimit, setLoadingProgress),
-                calculateTopCustomers('Felino', period, topLimit, setLoadingProgress),
-                calculateTopCustomers('all', period, topLimit, setLoadingProgress)
-            ]);
+    setIsLoadingStats(true);
+    setLoadingProgress({ step: 'start', progress: 0, message: 'Iniciando análisis...' });
 
-            setPerrosData(perros);
-            setGatosData(gatos);
-            setAllData(all);
-        } catch (error) {
-            console.error('Error fetching top customers:', error);
-        } finally {
-            setIsLoadingStats(false);
-            setLoadingProgress({ step: 'complete', progress: 100, message: 'Completado' });
-        }
-    }, [period, topLimit]);
-
+    try {
+        const allData = await calculateAllTopCustomers(period, topLimit, setLoadingProgress);
+        
+        setPerrosData(allData.bySpecies.Canino);
+        setGatosData(allData.bySpecies.Felino);
+        setAllData(allData.bySpecies.all);
+    } catch (error) {
+        console.error('Error fetching top customers:', error);
+    } finally {
+        setIsLoadingStats(false);
+        setLoadingProgress({ step: 'complete', progress: 100, message: 'Completado' });
+    }
+}, [period, topLimit]);
     useEffect(() => {
         fetchWeekSales(selectedDate);
     }, [selectedDate, fetchWeekSales]);

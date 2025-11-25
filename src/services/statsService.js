@@ -3,7 +3,7 @@ import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore
 
 const CACHE_DURATION = 10 * 60 * 1000;
 let statsCache = new Map();
-const BATCH_SIZE = 20;
+const BATCH_SIZE = 15;
 
 const getDateRange = (period) => {
     const now = new Date();
@@ -54,14 +54,14 @@ const calculateDecay = (dateTimestamp) => {
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-const fetchInBatches = async (patientIds, fetchFunction, progressCallback, baseProgress, progressRange) => {
+const fetchInBatches = async (items, fetchFunction, progressCallback, baseProgress, progressRange) => {
     const results = [];
-    const totalBatches = Math.ceil(patientIds.length / BATCH_SIZE);
+    const totalBatches = Math.ceil(items.length / BATCH_SIZE);
     
-    for (let i = 0; i < patientIds.length; i += BATCH_SIZE) {
-        const batch = patientIds.slice(i, i + BATCH_SIZE);
+    for (let i = 0; i < items.length; i += BATCH_SIZE) {
+        const batch = items.slice(i, i + BATCH_SIZE);
         const batchResults = await Promise.all(
-            batch.map(patientId => fetchFunction(patientId))
+            batch.map(item => fetchFunction(item))
         );
         results.push(...batchResults);
         
@@ -75,16 +75,28 @@ const fetchInBatches = async (patientIds, fetchFunction, progressCallback, baseP
             });
         }
         
-        if (i + BATCH_SIZE < patientIds.length) {
-            await sleep(100);
+        if (i + BATCH_SIZE < items.length) {
+            await sleep(80);
         }
     }
     
     return results;
 };
 
-export const calculateTopCustomers = async (speciesFilter, period, limit = 10, onProgress) => {
-    const cacheKey = `${speciesFilter}-${period}-${limit}`;
+const filterBySpecies = (tutorStats, speciesFilter) => {
+    if (speciesFilter === 'all') return tutorStats;
+    
+    return tutorStats.filter(stat => {
+        return stat.species.some(s => {
+            if (speciesFilter === 'Canino') return s === 'Canino' || s?.toLowerCase().includes('perro');
+            if (speciesFilter === 'Felino') return s === 'Felino' || s?.toLowerCase().includes('gato');
+            return false;
+        });
+    });
+};
+
+export const calculateAllTopCustomers = async (period, limit = 10, onProgress) => {
+    const cacheKey = `all-${period}-${limit}`;
     
     if (statsCache.has(cacheKey)) {
         const cached = statsCache.get(cacheKey);
@@ -95,28 +107,12 @@ export const calculateTopCustomers = async (speciesFilter, period, limit = 10, o
     }
 
     try {
-        if (onProgress) onProgress({ step: 'tutores', progress: 5, message: 'Cargando tutores...' });
-        
-        const tutoresSnap = await getDocs(collection(db, 'tutores'));
-        const tutores = tutoresSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        
-        if (onProgress) onProgress({ step: 'pacientes', progress: 10, message: 'Cargando pacientes...' });
-        
-        const pacientesSnap = await getDocs(collection(db, 'pacientes'));
-        const allPacientes = pacientesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        
-        const tutorPatientsMap = new Map();
-        allPacientes.forEach(p => {
-            if (!p.tutorId) return;
-            if (!tutorPatientsMap.has(p.tutorId)) {
-                tutorPatientsMap.set(p.tutorId, []);
-            }
-            tutorPatientsMap.get(p.tutorId).push(p);
-        });
-
-        if (onProgress) onProgress({ step: 'ventas', progress: 15, message: 'Analizando ventas...' });
+        if (onProgress) onProgress({ step: 'init', progress: 5, message: 'Inicializando...' });
         
         const dateRange = getDateRange(period);
+        
+        if (onProgress) onProgress({ step: 'ventas', progress: 10, message: 'Analizando ventas del período...' });
+        
         const salesQuery = query(
             collection(db, 'ventas_presenciales'),
             where('createdAt', '>=', dateRange.current.start),
@@ -133,68 +129,127 @@ export const calculateTopCustomers = async (speciesFilter, period, limit = 10, o
         const previousSalesSnap = await getDocs(previousSalesQuery);
         const previousSales = previousSalesSnap.docs.map(doc => doc.data());
 
-        if (onProgress) onProgress({ step: 'citas', progress: 20, message: 'Analizando citas...' });
+        const activeTutorIds = new Set(sales.map(s => s.tutorInfo?.id).filter(Boolean));
         
-        const citasQuery = query(
-            collection(db, 'citas'),
-            where('startTime', '>=', dateRange.current.start),
-            where('startTime', '<=', dateRange.current.end)
-        );
-        const citasSnap = await getDocs(citasQuery);
-        const allCitas = citasSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (activeTutorIds.size === 0) {
+            if (onProgress) onProgress({ step: 'complete', progress: 100, message: 'No hay ventas en este período' });
+            
+            const emptyResult = {
+                all: [],
+                bySpecies: {
+                    Canino: { bySpent: [], byFrequency: [], byEngagement: [], all: [] },
+                    Felino: { bySpent: [], byFrequency: [], byEngagement: [], all: [] },
+                    all: { bySpent: [], byFrequency: [], byEngagement: [], all: [] }
+                }
+            };
+            
+            return emptyResult;
+        }
 
-        const groomingQuery = query(
-            collection(db, 'turnos_peluqueria'),
-            where('startTime', '>=', dateRange.current.start),
-            where('startTime', '<=', dateRange.current.end)
-        );
-        const groomingSnap = await getDocs(groomingQuery);
+        if (onProgress) onProgress({ step: 'tutores', progress: 15, message: `Cargando ${activeTutorIds.size} tutores activos...` });
+        
+        const tutoresSnap = await getDocs(collection(db, 'tutores'));
+        const allTutores = tutoresSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const tutores = allTutores.filter(t => activeTutorIds.has(t.id));
+        
+        if (onProgress) onProgress({ step: 'pacientes', progress: 20, message: 'Cargando pacientes...' });
+        
+        const pacientesSnap = await getDocs(collection(db, 'pacientes'));
+        const allPacientes = pacientesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const activePacientes = allPacientes.filter(p => activeTutorIds.has(p.tutorId));
+        
+        const tutorPatientsMap = new Map();
+        activePacientes.forEach(p => {
+            if (!tutorPatientsMap.has(p.tutorId)) {
+                tutorPatientsMap.set(p.tutorId, []);
+            }
+            tutorPatientsMap.get(p.tutorId).push(p);
+        });
+
+        if (onProgress) onProgress({ step: 'citas', progress: 25, message: 'Cargando citas y servicios...' });
+        
+        const [citasSnap, groomingSnap] = await Promise.all([
+            getDocs(query(
+                collection(db, 'citas'),
+                where('startTime', '>=', dateRange.current.start),
+                where('startTime', '<=', dateRange.current.end)
+            )),
+            getDocs(query(
+                collection(db, 'turnos_peluqueria'),
+                where('startTime', '>=', dateRange.current.start),
+                where('startTime', '<=', dateRange.current.end)
+            ))
+        ]);
+        
+        const allCitas = citasSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         const allGrooming = groomingSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-        if (onProgress) onProgress({ step: 'engagement', progress: 25, message: 'Preparando carga de datos clínicos...' });
-
-        const patientIds = allPacientes.map(p => p.id);
-
-        if (onProgress) onProgress({ step: 'engagement', progress: 30, message: 'Cargando historias clínicas...' });
+        if (onProgress) onProgress({ step: 'historias', progress: 30, message: `Cargando datos clínicos (${activePacientes.length} pacientes)...` });
         
         const historiasData = await fetchInBatches(
-            patientIds,
-            (patientId) => getDocs(collection(db, `pacientes/${patientId}/clinical_history`))
-                .then(snap => ({ patientId, docs: snap.docs }))
-                .catch(() => ({ patientId, docs: [] })),
+            activePacientes,
+            async (patient) => {
+                try {
+                    const q = query(
+                        collection(db, `pacientes/${patient.id}/clinical_history`),
+                        where('createdAt', '>=', dateRange.current.start),
+                        where('createdAt', '<=', dateRange.current.end)
+                    );
+                    const snap = await getDocs(q);
+                    return { patientId: patient.id, docs: snap.docs };
+                } catch (error) {
+                    return { patientId: patient.id, docs: [] };
+                }
+            },
             onProgress,
             30,
             15
         );
 
-        if (onProgress) onProgress({ step: 'engagement', progress: 45, message: 'Cargando recetas...' });
+        if (onProgress) onProgress({ step: 'recetas', progress: 45, message: 'Cargando recetas...' });
         
         const recetasData = await fetchInBatches(
-            patientIds,
-            (patientId) => getDocs(collection(db, `pacientes/${patientId}/clinical_recipes`))
-                .then(snap => ({ patientId, docs: snap.docs }))
-                .catch(() => ({ patientId, docs: [] })),
+            activePacientes,
+            async (patient) => {
+                try {
+                    const q = query(
+                        collection(db, `pacientes/${patient.id}/clinical_recipes`),
+                        where('createdAt', '>=', dateRange.current.start),
+                        where('createdAt', '<=', dateRange.current.end)
+                    );
+                    const snap = await getDocs(q);
+                    return { patientId: patient.id, docs: snap.docs };
+                } catch (error) {
+                    return { patientId: patient.id, docs: [] };
+                }
+            },
             onProgress,
             45,
             15
         );
 
-        if (onProgress) onProgress({ step: 'engagement', progress: 60, message: 'Cargando vencimientos...' });
+        if (onProgress) onProgress({ step: 'vencimientos', progress: 60, message: 'Cargando vencimientos...' });
         
         const vencimientosData = await fetchInBatches(
-            patientIds,
-            (patientId) => getDocs(query(
-                collection(db, `pacientes/${patientId}/vencimientos`),
-                where('dueDate', '>=', dateRange.current.start)
-            ))
-            .then(snap => ({ patientId, docs: snap.docs }))
-            .catch(() => ({ patientId, docs: [] })),
+            activePacientes,
+            async (patient) => {
+                try {
+                    const q = query(
+                        collection(db, `pacientes/${patient.id}/vencimientos`),
+                        where('dueDate', '>=', dateRange.current.start)
+                    );
+                    const snap = await getDocs(q);
+                    return { patientId: patient.id, docs: snap.docs };
+                } catch (error) {
+                    return { patientId: patient.id, docs: [] };
+                }
+            },
             onProgress,
             60,
-            15
+            10
         );
 
-        if (onProgress) onProgress({ step: 'processing', progress: 75, message: 'Organizando datos...' });
+        if (onProgress) onProgress({ step: 'processing', progress: 70, message: 'Organizando datos...' });
 
         const historiasByPatient = new Map();
         historiasData.forEach(({ patientId, docs }) => {
@@ -211,26 +266,16 @@ export const calculateTopCustomers = async (speciesFilter, period, limit = 10, o
             vencimientosByPatient.set(patientId, docs);
         });
 
-        if (onProgress) onProgress({ step: 'calculating', progress: 80, message: 'Calculando rankings...' });
+        if (onProgress) onProgress({ step: 'calculating', progress: 75, message: 'Calculando estadísticas...' });
 
         const tutorStats = [];
         
-        for (let i = 0; i < tutores.length; i++) {
-            const tutor = tutores[i];
+        for (const tutor of tutores) {
             const tutorPatients = tutorPatientsMap.get(tutor.id) || [];
             
             if (tutorPatients.length === 0) continue;
 
             const patientSpecies = [...new Set(tutorPatients.map(p => p.species))];
-            
-            if (speciesFilter !== 'all') {
-                const hasMatchingSpecies = patientSpecies.some(s => {
-                    if (speciesFilter === 'Canino') return s === 'Canino' || s?.toLowerCase().includes('perro');
-                    if (speciesFilter === 'Felino') return s === 'Felino' || s?.toLowerCase().includes('gato');
-                    return false;
-                });
-                if (!hasMatchingSpecies) continue;
-            }
 
             const tutorSales = sales.filter(s => s.tutorInfo?.id === tutor.id);
             const totalSpent = tutorSales.reduce((sum, s) => sum + (s.total || 0), 0);
@@ -265,9 +310,8 @@ export const calculateTopCustomers = async (speciesFilter, period, limit = 10, o
 
                 const vencimientos = vencimientosByPatient.get(patient.id) || [];
                 vencimientoCount += vencimientos.length;
-                vencimientos.forEach(doc => {
-                    const weight = doc.data().supplied ? 1.5 : 1.5;
-                    engagementScore += weight;
+                vencimientos.forEach(() => {
+                    engagementScore += 1.5;
                 });
             }
 
@@ -311,14 +355,36 @@ export const calculateTopCustomers = async (speciesFilter, period, limit = 10, o
             });
         }
 
-        if (onProgress) onProgress({ step: 'complete', progress: 100, message: 'Completado!' });
+        if (onProgress) onProgress({ step: 'filtering', progress: 90, message: 'Generando rankings por especie...' });
+
+        const caninoStats = filterBySpecies(tutorStats, 'Canino');
+        const felinoStats = filterBySpecies(tutorStats, 'Felino');
 
         const result = {
-            bySpent: [...tutorStats].sort((a, b) => b.totalSpent - a.totalSpent).slice(0, limit),
-            byFrequency: [...tutorStats].sort((a, b) => b.purchaseCount - a.purchaseCount).slice(0, limit),
-            byEngagement: [...tutorStats].sort((a, b) => b.engagementScore - a.engagementScore).slice(0, limit),
-            all: tutorStats
+            all: tutorStats,
+            bySpecies: {
+                Canino: {
+                    bySpent: [...caninoStats].sort((a, b) => b.totalSpent - a.totalSpent).slice(0, limit),
+                    byFrequency: [...caninoStats].sort((a, b) => b.purchaseCount - a.purchaseCount).slice(0, limit),
+                    byEngagement: [...caninoStats].sort((a, b) => b.engagementScore - a.engagementScore).slice(0, limit),
+                    all: caninoStats
+                },
+                Felino: {
+                    bySpent: [...felinoStats].sort((a, b) => b.totalSpent - a.totalSpent).slice(0, limit),
+                    byFrequency: [...felinoStats].sort((a, b) => b.purchaseCount - a.purchaseCount).slice(0, limit),
+                    byEngagement: [...felinoStats].sort((a, b) => b.engagementScore - a.engagementScore).slice(0, limit),
+                    all: felinoStats
+                },
+                all: {
+                    bySpent: [...tutorStats].sort((a, b) => b.totalSpent - a.totalSpent).slice(0, limit),
+                    byFrequency: [...tutorStats].sort((a, b) => b.purchaseCount - a.purchaseCount).slice(0, limit),
+                    byEngagement: [...tutorStats].sort((a, b) => b.engagementScore - a.engagementScore).slice(0, limit),
+                    all: tutorStats
+                }
+            }
         };
+
+        if (onProgress) onProgress({ step: 'complete', progress: 100, message: 'Completado!' });
 
         statsCache.set(cacheKey, { data: result, timestamp: Date.now() });
 
