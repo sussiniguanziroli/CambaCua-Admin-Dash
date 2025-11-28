@@ -4,12 +4,10 @@ import { db } from '../../../firebase/config';
 import { FaTrash } from 'react-icons/fa';
 
 const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tutorName, pacienteName }) => {
-    // --- STATE REWORK ---
-    // selectedProduct (object) is now selectedProducts (array of objects)
-    const [selectedProducts, setSelectedProducts] = useState([]); // Array to hold { ...product, dosage: '', withSuministro: true }
+    const [selectedProducts, setSelectedProducts] = useState([]);
     
     const [dueDate, setDueDate] = useState('');
-    const [appliedDate, setAppliedDate] = useState(new Date().toISOString().split('T')[0]);
+    const [appliedDate, setAppliedDate] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
 
@@ -26,6 +24,24 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
     const [viewMode, setViewMode] = useState('presential');
     const [filters, setFilters] = useState({ text: '', tipo: 'todos', category: 'todas', status: 'true' });
     const [sort, setSort] = useState('name-asc');
+
+    const getLocalDateString = (date = new Date()) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const dateStringToLocalDate = (dateString) => {
+        const [year, month, day] = dateString.split('-').map(Number);
+        return new Date(year, month - 1, day);
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            setAppliedDate(getLocalDateString());
+        }
+    }, [isOpen]);
     
     const fetchData = useCallback(async () => {
         if (!isOpen) return;
@@ -44,10 +60,10 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
         if (dateInputMode === 'days' && daysAmount) {
             const days = parseInt(daysAmount);
             if (!isNaN(days) && days > 0) {
-                const today = new Date();
-                const futureDate = new Date(today);
-                futureDate.setDate(today.getDate() + days);
-                const formattedDate = futureDate.toISOString().split('T')[0];
+                const baseDate = appliedDate ? dateStringToLocalDate(appliedDate) : new Date();
+                const futureDate = new Date(baseDate);
+                futureDate.setDate(futureDate.getDate() + days);
+                const formattedDate = getLocalDateString(futureDate);
                 setCalculatedDate(formattedDate);
                 setDueDate(formattedDate);
             } else {
@@ -55,7 +71,7 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                 setDueDate('');
             }
         }
-    }, [daysAmount, dateInputMode]);
+    }, [daysAmount, dateInputMode, appliedDate]);
 
     const handleDateModeChange = (mode) => {
         setDateInputMode(mode);
@@ -71,16 +87,12 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
 
     const handleViewChange = (mode) => { setViewMode(mode); setSelectedProducts([]); setFilters({ text: '', tipo: 'todos', category: 'todas', status: 'true' }); };
 
-    // --- LOGIC FOR MULTI-PRODUCT SELECTION ---
-
     const handleProductSelect = (product) => {
         setSelectedProducts(prev => {
             const isSelected = prev.some(p => p.id === product.id);
             if (isSelected) {
-                // Remove product if already selected
                 return prev.filter(p => p.id !== product.id);
             } else {
-                // Add product with default settings
                 const newProduct = { ...product, dosage: '', withSuministro: true };
                 return [...prev, newProduct];
             }
@@ -121,7 +133,6 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
         e.preventDefault();
         if (selectedProducts.length === 0 || !dueDate || !appliedDate) { setError('Debe seleccionar al menos un producto, una fecha de aplicación y una fecha de vencimiento.'); return; }
         
-        // --- Validation for all selected products ---
         for (const product of selectedProducts) {
             if (product.isDoseable && (!product.dosage || parseFloat(product.dosage) <= 0)) {
                 setError(`Debe ingresar una dosis válida para "${product.name}".`);
@@ -134,8 +145,14 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
         
         try {
             const batch = writeBatch(db);
-            const appliedTimestamp = Timestamp.fromDate(new Date(appliedDate));
-            const dueTimestamp = Timestamp.fromDate(new Date(dueDate));
+            const appliedLocalDate = dateStringToLocalDate(appliedDate);
+            const dueLocalDate = dateStringToLocalDate(dueDate);
+            
+            appliedLocalDate.setHours(12, 0, 0, 0);
+            dueLocalDate.setHours(12, 0, 0, 0);
+            
+            const appliedTimestamp = Timestamp.fromDate(appliedLocalDate);
+            const dueTimestamp = Timestamp.fromDate(dueLocalDate);
 
             for (const product of selectedProducts) {
                 const commonData = {
@@ -148,7 +165,6 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                     appliedDosage: product.isDoseable ? `${product.dosage} ml` : null,
                 };
 
-                // 1. Create the Future Vencimiento (Always)
                 const vencimientoRef = doc(collection(db, `pacientes/${pacienteId}/vencimientos`));
                 batch.set(vencimientoRef, {
                     ...commonData,
@@ -159,16 +175,15 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                     suppliedDate: null,
                 });
 
-                // 2. Create the Baseline Suministro (Optional)
                 if (product.withSuministro) {
                     const suministroRef = doc(collection(db, `pacientes/${pacienteId}/vencimientos`));
                     batch.set(suministroRef, {
                         ...commonData,
                         appliedDate: appliedTimestamp,
-                        dueDate: appliedTimestamp, // The "due date" is the day it was applied
+                        dueDate: appliedTimestamp,
                         status: 'suministrado', 
                         supplied: true,
-                        suppliedDate: appliedTimestamp, // Supplied on the same day
+                        suppliedDate: appliedTimestamp,
                     });
                 }
             }
@@ -185,9 +200,9 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
     };
     
     const handleClose = () => {
-        setSelectedProducts([]); // Reset array
+        setSelectedProducts([]);
         setDueDate('');
-        setAppliedDate(new Date().toISOString().split('T')[0]);
+        setAppliedDate('');
         setFilters({ text: '', tipo: 'todos', category: 'todas', status: 'true' });
         setDateInputMode('picker');
         setDaysAmount('');
@@ -203,22 +218,18 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
             <div className="agenda-modal-content vencimiento-modal expanded">
                 <div className="modal-header"><h3>Agregar Vencimiento Manual</h3><button className="close-btn" onClick={handleClose}>&times;</button></div>
                 <form onSubmit={handleSubmit} className="vencimiento-form-layout">
-                    {/* --- PRODUCT SELECTOR --- */}
                     <div className="vencimiento-product-selector">
                         <div className="vencimiento-view-switcher"><button type="button" onClick={() => handleViewChange('presential')} className={viewMode === 'presential' ? 'active' : ''}>Items Presenciales</button><button type="button" onClick={() => handleViewChange('online')} className={viewMode === 'online' ? 'active' : ''}>Productos Online</button></div>
                         <div className="vencimiento-filters"><input className="filter-input" type="text" name="text" placeholder="Buscar..." value={filters.text} onChange={handleFilterChange} />{viewMode === 'presential' ? (<><select className="filter-select" name="tipo" value={filters.tipo} onChange={handleFilterChange}><option value="todos">Todos</option><option value="producto">Producto</option><option value="servicio">Servicio</option></select><select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange} disabled={filters.tipo === 'todos'}><option value="todas">Categorías</option>{(filters.tipo === 'servicio' ? serviceCategories : categories).map(c => <option key={c.adress} value={c.adress}>{c.nombre}</option>)}</select></>) : (<><select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}><option value="todas">Categorías Online</option>{categories.map(c => <option key={c.adress} value={c.adress}>{c.nombre}</option>)}</select><select className="filter-select" name="status" value={filters.status} onChange={handleFilterChange}><option value="true">Activos</option><option value="false">Inactivos</option></select></>)}</div>
                         <div className="vencimiento-items-grid">{isLoading ? <p>Cargando...</p> : filteredAndSortedData.map(item => (<div key={item.id} 
-                            // Check if item.id is in the selectedProducts array
                             className={`vencimiento-item-card ${selectedProducts.some(p => p.id === item.id) ? 'selected' : ''}`} 
                             onClick={() => handleProductSelect(item)}
                         ><span className="item-name">{item.name}</span><strong className="item-price">${(item.price || 0).toFixed(2)}</strong></div>))}</div>
                     </div>
 
-                    {/* --- DETAILS SECTION --- */}
                     <div className="vencimiento-details-section">
                         <h4>Detalles del Vencimiento</h4>
                         
-                        {/* --- NEW: Selected Products List --- */}
                         <div className="selected-products-list">
                             {selectedProducts.length === 0 ? (
                                 <p className="no-products-message">Seleccione uno o más productos de la lista.</p>
@@ -287,7 +298,7 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                                 {calculatedDate && (
                                     <div className="calculated-date-display">
                                         <strong>Fecha Calculada:</strong>
-                                        <p>{new Date(calculatedDate).toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                        <p>{dateStringToLocalDate(calculatedDate).toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
                                     </div>
                                 )}
                             </>
