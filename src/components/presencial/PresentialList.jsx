@@ -78,7 +78,6 @@ const PresentialList = () => {
   const [isBulkUpdating, setIsBulkUpdating] = useState(false);
 
   const fetchItemsAndCategories = useCallback(async () => {
-    // ... (Data fetching logic is unchanged) ...
     setIsLoading(true);
     setError(null);
     try {
@@ -119,25 +118,23 @@ const PresentialList = () => {
     fetchItemsAndCategories();
   }, [fetchItemsAndCategories]);
 
-  // --- All other logic (filtering, pagination math, handlers) is unchanged ---
-  // ... (useEffect for filtering) ...
-  // ... (useEffect for pagination logic) ...
-  // ... (handleFilterChange, clearFilters, handlePageChange) ...
-  // ... (handleItemSelect, handleSelectAllVisible) ...
-  // ... (parseModifier, handleApplyBulkPriceUpdate, handleBulkDelete, deleteItem) ...
-  // ... (resolveCategoryName) ...
-
   useEffect(() => {
     let tempItems = [...items];
     if (filters.text) {
       const lowerText = filters.text.toLowerCase();
-      tempItems = tempItems.filter(
-        (item) =>
-          (item.name && item.name.toLowerCase().includes(lowerText)) ||
-          (item.description &&
-            item.description.toLowerCase().includes(lowerText))
-      );
+      
+      // Enhanced Filter Logic: Includes Name, Description, KeyCode, and Barcode
+      tempItems = tempItems.filter((item) => {
+        const matchName = item.name && item.name.toLowerCase().includes(lowerText);
+        const matchDesc = item.description && item.description.toLowerCase().includes(lowerText);
+        // Flexible checks for keyCode and barcode (convert to string first safely)
+        const matchKeyCode = item.keyCode && String(item.keyCode).toLowerCase().includes(lowerText);
+        const matchBarcode = item.barcode && String(item.barcode).toLowerCase().includes(lowerText);
+
+        return matchName || matchDesc || matchKeyCode || matchBarcode;
+      });
     }
+    
     if (filters.tipo !== "todos") {
       tempItems = tempItems.filter((item) => item.tipo === filters.tipo);
     }
@@ -425,7 +422,7 @@ const PresentialList = () => {
             name="text"
             value={filters.text}
             onChange={handleFilterChange}
-            placeholder="Nombre o descripción..."
+            placeholder="Nombre, código o barra..."
           />
         </div>
         <div className="item-list__filter-group">

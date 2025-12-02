@@ -110,6 +110,9 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                     displayName: data.name || data.nombre,
                     displayPrice: data.price || data.precio,
                     displayCategory: data.category || data.categoria,
+                    // Ensure keyCode and barcode are preserved if they exist
+                    keyCode: data.keyCode,
+                    barcode: data.barcode
                 };
             });
             
@@ -153,11 +156,16 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
         const lowerText = filters.text.toLowerCase();
         
         if (filters.text) { 
-            tempItems = tempItems.filter(p => 
-                (p.displayName && p.displayName.toLowerCase().includes(lowerText)) || 
-                (p.displayCategory && p.displayCategory.toLowerCase().includes(lowerText)) || 
-                (p.subcategoria && p.subcategoria.toLowerCase().includes(lowerText))
-            ); 
+            tempItems = tempItems.filter(p => {
+                const matchName = p.displayName && p.displayName.toLowerCase().includes(lowerText);
+                const matchCategory = p.displayCategory && p.displayCategory.toLowerCase().includes(lowerText);
+                const matchSub = p.subcategoria && p.subcategoria.toLowerCase().includes(lowerText);
+                // Enhanced Search: Check keyCode and barcode flexibly
+                const matchKeyCode = p.keyCode && String(p.keyCode).toLowerCase().includes(lowerText);
+                const matchBarcode = p.barcode && String(p.barcode).toLowerCase().includes(lowerText);
+
+                return matchName || matchCategory || matchSub || matchKeyCode || matchBarcode;
+            }); 
         }
         
         if (filters.tipo !== 'todos') {
