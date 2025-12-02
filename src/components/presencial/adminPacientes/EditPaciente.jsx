@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc, collection, getDocs, deleteField } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
 import Swal from 'sweetalert2';
+import TransferPacienteModal from './TransferPacienteModal';
 
 const EditPaciente = () => {
     const { id } = useParams();
@@ -10,13 +11,14 @@ const EditPaciente = () => {
     const [pacienteData, setPacienteData] = useState({
         name: '', species: '', breed: '', birthDate: '', gender: 'Macho',
         weight: '', chipNumber: '', tutorName: '', fallecido: false, 
-        fechaFallecimiento: '', serviceTypes: [],
+        fechaFallecimiento: '', serviceTypes: [], tutorId: '',
     });
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [especiesData, setEspeciesData] = useState({});
     const [razas, setRazas] = useState([]);
     const [isLoadingEspecies, setIsLoadingEspecies] = useState(true);
+    const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
 
     const fetchEspeciesYRazas = useCallback(async () => {
         setIsLoadingEspecies(true);
@@ -36,7 +38,8 @@ const EditPaciente = () => {
                     ...data,
                     serviceTypes: data.serviceTypes || [],
                     fallecido: data.fallecido || false,
-                    fechaFallecimiento: data.fechaFallecimiento || ''
+                    fechaFallecimiento: data.fechaFallecimiento || '',
+                    tutorId: data.tutorId || ''
                 });
                 if (data.species && fetchedEspeciesData[data.species]) { setRazas(fetchedEspeciesData[data.species]); }
             } else { Swal.fire('Error', 'Paciente no encontrado.', 'error'); navigate('/admin/pacientes'); }
@@ -67,7 +70,7 @@ const EditPaciente = () => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            const { tutorName, createdAt, clinicalHistory, ...dataToUpdate } = pacienteData;
+            const { tutorName, createdAt, clinicalHistory, tutorId, ...dataToUpdate } = pacienteData;
             if (dataToUpdate.fallecido) { dataToUpdate.fechaFallecimiento = dataToUpdate.fechaFallecimiento || new Date().toISOString().split('T')[0]; } 
             else { dataToUpdate.fallecido = deleteField(); dataToUpdate.fechaFallecimiento = deleteField(); }
             await updateDoc(doc(db, 'pacientes', id), dataToUpdate);
@@ -75,6 +78,12 @@ const EditPaciente = () => {
             navigate(`/admin/paciente-profile/${id}`);
         } catch (error) { Swal.fire('Error', 'No se pudo actualizar el paciente.', 'error');
         } finally { setIsSubmitting(false); }
+    };
+
+    const handleTransferComplete = async () => {
+        const fetchedEspeciesData = await fetchEspeciesYRazas();
+        await fetchPaciente(fetchedEspeciesData);
+        setIsTransferModalOpen(false);
     };
 
     if (isLoading) return <p className="loading-message">Cargando...</p>;
@@ -85,7 +94,20 @@ const EditPaciente = () => {
             <form onSubmit={handleSubmit} className="paciente-styled-form">
                 <fieldset className="paciente-form-fieldset">
                     <legend>Información Básica</legend>
-                    <div className="paciente-form-group"><label>Tutor</label><input type="text" value={pacienteData.tutorName || 'N/A'} readOnly disabled /></div>
+                    <div className="paciente-form-group">
+                        <label>Tutor</label>
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                            <input type="text" value={pacienteData.tutorName || 'N/A'} readOnly disabled style={{ flex: 1 }} />
+                            <button 
+                                type="button" 
+                                className="btn btn-secondary" 
+                                onClick={() => setIsTransferModalOpen(true)}
+                                style={{ whiteSpace: 'nowrap' }}
+                            >
+                                Transferir
+                            </button>
+                        </div>
+                    </div>
                     <div className="paciente-form-group"><label htmlFor="name">Nombre</label><input id="name" name="name" type="text" value={pacienteData.name} onChange={handleChange} required /></div>
                     <div className="paciente-form-row"><div className="paciente-form-group"><label htmlFor="species">Especie</label><select id="species" name="species" value={pacienteData.species} onChange={handleChange} required disabled={isLoadingEspecies}><option value="">{isLoadingEspecies ? 'Cargando...' : 'Seleccionar Especie'}</option>{Object.keys(especiesData).map(especie => <option key={especie} value={especie}>{especie}</option>)}</select></div><div className="paciente-form-group"><label htmlFor="breed">Raza</label><select id="breed" name="breed" value={pacienteData.breed} onChange={handleChange} disabled={!pacienteData.species}><option value="">Seleccionar Raza</option>{razas.map(raza => <option key={raza} value={raza}>{raza}</option>)}</select></div></div>
                     <div className="paciente-form-row"><div className="paciente-form-group"><label htmlFor="birthDate">Fecha de Nacimiento</label><input id="birthDate" name="birthDate" type="date" value={pacienteData.birthDate} onChange={handleChange} /></div><div className="paciente-form-group"><label htmlFor="gender">Sexo</label><select id="gender" name="gender" value={pacienteData.gender} onChange={handleChange}><option value="Macho">Macho</option><option value="Hembra">Hembra</option></select></div></div>
@@ -99,6 +121,13 @@ const EditPaciente = () => {
                 </fieldset>
                 <div className="paciente-form-actions"><button type="submit" className="paciente-form-submit-btn" disabled={isSubmitting}>{isSubmitting ? 'Actualizando...' : 'Actualizar Paciente'}</button></div>
             </form>
+
+            <TransferPacienteModal
+                isOpen={isTransferModalOpen}
+                onClose={() => setIsTransferModalOpen(false)}
+                paciente={{ ...pacienteData, id }}
+                onTransferComplete={handleTransferComplete}
+            />
         </div>
     );
 };
