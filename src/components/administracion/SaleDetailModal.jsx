@@ -9,6 +9,12 @@ const SaleDetailModal = ({ sale, onClose }) => {
   if (!sale) return null;
 
   const isDebtPayment = sale.type === 'Cobro Deuda';
+  
+  const paymentsArray = (sale.payments && sale.payments.length > 0) 
+    ? sale.payments 
+    : (sale.salePayments || []);
+  
+  const totalPaid = paymentsArray.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
 
   const downloadPDF = async () => {
     try {
@@ -52,7 +58,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
             if (it.discountAmount > 0) {
                 name += ` (Dto: -$${it.discountAmount.toFixed(2)})`;
             }
-            const price = `$${it.price.toFixed(2)}`; // 'price' es el subtotal final del item
+            const price = `$${it.price.toFixed(2)}`;
             return [quantity, name, price];
         });
 
@@ -61,7 +67,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
           y = doc.lastAutoTable.finalY + 15;
         }
         
-        const payments = (sale.payments || []).map(p => [p.method || '-', `$${parseFloat(p.amount ?? 0).toFixed(2)}`]);
+        const payments = paymentsArray.map(p => [p.method || '-', `$${parseFloat(p.amount ?? 0).toFixed(2)}`]);
         if (payments.length > 0) {
           autoTable(doc, { startY: y, head: [['Método', 'Monto']], body: payments, margin: { left: margin, right: margin } });
           y = doc.lastAutoTable.finalY + 15;
@@ -74,10 +80,15 @@ const SaleDetailModal = ({ sale, onClose }) => {
                 doc.text(`Descuentos: -$${(sale.discount || 0).toFixed(2)}`, margin, y); y += 20;
             }
         }
-        if ((sale.debt || 0) > 0) { doc.text(`Deuda Generada: $${sale.debt.toFixed(2)}`, margin, y); y += 20; }
+        
+        doc.text(`Total Venta: $${(sale.total ?? 0).toFixed(2)}`, margin, y); y += 20;
+        doc.text(`Total Pagado: $${totalPaid.toFixed(2)}`, margin, y); y += 20;
+        
+        if ((sale.debt || 0) > 0) { 
+            doc.text(`Deuda Restante: $${sale.debt.toFixed(2)}`, margin, y); y += 20; 
+        }
         
         doc.setFontSize(14);
-        doc.text(`Total Venta: $${(sale.total ?? 0).toFixed(2)}`, margin, y);
       }
       
       doc.save(`Recibo_CambaCuaVet_${sale.id}.pdf`);
@@ -114,7 +125,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
             return `<tr><td>${quantity}</td><td>${name}</td><td>$${(it.price ?? 0).toFixed(2)}</td></tr>`;
         }).join('') || '<tr><td colspan="3">No hay items</td></tr>';
 
-        const paymentsHtml = (sale.payments || []).map(p => `<tr><td>${p.method}</td><td>$${parseFloat(p.amount ?? 0).toFixed(2)}</td></tr>`).join('') || '<tr><td colspan="2">No hay pagos</td></tr>';
+        const paymentsHtml = paymentsArray.map(p => `<tr><td>${p.method}</td><td>$${parseFloat(p.amount ?? 0).toFixed(2)}</td></tr>`).join('') || '<tr><td colspan="2">No se registraron pagos.</td></tr>';
         
         content = `
             <h3>Items</h3>
@@ -125,8 +136,9 @@ const SaleDetailModal = ({ sale, onClose }) => {
             <div class="total-summary">
                 ${sale.subtotal ? `<p>Subtotal: $${(sale.subtotal || 0).toFixed(2)}</p>` : ''}
                 ${(sale.discount || 0) > 0 ? `<p>Descuentos: -$${(sale.discount || 0).toFixed(2)}</p>` : ''}
-                ${(sale.debt || 0) > 0 ? `<p>Deuda Generada: $${sale.debt.toFixed(2)}</p>` : ''}
                 <p class="total">Total Venta: $${(sale.total ?? 0).toFixed(2)}</p>
+                <p>Total Pagado: $${totalPaid.toFixed(2)}</p>
+                ${(sale.debt || 0) > 0 ? `<p style="color:#e74c3c;font-weight:600">Deuda Restante: $${sale.debt.toFixed(2)}</p>` : ''}
             </div>
         `;
     }
@@ -191,8 +203,8 @@ const SaleDetailModal = ({ sale, onClose }) => {
               {isDebtPayment ? (
                   <li><span>{sale.paymentMethod}</span><strong>${(sale.amount || 0).toFixed(2)}</strong></li>
               ) : (
-                  (sale.payments || []).length > 0 
-                  ? sale.payments.map((p, index) => (<li key={p.id || index}><span>{p.method}</span><strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong></li>))
+                  paymentsArray.length > 0 
+                  ? paymentsArray.map((p, index) => (<li key={p.id || index}><span>{p.method}</span><strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong></li>))
                   : <li>No se registraron pagos.</li>
               )}
             </ul>
@@ -204,14 +216,17 @@ const SaleDetailModal = ({ sale, onClose }) => {
             <p className="sale-detail-total"><span>Monto Cobrado:</span> <strong>${(sale.amount || 0).toFixed(2)}</strong></p>
           ) : (
             <>
-              {totalDiscount > 0 && (
+              {subtotal && (
                 <>
                   <p className="sale-detail-row"><span>Subtotal:</span> <strong>${subtotal.toFixed(2)}</strong></p>
-                  <p className="sale-detail-row discount"><span>Descuentos:</span> <strong>-${totalDiscount.toFixed(2)}</strong></p>
+                  {totalDiscount > 0 && (
+                    <p className="sale-detail-row discount"><span>Descuentos:</span> <strong>-${totalDiscount.toFixed(2)}</strong></p>
+                  )}
                 </>
               )}
-              {(sale.debt || 0) > 0 && <p className="sale-detail-row debt"><span>Deuda Generada:</span> <strong>${sale.debt.toFixed(2)}</strong></p>}
               <p className="sale-detail-total"><span>Total Venta:</span> <strong>${(sale.total ?? 0).toFixed(2)}</strong></p>
+              <p className="sale-detail-row"><span>Total Pagado:</span> <strong>${totalPaid.toFixed(2)}</strong></p>
+              {(sale.debt || 0) > 0 && <p className="sale-detail-row debt"><span>Deuda Restante:</span> <strong>${sale.debt.toFixed(2)}</strong></p>}
             </>
           )}
         </div>
