@@ -35,9 +35,10 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
 
         try {
             const batch = writeBatch(db);
+            const paymentTimestamp = Timestamp.now();
 
-            const pagoRef = doc(collection(db, 'pagos_deuda'));
-            batch.set(pagoRef, {
+            const cobroRef = doc(collection(db, 'cobros_deuda'));
+            batch.set(cobroRef, {
                 tutorId: sale.tutorInfo.id,
                 tutorName: sale.tutorInfo.name,
                 patientId: sale.patientInfo?.id || null,
@@ -46,7 +47,7 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
                 paymentMethod: paymentMethod,
                 saleId: sale.id,
                 saleType: sale.type,
-                createdAt: Timestamp.now(),
+                createdAt: paymentTimestamp,
                 type: 'Cobro Deuda'
             });
 
@@ -55,10 +56,10 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
             const updatedPayments = [
                 ...currentPayments,
                 {
-                    id: pagoRef.id,
+                    id: cobroRef.id,
                     amount: paymentAmount,
                     method: paymentMethod,
-                    date: Timestamp.now()
+                    date: paymentTimestamp
                 }
             ];
 

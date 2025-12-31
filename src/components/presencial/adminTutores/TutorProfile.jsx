@@ -38,13 +38,14 @@ const PaymentModal = ({ tutor, onClose, onPaymentSuccess, setAlertInfo }) => {
     setIsSubmitting(true);
     try {
       const batch = writeBatch(db);
-      const paymentRef = doc(collection(db, "pagos_deuda"));
+      const paymentRef = doc(collection(db, "cobros_deuda"));
       batch.set(paymentRef, {
         tutorId: tutor.id,
         tutorName: tutor.name,
         amount: paymentAmount,
         paymentMethod,
         createdAt: serverTimestamp(),
+        type: "Cobro Deuda"
       });
       const tutorRef = doc(db, "tutores", tutor.id);
       batch.update(tutorRef, { accountBalance: increment(paymentAmount) });
@@ -172,7 +173,7 @@ const TutorProfile = () => {
       const [pacientesSnap, salesSnap, paymentsSnap, citasSnap, groomingSnap, adjustmentsSnap] = await Promise.all([
         getDocs(query(collection(db, "pacientes"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "ventas_presenciales"), where("tutorInfo.id", "==", id))),
-        getDocs(query(collection(db, "pagos_deuda"), where("tutorId", "==", id))),
+        getDocs(query(collection(db, "cobros_deuda"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "citas"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "turnos_peluqueria"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "ajustes_cuenta"), where("tutorId", "==", id))),

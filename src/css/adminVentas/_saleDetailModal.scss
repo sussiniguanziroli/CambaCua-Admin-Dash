@@ -101,6 +101,21 @@
         margin: 0 0 1rem 0;
         color: $primary-dark;
     }
+    
+    .sale-detail-payments-list {
+        li {
+          .payment-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            
+            .payment-date {
+              font-size: 0.8rem;
+              color: $text-light;
+            }
+          }
+        }
+      }
 }
 
 .sale-detail-item-list {
@@ -216,3 +231,4 @@
         padding: 0.75rem 1rem;
     }
 }
+

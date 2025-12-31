@@ -67,9 +67,13 @@ const SaleDetailModal = ({ sale, onClose }) => {
           y = doc.lastAutoTable.finalY + 15;
         }
         
-        const payments = paymentsArray.map(p => [p.method || '-', `$${parseFloat(p.amount ?? 0).toFixed(2)}`]);
+        const payments = paymentsArray.map(p => {
+            const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
+            return [p.method || '-', paymentDate, `$${parseFloat(p.amount ?? 0).toFixed(2)}`];
+        });
+        
         if (payments.length > 0) {
-          autoTable(doc, { startY: y, head: [['Método', 'Monto']], body: payments, margin: { left: margin, right: margin } });
+          autoTable(doc, { startY: y, head: [['Método', 'Fecha', 'Monto']], body: payments, margin: { left: margin, right: margin } });
           y = doc.lastAutoTable.finalY + 15;
         }
 
@@ -125,13 +129,16 @@ const SaleDetailModal = ({ sale, onClose }) => {
             return `<tr><td>${quantity}</td><td>${name}</td><td>$${(it.price ?? 0).toFixed(2)}</td></tr>`;
         }).join('') || '<tr><td colspan="3">No hay items</td></tr>';
 
-        const paymentsHtml = paymentsArray.map(p => `<tr><td>${p.method}</td><td>$${parseFloat(p.amount ?? 0).toFixed(2)}</td></tr>`).join('') || '<tr><td colspan="2">No se registraron pagos.</td></tr>';
+        const paymentsHtml = paymentsArray.map(p => {
+            const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
+            return `<tr><td>${p.method}</td><td>${paymentDate}</td><td>$${parseFloat(p.amount ?? 0).toFixed(2)}</td></tr>`;
+        }).join('') || '<tr><td colspan="3">No se registraron pagos.</td></tr>';
         
         content = `
             <h3>Items</h3>
             <table><thead><tr><th>Cant.</th><th>Item</th><th>Subtotal</th></tr></thead><tbody>${itemsHtml}</tbody></table>
             <h3>Pagos</h3>
-            <table><thead><tr><th>Método</th><th>Monto</th></tr></thead><tbody>${paymentsHtml}</tbody></table>
+            <table><thead><tr><th>Método</th><th>Fecha</th><th>Monto</th></tr></thead><tbody>${paymentsHtml}</tbody></table>
             
             <div class="total-summary">
                 ${sale.subtotal ? `<p>Subtotal: $${(sale.subtotal || 0).toFixed(2)}</p>` : ''}
@@ -199,12 +206,26 @@ const SaleDetailModal = ({ sale, onClose }) => {
           )}
           <div className="sale-detail-section">
             <h4>{isDebtPayment ? 'Pago Recibido' : 'Pagos'}</h4>
-            <ul className="sale-detail-item-list">
+            <ul className="sale-detail-item-list sale-detail-payments-list">
               {isDebtPayment ? (
-                  <li><span>{sale.paymentMethod}</span><strong>${(sale.amount || 0).toFixed(2)}</strong></li>
+                  <li>
+                    <div className="payment-info">
+                      <span>{sale.paymentMethod}</span>
+                      <span className="payment-date">{sale.createdAt?.toDate ? sale.createdAt.toDate().toLocaleDateString('es-AR') : '-'}</span>
+                    </div>
+                    <strong>${(sale.amount || 0).toFixed(2)}</strong>
+                  </li>
               ) : (
                   paymentsArray.length > 0 
-                  ? paymentsArray.map((p, index) => (<li key={p.id || index}><span>{p.method}</span><strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong></li>))
+                  ? paymentsArray.map((p, index) => (
+                      <li key={p.id || index}>
+                        <div className="payment-info">
+                          <span>{p.method}</span>
+                          <span className="payment-date">{p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-'}</span>
+                        </div>
+                        <strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong>
+                      </li>
+                    ))
                   : <li>No se registraron pagos.</li>
               )}
             </ul>
