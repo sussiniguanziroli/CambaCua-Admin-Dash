@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { FaCcVisa, FaCcMastercard, FaCreditCard, FaMoneyBillWave, FaExchangeAlt } from 'react-icons/fa';
-import { Timestamp } from 'firebase/firestore';
 
 const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
     const [payments, setPayments] = useState(saleData.payments || []);
@@ -62,15 +61,13 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
     };
 
     const handleNext = () => {
-        const paymentTimestamp = Timestamp.now();
-        
         let finalPayments = payments
             .filter(p => parseFloat(p.amount || 0) !== 0)
             .map(p => ({
                 id: p.id,
                 method: p.method,
                 amount: parseFloat(p.amount),
-                date: paymentTimestamp,
+                date: saleData.saleTimestamp,
                 cardType: p.cardType || null,
                 surchargeAmount: p.surchargeAmount || 0,
                 surchargePercent: p.surchargePercent || 0
@@ -85,7 +82,7 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
                 id: `vuelto-${Date.now()}`,
                 method: 'Efectivo',
                 amount: -vuelto,
-                date: paymentTimestamp,
+                date: saleData.saleTimestamp,
                 isVuelto: true
             });
             
