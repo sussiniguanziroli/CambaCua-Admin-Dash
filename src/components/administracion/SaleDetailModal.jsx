@@ -10,11 +10,12 @@ const SaleDetailModal = ({ sale, onClose }) => {
 
   const isDebtPayment = sale.type === 'Cobro Deuda';
   
-  const paymentsArray = (sale.payments && sale.payments.length > 0) 
-    ? sale.payments 
-    : (sale.salePayments || []);
+  const paymentsArray = sale.payments || [];
+  const debtPaymentsArray = sale.debtPayments || [];
+  const legacyPayments = sale.salePayments || [];
   
   const totalPaid = paymentsArray.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
+  const totalDebtPaid = debtPaymentsArray.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
 
   const downloadPDF = async () => {
     try {
@@ -67,13 +68,31 @@ const SaleDetailModal = ({ sale, onClose }) => {
           y = doc.lastAutoTable.finalY + 15;
         }
         
-        const payments = paymentsArray.map(p => {
-            const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
-            return [p.method || '-', paymentDate, `$${parseFloat(p.amount ?? 0).toFixed(2)}`];
-        });
+        if (paymentsArray.length > 0) {
+          doc.setFontSize(14);
+          doc.text('Pagos Iniciales:', margin, y); y += 20;
+          doc.setFontSize(12);
+          
+          const initialPayments = paymentsArray.map(p => {
+              const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
+              return [p.method || '-', paymentDate, `$${parseFloat(p.amount ?? 0).toFixed(2)}`];
+          });
+          
+          autoTable(doc, { startY: y, head: [['Método', 'Fecha', 'Monto']], body: initialPayments, margin: { left: margin, right: margin } });
+          y = doc.lastAutoTable.finalY + 15;
+        }
         
-        if (payments.length > 0) {
-          autoTable(doc, { startY: y, head: [['Método', 'Fecha', 'Monto']], body: payments, margin: { left: margin, right: margin } });
+        if (debtPaymentsArray.length > 0) {
+          doc.setFontSize(14);
+          doc.text('Cobros Posteriores:', margin, y); y += 20;
+          doc.setFontSize(12);
+          
+          const debtPayments = debtPaymentsArray.map(p => {
+              const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
+              return [p.method || '-', paymentDate, `$${parseFloat(p.amount ?? 0).toFixed(2)}`];
+          });
+          
+          autoTable(doc, { startY: y, head: [['Método', 'Fecha', 'Monto']], body: debtPayments, margin: { left: margin, right: margin } });
           y = doc.lastAutoTable.finalY + 15;
         }
 
@@ -86,7 +105,10 @@ const SaleDetailModal = ({ sale, onClose }) => {
         }
         
         doc.text(`Total Venta: $${(sale.total ?? 0).toFixed(2)}`, margin, y); y += 20;
-        doc.text(`Total Pagado: $${totalPaid.toFixed(2)}`, margin, y); y += 20;
+        doc.text(`Pagado Inicialmente: $${totalPaid.toFixed(2)}`, margin, y); y += 20;
+        if (totalDebtPaid > 0) {
+            doc.text(`Cobrado Posteriormente: $${totalDebtPaid.toFixed(2)}`, margin, y); y += 20;
+        }
         
         if ((sale.debt || 0) > 0) { 
             doc.text(`Deuda Restante: $${sale.debt.toFixed(2)}`, margin, y); y += 20; 
@@ -108,7 +130,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
   };
 
   const buildPrintableHtml = () => {
-    const style = `<style>body{font-family:Arial,sans-serif;padding:20px;color:#111}h1{font-size:24px;margin:0}h2{font-size:18px;margin-top:2rem;border-bottom:1px solid #ccc;padding-bottom:5px}h3{margin-top:1.5rem}table{width:100%;border-collapse:collapse;margin-bottom:12px}th,td{text-align:left;padding:6px;border-bottom:1px solid #ddd}.total-summary p{margin:4px 0;text-align:right}.total-summary .total{font-weight:700;font-size:1.2rem;margin-top:1.5rem}</style>`;
+    const style = `<style>body{font-family:Arial,sans-serif;padding:20px;color:#111}h1{font-size:24px;margin:0}h2{font-size:18px;margin-top:2rem;border-bottom:1px solid #ccc;padding-bottom:5px}h3{margin-top:1.5rem}h4{margin-top:1rem;color:#666}table{width:100%;border-collapse:collapse;margin-bottom:12px}th,td{text-align:left;padding:6px;border-bottom:1px solid #ddd}.total-summary p{margin:4px 0;text-align:right}.total-summary .total{font-weight:700;font-size:1.2rem;margin-top:1.5rem}</style>`;
     
     let content;
     if (isDebtPayment) {
@@ -129,22 +151,38 @@ const SaleDetailModal = ({ sale, onClose }) => {
             return `<tr><td>${quantity}</td><td>${name}</td><td>$${(it.price ?? 0).toFixed(2)}</td></tr>`;
         }).join('') || '<tr><td colspan="3">No hay items</td></tr>';
 
-        const paymentsHtml = paymentsArray.map(p => {
-            const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
-            return `<tr><td>${p.method}</td><td>${paymentDate}</td><td>$${parseFloat(p.amount ?? 0).toFixed(2)}</td></tr>`;
-        }).join('') || '<tr><td colspan="3">No se registraron pagos.</td></tr>';
+        const initialPaymentsHtml = paymentsArray.length > 0 
+          ? paymentsArray.map(p => {
+              const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
+              return `<tr><td>${p.method}</td><td>${paymentDate}</td><td>$${parseFloat(p.amount ?? 0).toFixed(2)}</td></tr>`;
+            }).join('')
+          : '<tr><td colspan="3">No se registraron pagos iniciales.</td></tr>';
+        
+        const debtPaymentsHtml = debtPaymentsArray.length > 0
+          ? debtPaymentsArray.map(p => {
+              const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
+              return `<tr><td>${p.method}</td><td>${paymentDate}</td><td>$${parseFloat(p.amount ?? 0).toFixed(2)}</td></tr>`;
+            }).join('')
+          : '';
         
         content = `
             <h3>Items</h3>
             <table><thead><tr><th>Cant.</th><th>Item</th><th>Subtotal</th></tr></thead><tbody>${itemsHtml}</tbody></table>
-            <h3>Pagos</h3>
-            <table><thead><tr><th>Método</th><th>Fecha</th><th>Monto</th></tr></thead><tbody>${paymentsHtml}</tbody></table>
+            
+            <h4>Pagos Iniciales</h4>
+            <table><thead><tr><th>Método</th><th>Fecha</th><th>Monto</th></tr></thead><tbody>${initialPaymentsHtml}</tbody></table>
+            
+            ${debtPaymentsHtml ? `
+              <h4>Cobros Posteriores</h4>
+              <table><thead><tr><th>Método</th><th>Fecha</th><th>Monto</th></tr></thead><tbody>${debtPaymentsHtml}</tbody></table>
+            ` : ''}
             
             <div class="total-summary">
                 ${sale.subtotal ? `<p>Subtotal: $${(sale.subtotal || 0).toFixed(2)}</p>` : ''}
                 ${(sale.discount || 0) > 0 ? `<p>Descuentos: -$${(sale.discount || 0).toFixed(2)}</p>` : ''}
                 <p class="total">Total Venta: $${(sale.total ?? 0).toFixed(2)}</p>
-                <p>Total Pagado: $${totalPaid.toFixed(2)}</p>
+                <p>Pagado Inicialmente: $${totalPaid.toFixed(2)}</p>
+                ${totalDebtPaid > 0 ? `<p>Cobrado Posteriormente: $${totalDebtPaid.toFixed(2)}</p>` : ''}
                 ${(sale.debt || 0) > 0 ? `<p style="color:#e74c3c;font-weight:600">Deuda Restante: $${sale.debt.toFixed(2)}</p>` : ''}
             </div>
         `;
@@ -206,18 +244,59 @@ const SaleDetailModal = ({ sale, onClose }) => {
           )}
           <div className="sale-detail-section">
             <h4>{isDebtPayment ? 'Pago Recibido' : 'Pagos'}</h4>
-            <ul className="sale-detail-item-list sale-detail-payments-list">
-              {isDebtPayment ? (
-                  <li>
-                    <div className="payment-info">
-                      <span>{sale.paymentMethod}</span>
-                      <span className="payment-date">{sale.createdAt?.toDate ? sale.createdAt.toDate().toLocaleDateString('es-AR') : '-'}</span>
-                    </div>
-                    <strong>${(sale.amount || 0).toFixed(2)}</strong>
-                  </li>
-              ) : (
-                  paymentsArray.length > 0 
-                  ? paymentsArray.map((p, index) => (
+            {isDebtPayment ? (
+              <ul className="sale-detail-item-list sale-detail-payments-list">
+                <li>
+                  <div className="payment-info">
+                    <span>{sale.paymentMethod}</span>
+                    <span className="payment-date">{sale.createdAt?.toDate ? sale.createdAt.toDate().toLocaleDateString('es-AR') : '-'}</span>
+                  </div>
+                  <strong>${(sale.amount || 0).toFixed(2)}</strong>
+                </li>
+              </ul>
+            ) : (
+              <>
+                {paymentsArray.length > 0 && (
+                  <>
+                    <h5 style={{fontSize: '0.9rem', color: '#666', marginTop: '0.5rem'}}>Pagos Iniciales</h5>
+                    <ul className="sale-detail-item-list sale-detail-payments-list">
+                      {paymentsArray.map((p, index) => (
+                        <li key={p.id || index}>
+                          <div className="payment-info">
+                            <span>{p.method}</span>
+                            <span className="payment-date">{p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-'}</span>
+                          </div>
+                          <strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                
+                {debtPaymentsArray.length > 0 && (
+                  <>
+                    <h5 style={{fontSize: '0.9rem', color: '#666', marginTop: '1rem'}}>Cobros Posteriores</h5>
+                    <ul className="sale-detail-item-list sale-detail-payments-list">
+                      {debtPaymentsArray.map((p, index) => (
+                        <li key={p.id || index}>
+                          <div className="payment-info">
+                            <span>{p.method}</span>
+                            <span className="payment-date">{p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-'}</span>
+                          </div>
+                          <strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                
+                {paymentsArray.length === 0 && debtPaymentsArray.length === 0 && legacyPayments.length === 0 && (
+                  <p>No se registraron pagos.</p>
+                )}
+                
+                {paymentsArray.length === 0 && debtPaymentsArray.length === 0 && legacyPayments.length > 0 && (
+                  <ul className="sale-detail-item-list sale-detail-payments-list">
+                    {legacyPayments.map((p, index) => (
                       <li key={p.id || index}>
                         <div className="payment-info">
                           <span>{p.method}</span>
@@ -225,10 +304,11 @@ const SaleDetailModal = ({ sale, onClose }) => {
                         </div>
                         <strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong>
                       </li>
-                    ))
-                  : <li>No se registraron pagos.</li>
-              )}
-            </ul>
+                    ))}
+                  </ul>
+                )}
+              </>
+            )}
           </div>
         </div>
         
@@ -246,7 +326,10 @@ const SaleDetailModal = ({ sale, onClose }) => {
                 </>
               )}
               <p className="sale-detail-total"><span>Total Venta:</span> <strong>${(sale.total ?? 0).toFixed(2)}</strong></p>
-              <p className="sale-detail-row"><span>Total Pagado:</span> <strong>${totalPaid.toFixed(2)}</strong></p>
+              <p className="sale-detail-row"><span>Pagado Inicialmente:</span> <strong>${totalPaid.toFixed(2)}</strong></p>
+              {totalDebtPaid > 0 && (
+                <p className="sale-detail-row"><span>Cobrado Posteriormente:</span> <strong>${totalDebtPaid.toFixed(2)}</strong></p>
+              )}
               {(sale.debt || 0) > 0 && <p className="sale-detail-row debt"><span>Deuda Restante:</span> <strong>${sale.debt.toFixed(2)}</strong></p>}
             </>
           )}
