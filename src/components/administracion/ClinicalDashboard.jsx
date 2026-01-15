@@ -153,6 +153,13 @@ const ClinicDashboard = () => {
     setExpandedWidget((prev) => (prev === widget ? null : widget));
   };
 
+  const formatCurrency = (value) => {
+    return value.toLocaleString("es-AR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
   const scheduledOrdersCount = useMemo(
     () => pedidosPendientes.filter((p) => p.programado).length,
     [pedidosPendientes]
@@ -172,7 +179,6 @@ const ClinicDashboard = () => {
         <p>Cargando datos del panel...</p>
       ) : (
         <main className="dashboard-grid">
-          {/* Citas */}
           <div
             className={`dashboard-widget widget-citas ${
               expandedWidget === "citas" ? "expanded" : ""
@@ -189,7 +195,6 @@ const ClinicDashboard = () => {
               <span className="widget-count">{citasHoy.length}</span>
             </div>
             <div className="widget-body">
-              {/* QUICK GLANCE */}
               <div className="widget-content-collapsed">
                 <p>
                   {citasHoy.length === 0
@@ -211,7 +216,7 @@ const ClinicDashboard = () => {
                 {citasHoy.length > 0 ? (
                   citasHoy.map((cita) => (
                     <Link
-                      to={`/admin/pacientes/${cita.pacienteId}`}
+                      to={`/admin/paciente-profile/${cita.pacienteId}`}
                       key={cita.id}
                       className="list-item"
                     >
@@ -263,7 +268,7 @@ const ClinicDashboard = () => {
                       </span>
                       <span className="item-extra">{pedido.nombre}</span>
                       <strong className="item-total">
-                        ${pedido.total.toFixed(2)}
+                        ${formatCurrency(pedido.total)}
                       </strong>
                     </div>
                   ))
@@ -337,15 +342,15 @@ const ClinicDashboard = () => {
               <div className="caja-summary-grid">
                 <div className="caja-metric">
                   <span>Total en Caja</span>
-                  <strong>${cajaSummary.totalEnCaja.toFixed(2)}</strong>
+                  <strong>${formatCurrency(cajaSummary.totalEnCaja)}</strong>
                 </div>
                 <div className="caja-metric">
                   <span>Total Vendido</span>
-                  <strong>${cajaSummary.totalVendido.toFixed(2)}</strong>
+                  <strong>${formatCurrency(cajaSummary.totalVendido)}</strong>
                 </div>
                 <div className="caja-metric">
                   <span>Deuda Generada</span>
-                  <strong>${cajaSummary.deudaGenerada.toFixed(2)}</strong>
+                  <strong>${formatCurrency(cajaSummary.deudaGenerada)}</strong>
                 </div>
               </div>
               <Link to="/admin/caja-diaria" className="widget-link">
