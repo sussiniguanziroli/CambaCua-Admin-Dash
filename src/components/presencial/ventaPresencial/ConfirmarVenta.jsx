@@ -15,12 +15,26 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
         try {
             const ventaGuardadaData = {
                 createdAt: saleData.saleTimestamp,
-                cart: saleData.cart,
-                tutor: saleData.tutor,
-                patient: saleData.patient,
-                total: saleData.total,
-                clinicalHistoryItems: saleData.clinicalHistoryItems,
-                suministroItems: saleData.suministroItems,
+                cart: saleData.cart.map(item => ({
+                    id: item.id,
+                    name: item.name || item.displayName,
+                    quantity: item.quantity || 1,
+                    source: item.source || 'presential',
+                    tipo: item.tipo || null,
+                    isDoseable: item.isDoseable || false,
+                    unit: item.unit || null,
+                    originalPrice: item.originalPrice || 0,
+                    priceBeforeDiscount: item.priceBeforeDiscount || 0,
+                    discountType: item.discountType || null,
+                    discountValue: item.discountValue || 0,
+                    discountAmount: item.discountAmount || 0,
+                    price: item.price || 0,
+                })),
+                tutor: saleData.tutor || null,
+                patient: saleData.patient || null,
+                total: saleData.total || 0,
+                clinicalHistoryItems: saleData.clinicalHistoryItems || [],
+                suministroItems: saleData.suministroItems || [],
                 saleTimestamp: saleData.saleTimestamp
             };
 
