@@ -8,7 +8,7 @@ import ConfirmarVenta from "./ConfirmarVenta";
 import ResumenVenta from "./ResumenVenta";
 import ProgramarVencimientos from "./ProgramarVencimientos";
 import { db } from "../../../firebase/config";
-import { collection, doc, writeBatch, increment, Timestamp, deleteDoc } from "firebase/firestore";
+import { collection, doc, writeBatch, increment, Timestamp } from "firebase/firestore";
 
 const VenderNavigator = () => {
   const location = useLocation();
@@ -36,6 +36,22 @@ const VenderNavigator = () => {
       if (savedSale) {
         const total = savedSale.cart.reduce((sum, item) => sum + item.price, 0);
         
+        let saleTimestamp;
+        if (savedSale.saleTimestamp) {
+          if (savedSale.saleTimestamp.toDate) {
+            saleTimestamp = savedSale.saleTimestamp;
+          } else if (savedSale.saleTimestamp.seconds) {
+            saleTimestamp = new Timestamp(
+              savedSale.saleTimestamp.seconds,
+              savedSale.saleTimestamp.nanoseconds || 0
+            );
+          } else {
+            saleTimestamp = Timestamp.now();
+          }
+        } else {
+          saleTimestamp = Timestamp.now();
+        }
+        
         setSaleData({
           cart: savedSale.cart,
           tutor: savedSale.tutor,
@@ -45,7 +61,7 @@ const VenderNavigator = () => {
           suministroItems: savedSale.suministroItems || [],
           payments: [],
           debt: 0,
-          saleTimestamp: savedSale.saleTimestamp || Timestamp.now(),
+          saleTimestamp: saleTimestamp,
         });
         
         setLoadedSaleId(savedSale.id);
@@ -193,6 +209,7 @@ const VenderNavigator = () => {
           ? { id: saleData.patient.id, name: saleData.patient.name }
           : null,
         payments: saleData.payments,
+        debtPayments: [],
         subtotal: totalSubtotal,
         discount: totalDiscount,
         total: saleData.total,
