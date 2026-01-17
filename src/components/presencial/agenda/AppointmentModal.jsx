@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { db } from "../../../firebase/config";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import Swal from "sweetalert2";
-import { FaUser, FaDog, FaDownload, FaTimes } from "react-icons/fa";
+import { FaUser, FaDog, FaDownload, FaTimes, FaSearch } from "react-icons/fa";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -33,6 +33,7 @@ const AppointmentModal = ({
 
   const [tutorInput, setTutorInput] = useState("");
   const [pacienteInput, setPacienteInput] = useState("");
+  const [serviceSearch, setServiceSearch] = useState("");
 
   const [filteredTutores, setFilteredTutores] = useState([]);
   const [filteredPacientes, setFilteredPacientes] = useState([]);
@@ -90,6 +91,7 @@ const AppointmentModal = ({
       setPacienteInput("");
     }
     setSearchBy("tutor");
+    setServiceSearch("");
   }, [isOpen, selectedDate, appointmentData]);
 
   useEffect(() => {
@@ -102,7 +104,7 @@ const AppointmentModal = ({
           getDocs(
             query(
               collection(db, "productos_presenciales"),
-              where("category", "!=", "peluqueria")
+              where("tipo", "==", "servicio")
             )
           ),
         ]);
@@ -234,8 +236,14 @@ const AppointmentModal = ({
       ...prev,
       services: prev.services.some((s) => s.id === service.id)
         ? prev.services.filter((s) => s.id !== service.id)
-        : [...prev.services, { id: service.id, nombre: service.nombre || service.name }],
+        : [...prev.services, { id: service.id, nombre: service.name }],
     }));
+
+  const filteredServicesList = useMemo(() => {
+    return availableServices.filter((s) =>
+      (s.name || "").toLowerCase().includes(serviceSearch.toLowerCase())
+    );
+  }, [availableServices, serviceSearch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -522,33 +530,60 @@ const AppointmentModal = ({
             </div>
           </div>
 
-          {/* --- FIX 1 START --- */}
           <div className="agenda-form-section">
-            <div className="agenda-form-row">
-              <div className="agenda-form-field">
-                <label>Servicios</label>
-                <div className="agenda-services-grid">
-                  {availableServices.map((service) => (
+            <label>Servicios Solicitados</label>
+            <div className="selected-products-list" style={{ marginBottom: '1rem' }}>
+              {formData.services.length > 0 ? (
+                formData.services.map((s) => (
+                  <div key={s.id} className="selected-product-item" style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong>{s.nombre || s.name}</strong>
                     <button
                       type="button"
-                      key={service.id}
-                      className={`agenda-service-chip ${
-                        formData.services?.some((s) => s.id === service.id)
-                          ? "selected"
-                          : ""
-                      }`}
-                      onClick={() => handleServiceToggle(service)}
+                      className="remove-product-btn"
+                      onClick={() => handleServiceToggle(s)}
                     >
-                      {service.name || service.nombre}
+                      <FaTimes />
                     </button>
-                  ))}
-                </div>
+                  </div>
+                ))
+              ) : (
+                <p className="no-products-message">No se han seleccionado servicios</p>
+              )}
+            </div>
+
+            <div className="vencimiento-filters" style={{ gridTemplateColumns: '1fr' }}>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="text"
+                  placeholder="Buscar servicio..."
+                  value={serviceSearch}
+                  onChange={(e) => setServiceSearch(e.target.value)}
+                />
+                <FaSearch style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#95a5a6' }} />
               </div>
             </div>
-          </div>
-          {/* --- FIX 1 END --- */}
 
-          {/* --- FIX 2 START --- */}
+            <div className="vencimiento-items-grid" style={{ maxHeight: '180px' }}>
+              {filteredServicesList.length > 0 ? (
+                filteredServicesList.map((service) => {
+                  const isSelected = formData.services.some((s) => s.id === service.id);
+                  return (
+                    <div
+                      key={service.id}
+                      className={`vencimiento-item-card ${isSelected ? 'selected' : ''}`}
+                      onClick={() => handleServiceToggle(service)}
+                    >
+                      <span className="item-name">{service.name}</span>
+                      <span className="item-price">${service.price || 0}</span>
+                    </div>
+                  );
+                })
+              ) : (
+                <p style={{ textAlign: 'center', padding: '1rem', color: '#7f8c8d' }}>No se encontraron servicios</p>
+              )}
+            </div>
+          </div>
+
           <div className="agenda-form-section">
             <div className="agenda-form-row">
               <div className="agenda-form-field">
@@ -557,13 +592,12 @@ const AppointmentModal = ({
                   name="notes"
                   value={formData.notes || ""}
                   onChange={handleChange}
-                  rows="4"
+                  rows="3"
                   placeholder="Agregar notas adicionales..."
                 ></textarea>
               </div>
             </div>
           </div>
-          {/* --- FIX 2 END --- */}
 
           <div className="agenda-modal-footer">
             <div className="agenda-modal-actions-left">
