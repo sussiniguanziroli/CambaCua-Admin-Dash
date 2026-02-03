@@ -214,11 +214,14 @@ const TutorProfile = () => {
   }, [allAppointments, citasFilters]);
 
   const getPaymentStatus = (sale) => {
-    const debt = sale.debt || 0;
-    if (debt === 0 || Math.abs(debt) < 0.01) return 'paid';
-    const paid = (sale.payments || []).reduce((sum, p) => sum + parseFloat(p.amount), 0);
-    if (paid === 0 || Math.abs(paid) < 0.01) return 'unpaid';
-    if (debt > 0 && paid > 0) return 'partial';
+    const totalPaid = (sale.payments || []).reduce((sum, p) => sum + parseFloat(p.amount), 0);
+    const debtPaid = (sale.debtPayments || []).reduce((sum, p) => sum + parseFloat(p.amount), 0);
+    const totalPayments = totalPaid + debtPaid;
+    const currentDebt = sale.total - totalPayments;
+    
+    if (currentDebt === 0 || Math.abs(currentDebt) < 0.01) return 'paid';
+    if (totalPayments === 0 || Math.abs(totalPayments) < 0.01) return 'unpaid';
+    if (currentDebt > 0 && totalPayments > 0) return 'partial';
     return 'paid';
   };
 
@@ -269,8 +272,19 @@ const TutorProfile = () => {
           <div className="compras-list">
             {currentSales.length > 0 ? (currentSales.map(sale => { 
               const productPreview = (sale.items && sale.items.length > 0) ? `${sale.items[0].name}${sale.items.length > 1 ? ` y ${sale.items.length - 1} más...` : ''}` : 'Venta sin items.';
-              const paymentStatus = getPaymentStatus(sale);
-              const hasDebt = (sale.debt || 0) > 0;
+              
+              const totalPaid = (sale.payments || []).reduce((sum, p) => sum + parseFloat(p.amount), 0);
+              const debtPaid = (sale.debtPayments || []).reduce((sum, p) => sum + parseFloat(p.amount), 0);
+              const totalPayments = totalPaid + debtPaid;
+              const currentDebt = sale.total - totalPayments;
+              
+              const paymentStatus = currentDebt === 0 || Math.abs(currentDebt) < 0.01 
+                ? 'paid' 
+                : (totalPayments === 0 || Math.abs(totalPayments) < 0.01 
+                  ? 'unpaid' 
+                  : 'partial');
+              
+              const hasDebt = currentDebt > 0.01;
               
               return (<div key={sale.id} className={`compra-card ${paymentStatus === 'unpaid' ? 'unpaid' : ''} ${paymentStatus === 'partial' ? 'partial-payment' : ''}`}>
                 <div className="compra-info">
@@ -281,7 +295,7 @@ const TutorProfile = () => {
                       <FaExclamationTriangle />
                       <span>
                         {paymentStatus === 'unpaid' && 'Sin Pagar'}
-                        {paymentStatus === 'partial' && `Deuda: $${sale.debt.toFixed(2)}`}
+                        {paymentStatus === 'partial' && `Deuda: $${currentDebt.toFixed(2)}`}
                       </span>
                     </div>
                   )}

@@ -5,11 +5,16 @@ import Swal from 'sweetalert2';
 import { FaCcVisa, FaCcMastercard, FaCreditCard, FaMoneyBillWave, FaExchangeAlt } from 'react-icons/fa';
 
 const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
+    const totalPaid = (sale.payments || []).reduce((sum, p) => sum + parseFloat(p.amount), 0);
+    const debtPaid = (sale.debtPayments || []).reduce((sum, p) => sum + parseFloat(p.amount), 0);
+    const totalPayments = totalPaid + debtPaid;
+    const currentDebt = sale.total - totalPayments;
+
     const [paymentMethod, setPaymentMethod] = useState('');
-    const [amount, setAmount] = useState(sale.debt.toFixed(2));
+    const [amount, setAmount] = useState(currentDebt > 0 ? currentDebt.toFixed(2) : '0.00');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const remainingDebt = sale.debt;
+    const remainingDebt = currentDebt;
     const paymentAmount = parseFloat(amount) || 0;
     const newDebt = Math.max(0, remainingDebt - paymentAmount);
 
@@ -96,6 +101,34 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
         }
     };
 
+    if (remainingDebt <= 0) {
+        return (
+            <div className="pay-debt-modal-overlay" onClick={onClose}>
+                <div className="pay-debt-modal" onClick={(e) => e.stopPropagation()}>
+                    <h3>Sin Deuda Pendiente</h3>
+                    <div className="pay-debt-modal-body">
+                        <p>Esta venta no tiene deuda pendiente.</p>
+                        <div className="sale-info-summary">
+                            <div className="info-row">
+                                <span>Total Venta:</span>
+                                <strong>${sale.total.toFixed(2)}</strong>
+                            </div>
+                            <div className="info-row">
+                                <span>Total Pagado:</span>
+                                <strong>${totalPayments.toFixed(2)}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-actions">
+                        <button className="btn btn-primary" onClick={onClose}>
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="pay-debt-modal-overlay" onClick={onClose}>
             <div className="pay-debt-modal" onClick={(e) => e.stopPropagation()}>
@@ -121,6 +154,10 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
                             <div className="info-row">
                                 <span>Total Venta:</span>
                                 <strong>${sale.total.toFixed(2)}</strong>
+                            </div>
+                            <div className="info-row">
+                                <span>Total Pagado:</span>
+                                <strong>${totalPayments.toFixed(2)}</strong>
                             </div>
                             <div className="info-row debt">
                                 <span>Deuda Actual:</span>
