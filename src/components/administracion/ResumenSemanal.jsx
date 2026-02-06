@@ -3,9 +3,11 @@ import { db } from '../../firebase/config';
 import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
 import { FaCalendarWeek, FaDownload, FaSyncAlt } from 'react-icons/fa';
 import { calculateAllTopCustomers, clearStatsCache } from '../../services/statsService';
-import TopCustomersTab from './TopCustomersTab';
-import CustomerDetailModal from './CustomerDetailModal';
-import ExportDataModal from './ExportDataModal';
+import TopCustomersTab from './estadisticas/TopCustomersTab';
+import CustomerDetailModal from './estadisticas/CustomerDetailModal';
+import ProductSalesManager from './estadisticas/ProductSalesManager';
+import DebtAccountsManager from './estadisticas/DebtAccountsManager';
+import ExportDataModal from './estadisticas/ExportDataModal';
 import LoaderSpinner from '../utils/LoaderSpinner';
 
 const ResumenSemanal = () => {
@@ -16,14 +18,14 @@ const ResumenSemanal = () => {
 
     const [period, setPeriod] = useState('6months');
     const [topLimit, setTopLimit] = useState(10);
-    
+
     const [perrosData, setPerrosData] = useState(null);
     const [gatosData, setGatosData] = useState(null);
     const [allData, setAllData] = useState(null);
-    
+
     const [isLoadingStats, setIsLoadingStats] = useState(false);
     const [loadingProgress, setLoadingProgress] = useState({ step: '', progress: 0, message: '' });
-    
+
     const [selectedCustomer, setSelectedCustomer] = useState(null);
     const [showExportModal, setShowExportModal] = useState(false);
     const [exportSpecies, setExportSpecies] = useState('Canino');
@@ -31,14 +33,14 @@ const ResumenSemanal = () => {
     const getWeekRange = (date) => {
         const start = new Date(date);
         const day = start.getDay();
-        const diff = start.getDate() - day + (day === 0 ? -6 : 1); 
+        const diff = start.getDate() - day + (day === 0 ? -6 : 1);
         const monday = new Date(start.setDate(diff));
         monday.setHours(0, 0, 0, 0);
 
         const sunday = new Date(monday);
         sunday.setDate(monday.getDate() + 6);
         sunday.setHours(23, 59, 59, 999);
-        
+
         return { startOfWeek: monday, endOfWeek: sunday };
     };
 
@@ -47,7 +49,7 @@ const ResumenSemanal = () => {
         setWeeklyData([]);
 
         const { startOfWeek, endOfWeek } = getWeekRange(date);
-        
+
         const startTimestamp = Timestamp.fromDate(startOfWeek);
         const endTimestamp = Timestamp.fromDate(endOfWeek);
 
@@ -72,13 +74,13 @@ const ResumenSemanal = () => {
                 ...presencialesSnap.docs.map(doc => doc.data()),
                 ...onlineSnap.docs.map(doc => doc.data())
             ];
-            
+
             const dailyTotals = {};
             sales.forEach(sale => {
                 const saleDate = sale.createdAt.toDate().toISOString().split('T')[0];
                 dailyTotals[saleDate] = (dailyTotals[saleDate] || 0) + sale.total;
             });
-            
+
             const weekArray = [];
             for (let i = 0; i < 7; i++) {
                 const day = new Date(startOfWeek);
@@ -100,27 +102,27 @@ const ResumenSemanal = () => {
 
     // Cambia línea 96-111 por:
 
-const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
-    if (forceRefresh) {
-        clearStatsCache();
-    }
+    const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
+        if (forceRefresh) {
+            clearStatsCache();
+        }
 
-    setIsLoadingStats(true);
-    setLoadingProgress({ step: 'start', progress: 0, message: 'Iniciando análisis...' });
+        setIsLoadingStats(true);
+        setLoadingProgress({ step: 'start', progress: 0, message: 'Iniciando análisis...' });
 
-    try {
-        const allData = await calculateAllTopCustomers(period, topLimit, setLoadingProgress);
-        
-        setPerrosData(allData.bySpecies.Canino);
-        setGatosData(allData.bySpecies.Felino);
-        setAllData(allData.bySpecies.all);
-    } catch (error) {
-        console.error('Error fetching top customers:', error);
-    } finally {
-        setIsLoadingStats(false);
-        setLoadingProgress({ step: 'complete', progress: 100, message: 'Completado' });
-    }
-}, [period, topLimit]);
+        try {
+            const allData = await calculateAllTopCustomers(period, topLimit, setLoadingProgress);
+
+            setPerrosData(allData.bySpecies.Canino);
+            setGatosData(allData.bySpecies.Felino);
+            setAllData(allData.bySpecies.all);
+        } catch (error) {
+            console.error('Error fetching top customers:', error);
+        } finally {
+            setIsLoadingStats(false);
+            setLoadingProgress({ step: 'complete', progress: 100, message: 'Completado' });
+        }
+    }, [period, topLimit]);
     useEffect(() => {
         fetchWeekSales(selectedDate);
     }, [selectedDate, fetchWeekSales]);
@@ -139,7 +141,7 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
         const [year, month, day] = e.target.value.split('-').map(Number);
         setSelectedDate(new Date(year, month - 1, day));
     };
-    
+
     const formatDateForInput = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -164,7 +166,7 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
     };
 
     const getExportData = () => {
-        switch(exportSpecies) {
+        switch (exportSpecies) {
             case 'Canino':
                 return perrosData;
             case 'Felino':
@@ -182,8 +184,8 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
         <div className="resumen-tab-content">
             <div className="date-picker-group">
                 <label htmlFor="week-date">Seleccionar Semana:</label>
-                <input 
-                    type="date" 
+                <input
+                    type="date"
                     id="week-date"
                     value={formatDateForInput(selectedDate)}
                     onChange={handleDateChange}
@@ -223,9 +225,9 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
             <div className="controls-group">
                 <div className="control-item">
                     <label htmlFor="period-select">Período:</label>
-                    <select 
+                    <select
                         id="period-select"
-                        value={period} 
+                        value={period}
                         onChange={(e) => handlePeriodChange(e.target.value)}
                         className="period-select"
                     >
@@ -238,9 +240,9 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
 
                 <div className="control-item">
                     <label htmlFor="limit-select">Mostrar:</label>
-                    <select 
+                    <select
                         id="limit-select"
-                        value={topLimit} 
+                        value={topLimit}
                         onChange={(e) => setTopLimit(Number(e.target.value))}
                         className="limit-select"
                     >
@@ -253,16 +255,16 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
             </div>
 
             <div className="controls-actions">
-                <button 
-                    className="btn-control btn-recalculate" 
+                <button
+                    className="btn-control btn-recalculate"
                     onClick={handleRecalculate}
                     disabled={isLoadingStats}
                 >
                     <FaSyncAlt className={isLoadingStats ? 'spinning' : ''} />
                     Recalcular
                 </button>
-                <button 
-                    className="btn-control btn-export" 
+                <button
+                    className="btn-control btn-export"
                     onClick={() => {
                         const speciesMap = {
                             'perros': 'Canino',
@@ -285,8 +287,8 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
             <LoaderSpinner />
             <div className="loading-progress">
                 <div className="progress-bar">
-                    <div 
-                        className="progress-fill" 
+                    <div
+                        className="progress-fill"
                         style={{ width: `${loadingProgress.progress}%` }}
                     ></div>
                 </div>
@@ -303,40 +305,52 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
             </div>
 
             <div className="main-tabs">
-                <button 
+                <button
                     className={`main-tab ${activeMainTab === 'resumen' ? 'active' : ''}`}
                     onClick={() => setActiveMainTab('resumen')}
                 >
                     📅 Resumen Semanal
                 </button>
-                <button 
+                <button
                     className={`main-tab ${activeMainTab === 'perros' ? 'active' : ''}`}
                     onClick={() => setActiveMainTab('perros')}
                 >
                     🐕 Top Perros
                 </button>
-                <button 
+                <button
                     className={`main-tab ${activeMainTab === 'gatos' ? 'active' : ''}`}
                     onClick={() => setActiveMainTab('gatos')}
                 >
                     🐈 Top Gatos
                 </button>
-                <button 
+                <button
                     className={`main-tab ${activeMainTab === 'comparativa' ? 'active' : ''}`}
                     onClick={() => setActiveMainTab('comparativa')}
                 >
                     📊 Comparativa Global
                 </button>
+                <button
+                    className={`main-tab ${activeMainTab === 'productos' ? 'active' : ''}`}
+                    onClick={() => setActiveMainTab('productos')}
+                >
+                    📦 Ventas por Producto
+                </button>
+                <button
+                    className={`main-tab ${activeMainTab === 'cuentas' ? 'active' : ''}`}
+                    onClick={() => setActiveMainTab('cuentas')}
+                >
+                    💰 Cuentas Corrientes
+                </button>
             </div>
 
             <div className="main-content">
                 {activeMainTab === 'resumen' && renderResumenTab()}
-                
+
                 {activeMainTab === 'perros' && (
                     <>
                         {renderStatsControls()}
                         {isLoadingStats ? renderLoadingProgress() : (
-                            <TopCustomersTab 
+                            <TopCustomersTab
                                 data={perrosData}
                                 speciesLabel="Perros"
                                 onViewDetail={setSelectedCustomer}
@@ -350,7 +364,7 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
                     <>
                         {renderStatsControls()}
                         {isLoadingStats ? renderLoadingProgress() : (
-                            <TopCustomersTab 
+                            <TopCustomersTab
                                 data={gatosData}
                                 speciesLabel="Gatos"
                                 onViewDetail={setSelectedCustomer}
@@ -364,7 +378,7 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
                     <>
                         {renderStatsControls()}
                         {isLoadingStats ? renderLoadingProgress() : (
-                            <TopCustomersTab 
+                            <TopCustomersTab
                                 data={allData}
                                 speciesLabel="Todas las Especies"
                                 onViewDetail={setSelectedCustomer}
@@ -373,6 +387,9 @@ const fetchTopCustomers = useCallback(async (forceRefresh = false) => {
                         )}
                     </>
                 )}
+                {activeMainTab === 'productos' && <ProductSalesManager />}
+
+{activeMainTab === 'cuentas' && <DebtAccountsManager />}
             </div>
 
             {selectedCustomer && (

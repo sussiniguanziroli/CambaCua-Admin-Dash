@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaTimes, FaDownload, FaFileCsv, FaFileExcel } from 'react-icons/fa';
-import { exportToCSV } from '../../services/statsService';
+import { exportToCSV } from '../../../services/statsService';
 
 const ExportDataModal = ({ data, speciesLabel, period, onClose }) => {
     const [exportType, setExportType] = useState('spent');

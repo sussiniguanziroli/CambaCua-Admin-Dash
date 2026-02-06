@@ -1,0 +1,617 @@
+@import '../presencial/sharedStyles';
+
+.product-sales-manager,
+.debt-accounts-manager {
+    .manager-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid $border-color;
+
+        h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.8rem;
+            color: $primary-dark;
+            margin: 0 0 0.5rem 0;
+
+            svg {
+                color: $primary-color;
+            }
+        }
+
+        .manager-subtitle {
+            color: $grey-dark;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+    }
+
+    .search-controls {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-end;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background-color: #f8f9fa;
+        border-radius: $border-radius;
+        flex-wrap: wrap;
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 200px;
+
+            label {
+                font-weight: 500;
+                color: $text-color;
+                font-size: 0.9rem;
+            }
+
+            .search-input,
+            .date-input {
+                padding: 0.75rem;
+                border: 1px solid $border-color;
+                border-radius: 4px;
+                font-size: 0.95rem;
+                transition: border-color 0.2s ease;
+
+                &:focus {
+                    outline: none;
+                    border-color: $primary-color;
+                    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+                }
+            }
+        }
+
+        .btn-analyze {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: $primary-color;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+
+            &:hover:not(:disabled) {
+                background-color: darken($primary-color, 5%);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+
+            &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+        gap: 1.5rem;
+
+        p {
+            color: $grey-dark;
+            font-size: 1rem;
+        }
+    }
+
+    .results-container {
+        animation: fadeIn 0.3s ease;
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid $border-color;
+
+            h3 {
+                font-size: 1.5rem;
+                color: $primary-dark;
+                margin: 0;
+            }
+
+            .btn-export {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.6rem 1.2rem;
+                background-color: $success-color;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-size: 0.95rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background-color: darken($success-color, 5%);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                }
+            }
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+
+            .summary-card {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 1.5rem;
+                background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 5%) 100%);
+                color: white;
+                border-radius: $border-radius;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                transition: transform 0.2s ease;
+
+                &:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+
+                .card-label {
+                    font-size: 0.9rem;
+                    opacity: 0.9;
+                    font-weight: 500;
+                }
+
+                .card-value {
+                    font-size: 1.8rem;
+                    font-weight: 700;
+                    line-height: 1.2;
+
+                    &.amount-negative {
+                        color: #ffcdd2;
+                    }
+                }
+
+                .card-detail {
+                    font-size: 0.85rem;
+                    opacity: 0.85;
+                    margin-top: 0.25rem;
+                }
+
+                &.deuda-generada {
+                    background: linear-gradient(135deg, #ff6b6b 0%, darken(#ff6b6b, 5%) 100%);
+                }
+
+                &.deuda-cobrada {
+                    background: linear-gradient(135deg, $success-color 0%, darken($success-color, 5%) 100%);
+                }
+
+                &.deuda-pendiente {
+                    background: linear-gradient(135deg, #ffa726 0%, darken(#ffa726, 5%) 100%);
+                }
+            }
+        }
+
+        .empty-results {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: $grey-dark;
+            font-style: italic;
+            background-color: #f8f9fa;
+            border-radius: $border-radius;
+        }
+    }
+
+    .sales-table-container {
+        overflow-x: auto;
+        margin-bottom: 2rem;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+
+        .sales-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+
+            thead {
+                background-color: #f8f9fa;
+                
+                tr {
+                    th {
+                        padding: 1rem;
+                        text-align: left;
+                        font-weight: 600;
+                        color: $primary-dark;
+                        border-bottom: 2px solid $border-color;
+                        white-space: nowrap;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    transition: background-color 0.2s ease;
+
+                    &:hover {
+                        background-color: #f8f9fa;
+                    }
+
+                    td {
+                        padding: 1rem;
+                        border-bottom: 1px solid $border-color;
+                        color: $text-color;
+
+                        &.text-center {
+                            text-align: center;
+                        }
+
+                        &.text-right {
+                            text-align: right;
+                        }
+
+                        .badge-presential,
+                        .badge-online {
+                            padding: 0.25rem 0.75rem;
+                            border-radius: 12px;
+                            font-size: 0.8rem;
+                            font-weight: 500;
+                        }
+
+                        .badge-presential {
+                            background-color: #e3f2fd;
+                            color: #1976d2;
+                        }
+
+                        .badge-online {
+                            background-color: #f3e5f5;
+                            color: #7b1fa2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid $border-color;
+
+        button {
+            padding: 0.6rem 1.2rem;
+            background-color: white;
+            border: 1px solid $border-color;
+            border-radius: 4px;
+            color: $text-color;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover:not(:disabled) {
+                background-color: $primary-color;
+                color: white;
+                border-color: $primary-color;
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+        }
+
+        span {
+            color: $grey-dark;
+            font-size: 0.95rem;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+.debt-accounts-manager {
+    .view-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid $border-color;
+
+        .view-tab {
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: $grey-dark;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover {
+                color: $primary-dark;
+                background-color: rgba($primary-color, 0.05);
+            }
+
+            &.active {
+                color: $primary-dark;
+                border-bottom-color: $primary-color;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .view-content {
+        animation: fadeIn 0.3s ease;
+    }
+
+    .table-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1rem;
+    }
+
+    .deudores-table-container {
+        overflow-x: auto;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        margin-bottom: 2rem;
+
+        .deudores-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+
+            thead {
+                background-color: #f8f9fa;
+
+                tr {
+                    th {
+                        padding: 1rem;
+                        text-align: left;
+                        font-weight: 600;
+                        color: $primary-dark;
+                        border-bottom: 2px solid $border-color;
+                        white-space: nowrap;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    transition: background-color 0.2s ease;
+
+                    &:hover {
+                        background-color: #f8f9fa;
+                    }
+
+                    td {
+                        padding: 1rem;
+                        border-bottom: 1px solid $border-color;
+                        color: $text-color;
+
+                        &.tutor-name {
+                            font-weight: 600;
+                            color: $primary-dark;
+                        }
+
+                        &.debt-amount {
+                            font-weight: 600;
+
+                            .amount-negative {
+                                color: $error-color;
+                            }
+                        }
+
+                        .contact-info {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 0.25rem;
+
+                            .email {
+                                font-size: 0.85rem;
+                                color: $grey-dark;
+                            }
+                        }
+
+                        &.activity-cell {
+                            .activity-badge {
+                                display: inline-block;
+                                padding: 0.25rem 0.6rem;
+                                border-radius: 12px;
+                                font-size: 0.8rem;
+                                font-weight: 500;
+                                background-color: #e3f2fd;
+                                color: #1976d2;
+                                margin-right: 0.5rem;
+
+                                &.cobros {
+                                    background-color: #e8f5e9;
+                                    color: #2e7d32;
+                                }
+                            }
+                        }
+
+                        .btn-view-profile {
+                            padding: 0.5rem 1rem;
+                            background-color: $primary-color;
+                            color: white;
+                            border: none;
+                            border-radius: 4px;
+                            font-size: 0.85rem;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+
+                            &:hover {
+                                background-color: darken($primary-color, 5%);
+                                transform: translateY(-2px);
+                                box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .movimientos-timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .movimiento-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.25rem;
+            background-color: white;
+            border: 1px solid $border-color;
+            border-left: 4px solid $border-color;
+            border-radius: $border-radius;
+            transition: all 0.2s ease;
+
+            &:hover {
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                transform: translateX(4px);
+            }
+
+            &.deuda_generada {
+                border-left-color: $error-color;
+                background-color: rgba($error-color, 0.02);
+
+                .movimiento-icon {
+                    background-color: rgba($error-color, 0.1);
+                    color: $error-color;
+                }
+            }
+
+            &.cobro {
+                border-left-color: $success-color;
+                background-color: rgba($success-color, 0.02);
+
+                .movimiento-icon {
+                    background-color: rgba($success-color, 0.1);
+                    color: $success-color;
+                }
+            }
+
+            .movimiento-icon {
+                flex-shrink: 0;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-size: 1.5rem;
+            }
+
+            .movimiento-content {
+                flex: 1;
+
+                .movimiento-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 0.75rem;
+
+                    .movimiento-type {
+                        font-weight: 600;
+                        color: $primary-dark;
+                        font-size: 1rem;
+                    }
+
+                    .movimiento-date {
+                        color: $grey-dark;
+                        font-size: 0.85rem;
+                    }
+                }
+
+                .movimiento-details {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                    margin-bottom: 0.75rem;
+
+                    .detail-item {
+                        color: $text-color;
+                        font-size: 0.9rem;
+
+                        strong {
+                            color: $primary-dark;
+                            font-weight: 600;
+                        }
+                    }
+                }
+
+                .movimiento-amount {
+                    .amount-positive {
+                        color: $success-color;
+                        font-size: 1.3rem;
+                        font-weight: 700;
+                    }
+
+                    .amount-negative {
+                        color: $error-color;
+                        font-size: 1.3rem;
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .product-sales-manager,
+    .debt-accounts-manager {
+        .search-controls {
+            .control-group {
+                min-width: 100%;
+            }
+
+            .btn-analyze {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .summary-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .sales-table-container,
+        .deudores-table-container {
+            font-size: 0.8rem;
+
+            table {
+                thead th,
+                tbody td {
+                    padding: 0.6rem;
+                }
+            }
+        }
+    }
+}

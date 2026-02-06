@@ -504,3 +504,210 @@ export const exportToCSV = (data, filename) => {
     link.click();
     document.body.removeChild(link);
 };
+
+export const getProductSalesHistory = async (searchTerm, dateRange) => {
+    try {
+        const { start, end } = dateRange;
+        
+        const salesQuery = query(
+            collection(db, 'ventas_presenciales'),
+            where('createdAt', '>=', start),
+            where('createdAt', '<=', end)
+        );
+        
+        const salesSnap = await getDocs(salesQuery);
+        const allSales = salesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        const matchingSales = [];
+        const productStats = {
+            totalQuantity: 0,
+            totalRevenue: 0,
+            prices: [],
+            priceHistory: []
+        };
+        
+        allSales.forEach(sale => {
+            if (!sale.items || !Array.isArray(sale.items)) return;
+            
+            sale.items.forEach(item => {
+                const itemName = (item.name || '').toLowerCase();
+                const search = searchTerm.toLowerCase();
+                
+                if (itemName.includes(search)) {
+                    const quantity = parseInt(item.quantity) || 0;
+                    const price = parseFloat(item.price) || 0;
+                    const itemTotal = quantity * price;
+                    
+                    matchingSales.push({
+                        saleId: sale.id,
+                        date: sale.createdAt,
+                        tutorId: sale.tutorInfo?.id || null,
+                        tutorName: sale.tutorInfo?.name || 'N/A',
+                        patientId: sale.patientInfo?.id || null,
+                        patientName: sale.patientInfo?.name || 'N/A',
+                        productName: item.name,
+                        quantity,
+                        price,
+                        originalPrice: item.originalPrice || price,
+                        total: itemTotal,
+                        source: item.source || 'N/A',
+                        tipo: item.tipo || 'N/A'
+                    });
+                    
+                    productStats.totalQuantity += quantity;
+                    productStats.totalRevenue += itemTotal;
+                    productStats.prices.push(price);
+                    
+                    productStats.priceHistory.push({
+                        date: sale.createdAt,
+                        price,
+                        originalPrice: item.originalPrice || price
+                    });
+                }
+            });
+        });
+        
+        matchingSales.sort((a, b) => b.date.toMillis() - a.date.toMillis());
+        productStats.priceHistory.sort((a, b) => a.date.toMillis() - b.date.toMillis());
+        
+        const uniquePrices = [...new Set(productStats.prices)];
+        
+        return {
+            sales: matchingSales,
+            summary: {
+                totalQuantity: productStats.totalQuantity,
+                totalRevenue: productStats.totalRevenue,
+                salesCount: matchingSales.length,
+                avgPrice: productStats.prices.length > 0 
+                    ? productStats.prices.reduce((a, b) => a + b, 0) / productStats.prices.length 
+                    : 0,
+                minPrice: uniquePrices.length > 0 ? Math.min(...uniquePrices) : 0,
+                maxPrice: uniquePrices.length > 0 ? Math.max(...uniquePrices) : 0,
+                priceVariations: uniquePrices.length
+            },
+            priceHistory: productStats.priceHistory
+        };
+        
+    } catch (error) {
+        console.error('Error fetching product sales history:', error);
+        throw error;
+    }
+};
+
+export const getDebtAccountsReport = async (dateRange) => {
+    try {
+        const { start, end } = dateRange;
+        
+        const salesQuery = query(
+            collection(db, 'ventas_presenciales'),
+            where('createdAt', '>=', start),
+            where('createdAt', '<=', end)
+        );
+        
+        const cobrosQuery = query(
+            collection(db, 'cobros_deuda'),
+            where('createdAt', '>=', start),
+            where('createdAt', '<=', end)
+        );
+        
+        const [salesSnap, cobrosSnap, tutoresSnap] = await Promise.all([
+            getDocs(salesQuery),
+            getDocs(cobrosQuery),
+            getDocs(collection(db, 'tutores'))
+        ]);
+        
+        const sales = salesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const cobros = cobrosSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const tutores = tutoresSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        let deudaGenerada = 0;
+        let deudaCobrada = 0;
+        const movimientos = [];
+        
+        sales.forEach(sale => {
+            const debt = parseFloat(sale.debt) || 0;
+            if (debt > 0) {
+                deudaGenerada += debt;
+                movimientos.push({
+                    type: 'deuda_generada',
+                    date: sale.createdAt,
+                    tutorId: sale.tutorInfo?.id,
+                    tutorName: sale.tutorInfo?.name || 'N/A',
+                    patientName: sale.patientInfo?.name || 'N/A',
+                    amount: debt,
+                    saleTotal: sale.total || 0,
+                    saleId: sale.id
+                });
+            }
+        });
+        
+        cobros.forEach(cobro => {
+            const amount = parseFloat(cobro.amount) || 0;
+            deudaCobrada += amount;
+            movimientos.push({
+                type: 'cobro',
+                date: cobro.createdAt,
+                tutorId: cobro.tutorId,
+                tutorName: cobro.tutorName || 'N/A',
+                patientName: cobro.patientName || 'N/A',
+                amount,
+                paymentMethod: cobro.paymentMethod || 'N/A',
+                saleId: cobro.saleId
+            });
+        });
+        
+        movimientos.sort((a, b) => b.date.toMillis() - a.date.toMillis());
+        
+        const deudores = tutores
+            .filter(tutor => (tutor.accountBalance || 0) < 0)
+            .map(tutor => {
+                const tutorSales = sales.filter(s => s.tutorInfo?.id === tutor.id);
+                const tutorCobros = cobros.filter(c => c.tutorId === tutor.id);
+                
+                const lastSale = tutorSales.length > 0 
+                    ? tutorSales.reduce((latest, s) => 
+                        s.createdAt.toMillis() > latest.createdAt.toMillis() ? s : latest
+                    ) 
+                    : null;
+                
+                const lastCobro = tutorCobros.length > 0 
+                    ? tutorCobros.reduce((latest, c) => 
+                        c.createdAt.toMillis() > latest.createdAt.toMillis() ? c : latest
+                    ) 
+                    : null;
+                
+                return {
+                    tutorId: tutor.id,
+                    tutorName: tutor.name,
+                    phone: tutor.phone || 'N/A',
+                    email: tutor.email || 'N/A',
+                    accountBalance: tutor.accountBalance,
+                    deudaActual: Math.abs(tutor.accountBalance),
+                    lastSaleDate: lastSale ? lastSale.createdAt : null,
+                    lastCobroDate: lastCobro ? lastCobro.createdAt : null,
+                    salesInPeriod: tutorSales.length,
+                    cobrosInPeriod: tutorCobros.length
+                };
+            })
+            .sort((a, b) => a.accountBalance - b.accountBalance);
+        
+        const deudaPendienteTotal = deudores.reduce((sum, d) => sum + d.deudaActual, 0);
+        
+        return {
+            summary: {
+                deudaGenerada,
+                deudaCobrada,
+                deudaPendiente: deudaPendienteTotal,
+                deudoresCount: deudores.length,
+                salesWithDebt: sales.filter(s => (s.debt || 0) > 0).length,
+                cobrosCount: cobros.length
+            },
+            deudores,
+            movimientos
+        };
+        
+    } catch (error) {
+        console.error('Error fetching debt accounts report:', error);
+        throw error;
+    }
+};

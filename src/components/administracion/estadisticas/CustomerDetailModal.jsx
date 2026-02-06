@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { getTutorDetailedStats } from '../../services/statsService';
+import { getTutorDetailedStats } from '../../../services/statsService';
 import { FaTimes, FaUser, FaShoppingBag, FaStethoscope, FaChartLine, FaDog, FaCat } from 'react-icons/fa';
-import LoaderSpinner from '../utils/LoaderSpinner';
+import LoaderSpinner from '../../utils/LoaderSpinner';
 
 const CustomerDetailModal = ({ customer, period, onClose }) => {
     const [activeTab, setActiveTab] = useState('profile');
