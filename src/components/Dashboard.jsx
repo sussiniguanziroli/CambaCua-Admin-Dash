@@ -21,7 +21,7 @@ import EditPaciente from './presencial/adminPacientes/EditPaciente';
 import { FaStore, FaShoppingCart, FaUsers, FaTag, FaTicketAlt, FaPlus, FaListUl, FaHistory, FaHeartbeat, FaStethoscope, FaBars, FaTimes, FaChevronDown, FaBuilding, FaUserCircle, FaSignOutAlt, FaMoneyCheckAlt, FaUserMd, FaCashRegister, FaChartBar, FaRegCalendarAlt, FaHome, FaChevronRight } from 'react-icons/fa';
 import ResumenSemanal from './administracion/ResumenSemanal';
 import CajaDiaria from './administracion/CajaDiaria';
-import { FaBookBookmark, FaUserDoctor } from 'react-icons/fa6';
+import { FaBookBookmark, FaUserDoctor, FaRobot } from 'react-icons/fa6';
 import Agenda from './presencial/agenda/Agenda';
 import TutorProfile from './presencial/adminTutores/TutorProfile';
 import PacienteProfile from './presencial/adminPacientes/PacienteProfile';
@@ -36,6 +36,7 @@ import AddPeluquero from './presencial/adminPeluqueria/AddPeluquero';
 import EditPeluquero from './presencial/adminPeluqueria/EditPeluquero';
 import AgendaPeluqueria from './presencial/adminPeluqueria/AgendaPeluqueria';
 import { PiBathtub } from 'react-icons/pi';
+import AIHelper from './administracion/aiHelper/AIHelper';
 
 const routeTitles = {
     '/admin/main-dashboard': 'Monitor General',
@@ -43,6 +44,7 @@ const routeTitles = {
     '/admin/coupons': 'Cupones',
     '/admin/caja-diaria': 'Caja Diaria',
     '/admin/resumen-semanal': 'Resumen Semanal',
+    '/admin/ai-helper': 'Ayudante IA',
     '/admin/tutores': 'Tutores',
     '/admin/add-tutor': 'Agregar Tutor',
     '/admin/edit-tutor': 'Editar Tutor',
@@ -76,6 +78,7 @@ const routeBreadcrumbs = {
     '/admin/coupons': [{ label: 'Administración', path: null }, { label: 'Cupones', path: '/admin/coupons' }],
     '/admin/caja-diaria': [{ label: 'Administración', path: null }, { label: 'Caja Diaria', path: '/admin/caja-diaria' }],
     '/admin/resumen-semanal': [{ label: 'Administración', path: null }, { label: 'Resumen Semanal', path: '/admin/resumen-semanal' }],
+    '/admin/ai-helper': [{ label: 'Administración', path: null }, { label: 'Ayudante IA', path: '/admin/ai-helper' }],
     '/admin/tutores': [{ label: 'Gestión Clínica', path: null }, { label: 'Tutores', path: '/admin/tutores' }],
     '/admin/add-tutor': [{ label: 'Gestión Clínica', path: null }, { label: 'Tutores', path: '/admin/tutores' }, { label: 'Agregar', path: '/admin/add-tutor' }],
     '/admin/edit-tutor': [{ label: 'Gestión Clínica', path: null }, { label: 'Tutores', path: '/admin/tutores' }, { label: 'Editar', path: null }],
@@ -158,6 +161,7 @@ const Dashboard = ({ user, handleLogout }) => {
                 { path: '/admin/coupons', label: 'Admin Cupones', icon: <FaTicketAlt /> },
                 { path: '/admin/caja-diaria', label: 'Caja Diaria', icon: <FaCashRegister /> },
                 { path: '/admin/resumen-semanal', label: 'Estadisticas', icon: <FaChartBar /> },
+                { path: '/admin/ai-helper', label: 'Ayudante IA', icon: <FaRobot /> },
             ]
         },
         {
@@ -285,6 +289,7 @@ const Dashboard = ({ user, handleLogout }) => {
                         <Route path="/admin/add-peluquero" element={<AddPeluquero/>} />
                         <Route path="/admin/edit-peluquero/:id" element={<EditPeluquero />} />
                         <Route path="/admin/agenda-peluqueria" element={<AgendaPeluqueria />} />
+                        <Route path="/admin/ai-helper" element={<AIHelper />} />
                     </Routes>
                 </main>
             </div>
