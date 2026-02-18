@@ -58,6 +58,22 @@ const cancelSale = async (sale) => {
     await batch.commit();
 };
 
+const deleteCobro = async (cobro) => {
+    const batch = writeBatch(db);
+
+    const cobroRef = doc(db, 'cobros_deuda', cobro.id);
+    batch.delete(cobroRef);
+
+    if (cobro.tutorId) {
+        const tutorRef = doc(db, 'tutores', cobro.tutorId);
+        batch.update(tutorRef, {
+            accountBalance: increment(-parseFloat(cobro.amount))
+        });
+    }
+
+    await batch.commit();
+};
+
 const CajaDiaria = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [transactions, setTransactions] = useState([]);
@@ -72,7 +88,6 @@ const CajaDiaria = () => {
     const [viewMode, setViewMode] = useState('grid');
     const navigate = useNavigate();
 
-    // Helper function for currency formatting
     const formatCurrency = (number) => {
         const num = parseFloat(number) || 0;
         return num.toLocaleString('es-AR', {
@@ -292,6 +307,69 @@ const CajaDiaria = () => {
         });
     };
 
+    const handleDeleteCobro = (e, cobro) => {
+        e.stopPropagation();
+
+        Swal.fire({
+            title: '¿Anular este Cobro?',
+            html: `Esta acción eliminará el cobro de <strong>$${formatCurrency(cobro.amount)}</strong> y revertirá el saldo de la cuenta corriente de <strong>${cobro.tutorName}</strong>. Esta acción no se puede deshacer.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Continuar',
+            cancelButtonText: 'Cancelar'
+        }).then(async (firstResult) => {
+            if (!firstResult.isConfirmed) return;
+
+            const { value: password } = await Swal.fire({
+                title: 'Ingrese la contraseña',
+                input: 'password',
+                inputLabel: 'Esta operación requiere autorización',
+                inputPlaceholder: 'Contraseña',
+                inputAttributes: { autocomplete: 'off' },
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Verificar',
+                cancelButtonText: 'Cancelar',
+                preConfirm: (val) => {
+                    if (val !== '1234') {
+                        Swal.showValidationMessage('Contraseña incorrecta');
+                        return false;
+                    }
+                    return true;
+                }
+            });
+
+            if (!password) return;
+
+            const secondConfirm = await Swal.fire({
+                title: '¿Está completamente seguro?',
+                text: 'Esta es la confirmación final. El cobro será eliminado permanentemente.',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, anular cobro',
+                cancelButtonText: 'No, volver'
+            });
+
+            if (!secondConfirm.isConfirmed) return;
+
+            try {
+                setIsLoading(true);
+                await deleteCobro(cobro);
+                Swal.fire('Cobro Anulado', 'El cobro ha sido eliminado y el saldo revertido.', 'success');
+                fetchAndSetTransactions(selectedDate);
+            } catch (error) {
+                console.error("Error deleting cobro: ", error);
+                Swal.fire('Error', 'No se pudo anular el cobro. ' + error.message, 'error');
+                setIsLoading(false);
+            }
+        });
+    };
+
     const handleEditSale = (e, sale) => {
         e.stopPropagation();
         if (sale.type !== 'Venta Presencial' && sale.type !== 'Pedido Online') {
@@ -472,6 +550,8 @@ const CajaDiaria = () => {
                             {filteredTransactions.map(trans => {
                                 const paymentStatus = getPaymentStatus(trans);
                                 const hasDebt = (trans.debt || 0) > 0;
+                                const isCobro = trans.type === 'Cobro Deuda';
+                                const isVenta = trans.type === 'Venta Presencial' || trans.type === 'Pedido Online';
                                 
                                 return (
                                     <div 
@@ -480,8 +560,8 @@ const CajaDiaria = () => {
                                         onClick={() => setSelectedTransaction(trans)}
                                     >
                                         <div className="card-header">
-                                            <span className={`type-badge ${trans.type.includes('Venta') || trans.type.includes('Pedido') ? 'venta' : 'cobro'}`}>
-                                                {trans.type.includes('Venta') || trans.type.includes('Pedido') ? <FaFileInvoiceDollar/> : <FaHandHoldingUsd/>}
+                                            <span className={`type-badge ${isVenta ? 'venta' : 'cobro'}`}>
+                                                {isVenta ? <FaFileInvoiceDollar/> : <FaHandHoldingUsd/>}
                                                 {trans.type}
                                             </span>
                                             <span className="time">{trans.createdAt.toDate().toLocaleTimeString('es-AR')}</span>
@@ -519,7 +599,7 @@ const CajaDiaria = () => {
                                                         {' / '}
                                                     </>
                                                 )}
-                                                {trans.type === 'Cobro Deuda' ? `Pagó con ${trans.paymentMethod}` : 
+                                                {isCobro ? `Pagó con ${trans.paymentMethod}` : 
                                                  (trans.payments && trans.payments.length > 0) ? `${trans.payments.length} método(s) de pago` :
                                                  (trans.paymentMethod || 'N/A')}
                                             </p>
@@ -535,21 +615,26 @@ const CajaDiaria = () => {
                                         </div>
                                         <div className="card-footer">
                                             <span className="total">${formatCurrency(trans.total || trans.amount)}</span>
-                                            { (trans.type === 'Venta Presencial' || trans.type === 'Pedido Online') &&
-                                                <div className="card-actions">
-                                                    {hasDebt && (
-                                                        <button 
-                                                            title="Cobrar Deuda" 
-                                                            className="btn pay-debt" 
-                                                            onClick={(e) => handlePayDebt(e, trans)}
-                                                        >
-                                                            <FaMoneyBillWave/>
-                                                        </button>
-                                                    )}
-                                                    <button title="Editar Venta" className="btn edit" onClick={(e) => handleEditSale(e, trans)}><FaPencilAlt/></button>
-                                                    <button title="Cancelar Venta" className="btn delete" onClick={(e) => handleDeleteSale(e, trans)}><FaTrash/></button>
-                                                </div>
-                                            }
+                                            <div className="card-actions">
+                                                {isVenta && hasDebt && (
+                                                    <button 
+                                                        title="Cobrar Deuda" 
+                                                        className="btn pay-debt" 
+                                                        onClick={(e) => handlePayDebt(e, trans)}
+                                                    >
+                                                        <FaMoneyBillWave/>
+                                                    </button>
+                                                )}
+                                                {isVenta && (
+                                                    <>
+                                                        <button title="Editar Venta" className="btn edit" onClick={(e) => handleEditSale(e, trans)}><FaPencilAlt/></button>
+                                                        <button title="Cancelar Venta" className="btn delete" onClick={(e) => handleDeleteSale(e, trans)}><FaTrash/></button>
+                                                    </>
+                                                )}
+                                                {isCobro && (
+                                                    <button title="Anular Cobro" className="btn delete" onClick={(e) => handleDeleteCobro(e, trans)}><FaTrash/></button>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 );
