@@ -25,7 +25,7 @@ import {
 } from "react-icons/fa";
 import { fetchDailyTransactions } from "../../services/cashFlowService";
 
-const ClinicDashboard = () => {
+const ClinicalDashboard = () => {
   const [citasHoy, setCitasHoy] = useState([]);
   const [pedidosPendientes, setPedidosPendientes] = useState([]);
   const [vencimientosProximos, setVencimientosProximos] = useState([]);
@@ -37,6 +37,7 @@ const ClinicDashboard = () => {
   const [recentHistory, setRecentHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [expandedWidget, setExpandedWidget] = useState(null);
+  const [openNoteId, setOpenNoteId] = useState(null);
 
   const fetchDashboardData = useCallback(async () => {
     setIsLoading(true);
@@ -105,10 +106,7 @@ const ClinicDashboard = () => {
 
       const summary = dailyTransactions.reduce(
         (acc, trans) => {
-          if (
-            trans.type === "Venta Presencial" ||
-            trans.type === "Pedido Online"
-          ) {
+          if (trans.type === "Venta Presencial" || trans.type === "Pedido Online") {
             acc.totalVendido += trans.total;
             acc.deudaGenerada += trans.debt || 0;
             (trans.payments || []).forEach(
@@ -169,25 +167,15 @@ const ClinicDashboard = () => {
     <div className="clinic-dashboard-container">
       <header className="dashboard-header">
         <h1>Panel de Control</h1>
-        <p>
-          Bienvenido. Aquí tienes un resumen de la actividad de la clínica para
-          hoy.
-        </p>
+        <p>Bienvenido. Aquí tienes un resumen de la actividad de la clínica para hoy.</p>
       </header>
 
       {isLoading ? (
         <p>Cargando datos del panel...</p>
       ) : (
-        <main className="dashboard-grid">
-          <div
-            className={`dashboard-widget widget-citas ${
-              expandedWidget === "citas" ? "expanded" : ""
-            }`}
-          >
-            <div
-              className="widget-header"
-              onClick={() => handleToggleExpand("citas")}
-            >
+        <main className="dashboard-grid" onClick={() => setOpenNoteId(null)}>
+          <div className={`dashboard-widget widget-citas ${expandedWidget === "citas" ? "expanded" : ""}`}>
+            <div className="widget-header" onClick={() => handleToggleExpand("citas")}>
               <div className="header-content">
                 <FaRegCalendarAlt className="widget-icon" />
                 <h3>Citas del Día</h3>
@@ -199,36 +187,40 @@ const ClinicDashboard = () => {
                 <p>
                   {citasHoy.length === 0
                     ? "No hay citas para hoy."
-                    : `${citasHoy.length} ${
-                        citasHoy.length === 1 ? "cita" : "citas"
-                      } para hoy${
+                    : `${citasHoy.length} ${citasHoy.length === 1 ? "cita" : "citas"} para hoy${
                         citasHoy[0]?.startTime
-                          ? ` — primera a las ${citasHoy[0].startTime.toLocaleTimeString("es-AR", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}`
+                          ? ` — primera a las ${citasHoy[0].startTime.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}`
                           : ""
                       }`}
                 </p>
               </div>
-
               <div className="widget-content-expanded">
                 {citasHoy.length > 0 ? (
                   citasHoy.map((cita) => (
-                    <Link
-                      to={`/admin/paciente-profile/${cita.pacienteId}`}
-                      key={cita.id}
-                      className="list-item"
-                    >
-                      <span className="item-time">
-                        {cita.startTime.toLocaleTimeString("es-AR", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
-                      <span className="item-name">{cita.pacienteName}</span>
-                      <span className="item-extra">{cita.tutorName}</span>
-                    </Link>
+                    <div key={cita.id} className="list-item">
+                      <Link to={`/admin/paciente-profile/${cita.pacienteId}`} className="list-item-link">
+                        <span className="item-time">
+                          {cita.startTime.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}
+                        </span>
+                        <span className="item-name">{cita.pacienteName}</span>
+                        <span className="item-extra">{cita.tutorName}</span>
+                      </Link>
+                      {cita.notes && (
+                        <div className="note-trigger-wrapper" onClick={(e) => e.stopPropagation()}>
+                          <button
+                            className="note-icon-btn"
+                            onClick={() => setOpenNoteId(openNoteId === cita.id ? null : cita.id)}
+                          >
+                            <FaNotesMedical />
+                          </button>
+                          {openNoteId === cita.id && (
+                            <div className="note-popover">
+                              <p>{cita.notes}</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   ))
                 ) : (
                   <p className="empty-message">No hay citas para hoy.</p>
@@ -237,15 +229,8 @@ const ClinicDashboard = () => {
             </div>
           </div>
 
-          <div
-            className={`dashboard-widget widget-pedidos ${
-              expandedWidget === "pedidos" ? "expanded" : ""
-            }`}
-          >
-            <div
-              className="widget-header"
-              onClick={() => handleToggleExpand("pedidos")}
-            >
+          <div className={`dashboard-widget widget-pedidos ${expandedWidget === "pedidos" ? "expanded" : ""}`}>
+            <div className="widget-header" onClick={() => handleToggleExpand("pedidos")}>
               <div className="header-content">
                 <FaBoxOpen className="widget-icon" />
                 <h3>Pedidos Online</h3>
@@ -254,79 +239,54 @@ const ClinicDashboard = () => {
             </div>
             <div className="widget-body">
               <div className="widget-content-collapsed">
-                <p>
-                  {pedidosPendientes.length} pendientes, {scheduledOrdersCount}{" "}
-                  programados
-                </p>
+                <p>{pedidosPendientes.length} pendientes, {scheduledOrdersCount} programados</p>
               </div>
               <div className="widget-content-expanded">
                 {pedidosPendientes.length > 0 ? (
                   pedidosPendientes.map((pedido) => (
                     <div key={pedido.id} className="list-item">
-                      <span className="item-name">
-                        Pedido #{pedido.id.substring(0, 6)}
-                      </span>
-                      <span className="item-extra">{pedido.nombre}</span>
-                      <strong className="item-total">
-                        ${formatCurrency(pedido.total)}
-                      </strong>
+                      <Link to={`/admin/paciente-profile/${pedido.pacienteId}`} className="list-item-link">
+                        <span className="item-name">Pedido #{pedido.id.substring(0, 6)}</span>
+                        <span className="item-extra">{pedido.nombre}</span>
+                        <strong className="item-total">${formatCurrency(pedido.total)}</strong>
+                      </Link>
                     </div>
                   ))
                 ) : (
                   <p className="empty-message">No hay pedidos pendientes.</p>
                 )}
-                <Link to="/admin/handle-orders" className="widget-link">
-                  Gestionar Pedidos
-                </Link>
+                <Link to="/admin/handle-orders" className="widget-link">Gestionar Pedidos</Link>
               </div>
             </div>
           </div>
 
-          <div
-            className={`dashboard-widget widget-vencimientos ${
-              expandedWidget === "vencimientos" ? "expanded" : ""
-            }`}
-          >
-            <div
-              className="widget-header"
-              onClick={() => handleToggleExpand("vencimientos")}
-            >
+          <div className={`dashboard-widget widget-vencimientos ${expandedWidget === "vencimientos" ? "expanded" : ""}`}>
+            <div className="widget-header" onClick={() => handleToggleExpand("vencimientos")}>
               <div className="header-content">
                 <FaBell className="widget-icon" />
                 <h3>Vencimientos Próximos</h3>
               </div>
-              <span className="widget-count">
-                {vencimientosProximos.length}
-              </span>
+              <span className="widget-count">{vencimientosProximos.length}</span>
             </div>
             <div className="widget-body">
               <div className="widget-content-collapsed">
-                <p>
-                  {vencimientosProximos.length} vencimientos en los próximos 7
-                  días
-                </p>
+                <p>{vencimientosProximos.length} vencimientos en los próximos 7 días</p>
               </div>
               <div className="widget-content-expanded">
                 {vencimientosProximos.length > 0 ? (
                   vencimientosProximos.map((v) => (
-                    <Link
-                      to={`/admin/paciente-profile/${v.pacienteId}`}
-                      key={v.id}
-                      className="list-item"
-                    >
-                      <span className="item-name">{v.pacienteName}</span>
-                      <span className="item-extra">{v.productName}</span>
-                      <strong className="item-total">
-                        {v.dueDate.toLocaleDateString("es-AR")}
-                      </strong>
-                    </Link>
+                    <div key={v.id} className="list-item">
+                      <Link to={`/admin/paciente-profile/${v.pacienteId}`} className="list-item-link">
+                        <span className="item-name">{v.pacienteName}</span>
+                        <span className="item-extra">{v.productName}</span>
+                        <strong className="item-total">{v.dueDate.toLocaleDateString("es-AR")}</strong>
+                      </Link>
+                    </div>
                   ))
                 ) : (
                   <p className="empty-message">No hay vencimientos próximos.</p>
                 )}
-                <Link to="/admin/monitor-vencimientos" className="widget-link">
-                  Ir al Monitor
-                </Link>
+                <Link to="/admin/monitor-vencimientos" className="widget-link">Ir al Monitor</Link>
               </div>
             </div>
           </div>
@@ -353,9 +313,7 @@ const ClinicDashboard = () => {
                   <strong>${formatCurrency(cajaSummary.deudaGenerada)}</strong>
                 </div>
               </div>
-              <Link to="/admin/caja-diaria" className="widget-link">
-                Ver Detalle de Caja
-              </Link>
+              <Link to="/admin/caja-diaria" className="widget-link">Ver Detalle de Caja</Link>
             </div>
           </div>
 
@@ -387,15 +345,8 @@ const ClinicDashboard = () => {
             </div>
           </div>
 
-          <div
-            className={`dashboard-widget widget-historial ${
-              expandedWidget === "historial" ? "expanded" : ""
-            }`}
-          >
-            <div
-              className="widget-header"
-              onClick={() => handleToggleExpand("historial")}
-            >
+          <div className={`dashboard-widget widget-historial ${expandedWidget === "historial" ? "expanded" : ""}`}>
+            <div className="widget-header" onClick={() => handleToggleExpand("historial")}>
               <div className="header-content">
                 <FaNotesMedical className="widget-icon" />
                 <h3>Historial Clínico Reciente</h3>
@@ -404,31 +355,23 @@ const ClinicDashboard = () => {
             </div>
             <div className="widget-body">
               <div className="widget-content-collapsed">
-                <p>
-                  Mostrando las {recentHistory.length} entradas más recientes.
-                </p>
+                <p>Mostrando las {recentHistory.length} entradas más recientes.</p>
               </div>
               <div className="widget-content-expanded">
                 {recentHistory.length > 0 ? (
                   recentHistory.map((h) => (
-                    <Link
-                      to={`/admin/paciente-profile/${h.pacienteId}`}
-                      key={h.id}
-                      className="list-item"
-                    >
-                      <span className="item-time">{h.date}</span>
-                      <span className="item-name">
-                        {h.pacienteName || "Paciente"}
-                      </span>
-                      <span className="item-extra">{h.reason}</span>
-                    </Link>
+                    <div key={h.id} className="list-item">
+                      <Link to={`/admin/paciente-profile/${h.pacienteId}`} className="list-item-link">
+                        <span className="item-time">{h.date}</span>
+                        <span className="item-name">{h.pacienteName || "Paciente"}</span>
+                        <span className="item-extra">{h.reason}</span>
+                      </Link>
+                    </div>
                   ))
                 ) : (
                   <p className="empty-message">No hay entradas recientes.</p>
                 )}
-                <Link to="/admin/monitor-clinica" className="widget-link">
-                  Ir al Monitor Clínico
-                </Link>
+                <Link to="/admin/monitor-clinica" className="widget-link">Ir al Monitor Clínico</Link>
               </div>
             </div>
           </div>
@@ -438,4 +381,4 @@ const ClinicDashboard = () => {
   );
 };
 
-export default ClinicDashboard;
+export default ClinicalDashboard;

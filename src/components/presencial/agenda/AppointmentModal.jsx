@@ -499,6 +499,21 @@ const AppointmentModal = ({
           <div className="agenda-form-section">
             <div className="agenda-form-row">
               <div className="agenda-form-field">
+                <label>Notas</label>
+                <textarea
+                  name="notes"
+                  value={formData.notes || ""}
+                  onChange={handleChange}
+                  rows="3"
+                  placeholder="Agregar notas adicionales..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div className="agenda-form-section">
+            <div className="agenda-form-row">
+              <div className="agenda-form-field">
                 <label>Fecha</label>
                 <input
                   type="date"
@@ -584,20 +599,7 @@ const AppointmentModal = ({
             </div>
           </div>
 
-          <div className="agenda-form-section">
-            <div className="agenda-form-row">
-              <div className="agenda-form-field">
-                <label>Notas</label>
-                <textarea
-                  name="notes"
-                  value={formData.notes || ""}
-                  onChange={handleChange}
-                  rows="3"
-                  placeholder="Agregar notas adicionales..."
-                ></textarea>
-              </div>
-            </div>
-          </div>
+          
 
           <div className="agenda-modal-footer">
             <div className="agenda-modal-actions-left">

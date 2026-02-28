@@ -86,22 +86,74 @@
         }
         
         .list-item {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             padding: 0.75rem 0.5rem;
             border-bottom: 1px solid $border-color;
-            text-decoration: none;
-            color: $text-color;
-            align-items: center;
-
-            &:hover { background-color: $background-light; border-radius: $border-radius * 0.5; }
+        
+            .list-item-link {
+                display: grid;
+                grid-template-columns: auto 1fr auto;
+                gap: 1rem;
+                flex: 1;
+                text-decoration: none;
+                color: $text-color;
+                align-items: center;
+        
+                &:hover { background-color: $background-light; border-radius: $border-radius * 0.5; }
+        
+                .item-time { font-weight: 600; color: $primary-dark; }
+                .item-name { font-weight: 500; }
+                .item-extra { color: $text-light; text-align: right; }
+            }
+        
             &:last-child { border-bottom: none; }
-
-            .item-time { font-weight: 600; color: $primary-dark; }
-            .item-name { font-weight: 500; }
-            .item-extra { color: $text-light; text-align: right; }
-            .item-total { font-weight: bold; color: $primary-dark; }
+        }
+        
+        .note-trigger-wrapper {
+            position: relative;
+            flex-shrink: 0;
+        
+            .note-icon-btn {
+                background: none;
+                border: none;
+                color: #1abc9c;
+                font-size: 1rem;
+                cursor: pointer;
+                padding: 0.3rem;
+                display: flex;
+                align-items: center;
+                border-radius: 50%;
+                transition: background-color 0.2s;
+        
+                &:hover { background-color: lighten(#1abc9c, 40%); }
+            }
+        
+            .note-popover {
+                position: absolute;
+                right: 0;
+                top: calc(100% + 6px);
+                background: #fff;
+                border: 1px solid $border-color;
+                border-radius: $border-radius;
+                box-shadow: $shadow;
+                padding: 0.75rem 1rem;
+                width: 240px;
+                z-index: 100;
+                font-size: 0.9rem;
+                color: $text-color;
+                line-height: 1.5;
+        
+                p { margin: 0; }
+        
+                @media (max-width: 480px) {
+                    right: auto;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 200px;
+                }
+            }
         }
 
         .widget-link {
