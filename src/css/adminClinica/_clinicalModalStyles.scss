@@ -1,6 +1,5 @@
 @import '../presencial/sharedStyles';
 
-// --- Base Modal Styles ---
 .agenda-modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0,0,0,0.6); display: flex;
@@ -35,7 +34,6 @@
     }
 }
 
-// --- Clinical Note Edit/Add Modal Specific Styles ---
 .agenda-modal-content {
     .file-preview-list {
         display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;
@@ -54,12 +52,11 @@
     }
 }
 
-// --- Note View Modals (Clinical & Grooming) ---
 .view-note-modal {
     max-width: 700px;
-    .note-details, .view-note-body { // Target both old and new class names
+    .note-details, .view-note-body {
         overflow-y: auto; padding-right: 1rem;
-        .note-section, .info-section { // Target both old and new class names
+        .note-section, .info-section {
             margin-bottom: 1.5rem;
             h4 { margin-top: 0; margin-bottom: 0.5rem; color: $primary-dark; }
             small { font-size: 0.8rem; color: $text-light; text-transform: uppercase; }
@@ -89,7 +86,6 @@
     }
 }
 
-// --- Vencimiento Modal Specific Styles ---
 .agenda-modal-content.expanded { max-width: 900px; }
 .vencimiento-form-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
 .vencimiento-product-selector, .vencimiento-details-section { 
@@ -128,14 +124,12 @@
     .item-price { font-weight: 600; color: $primary-dark; }
 }
 
-// --- NEW STYLES for Multi-Product Selection ---
-
 .selected-products-list {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     margin-bottom: 1.5rem;
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
     background-color: $background-light;
     border: 1px solid $border-color;
@@ -208,9 +202,23 @@
             margin-bottom: 0;
         }
     }
-}
 
-// --- END NEW STYLES ---
+    .link-vencimiento-selector {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid $border-color;
+        border-radius: $border-radius * 0.5;
+        font-size: 0.85rem;
+        background-color: #fff;
+        margin-top: 0.25rem;
+        color: $text-color;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+        }
+    }
+}
 
 .selected-product-display { 
     background-color: $background-light; border: 1px solid $border-color; 
@@ -219,7 +227,6 @@
     p { margin: 0; font-size: 1.1rem; color: $text-color; }
 }
 
-// --- Recipe Modal Styles ---
 .recipe-modal {
     max-width: 800px;
     h4 { margin-top: 1.5rem; margin-bottom: 1rem; color: $primary-dark; border-bottom: 1px solid $border-color; padding-bottom: 0.5rem; }
@@ -242,7 +249,6 @@
     }
 }
 
-// --- Custom Alert Styles ---
 .custom-alert {
     position: fixed; top: 20px; right: 20px; padding: 1rem 1.5rem;
     border-radius: $border-radius; color: $white-color; z-index: 2000;

@@ -18,7 +18,7 @@ import {
 } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import { FaListUl, FaUserMd, FaBox, FaSyringe, FaTrash, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaListUl, FaUserMd, FaBox, FaSyringe, FaTrash, FaChevronDown, FaChevronUp, FaCheck } from "react-icons/fa";
 
 const ITEMS_PER_PAGE = 20;
 
@@ -126,8 +126,8 @@ const MonitorVencimientos = () => {
             setLastVisibleDoc(newLastDoc);
             setHasMore(newHasMore);
         } catch (error) {
-            console.error("Firestore query failed: ", error);
-            Swal.fire("Error", "No se pudieron cargar los vencimientos. Verifique los índices de Firestore requeridos en la consola del navegador.", "error");
+            console.error(error);
+            Swal.fire("Error", "No se pudieron cargar los vencimientos.", "error");
         } finally {
             setIsLoading(false);
             setIsLoadingMore(false);
@@ -193,6 +193,52 @@ const MonitorVencimientos = () => {
             Swal.fire("¡Éxito!", "El estado ha sido actualizado.", "success");
         } catch (error) {
             Swal.fire("Error", "No se pudo actualizar el estado.", "error");
+        }
+    };
+
+    const handleBulkSupply = async () => {
+        const toSupply = filteredData.filter(v => selectedIds.has(v.id) && !v.supplied);
+        
+        if (toSupply.length === 0) {
+            Swal.fire("Aviso", "No hay vencimientos pendientes seleccionados para marcar.", "info");
+            return;
+        }
+
+        const { isConfirmed } = await Swal.fire({
+            title: `¿Marcar ${toSupply.length} vencimiento(s) como suministrados?`,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#2ecc71",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, marcar",
+            cancelButtonText: "Cancelar",
+        });
+
+        if (!isConfirmed) return;
+
+        try {
+            const batch = writeBatch(db);
+            toSupply.forEach(v => {
+                const ref = doc(db, `pacientes/${v.pacienteId}/vencimientos`, v.id);
+                batch.update(ref, {
+                    supplied: true,
+                    suppliedDate: serverTimestamp(),
+                    status: "suministrado"
+                });
+            });
+            await batch.commit();
+
+            const suppliedIds = new Set(toSupply.map(v => v.id));
+            setVencimientos(prev => prev.map(v => 
+                suppliedIds.has(v.id) 
+                    ? { ...v, supplied: true, status: "suministrado", suppliedDate: new Date() }
+                    : v
+            ));
+            setSelectedIds(new Set());
+            Swal.fire("¡Listo!", `${toSupply.length} vencimiento(s) marcados como suministrados.`, "success");
+        } catch (error) {
+            console.error(error);
+            Swal.fire("Error", "No se pudo actualizar los vencimientos.", "error");
         }
     };
 
@@ -447,31 +493,36 @@ const MonitorVencimientos = () => {
                 {selectMode && selectedIds.size > 0 && (
                     <div className="selection-action-bar">
                         <span>{selectedIds.size} seleccionado(s)</span>
-                        <button className="btn-bulk-confirm" onClick={async () => {
-                            const toDelete = filteredData.filter(v => selectedIds.has(v.id));
-                            const { isConfirmed } = await Swal.fire({
-                                title: `¿Eliminar ${toDelete.length} vencimiento(s)?`,
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#d33",
-                                cancelButtonColor: "#3085d6",
-                                confirmButtonText: "Sí, eliminar",
-                                cancelButtonText: "Cancelar",
-                            });
-                            if (!isConfirmed) return;
-                            try {
-                                const batch = writeBatch(db);
-                                toDelete.forEach(v => batch.delete(doc(db, `pacientes/${v.pacienteId}/vencimientos`, v.id)));
-                                await batch.commit();
-                                setVencimientos(prev => prev.filter(v => !selectedIds.has(v.id)));
-                                setSelectedIds(new Set());
-                                Swal.fire("¡Listo!", `${toDelete.length} vencimiento(s) eliminados.`, "success");
-                            } catch (error) {
-                                Swal.fire("Error", "No se pudo completar la eliminación.", "error");
-                            }
-                        }}>
-                            <FaTrash /> Eliminar seleccionados ({selectedIds.size})
-                        </button>
+                        <div className="selection-actions">
+                            <button className="btn-bulk-supply" onClick={handleBulkSupply}>
+                                <FaCheck /> Marcar Suministrados
+                            </button>
+                            <button className="btn-bulk-confirm" onClick={async () => {
+                                const toDelete = filteredData.filter(v => selectedIds.has(v.id));
+                                const { isConfirmed } = await Swal.fire({
+                                    title: `¿Eliminar ${toDelete.length} vencimiento(s)?`,
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#d33",
+                                    cancelButtonColor: "#3085d6",
+                                    confirmButtonText: "Sí, eliminar",
+                                    cancelButtonText: "Cancelar",
+                                });
+                                if (!isConfirmed) return;
+                                try {
+                                    const batch = writeBatch(db);
+                                    toDelete.forEach(v => batch.delete(doc(db, `pacientes/${v.pacienteId}/vencimientos`, v.id)));
+                                    await batch.commit();
+                                    setVencimientos(prev => prev.filter(v => !selectedIds.has(v.id)));
+                                    setSelectedIds(new Set());
+                                    Swal.fire("¡Listo!", `${toDelete.length} vencimiento(s) eliminados.`, "success");
+                                } catch (error) {
+                                    Swal.fire("Error", "No se pudo completar la eliminación.", "error");
+                                }
+                            }}>
+                                <FaTrash /> Eliminar seleccionados
+                            </button>
+                        </div>
                     </div>
                 )}
         

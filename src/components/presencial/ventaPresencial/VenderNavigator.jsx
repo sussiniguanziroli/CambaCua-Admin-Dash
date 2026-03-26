@@ -185,11 +185,11 @@ const VenderNavigator = () => {
     if (!!saleData.patient && saleData.clinicalHistoryItems.length > 0) {
       nextStep();
     } else {
-      handleConfirmSaleAndSchedule({});
+      handleConfirmSaleAndSchedule({}, {});
     }
   };
 
-  const handleConfirmSaleAndSchedule = async (schedule) => {
+  const handleConfirmSaleAndSchedule = async (schedule, links = {}) => {
     setIsSubmitting(true);
     try {
       const batch = writeBatch(db);
@@ -315,6 +315,18 @@ const VenderNavigator = () => {
               suppliedDate: saleTimestamp,
             });
           }
+        }
+      });
+
+      Object.keys(links).forEach((itemId) => {
+        const oldVencId = links[itemId];
+        if (oldVencId && saleData.patient?.id) {
+            const oldRef = doc(db, `pacientes/${saleData.patient.id}/vencimientos`, oldVencId);
+            batch.update(oldRef, {
+                supplied: true,
+                suppliedDate: saleTimestamp,
+                status: 'suministrado'
+            });
         }
       });
 

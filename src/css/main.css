@@ -4436,12 +4436,17 @@ button.btn-reset:hover {
 }
 .programar-vencimientos-container .vencimiento-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   background: #f8f9fa;
   padding: 1rem 1.25rem;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
+}
+.programar-vencimientos-container .vencimiento-item .vencimiento-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 .programar-vencimientos-container .vencimiento-item .item-info {
   display: flex;
@@ -4484,6 +4489,25 @@ button.btn-reset:hover {
 .programar-vencimientos-container .vencimiento-item .item-schedule-input label {
   font-size: 0.8rem;
   color: #7f8c8d;
+}
+.programar-vencimientos-container .vencimiento-item .item-link-selector {
+  margin-top: 1rem;
+  width: 100%;
+  border-top: 1px dashed #e0e0e0;
+  padding-top: 0.75rem;
+}
+.programar-vencimientos-container .vencimiento-item .item-link-selector select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  background-color: #fff;
+  color: #34495e;
+}
+.programar-vencimientos-container .vencimiento-item .item-link-selector select:focus {
+  outline: none;
+  border-color: #3498db;
 }
 .programar-vencimientos-container .no-items-message {
   text-align: center;
@@ -10001,6 +10025,42 @@ button.btn-reset:hover {
 .monitor-vencimientos-container .selection-action-bar span {
   font-weight: 600;
 }
+.monitor-vencimientos-container .selection-action-bar .selection-actions {
+  display: flex;
+  gap: 1rem;
+}
+.monitor-vencimientos-container .selection-action-bar .selection-actions .btn-bulk-supply {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #2ecc71;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+.monitor-vencimientos-container .selection-action-bar .selection-actions .btn-bulk-supply:hover:not(:disabled) {
+  background-color: #25a25a;
+}
+.monitor-vencimientos-container .selection-action-bar .selection-actions .btn-bulk-confirm {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+.monitor-vencimientos-container .selection-action-bar .selection-actions .btn-bulk-confirm:hover:not(:disabled) {
+  background-color: #d62c1a;
+}
 .monitor-vencimientos-container .select-all-bar {
   margin-bottom: 1rem;
 }
@@ -10360,7 +10420,7 @@ button.btn-reset:hover {
   flex-direction: column;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
   background-color: #f8f9fa;
   border: 1px solid #e0e0e0;
@@ -10424,6 +10484,20 @@ button.btn-reset:hover {
   font-size: 0.9rem;
   max-width: 120px;
   margin-bottom: 0;
+}
+.selected-product-item .link-vencimiento-selector {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  background-color: #fff;
+  margin-top: 0.25rem;
+  color: #34495e;
+}
+.selected-product-item .link-vencimiento-selector:focus {
+  outline: none;
+  border-color: #3498db;
 }
 
 .selected-product-display {

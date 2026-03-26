@@ -498,6 +498,47 @@
         margin-bottom: 1.25rem;
     
         span { font-weight: 600; }
+
+        .selection-actions {
+            display: flex;
+            gap: 1rem;
+            
+            .btn-bulk-supply {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                background-color: $success-color;
+                color: #fff;
+                border: none;
+                padding: 0.6rem 1.2rem;
+                border-radius: $border-radius;
+                cursor: pointer;
+                font-size: 0.95rem;
+                transition: background-color 0.2s;
+
+                &:hover:not(:disabled) {
+                    background-color: darken($success-color, 10%);
+                }
+            }
+            
+            .btn-bulk-confirm {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                background-color: $error-color;
+                color: #fff;
+                border: none;
+                padding: 0.6rem 1.2rem;
+                border-radius: $border-radius;
+                cursor: pointer;
+                font-size: 0.95rem;
+                transition: background-color 0.2s;
+
+                &:hover:not(:disabled) {
+                    background-color: darken($error-color, 10%);
+                }
+            }
+        }
     }
     
     .select-all-bar {

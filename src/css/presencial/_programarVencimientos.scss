@@ -32,12 +32,18 @@ $transition: all 0.2s ease;
 
   .vencimiento-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     background: $background-light;
     padding: 1rem 1.25rem;
     border: 1px solid $border-color;
     border-radius: $border-radius;
+
+    .vencimiento-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
 
      .item-info {
       display: flex;
@@ -83,6 +89,28 @@ $transition: all 0.2s ease;
         font-size: 0.8rem;
         color: $grey-dark;
       }
+    }
+
+    .item-link-selector {
+        margin-top: 1rem;
+        width: 100%;
+        border-top: 1px dashed $border-color;
+        padding-top: 0.75rem;
+
+        select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            font-size: 0.85rem;
+            background-color: #fff;
+            color: $text-color;
+
+            &:focus {
+                outline: none;
+                border-color: $primary-color;
+            }
+        }
     }
   }
 

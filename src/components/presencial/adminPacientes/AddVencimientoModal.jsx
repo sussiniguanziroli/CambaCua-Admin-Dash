@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { collection, addDoc, writeBatch, Timestamp, getDocs, doc } from 'firebase/firestore';
+import { collection, addDoc, writeBatch, Timestamp, getDocs, doc, query, where } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
 import { FaTrash } from 'react-icons/fa';
 
@@ -19,8 +19,10 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
     const [presentialProducts, setPresentialProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [serviceCategories, setServiceCategories] = useState([]);
-    const [isLoading, setIsLoading] =useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     
+    const [pendingVencimientos, setPendingVencimientos] = useState([]);
+
     const [viewMode, setViewMode] = useState('presential');
     const [filters, setFilters] = useState({ text: '', tipo: 'todos', category: 'todas', status: 'true' });
     const [sort, setSort] = useState('name-asc');
@@ -40,8 +42,24 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
     useEffect(() => {
         if (isOpen) {
             setAppliedDate(getLocalDateString());
+            
+            const fetchPending = async () => {
+                if (!pacienteId) return;
+                try {
+                    const q = query(
+                        collection(db, `pacientes/${pacienteId}/vencimientos`),
+                        where("status", "==", "pendiente")
+                    );
+                    const snap = await getDocs(q);
+                    const pending = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    setPendingVencimientos(pending);
+                } catch (err) {
+                    console.error(err);
+                }
+            };
+            fetchPending();
         }
-    }, [isOpen]);
+    }, [isOpen, pacienteId]);
     
     const fetchData = useCallback(async () => {
         if (!isOpen) return;
@@ -93,7 +111,13 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
             if (isSelected) {
                 return prev.filter(p => p.id !== product.id);
             } else {
-                const newProduct = { ...product, dosage: '', withSuministro: true };
+                const autoMatch = pendingVencimientos.find(v => v.productId === product.id);
+                const newProduct = { 
+                    ...product, 
+                    dosage: '', 
+                    withSuministro: true,
+                    linkedVencimientoId: autoMatch ? autoMatch.id : ''
+                };
                 return [...prev, newProduct];
             }
         });
@@ -115,6 +139,14 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
         setSelectedProducts(prev => 
             prev.map(p => 
                 p.id === productId ? { ...p, withSuministro: !p.withSuministro } : p
+            )
+        );
+    };
+
+    const handleLinkChange = (productId, vencimientoId) => {
+        setSelectedProducts(prev => 
+            prev.map(p => 
+                p.id === productId ? { ...p, linkedVencimientoId: vencimientoId } : p
             )
         );
     };
@@ -184,6 +216,15 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                         status: 'suministrado', 
                         supplied: true,
                         suppliedDate: appliedTimestamp,
+                    });
+                }
+
+                if (product.linkedVencimientoId) {
+                    const oldRef = doc(db, `pacientes/${pacienteId}/vencimientos`, product.linkedVencimientoId);
+                    batch.update(oldRef, {
+                        supplied: true,
+                        suppliedDate: appliedTimestamp,
+                        status: 'suministrado'
                     });
                 }
             }
@@ -262,6 +303,20 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                                                 />
                                             )}
                                         </div>
+                                        {pendingVencimientos.length > 0 && (
+                                            <select 
+                                                className="link-vencimiento-selector"
+                                                value={product.linkedVencimientoId}
+                                                onChange={(e) => handleLinkChange(product.id, e.target.value)}
+                                            >
+                                                <option value="">-- No saldar ningún vencimiento previo --</option>
+                                                {pendingVencimientos.map(v => (
+                                                    <option key={v.id} value={v.id}>
+                                                        Saldar: {v.productName} (Vencía: {v.dueDate.toDate().toLocaleDateString('es-AR')})
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        )}
                                     </div>
                                 ))
                             )}
