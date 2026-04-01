@@ -23,10 +23,9 @@ const ProgramarVencimientos = ({ saleData, onConfirmAndSchedule, prevStep, isSub
 
                 const autoLinks = {};
                 itemsToSchedule.forEach(item => {
-                    const match = pending.find(v => v.productId === item.id);
-                    if (match) {
-                        autoLinks[item.id] = match.id;
-                    }
+                    const firestoreId = item.originalProductId || item.id;
+                    const match = pending.find(v => v.productId === firestoreId);
+                    if (match) autoLinks[item.id] = match.id;
                 });
                 setLinks(autoLinks);
             } catch (err) {
@@ -54,10 +53,8 @@ const ProgramarVencimientos = ({ saleData, onConfirmAndSchedule, prevStep, isSub
                         <div className="vencimiento-item-header">
                             <div className="item-info">
                                 <span className="item-name">
-                                    {saleData.suministroItems.includes(item.id) &&  (
-                                        <span title="Creará Suministro Base" className="suministro-indicator">
-                                            <FaSyringe />
-                                        </span>
+                                    {saleData.suministroItems.includes(item.id) && (
+                                        <span title="Creará Suministro Base" className="suministro-indicator"><FaSyringe /></span>
                                     )}
                                     {item.name}
                                 </span>
@@ -70,10 +67,7 @@ const ProgramarVencimientos = ({ saleData, onConfirmAndSchedule, prevStep, isSub
                         </div>
                         {pendingVencimientos.length > 0 && (
                             <div className="item-link-selector">
-                                <select 
-                                    value={links[item.id] || ""} 
-                                    onChange={(e) => handleLinkChange(item.id, e.target.value)}
-                                >
+                                <select value={links[item.id] || ""} onChange={(e) => handleLinkChange(item.id, e.target.value)}>
                                     <option value="">-- No saldar ningún vencimiento previo --</option>
                                     {pendingVencimientos.map(v => (
                                         <option key={v.id} value={v.id}>
@@ -89,7 +83,9 @@ const ProgramarVencimientos = ({ saleData, onConfirmAndSchedule, prevStep, isSub
             </div>
             <div className="navigator-buttons">
                 <button onClick={prevStep} className="btn btn-secondary" disabled={isSubmitting}>Anterior</button>
-                <button onClick={() => onConfirmAndSchedule(schedule, links)} className="btn btn-primary" disabled={isSubmitting}>{isSubmitting ? 'Finalizando...' : 'Finalizar Venta'}</button>
+                <button onClick={() => onConfirmAndSchedule(schedule, links)} className="btn btn-primary" disabled={isSubmitting}>
+                    {isSubmitting ? 'Finalizando...' : 'Finalizar Venta'}
+                </button>
             </div>
         </div>
     );

@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 
 const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleClinicalHistory, onToggleSuministro, onSaleReset }) => {
     const [isSaving, setIsSaving] = useState(false);
-    
+
     const subtotal = saleData.cart.reduce((sum, item) => sum + (item.priceBeforeDiscount || item.price), 0);
     const totalDiscount = saleData.cart.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
 
@@ -17,6 +17,7 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                 createdAt: saleData.saleTimestamp,
                 cart: saleData.cart.map(item => ({
                     id: item.id,
+                    originalProductId: item.originalProductId || null,
                     name: item.name || item.displayName,
                     quantity: item.quantity || 1,
                     source: item.source || 'presential',
@@ -77,10 +78,7 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                                     {item.isDoseable ? (
                                         <span className="item-name">{item.name} ({item.quantity} {item.unit})</span>
                                     ) : (
-                                        <>
-                                            <span className="item-quantity">{item.quantity}x</span>
-                                            <span className="item-name">{item.name}</span>
-                                        </>
+                                        <><span className="item-quantity">{item.quantity}x</span><span className="item-name">{item.name}</span></>
                                     )}
                                     {item.discountAmount > 0 && (
                                         <div className="item-discount-info">
@@ -97,14 +95,8 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                                 <div className="clinical-history-toggle">
                                     <input type="checkbox" id={`ch-${item.id}`} checked={saleData.clinicalHistoryItems.includes(item.id)} onChange={() => onToggleClinicalHistory(item.id)}/>
                                     <label htmlFor={`ch-${item.id}`}>Añadir a H.C.</label>
-
                                     {saleData.clinicalHistoryItems.includes(item.id) && (
-                                        <button 
-                                            type="button"
-                                            title="Crear Suministro Base"
-                                            className={`btn-suministro-toggle ${saleData.suministroItems.includes(item.id) ? 'active' : ''}`}
-                                            onClick={() => onToggleSuministro(item.id)}
-                                        >
+                                        <button type="button" title="Crear Suministro Base" className={`btn-suministro-toggle ${saleData.suministroItems.includes(item.id) ? 'active' : ''}`} onClick={() => onToggleSuministro(item.id)}>
                                             <FaSyringe />
                                         </button>
                                     )}
@@ -113,12 +105,12 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                         </li>
                     ))}
                 </ul>
-                {saleData.patient && (<p className="clinical-history-info">Seleccione los items a registrar en la historia clínica.</p>)}
+                {saleData.patient && <p className="clinical-history-info">Seleccione los items a registrar en la historia clínica.</p>}
                 <div className="summary-details">
                     <div className="summary-row"><span>Tutor:</span><strong>{saleData.tutor?.name || 'Cliente Genérico'}</strong></div>
                     <div className="summary-row"><span>Paciente:</span><strong>{saleData.patient?.name || 'N/A'}</strong></div>
                     <div className="summary-row"><span>Subtotal:</span><strong>${subtotal.toFixed(2)}</strong></div>
-                    {totalDiscount > 0 && (<div className="summary-row discount"><span>Descuentos:</span><strong>-${totalDiscount.toFixed(2)}</strong></div>)}
+                    {totalDiscount > 0 && <div className="summary-row discount"><span>Descuentos:</span><strong>-${totalDiscount.toFixed(2)}</strong></div>}
                     <div className="summary-total"><span>Total Venta:</span><strong>${saleData.total.toFixed(2)}</strong></div>
                 </div>
             </div>
