@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 
 const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleClinicalHistory, onToggleSuministro, onSaleReset }) => {
     const [isSaving, setIsSaving] = useState(false);
-
+    
     const subtotal = saleData.cart.reduce((sum, item) => sum + (item.priceBeforeDiscount || item.price), 0);
     const totalDiscount = saleData.cart.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
 

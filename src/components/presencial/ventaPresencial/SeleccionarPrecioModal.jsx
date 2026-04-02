@@ -151,8 +151,8 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
                     {activeTab === 'precio' ? (
                         <><strong>Solo este carrito:</strong> Modifica el precio base únicamente para esta venta.<br/><strong>Guardar en producto:</strong> Actualiza el precio base del producto permanentemente.</>
                     ) : (
-                        <strong>Aplicar Descuento:</strong>
-                    )} {activeTab === 'descuento' && 'Aplica un descuento a este ítem solo para esta venta.'}
+                        <><strong>Aplicar Descuento:</strong> Aplica un descuento a este ítem solo para esta venta.</>
+                    )}
                 </p>
             </div>
         </div>
