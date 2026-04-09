@@ -12,6 +12,11 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
     const totalDiscount = saleData.cart.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
     const hasPatients = saleData.patients && saleData.patients.length > 0;
 
+    const getDistributedQty = (patientId, itemId, fallback) => {
+        const val = saleData.distributionByPatient?.[patientId]?.[itemId];
+        return (val !== undefined && val !== null) ? val : fallback;
+    };
+
     const handleSaveSale = async () => {
         setIsSaving(true);
         try {
@@ -31,6 +36,7 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                 total: saleData.total || 0,
                 clinicalHistoryItems: saleData.clinicalHistoryItems || {},
                 suministroItems: saleData.suministroItems || {},
+                distributionByPatient: saleData.distributionByPatient || {},
                 saleTimestamp: saleData.saleTimestamp,
             });
             const result = await Swal.fire({
@@ -46,7 +52,7 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
 
     return (
         <div className="confirmar-venta-container">
-            <h2>Paso 5: Confirmar Venta</h2>
+            <h2>Paso 6: Confirmar Venta</h2>
             <div className="sale-summary-box">
                 <h4>Resumen del Pedido</h4>
                 <ul className="summary-item-list">
@@ -76,7 +82,9 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
 
                 {hasPatients && (
                     <div className="cv-patients-section">
-                        <p className="clinical-history-info">Seleccioná los items a registrar en la historia clínica de cada paciente.</p>
+                        <p className="clinical-history-info">
+                            Revisá la distribución y seleccioná los items a registrar en la historia clínica de cada paciente.
+                        </p>
                         {saleData.patients.map(patient => {
                             const patientCHItems = saleData.clinicalHistoryItems[patient.id] || [];
                             const patientSumItems = saleData.suministroItems[patient.id] || [];
@@ -95,12 +103,17 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                                         {saleData.cart.map(item => {
                                             const isInCH = patientCHItems.includes(item.id);
                                             const isInSum = patientSumItems.includes(item.id);
+                                            const distributedQty = getDistributedQty(patient.id, item.id, item.quantity);
+                                            const hasDistribution = Object.keys(saleData.distributionByPatient || {}).length > 0;
                                             return (
                                                 <li key={item.id} className="cv-patient-item">
                                                     <span className="cv-item-name">
                                                         {item.isDoseable
-                                                            ? `${item.name} (${item.quantity} ${item.unit})`
-                                                            : `${item.quantity}x ${item.name}`}
+                                                            ? `${item.name} (${distributedQty} ${item.unit})`
+                                                            : `${distributedQty}x ${item.name}`}
+                                                        {hasDistribution && distributedQty !== item.quantity && (
+                                                            <span className="cv-distributed-badge">distribuido</span>
+                                                        )}
                                                     </span>
                                                     <div className="clinical-history-toggle">
                                                         <input
