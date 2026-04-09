@@ -14,7 +14,29 @@ $shadow-light: 0 2px 8px rgba(0, 0, 0, 0.05);
     max-width: 700px;
     margin: 2rem auto;
     text-align: center;
-
+    .resumen-patients-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        justify-content: flex-end;
+    }
+    
+    .resumen-patient-chip {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: $primary-dark;
+        background: lighten($primary-color, 38%);
+        border: 1px solid lighten($primary-color, 25%);
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    
+        &:hover {
+            background: lighten($primary-color, 30%);
+            text-decoration: none;
+        }
+    }
     .resumen-header {
         margin-bottom: 2rem;
         .success-icon {

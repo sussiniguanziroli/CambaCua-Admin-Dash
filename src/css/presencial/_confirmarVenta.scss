@@ -16,6 +16,76 @@ $transition: all 0.2s ease;
     max-width: 900px;
     margin: 0 auto;
 
+    .cv-patients-section {
+        margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .cv-patient-block {
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        overflow: hidden;
+    }
+    
+    .cv-patient-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.7rem 1rem;
+        background: $background-light;
+        border-bottom: 1px solid $border-color;
+    
+        .cv-patient-icon {
+            color: $primary-color;
+            font-size: 1rem;
+        }
+    
+        .cv-patient-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: $primary-dark;
+            flex: 1;
+        }
+    
+        .cv-patient-count {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: $primary-dark;
+            background: lighten($primary-color, 35%);
+            border: 1px solid lighten($primary-color, 20%);
+            padding: 0.15rem 0.5rem;
+            border-radius: 20px;
+        }
+    }
+    
+    .cv-patient-items {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .cv-patient-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.65rem 1rem;
+        border-bottom: 1px solid lighten($border-color, 5%);
+        gap: 1rem;
+    
+        &:last-child { border-bottom: none; }
+    
+        .cv-item-name {
+            font-size: 0.875rem;
+            color: $text-color;
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
     h2 {
         text-align: center;
         color: $primary-dark;

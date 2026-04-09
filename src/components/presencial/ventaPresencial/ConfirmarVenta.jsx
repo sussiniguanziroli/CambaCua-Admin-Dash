@@ -1,68 +1,47 @@
+// ConfirmarVenta.jsx
 import React, { useState } from 'react';
-import { FaSyringe } from 'react-icons/fa';
+import { FaSyringe, FaDog, FaCat } from 'react-icons/fa';
 import { db } from '../../../firebase/config';
 import { collection, addDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 
 const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleClinicalHistory, onToggleSuministro, onSaleReset }) => {
     const [isSaving, setIsSaving] = useState(false);
-    
+
     const subtotal = saleData.cart.reduce((sum, item) => sum + (item.priceBeforeDiscount || item.price), 0);
     const totalDiscount = saleData.cart.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
+    const hasPatients = saleData.patients && saleData.patients.length > 0;
 
     const handleSaveSale = async () => {
         setIsSaving(true);
         try {
-            const ventaGuardadaData = {
+            await addDoc(collection(db, 'ventas_guardadas'), {
                 createdAt: saleData.saleTimestamp,
                 cart: saleData.cart.map(item => ({
-                    id: item.id,
-                    originalProductId: item.originalProductId || null,
-                    name: item.name || item.displayName,
-                    quantity: item.quantity || 1,
-                    source: item.source || 'presential',
-                    tipo: item.tipo || null,
-                    isDoseable: item.isDoseable || false,
-                    unit: item.unit || null,
-                    originalPrice: item.originalPrice || 0,
-                    priceBeforeDiscount: item.priceBeforeDiscount || 0,
-                    discountType: item.discountType || null,
-                    discountValue: item.discountValue || 0,
-                    discountAmount: item.discountAmount || 0,
-                    price: item.price || 0,
+                    id: item.id, originalProductId: item.originalProductId || null,
+                    name: item.name || item.displayName, quantity: item.quantity || 1,
+                    source: item.source || 'presential', tipo: item.tipo || null,
+                    isDoseable: item.isDoseable || false, unit: item.unit || null,
+                    originalPrice: item.originalPrice || 0, priceBeforeDiscount: item.priceBeforeDiscount || 0,
+                    discountType: item.discountType || null, discountValue: item.discountValue || 0,
+                    discountAmount: item.discountAmount || 0, price: item.price || 0,
                 })),
                 tutor: saleData.tutor || null,
-                patient: saleData.patient || null,
+                patients: saleData.patients || [],
                 total: saleData.total || 0,
-                clinicalHistoryItems: saleData.clinicalHistoryItems || [],
-                suministroItems: saleData.suministroItems || [],
-                saleTimestamp: saleData.saleTimestamp
-            };
-
-            await addDoc(collection(db, 'ventas_guardadas'), ventaGuardadaData);
-
-            const result = await Swal.fire({
-                title: 'Venta guardada con éxito',
-                text: '¿Realizar otra venta?',
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonText: 'Sí',
-                cancelButtonText: 'Ir a Caja Diaria',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#6c757d'
+                clinicalHistoryItems: saleData.clinicalHistoryItems || {},
+                suministroItems: saleData.suministroItems || {},
+                saleTimestamp: saleData.saleTimestamp,
             });
-
-            if (result.isConfirmed) {
-                onSaleReset();
-            } else {
-                window.location.href = '/admin/caja-diaria';
-            }
-        } catch (error) {
-            console.error('Error saving sale:', error);
-            Swal.fire('Error', 'No se pudo guardar la venta', 'error');
-        } finally {
-            setIsSaving(false);
-        }
+            const result = await Swal.fire({
+                title: 'Venta guardada con éxito', text: '¿Realizar otra venta?', icon: 'success',
+                showCancelButton: true, confirmButtonText: 'Sí', cancelButtonText: 'Ir a Caja Diaria',
+                confirmButtonColor: '#3085d6', cancelButtonColor: '#6c757d',
+            });
+            if (result.isConfirmed) onSaleReset();
+            else window.location.href = '/admin/caja-diaria';
+        } catch (e) { console.error(e); Swal.fire('Error', 'No se pudo guardar la venta', 'error'); }
+        finally { setIsSaving(false); }
     };
 
     return (
@@ -91,29 +70,81 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                                     ${item.price.toFixed(2)}
                                 </span>
                             </div>
-                            {saleData.patient && (
-                                <div className="clinical-history-toggle">
-                                    <input type="checkbox" id={`ch-${item.id}`} checked={saleData.clinicalHistoryItems.includes(item.id)} onChange={() => onToggleClinicalHistory(item.id)}/>
-                                    <label htmlFor={`ch-${item.id}`}>Añadir a H.C.</label>
-                                    {saleData.clinicalHistoryItems.includes(item.id) && (
-                                        <button type="button" title="Crear Suministro Base" className={`btn-suministro-toggle ${saleData.suministroItems.includes(item.id) ? 'active' : ''}`} onClick={() => onToggleSuministro(item.id)}>
-                                            <FaSyringe />
-                                        </button>
-                                    )}
-                                </div>
-                            )}
                         </li>
                     ))}
                 </ul>
-                {saleData.patient && <p className="clinical-history-info">Seleccione los items a registrar en la historia clínica.</p>}
+
+                {hasPatients && (
+                    <div className="cv-patients-section">
+                        <p className="clinical-history-info">Seleccioná los items a registrar en la historia clínica de cada paciente.</p>
+                        {saleData.patients.map(patient => {
+                            const patientCHItems = saleData.clinicalHistoryItems[patient.id] || [];
+                            const patientSumItems = saleData.suministroItems[patient.id] || [];
+                            return (
+                                <div key={patient.id} className="cv-patient-block">
+                                    <div className="cv-patient-header">
+                                        <span className="cv-patient-icon">
+                                            {patient.species === 'Canino' ? <FaDog /> : <FaCat />}
+                                        </span>
+                                        <span className="cv-patient-name">{patient.name}</span>
+                                        {patientCHItems.length > 0 && (
+                                            <span className="cv-patient-count">{patientCHItems.length} en HC</span>
+                                        )}
+                                    </div>
+                                    <ul className="cv-patient-items">
+                                        {saleData.cart.map(item => {
+                                            const isInCH = patientCHItems.includes(item.id);
+                                            const isInSum = patientSumItems.includes(item.id);
+                                            return (
+                                                <li key={item.id} className="cv-patient-item">
+                                                    <span className="cv-item-name">
+                                                        {item.isDoseable
+                                                            ? `${item.name} (${item.quantity} ${item.unit})`
+                                                            : `${item.quantity}x ${item.name}`}
+                                                    </span>
+                                                    <div className="clinical-history-toggle">
+                                                        <input
+                                                            type="checkbox"
+                                                            id={`ch-${patient.id}-${item.id}`}
+                                                            checked={isInCH}
+                                                            onChange={() => onToggleClinicalHistory(patient.id, item.id)}
+                                                        />
+                                                        <label htmlFor={`ch-${patient.id}-${item.id}`}>Añadir a H.C.</label>
+                                                        {isInCH && (
+                                                            <button
+                                                                type="button"
+                                                                title="Crear Suministro Base"
+                                                                className={`btn-suministro-toggle ${isInSum ? 'active' : ''}`}
+                                                                onClick={() => onToggleSuministro(patient.id, item.id)}
+                                                            >
+                                                                <FaSyringe />
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+
                 <div className="summary-details">
                     <div className="summary-row"><span>Tutor:</span><strong>{saleData.tutor?.name || 'Cliente Genérico'}</strong></div>
-                    <div className="summary-row"><span>Paciente:</span><strong>{saleData.patient?.name || 'N/A'}</strong></div>
+                    {hasPatients && (
+                        <div className="summary-row">
+                            <span>Pacientes:</span>
+                            <strong>{saleData.patients.map(p => p.name).join(', ')}</strong>
+                        </div>
+                    )}
                     <div className="summary-row"><span>Subtotal:</span><strong>${subtotal.toFixed(2)}</strong></div>
                     {totalDiscount > 0 && <div className="summary-row discount"><span>Descuentos:</span><strong>-${totalDiscount.toFixed(2)}</strong></div>}
                     <div className="summary-total"><span>Total Venta:</span><strong>${saleData.total.toFixed(2)}</strong></div>
                 </div>
             </div>
+
             <div className="navigator-buttons">
                 <button onClick={prevStep} className="btn btn-secondary" disabled={isSubmitting || isSaving}>Anterior</button>
                 <button onClick={handleSaveSale} className="btn btn-outline" disabled={isSubmitting || isSaving}>

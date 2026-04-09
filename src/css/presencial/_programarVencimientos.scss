@@ -16,6 +16,55 @@ $transition: all 0.2s ease;
     margin-bottom: 1rem;
     color: $primary-dark;
   }
+  .pv-patient-block {
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+
+    .vencimiento-item {
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom: 1px solid lighten($border-color, 3%);
+        border-radius: 0;
+        margin: 0;
+        padding: 0.9rem 1.2rem;
+
+        &:last-child { border-bottom: none; }
+    }
+}
+
+.pv-patient-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1.2rem;
+    background: $background-light;
+    border-bottom: 1px solid $border-color;
+
+    .pv-patient-icon {
+        color: $primary-color;
+        font-size: 1rem;
+    }
+
+    .pv-patient-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: $primary-dark;
+        flex: 1;
+    }
+
+    .pv-patient-count {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: $grey-dark;
+        background: white;
+        border: 1px solid $border-color;
+        padding: 0.15rem 0.5rem;
+        border-radius: 20px;
+    }
+}
 
   .step-subtitle {
     text-align: center;

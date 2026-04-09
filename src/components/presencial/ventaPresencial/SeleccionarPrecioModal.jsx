@@ -1,3 +1,4 @@
+// SeleccionarPrecioModal.jsx
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../firebase/config';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -12,11 +13,7 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
 
     useEffect(() => {
         if (isOpen && item) {
-            if (item.isDoseable) {
-                setNewPrice(item.originalPrice?.toString() || item.pricePerML?.toString() || '');
-            } else {
-                setNewPrice(item.originalPrice?.toString() || item.price?.toString() || '');
-            }
+            setNewPrice(item.isDoseable ? (item.originalPrice?.toString() || item.pricePerML?.toString() || '') : (item.originalPrice?.toString() || item.price?.toString() || ''));
             setDiscountType(item.discountType || 'percentage');
             setDiscountValue(item.discountValue || '');
             setActiveTab('precio');
@@ -28,39 +25,26 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
     const handleUpdateCartOnly = () => {
         const price = parseFloat(newPrice);
         if (isNaN(price) || price < 0) { Swal.fire('Error', 'Ingrese un precio válido', 'error'); return; }
-        onUpdateCartPrice(item.id, price);
-        onClose();
+        onUpdateCartPrice(item.id, price); onClose();
     };
 
     const handleUpdateProductAndCart = async () => {
         const price = parseFloat(newPrice);
         if (isNaN(price) || price < 0) { Swal.fire('Error', 'Ingrese un precio válido', 'error'); return; }
-
         setIsUpdating(true);
         try {
             const firestoreId = item.originalProductId || item.id;
             const collectionName = item.source === 'online' ? 'productos' : 'productos_presenciales';
             let priceField;
-            if (item.isDoseable) {
-                priceField = 'pricePerML';
-            } else if (item.source === 'online') {
-                priceField = 'precio';
-            } else {
-                priceField = 'price';
-            }
-
-            const productRef = doc(db, collectionName, firestoreId);
-            await updateDoc(productRef, { [priceField]: price });
-
+            if (item.isDoseable) priceField = 'pricePerML';
+            else if (item.source === 'online') priceField = 'precio';
+            else priceField = 'price';
+            await updateDoc(doc(db, collectionName, firestoreId), { [priceField]: price });
             onUpdateProductPrice(item.id, price);
-            Swal.fire('Actualizado', 'El precio del producto se ha actualizado correctamente', 'success');
+            Swal.fire('Actualizado', 'El precio del producto se actualizó correctamente', 'success');
             onClose();
-        } catch (error) {
-            console.error('Error updating product price:', error);
-            Swal.fire('Error', 'No se pudo actualizar el precio del producto', 'error');
-        } finally {
-            setIsUpdating(false);
-        }
+        } catch (e) { console.error(e); Swal.fire('Error', 'No se pudo actualizar el precio del producto', 'error'); }
+        finally { setIsUpdating(false); }
     };
 
     const handleApplyDiscountClick = () => {
@@ -71,13 +55,7 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
 
     const currentPrice = item.isDoseable ? (item.originalPrice || item.pricePerML || 0) : (item.originalPrice || 0);
     const newTotal = (parseFloat(newPrice) || 0) * item.quantity;
-
-    let discountPreview = 0;
-    if (discountType === 'percentage') {
-        discountPreview = item.priceBeforeDiscount * ((parseFloat(discountValue) || 0) / 100);
-    } else {
-        discountPreview = parseFloat(discountValue) || 0;
-    }
+    let discountPreview = discountType === 'percentage' ? item.priceBeforeDiscount * ((parseFloat(discountValue) || 0) / 100) : parseFloat(discountValue) || 0;
     const newTotalWithDiscount = item.priceBeforeDiscount - discountPreview;
 
     return (
@@ -85,15 +63,12 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
             <div className="precio-modal-content">
                 <div className="precio-modal-item-info">
                     <span className="item-name">{item.name}</span>
-                    {item.isDoseable && <span className="item-detail">Cantidad: {item.quantity} ml</span>}
-                    {!item.isDoseable && <span className="item-detail">Cantidad: {item.quantity} unidades</span>}
+                    <span className="item-detail">{item.isDoseable ? `Cantidad: ${item.quantity} ml` : `Cantidad: ${item.quantity} unidades`}</span>
                 </div>
-
                 <div className="modal-tabs">
                     <button className={`tab-btn ${activeTab === 'precio' ? 'active' : ''}`} onClick={() => setActiveTab('precio')}>Modificar Precio</button>
                     <button className={`tab-btn ${activeTab === 'descuento' ? 'active' : ''}`} onClick={() => setActiveTab('descuento')}>Aplicar Descuento</button>
                 </div>
-
                 {activeTab === 'precio' && (
                     <div className="tab-content">
                         <h3>Modificar Precio</h3>
@@ -105,7 +80,7 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
                             <label>Nuevo Precio {item.isDoseable ? '(por ml)' : '(por unidad)'}</label>
                             <div className="input-wrapper">
                                 <span className="currency">$</span>
-                                <input type="number" step="0.01" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} placeholder="0.00" autoFocus />
+                                <input type="number" step="0.01" value={newPrice} onChange={e => setNewPrice(e.target.value)} placeholder="0.00" autoFocus />
                             </div>
                         </div>
                         <div className="precio-preview">
@@ -114,7 +89,6 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
                         </div>
                     </div>
                 )}
-
                 {activeTab === 'descuento' && (
                     <div className="tab-content discount-form">
                         <h3>Aplicar Descuento</h3>
@@ -126,7 +100,7 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
                             <label>Valor del Descuento ({discountType === 'percentage' ? '%' : '$'})</label>
                             <div className="input-wrapper">
                                 <span className="currency">{discountType === 'percentage' ? '%' : '$'}</span>
-                                <input type="number" step="0.01" value={discountValue} onChange={(e) => setDiscountValue(e.target.value)} placeholder="0" autoFocus />
+                                <input type="number" step="0.01" value={discountValue} onChange={e => setDiscountValue(e.target.value)} placeholder="0" autoFocus />
                             </div>
                         </div>
                         <div className="precio-preview">
@@ -136,7 +110,6 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
                         </div>
                     </div>
                 )}
-
                 <div className="precio-modal-actions">
                     <button onClick={onClose} className="btn btn-secondary" disabled={isUpdating}>Cancelar</button>
                     <button onClick={activeTab === 'precio' ? handleUpdateCartOnly : handleApplyDiscountClick} className="btn btn-outline" disabled={isUpdating}>
@@ -146,10 +119,9 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
                         {isUpdating ? 'Guardando...' : 'Guardar en Producto'}
                     </button>
                 </div>
-
                 <p className="precio-modal-note">
                     {activeTab === 'precio' ? (
-                        <><strong>Solo este carrito:</strong> Modifica el precio base únicamente para esta venta.<br/><strong>Guardar en producto:</strong> Actualiza el precio base del producto permanentemente.</>
+                        <><strong>Solo este carrito:</strong> Modifica el precio base únicamente para esta venta.<br /><strong>Guardar en producto:</strong> Actualiza el precio base del producto permanentemente.</>
                     ) : (
                         <><strong>Aplicar Descuento:</strong> Aplica un descuento a este ítem solo para esta venta.</>
                     )}

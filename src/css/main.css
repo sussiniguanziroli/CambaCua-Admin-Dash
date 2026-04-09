@@ -4423,6 +4423,51 @@ button.btn-reset:hover {
   margin-bottom: 1rem;
   color: #2980b9;
 }
+.programar-vencimientos-container .pv-patient-block {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+.programar-vencimientos-container .pv-patient-block .vencimiento-item {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom: 1px solid #e8e8e8;
+  border-radius: 0;
+  margin: 0;
+  padding: 0.9rem 1.2rem;
+}
+.programar-vencimientos-container .pv-patient-block .vencimiento-item:last-child {
+  border-bottom: none;
+}
+.programar-vencimientos-container .pv-patient-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.2rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+.programar-vencimientos-container .pv-patient-header .pv-patient-icon {
+  color: #3498db;
+  font-size: 1rem;
+}
+.programar-vencimientos-container .pv-patient-header .pv-patient-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #2980b9;
+  flex: 1;
+}
+.programar-vencimientos-container .pv-patient-header .pv-patient-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #7f8c8d;
+  background: white;
+  border: 1px solid #e0e0e0;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+}
 .programar-vencimientos-container .step-subtitle {
   text-align: center;
   color: #7f8c8d;
@@ -4839,6 +4884,27 @@ button.btn-reset:hover {
   margin: 2rem auto;
   text-align: center;
 }
+.resumen-venta-container .resumen-patients-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: flex-end;
+}
+.resumen-venta-container .resumen-patient-chip {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2980b9;
+  background: #d9ecf8;
+  border: 1px solid #a0cfee;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.resumen-venta-container .resumen-patient-chip:hover {
+  background: #b6daf2;
+  text-decoration: none;
+}
 .resumen-venta-container .resumen-header {
   margin-bottom: 2rem;
 }
@@ -5009,9 +5075,200 @@ button.btn-reset:hover {
   background-color: #2980b9;
 }
 
+.seleccionar-pacientes-subtitle {
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin: -0.5rem 0 1.5rem;
+}
+
+.seleccionar-pacientes-empty {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  color: #7f8c8d;
+  background: #f8f9fa;
+  margin-bottom: 1.5rem;
+}
+
+.seleccionar-pacientes-list-wrapper {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.seleccionar-pacientes-select-all {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.2rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+.seleccionar-pacientes-select-all:hover {
+  background: #eff1f4;
+}
+.seleccionar-pacientes-select-all .sp-select-all-label {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #34495e;
+}
+.seleccionar-pacientes-select-all .sp-count {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+.seleccionar-pacientes-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+.seleccionar-pacientes-list li {
+  display: flex !important;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.2rem !important;
+}
+.seleccionar-pacientes-list li.selected {
+  background-color: #d9ecf8 !important;
+}
+.seleccionar-pacientes-list li .sp-species-icon {
+  font-size: 1.1rem;
+  color: #3498db;
+  flex-shrink: 0;
+}
+.seleccionar-pacientes-list li .sp-patient-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.seleccionar-pacientes-list li .sp-patient-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #34495e;
+}
+.seleccionar-pacientes-list li .sp-patient-meta {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+.seleccionar-pacientes-list li .sp-selected-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2980b9;
+  background: #bfdef4;
+  border: 1px solid #8bc4ea;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.sp-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  color: white;
+}
+.sp-checkbox.checked {
+  background: #3498db;
+  border-color: #3498db;
+}
+.sp-checkbox.indeterminate {
+  background: #8bc4ea;
+  border-color: #3498db;
+}
+
+.seleccionar-pacientes-info-banner {
+  background: #e1f0fa;
+  border: 1px solid #a0cfee;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #2980b9;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
 .confirmar-venta-container {
   max-width: 900px;
   margin: 0 auto;
+}
+.confirmar-venta-container .cv-patients-section {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.confirmar-venta-container .cv-patient-block {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.confirmar-venta-container .cv-patient-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+.confirmar-venta-container .cv-patient-header .cv-patient-icon {
+  color: #3498db;
+  font-size: 1rem;
+}
+.confirmar-venta-container .cv-patient-header .cv-patient-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #2980b9;
+  flex: 1;
+}
+.confirmar-venta-container .cv-patient-header .cv-patient-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2980b9;
+  background: #cce5f6;
+  border: 1px solid #8bc4ea;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+}
+.confirmar-venta-container .cv-patient-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.confirmar-venta-container .cv-patient-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid #ededed;
+  gap: 1rem;
+}
+.confirmar-venta-container .cv-patient-item:last-child {
+  border-bottom: none;
+}
+.confirmar-venta-container .cv-patient-item .cv-item-name {
+  font-size: 0.875rem;
+  color: #34495e;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .confirmar-venta-container h2 {
   text-align: center;
