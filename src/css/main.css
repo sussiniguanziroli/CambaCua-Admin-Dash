@@ -6312,28 +6312,37 @@ button.btn-reset:hover {
 .profile-container .paciente-card-profile .paciente-breed {
   color: #8492a6;
 }
-.profile-container .citas-controls, .profile-container .compras-controls {
+.profile-container .citas-controls,
+.profile-container .compras-controls {
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
   flex-wrap: wrap;
 }
-.profile-container .citas-controls input, .profile-container .citas-controls select, .profile-container .compras-controls input, .profile-container .compras-controls select {
+.profile-container .citas-controls input,
+.profile-container .citas-controls select,
+.profile-container .compras-controls input,
+.profile-container .compras-controls select {
   padding: 0.75rem;
   border: 1px solid #e0e6ed;
   border-radius: 9px;
   font-size: 1rem;
 }
 @media (max-width: 768px) {
-  .profile-container .citas-controls input, .profile-container .citas-controls select, .profile-container .compras-controls input, .profile-container .compras-controls select {
+  .profile-container .citas-controls input,
+  .profile-container .citas-controls select,
+  .profile-container .compras-controls input,
+  .profile-container .compras-controls select {
     width: 100%;
   }
 }
-.profile-container .citas-controls input[type=text], .profile-container .compras-controls input[type=text] {
+.profile-container .citas-controls input[type=text],
+.profile-container .compras-controls input[type=text] {
   flex-grow: 1;
 }
 @media (max-width: 768px) {
-  .profile-container .citas-controls input[type=text], .profile-container .compras-controls input[type=text] {
+  .profile-container .citas-controls input[type=text],
+  .profile-container .compras-controls input[type=text] {
     flex-grow: 0;
   }
 }
@@ -6529,6 +6538,52 @@ button.btn-reset:hover {
 .profile-container .tutor-transactions-list .transaction-item:hover {
   background-color: #f1f3f5;
 }
+.profile-container .tutor-transactions-list .transaction-item .transaction-menu-wrapper .btn-icon-dots {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  color: #8492a6;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+.profile-container .tutor-transactions-list .transaction-item .transaction-menu-wrapper .btn-icon-dots:hover {
+  background-color: #e0e6ed;
+  color: #3c4858;
+}
+.profile-container .tutor-transactions-list .transaction-item .transaction-menu-wrapper .btn-icon-dots svg {
+  font-size: 0.9rem;
+}
+.profile-container .tutor-transactions-list .transaction-item .transaction-menu-wrapper .transaction-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #fff;
+  border: 1px solid #e0e6ed;
+  border-radius: 8px;
+  z-index: 200;
+  min-width: 140px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.profile-container .tutor-transactions-list .transaction-item .transaction-menu-wrapper .transaction-dropdown .transaction-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.15s ease;
+}
+.profile-container .tutor-transactions-list .transaction-item .transaction-menu-wrapper .transaction-dropdown .transaction-dropdown-item.danger {
+  color: #dc3545;
+}
+.profile-container .tutor-transactions-list .transaction-item .transaction-menu-wrapper .transaction-dropdown .transaction-dropdown-item.danger:hover {
+  background-color: #fae3e5;
+}
 .profile-container .tutor-transactions-list .transaction-item .transaction-info .date {
   display: block;
   color: #6c757d;
@@ -6621,14 +6676,16 @@ button.btn-reset:hover {
   margin-bottom: 0.5rem;
   display: block;
 }
-.profile-container .payment-modal .form-group input, .profile-container .payment-modal .form-group select {
+.profile-container .payment-modal .form-group input,
+.profile-container .payment-modal .form-group select {
   width: 100%;
   padding: 0.8rem;
   font-size: 1rem;
   border-radius: 9px;
   border: 1px solid #e0e6ed;
 }
-.profile-container .payment-modal .form-group input:focus, .profile-container .payment-modal .form-group select:focus {
+.profile-container .payment-modal .form-group input:focus,
+.profile-container .payment-modal .form-group select:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 0 3px #cce5f6;
