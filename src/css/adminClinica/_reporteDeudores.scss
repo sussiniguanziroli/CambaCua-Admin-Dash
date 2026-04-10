@@ -1,0 +1,267 @@
+// _reporte_deudores.scss
+
+.reporte-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    backdrop-filter: blur(3px);
+  
+    .reporte-modal-content {
+        background-color: #ffffff;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 500px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        animation: slideInDown 0.3s ease-out forwards;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        max-height: 90vh; // Para que no se escape de la pantalla
+
+        &.dashboard-variant {
+            max-width: 800px; // Más ancho para que entre bien la tabla
+        }
+  
+        .reporte-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            flex-shrink: 0;
+  
+            h3 {
+                margin: 0;
+                font-size: 1.25rem;
+                color: #2c3e50;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+  
+                .excel-icon {
+                    color: #1d6f42; // Verde Excel
+                }
+            }
+  
+            .close-btn {
+                background: none;
+                border: none;
+                font-size: 1.2rem;
+                color: #6c757d;
+                cursor: pointer;
+                transition: color 0.2s;
+  
+                &:hover {
+                    color: #dc3545;
+                }
+            }
+        }
+  
+        .reporte-modal-body {
+            padding: 24px;
+            overflow-y: auto; // Scrolleable si hay muchos datos
+            flex-grow: 1;
+  
+            .controls-row {
+                display: flex;
+                gap: 12px;
+                margin-bottom: 24px;
+                align-items: center;
+                flex-wrap: wrap;
+
+                input[type="date"] {
+                    padding: 10px 12px;
+                    border: 1px solid #ced4da;
+                    border-radius: 6px;
+                    font-size: 1rem;
+                    color: #495057;
+                    flex-grow: 1;
+                    min-width: 150px;
+
+                    &:focus {
+                        outline: none;
+                        border-color: #3085d6;
+                        box-shadow: 0 0 0 2px rgba(48, 133, 214, 0.2);
+                    }
+                }
+            }
+
+            .preview-container {
+                background: #fff;
+                border: 1px solid #e9ecef;
+                border-radius: 8px;
+                overflow: hidden;
+
+                .preview-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    text-align: left;
+
+                    th {
+                        background-color: #f8f9fa;
+                        padding: 12px 16px;
+                        font-weight: 600;
+                        color: #495057;
+                        border-bottom: 2px solid #e9ecef;
+                    }
+
+                    td {
+                        padding: 12px 16px;
+                        border-bottom: 1px solid #e9ecef;
+                        color: #2c3e50;
+                        vertical-align: middle;
+                    }
+
+                    tr.expanded td {
+                        border-bottom: none;
+                        background-color: #f8f9fa;
+                    }
+
+                    .debt-cell {
+                        color: #d63031; // Rojo para la deuda
+                        font-weight: bold;
+                    }
+
+                    .btn-icon {
+                        background: transparent;
+                        border: none;
+                        color: #3085d6;
+                        cursor: pointer;
+                        padding: 5px;
+                        font-size: 1.1rem;
+                        transition: color 0.2s;
+
+                        &:hover {
+                            color: #1c5c99;
+                        }
+                    }
+
+                    .detail-row {
+                        background-color: #f8f9fa;
+                        
+                        td {
+                            padding: 0 16px 16px 16px;
+                            border-bottom: 1px solid #e9ecef;
+                        }
+                    }
+
+                    .ticket-details-box {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                        gap: 12px;
+                        padding-top: 8px;
+
+                        .ticket-mini-card {
+                            background: #ffffff;
+                            border: 1px solid #dee2e6;
+                            border-left: 4px solid #e67e22; // Naranja para alertar
+                            border-radius: 6px;
+                            padding: 12px;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+
+                            p {
+                                margin: 0 0 6px 0;
+                                font-size: 0.85rem;
+                                color: #495057;
+
+                                &:last-child {
+                                    margin-bottom: 0;
+                                }
+
+                                strong {
+                                    color: #2c3e50;
+                                }
+                            }
+
+                            .items-text {
+                                color: #6c757d;
+                                font-style: italic;
+                            }
+
+                            .price-text {
+                                font-weight: bold;
+                                color: #d63031;
+                                font-size: 0.95rem;
+                                margin-top: 8px;
+                                text-align: right;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+  
+        .reporte-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 24px;
+            border-top: 1px solid #e9ecef;
+            background-color: #f8f9fa;
+            flex-shrink: 0;
+  
+            .btn {
+                padding: 10px 20px;
+                border-radius: 6px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+                border: none;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+  
+                &:disabled {
+                    opacity: 0.7;
+                    cursor: not-allowed;
+                }
+            }
+  
+            .btn-secondary {
+                background-color: #e2e6ea;
+                color: #495057;
+  
+                &:hover:not(:disabled) {
+                    background-color: #dae0e5;
+                }
+            }
+  
+            .btn-primary {
+                background-color: #3085d6;
+                color: white;
+  
+                &:hover:not(:disabled) {
+                    background-color: #256bb1;
+                }
+            }
+
+            .btn-success {
+                background-color: #1d6f42; // Verde excel
+                color: white;
+
+                &:hover:not(:disabled) {
+                    background-color: #155732;
+                }
+            }
+        }
+    }
+}
+  
+@keyframes slideInDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

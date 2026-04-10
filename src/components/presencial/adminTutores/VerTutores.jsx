@@ -1,13 +1,15 @@
+// VerTutores.jsx
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 import Swal from "sweetalert2";
-import { FaPlus, FaDog, FaStethoscope } from "react-icons/fa";
+import { FaPlus, FaDog, FaStethoscope, FaFileExcel } from "react-icons/fa";
 import { FaUserLarge } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { PiBathtub } from "react-icons/pi";
+import ReporteDeudoresModal from "./ReporteDeudoresModal";
 
 // Cache for tutores data
 let tutoresCache = null;
@@ -17,6 +19,7 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 const VerTutores = () => {
   const [tutores, setTutores] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showReporteModal, setShowReporteModal] = useState(false);
   const [filters, setFilters] = useState({
     searchTerm: "",
     sortOrder: "name_asc",
@@ -168,11 +171,24 @@ const VerTutores = () => {
 
   return (
     <div className="tutor-list">
+      {showReporteModal && (
+        <ReporteDeudoresModal onClose={() => setShowReporteModal(false)} />
+      )}
+
       <div className="tutor-list__header">
         <h1>Gestión de Tutores</h1>
-        <Link to="/admin/add-tutor" className="tutor-list__btn tutor-list__btn--primary">
-          <FaPlus /> Agregar Tutor
-        </Link>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button 
+            className="tutor-list__btn" 
+            style={{ backgroundColor: '#1d6f42', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+            onClick={() => setShowReporteModal(true)}
+          >
+            <FaFileExcel /> Reporte Deudores
+          </button>
+          <Link to="/admin/add-tutor" className="tutor-list__btn tutor-list__btn--primary">
+            <FaPlus /> Agregar Tutor
+          </Link>
+        </div>
       </div>
 
       <div className="tutor-list__filters">

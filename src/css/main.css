@@ -6807,6 +6807,234 @@ button.btn-reset:hover {
   }
 }
 
+.reporte-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  backdrop-filter: blur(3px);
+}
+.reporte-modal-overlay .reporte-modal-content {
+  background-color: #ffffff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideInDown 0.3s ease-out forwards;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+.reporte-modal-overlay .reporte-modal-content.dashboard-variant {
+  max-width: 800px;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  flex-shrink: 0;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-header h3 .excel-icon {
+  color: #1d6f42;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #6c757d;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-header .close-btn:hover {
+  color: #dc3545;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .controls-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .controls-row input[type=date] {
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #495057;
+  flex-grow: 1;
+  min-width: 150px;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .controls-row input[type=date]:focus {
+  outline: none;
+  border-color: #3085d6;
+  box-shadow: 0 0 0 2px rgba(48, 133, 214, 0.2);
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table th {
+  background-color: #f8f9fa;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #e9ecef;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e9ecef;
+  color: #2c3e50;
+  vertical-align: middle;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table tr.expanded td {
+  border-bottom: none;
+  background-color: #f8f9fa;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .debt-cell {
+  color: #d63031;
+  font-weight: bold;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .btn-icon {
+  background: transparent;
+  border: none;
+  color: #3085d6;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .btn-icon:hover {
+  color: #1c5c99;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .detail-row {
+  background-color: #f8f9fa;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .detail-row td {
+  padding: 0 16px 16px 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .ticket-details-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+  padding-top: 8px;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .ticket-details-box .ticket-mini-card {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-left: 4px solid #e67e22;
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .ticket-details-box .ticket-mini-card p {
+  margin: 0 0 6px 0;
+  font-size: 0.85rem;
+  color: #495057;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .ticket-details-box .ticket-mini-card p:last-child {
+  margin-bottom: 0;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .ticket-details-box .ticket-mini-card p strong {
+  color: #2c3e50;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .ticket-details-box .ticket-mini-card .items-text {
+  color: #6c757d;
+  font-style: italic;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-body .preview-container .preview-table .ticket-details-box .ticket-mini-card .price-text {
+  font-weight: bold;
+  color: #d63031;
+  font-size: 0.95rem;
+  margin-top: 8px;
+  text-align: right;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+  flex-shrink: 0;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-clinica-container .load-more-container button, .monitor-clinica-container .load-more-container .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .recipe-modal .add-line-btn, .recipe-modal .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .add-line-btn, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .pagination-controls button, .monitor-vencimientos-container .pagination-controls .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .load-more-container button, .monitor-vencimientos-container .load-more-container .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .vencimiento-card .card-footer .card-footer-actions .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .card-footer-actions .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .action-btn, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .view-mode-toggle, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .profile-container.paciente-profile .pagination-controls button, .profile-container.paciente-profile .pagination-controls .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .profile-container.paciente-profile .btn-delete-small, .profile-container.paciente-profile .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-delete-small, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-delete-note, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .profile-container.paciente-profile .btn-custom-date, .profile-container.paciente-profile .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-custom-date, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .profile-container.paciente-profile .btn-suministrado, .profile-container.paciente-profile .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-suministrado {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-clinica-container .load-more-container button:disabled, .monitor-clinica-container .load-more-container .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .recipe-modal .add-line-btn:disabled, .recipe-modal .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .add-line-btn:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .pagination-controls button:disabled, .monitor-vencimientos-container .pagination-controls .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .load-more-container button:disabled, .monitor-vencimientos-container .load-more-container .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .vencimiento-card .card-footer .card-footer-actions .action-btn:disabled, .monitor-vencimientos-container .vencimiento-card .card-footer .card-footer-actions .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .action-btn:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .view-mode-toggle:disabled, .monitor-vencimientos-container .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .view-mode-toggle:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .profile-container.paciente-profile .pagination-controls button:disabled, .profile-container.paciente-profile .pagination-controls .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .profile-container.paciente-profile .btn-delete-small:disabled, .profile-container.paciente-profile .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-delete-small:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note:disabled, .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-delete-note:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .profile-container.paciente-profile .btn-custom-date:disabled, .profile-container.paciente-profile .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-custom-date:disabled, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .profile-container.paciente-profile .btn-suministrado:disabled, .profile-container.paciente-profile .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-suministrado:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-secondary, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .recipe-modal .add-line-btn, .recipe-modal .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .add-line-btn {
+  background-color: #e2e6ea;
+  color: #495057;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-secondary:hover:not(:disabled), .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .recipe-modal .add-line-btn:hover:not(:disabled), .recipe-modal .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .add-line-btn:hover:not(:disabled) {
+  background-color: #dae0e5;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-primary, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-clinica-container .load-more-container button, .monitor-clinica-container .load-more-container .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .load-more-container button, .monitor-vencimientos-container .load-more-container .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button, .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .vencimiento-card .card-footer .card-footer-actions .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .card-footer-actions .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .action-btn {
+  background-color: #3085d6;
+  color: white;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-primary:hover:not(:disabled), .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-clinica-container .load-more-container button:hover:not(:disabled), .monitor-clinica-container .load-more-container .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button:hover:not(:disabled), .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .load-more-container button:hover:not(:disabled), .monitor-vencimientos-container .load-more-container .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer button:hover:not(:disabled), .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .monitor-vencimientos-container .vencimiento-card .card-footer .card-footer-actions .action-btn:hover:not(:disabled), .monitor-vencimientos-container .vencimiento-card .card-footer .card-footer-actions .reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .action-btn:hover:not(:disabled) {
+  background-color: #256bb1;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-success {
+  background-color: #1d6f42;
+  color: white;
+}
+.reporte-modal-overlay .reporte-modal-content .reporte-modal-footer .btn-success:hover:not(:disabled) {
+  background-color: #155732;
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 .tutor-list {
   padding: 2rem;
   max-width: 1400px;
