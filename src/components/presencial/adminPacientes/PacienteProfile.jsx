@@ -19,6 +19,7 @@ import CreateNotaPeluqueriaModal from './CreateNotaPeluqueriaModal';
 import ViewNotaPeluqueriaModal from './ViewNotaPeluqueriaModal';
 import EditNotaPeluqueriaModal from './EditNotaPeluqueriaModal';
 import LoaderSpinner from '../../utils/LoaderSpinner';
+import SimpleAppointmentModal from '../agenda/SimpleAppointmentModal';
 
 const CustomAlert = ({ message, type, onClose }) => { if (!message) return null; return (<div className={`custom-alert ${type === 'error' ? 'alert-error' : 'alert-success'}`}><span>{message}</span><button onClick={onClose}>&times;</button></div>); };
 
@@ -34,6 +35,7 @@ const PacienteProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('historia');
   const [alert, setAlert] = useState({ message: '', type: '' });
+  const [isSimpleAppointmentOpen, setIsSimpleAppointmentOpen] = useState(false);
   const itemsPerPage = 5;
 
   const [historyCurrentPage, setHistoryCurrentPage] = useState(1);
@@ -71,93 +73,72 @@ const PacienteProfile = () => {
       const groomingAppointmentsQuery = query(collection(db, 'turnos_peluqueria'), where('pacienteId', '==', id), orderBy('startTime', 'desc'));
       const vencQuery = query(collection(db, `pacientes/${id}/vencimientos`), orderBy('dueDate', 'asc'));
 
-      const [pacienteSnap, historySnap, groomingNotesSnap, recipesSnap, citasSnap, groomingAppointmentsSnap, vencSnap] = await Promise.all([ 
-        getDoc(pacienteRef), 
-        getDocs(historyQuery), 
-        getDocs(groomingNotesQuery), 
-        getDocs(recipesQuery), 
-        getDocs(citasQuery), 
-        getDocs(groomingAppointmentsQuery), 
-        getDocs(vencQuery) 
+      const [pacienteSnap, historySnap, groomingNotesSnap, recipesSnap, citasSnap, groomingAppointmentsSnap, vencSnap] = await Promise.all([
+        getDoc(pacienteRef),
+        getDocs(historyQuery),
+        getDocs(groomingNotesQuery),
+        getDocs(recipesQuery),
+        getDocs(citasQuery),
+        getDocs(groomingAppointmentsQuery),
+        getDocs(vencQuery)
       ]);
 
       if (!pacienteSnap.exists()) { setPaciente(null); setAlert({ message: 'Paciente no encontrado.', type: 'error' }); return; }
       setPaciente({ id: pacienteSnap.id, ...pacienteSnap.data() });
 
-      // FIX: Protección contra fechas inválidas
       setClinicalHistory(historySnap.docs.map((d) => {
-          const data = d.data();
-          const createdDate = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
-          return { 
-              id: d.id, 
-              ...data, 
-              createdAt: data.createdAt, 
-              date: createdDate.toLocaleDateString('es-AR') 
-          };
+        const data = d.data();
+        const createdDate = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+        return { id: d.id, ...data, createdAt: data.createdAt, date: createdDate.toLocaleDateString('es-AR') };
       }));
 
       setGroomingNotes(groomingNotesSnap.docs.map((d) => {
-          const data = d.data();
-          const createdDate = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
-          return { 
-              id: d.id, 
-              ...data, 
-              date: createdDate.toLocaleDateString('es-AR') 
-          };
+        const data = d.data();
+        const createdDate = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+        return { id: d.id, ...data, date: createdDate.toLocaleDateString('es-AR') };
       }));
 
       setRecipes(recipesSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
-      
+
       const clinicalAppointments = citasSnap.docs.map(d => ({ ...d.data(), id: d.id, appointmentType: 'clinical', startTime: d.data().startTime.toDate() }));
       const groomingAppointments = groomingAppointmentsSnap.docs.map(d => ({ ...d.data(), id: d.id, appointmentType: 'grooming', startTime: d.data().startTime.toDate() }));
       setAllAppointments([...clinicalAppointments, ...groomingAppointments].sort((a, b) => b.startTime - a.startTime));
-      
+
       setVencimientos(vencSnap.docs.map((d) => ({ id: d.id, ...d.data(), dueDate: d.data().dueDate?.toDate(), suppliedDate: d.data().suppliedDate?.toDate() })));
-    } catch (err) { console.error('Error fetching patient data:', err); setAlert({ message: 'No se pudieron cargar los datos del paciente.', type: 'error' });
-    } finally { setIsLoading(false); }
+    } catch (err) {
+      console.error('Error fetching patient data:', err);
+      setAlert({ message: 'No se pudieron cargar los datos del paciente.', type: 'error' });
+    } finally {
+      setIsLoading(false);
+    }
   }, [id]);
 
   useEffect(() => { fetchAllData(); }, [fetchAllData]);
 
-  const handleSaveClinicalNote = async (formData, originalNote) => { 
-      try { 
-          // formData ya trae 'createdAt' como objeto Date correcto del modal
-          if (originalNote) { 
-              await updateDoc(doc(db, `pacientes/${id}/clinical_history`, originalNote.id), formData); 
-              setAlert({ message: 'Nota clínica actualizada.', type: 'success' }); 
-          } else { 
-              const dataToSave = {
-                  ...formData,
-                  createdAt: formData.createdAt ? formData.createdAt : Timestamp.now()
-              };
-              await addDoc(collection(db, `pacientes/${id}/clinical_history`), dataToSave); 
-              setAlert({ message: 'Nota agregada.', type: 'success' }); 
-          } 
-          handleCloseModals(); 
-          await fetchAllData(); 
-      } catch (error) { 
-          console.error(error);
-          setAlert({ message: 'No se pudo guardar la nota.', type: 'error' }); 
-      } 
+  const handleSaveClinicalNote = async (formData, originalNote) => {
+    try {
+      if (originalNote) {
+        await updateDoc(doc(db, `pacientes/${id}/clinical_history`, originalNote.id), formData);
+        setAlert({ message: 'Nota clínica actualizada.', type: 'success' });
+      } else {
+        const dataToSave = { ...formData, createdAt: formData.createdAt ? formData.createdAt : Timestamp.now() };
+        await addDoc(collection(db, `pacientes/${id}/clinical_history`), dataToSave);
+        setAlert({ message: 'Nota agregada.', type: 'success' });
+      }
+      handleCloseModals();
+      await fetchAllData();
+    } catch (error) {
+      console.error(error);
+      setAlert({ message: 'No se pudo guardar la nota.', type: 'error' });
+    }
   };
-  
-  const handleDeleteClinicalNote = async (note) => {
-    const { isConfirmed } = await Swal.fire({
-      title: '¿Eliminar Nota Clínica?',
-      text: `Se eliminará la nota "${note.reason || 'Sin motivo'}" del ${note.date}.`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
-    });
 
+  const handleDeleteClinicalNote = async (note) => {
+    const { isConfirmed } = await Swal.fire({ title: '¿Eliminar Nota Clínica?', text: `Se eliminará la nota "${note.reason || 'Sin motivo'}" del ${note.date}.`, icon: 'warning', showCancelButton: true, confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar' });
     if (isConfirmed) {
       try {
         if (note.media && note.media.length > 0) {
-          const deletePromises = note.media.map(file => {
-            try { return deleteObject(ref(storage, file.url)); } 
-            catch (storageError) { console.warn("Error borrando archivo:", storageError); return Promise.resolve(); }
-          });
+          const deletePromises = note.media.map(file => { try { return deleteObject(ref(storage, file.url)); } catch (storageError) { console.warn("Error borrando archivo:", storageError); return Promise.resolve(); } });
           await Promise.all(deletePromises);
         }
         await deleteDoc(doc(db, `pacientes/${id}/clinical_history`, note.id));
@@ -172,7 +153,7 @@ const PacienteProfile = () => {
   const handleDeleteRecipe = async (recipeId) => { const { isConfirmed } = await Swal.fire({ title: '¿Eliminar Receta?', text: 'Esta acción no se puede deshacer.', icon: 'warning', showCancelButton: true, confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar' }); if (isConfirmed) { try { await deleteDoc(doc(db, `pacientes/${id}/clinical_recipes`, recipeId)); setAlert({ message: 'Receta eliminada.', type: 'success' }); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo eliminar la receta.', type: 'error' }); } } };
   const handleDeleteGroomingNote = async (note) => { const { isConfirmed } = await Swal.fire({ title: '¿Eliminar Nota?', text: 'Se eliminarán también los archivos adjuntos.', icon: 'warning', showCancelButton: true, confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar' }); if (isConfirmed) { try { if (note.media && note.media.length > 0) { const deletePromises = note.media.map(file => deleteObject(ref(storage, file.url))); await Promise.all(deletePromises); } await deleteDoc(doc(db, `pacientes/${id}/notas_peluqueria`, note.id)); setAlert({ message: 'Nota eliminada.', type: 'success' }); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo eliminar la nota.', type: 'error' }); } } };
   const handlePrintRecipe = async (elementId) => { const input = document.getElementById(elementId); const canvas = await html2canvas(input, { scale: 2 }); const imgData = canvas.toDataURL('image/png'); const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' }); const pdfWidth = pdf.internal.pageSize.getWidth(); const pdfHeight = (canvas.height * pdfWidth) / canvas.width; pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight); pdf.save(`receta_${paciente.name}_${new Date().toLocaleDateString('es-AR')}.pdf`); };
-  
+
   const handleViewNote = (note) => { setSelectedNote(note); setIsViewModalOpen(true); };
   const handleEditNote = (note) => { setSelectedNote(note); setIsViewModalOpen(false); setIsEditModalOpen(true); };
   const handleAddNewNote = () => { setSelectedNote(null); setIsEditModalOpen(true); };
@@ -185,13 +166,10 @@ const PacienteProfile = () => {
   const handleGroomingNotesFilterChange = (e) => { const { name, value } = e.target; setGroomingNotesFilters((prev) => ({ ...prev, [name]: value })); setGroomingNotesCurrentPage(1); };
 
   const filteredAndSortedHistory = useMemo(() => { let filtered = [...clinicalHistory]; if (historyFilters.startDate) { const start = new Date(historyFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter((e) => e.createdAt && e.createdAt.toDate ? e.createdAt.toDate() >= start : false); } if (historyFilters.endDate) { const end = new Date(historyFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter((e) => e.createdAt && e.createdAt.toDate ? e.createdAt.toDate() <= end : false); } if (historyFilters.searchTerm) { const term = historyFilters.searchTerm.toLowerCase(); filtered = filtered.filter((e) => (e.reason || '').toLowerCase().includes(term) || (e.diagnosis || '').toLowerCase().includes(term) || (e.treatment || '').toLowerCase().includes(term)); } filtered.sort((a, b) => { if (!a.createdAt || !b.createdAt) return 0; if (historyFilters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis(); return a.createdAt.toMillis() - b.createdAt.toMillis(); }); return filtered; }, [clinicalHistory, historyFilters]);
-  
   const filteredAndSortedRecipes = useMemo(() => { let filtered = [...recipes]; if (recipeFilters.startDate) { const start = new Date(recipeFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter((r) => r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() >= start : false); } if (recipeFilters.endDate) { const end = new Date(recipeFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter((r) => r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() <= end : false); } if (recipeFilters.searchTerm) { const term = recipeFilters.searchTerm.toLowerCase(); filtered = filtered.filter((r) => (r.prescribedBy || '').toLowerCase().includes(term) || (r.prescriptions || []).some((p) => (p.productName || '').toLowerCase().includes(term))); } filtered.sort((a, b) => { if (!a.createdAt || !b.createdAt) return 0; if (recipeFilters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis(); return a.createdAt.toMillis() - b.createdAt.toMillis(); }); return filtered; }, [recipes, recipeFilters]);
-  
   const filteredAppointments = useMemo(() => { let filtered = [...allAppointments]; if (citasFilters.serviceType !== 'todos') { filtered = filtered.filter(a => a.appointmentType === citasFilters.serviceType); } if (citasFilters.startDate) { const start = new Date(citasFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter(a => a.startTime >= start); } if (citasFilters.endDate) { const end = new Date(citasFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter(a => a.startTime <= end); } return filtered; }, [allAppointments, citasFilters]);
-  
   const filteredGroomingNotes = useMemo(() => { let filtered = [...groomingNotes]; if (groomingNotesFilters.startDate) { const start = new Date(groomingNotesFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter((e) => e.createdAt && e.createdAt.toDate ? e.createdAt.toDate() >= start : false); } if (groomingNotesFilters.endDate) { const end = new Date(groomingNotesFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter((e) => e.createdAt && e.createdAt.toDate ? e.createdAt.toDate() <= end : false); } if (groomingNotesFilters.searchTerm) { const term = groomingNotesFilters.searchTerm.toLowerCase(); filtered = filtered.filter((e) => (e.title || '').toLowerCase().includes(term) || (e.description || '').toLowerCase().includes(term)); } filtered.sort((a, b) => { if (!a.createdAt || !b.createdAt) return 0; if (groomingNotesFilters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis(); return a.createdAt.toMillis() - b.createdAt.toMillis(); }); return filtered; }, [groomingNotes, groomingNotesFilters]);
-  
+
   const calculateAge = (birthDateStr) => { if (!birthDateStr) return 'N/A'; const bd = new Date(birthDateStr); if (isNaN(bd.getTime())) return 'N/A'; const now = new Date(); let years = now.getFullYear() - bd.getFullYear(); let months = now.getMonth() - bd.getMonth(); if (now.getDate() < bd.getDate()) months--; if (months < 0) { years--; months += 12; } if (years < 0) return 'N/A'; return years === 0 ? `${months} meses` : `${years} año${years > 1 ? 's' : ''}${months ? `, ${months} meses` : ''}`; };
   const handleStartSale = () => { navigate('/admin/vender', { state: { tutor: { id: paciente.tutorId, name: paciente.tutorName }, patient: { id: paciente.id, name: paciente.name } } }); };
 
@@ -214,35 +192,35 @@ const PacienteProfile = () => {
     const currentItems = filteredAndSortedHistory.slice((historyCurrentPage - 1) * itemsPerPage, historyCurrentPage * itemsPerPage);
     return (<div className="tab-content"><div className="history-controls"><input type="text" name="searchTerm" placeholder="Buscar en historia..." value={historyFilters.searchTerm} onChange={handleHistoryFilterChange} /><input type="date" name="startDate" value={historyFilters.startDate} onChange={handleHistoryFilterChange} /><input type="date" name="endDate" value={historyFilters.endDate} onChange={handleHistoryFilterChange} /><select name="sortOrder" value={historyFilters.sortOrder} onChange={handleHistoryFilterChange}><option value="date-desc">Más Recientes</option><option value="date-asc">Más Antiguas</option></select></div>{currentItems.length > 0 ? (<div className="clinical-history-list">{currentItems.map((entry) => (<div key={entry.id} className="clinical-entry-card"><div className="entry-header" onClick={() => handleViewNote(entry)}><div className="header-info"><span className="entry-date">{entry.date}</span><strong className="entry-reason">{entry.reason}</strong></div><button className="btn-delete-note" onClick={(e) => { e.stopPropagation(); handleDeleteClinicalNote(entry); }}><FaTrash /></button></div><div className="entry-body" onClick={() => handleViewNote(entry)}><p><strong>Diagnóstico:</strong> {entry.diagnosis || 'N/A'}</p></div></div>))}</div>) : (<p className="no-results-message">No hay entradas.</p>)}{renderPagination(historyCurrentPage, totalPages, setHistoryCurrentPage)}</div>);
   };
-  
+
   const renderCitas = () => {
     const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
     const currentItems = filteredAppointments.slice((citasCurrentPage - 1) * itemsPerPage, citasCurrentPage * itemsPerPage);
     return (<div className="tab-content"><div className="citas-controls"><select name="serviceType" value={citasFilters.serviceType} onChange={handleCitasFilterChange}><option value="todos">Todos los Servicios</option><option value="clinical">Clínica</option><option value="grooming">Peluquería</option></select><input type="date" name="startDate" value={citasFilters.startDate} onChange={handleCitasFilterChange} /><input type="date" name="endDate" value={citasFilters.endDate} onChange={handleCitasFilterChange} /></div>{currentItems.length > 0 ? (currentItems.map((cita) => (<div key={cita.id} className="cita-card"><p><strong>Fecha:</strong> {cita.startTime.toLocaleString('es-AR')}</p><p><strong>Servicios:</strong> {cita.appointmentType === 'clinical' ? (cita.services || []).map((s) => s.name || s.nombre).join(', ') : (cita.services || []).map((s) => s.name).join(', ')}</p></div>))) : (<p className="no-results-message">No hay citas para los filtros seleccionados.</p>)}{renderPagination(citasCurrentPage, totalPages, setCitasCurrentPage)}</div>);
   };
-  
+
   const renderRecetas = () => {
     const totalPages = Math.ceil(filteredAndSortedRecipes.length / itemsPerPage);
     const currentItems = filteredAndSortedRecipes.slice((recipesCurrentPage - 1) * itemsPerPage, recipesCurrentPage * itemsPerPage);
     return (<div className="tab-content"><div className="recipe-controls">{!paciente.fallecido && (<button className="btn btn-primary" onClick={() => setIsCreateRecipeModalOpen(true)}>+ Nueva Receta</button>)}<div className="filters-group"><input type="text" name="searchTerm" placeholder="Buscar por doctor o producto..." value={recipeFilters.searchTerm} onChange={handleRecipeFilterChange} /><input type="date" name="startDate" value={recipeFilters.startDate} onChange={handleRecipeFilterChange} /><input type="date" name="endDate" value={recipeFilters.endDate} onChange={handleRecipeFilterChange} /><select name="sortOrder" value={recipeFilters.sortOrder} onChange={handleRecipeFilterChange}><option value="date-desc">Más Recientes</option><option value="date-asc">Más Antiguas</option></select></div></div><div className="recipe-list">{currentItems.length > 0 ? (currentItems.map((recipe) => (<div key={recipe.id} className="recipe-list-item"><span>Receta del{" "}{recipe.createdAt && recipe.createdAt.toDate ? recipe.createdAt.toDate().toLocaleDateString("es-AR") : 'N/A'}</span><div className="recipe-actions"><button className="btn btn-secondary" onClick={() => setSelectedRecipe(recipe)}>Ver/Imprimir</button>{!paciente.fallecido && (<button className="btn btn-delete-small" onClick={() => handleDeleteRecipe(recipe.id)}><FaTrash /></button>)}</div></div>))) : (<p className="no-results-message">No hay recetas.</p>)}{renderPagination(recipesCurrentPage, totalPages, setRecipesCurrentPage)}</div></div>);
   };
-  
+
   const renderNotasPeluqueria = () => {
     const totalPages = Math.ceil(filteredGroomingNotes.length / itemsPerPage);
     const currentItems = filteredGroomingNotes.slice((groomingNotesCurrentPage - 1) * itemsPerPage, groomingNotesCurrentPage * itemsPerPage);
     return (<div className="tab-content"><div className="recipe-controls">{!paciente.fallecido && (<button className="btn btn-primary" onClick={() => setIsCreateNotaPeluqueriaModalOpen(true)}>+ Nota Peluquería</button>)}<div className="filters-group"><input type="text" name="searchTerm" placeholder="Buscar en notas..." value={groomingNotesFilters.searchTerm} onChange={handleGroomingNotesFilterChange} /><input type="date" name="startDate" value={groomingNotesFilters.startDate} onChange={handleGroomingNotesFilterChange} /><input type="date" name="endDate" value={groomingNotesFilters.endDate} onChange={handleGroomingNotesFilterChange} /><select name="sortOrder" value={groomingNotesFilters.sortOrder} onChange={handleGroomingNotesFilterChange}><option value="date-desc">Más Recientes</option><option value="date-asc">Más Antiguas</option></select></div></div><div className="recipe-list">{currentItems.length > 0 ? (currentItems.map((note) => (<div key={note.id} className="recipe-list-item"><span>Nota del {note.date}</span><div className="recipe-actions"><button className="btn btn-secondary" onClick={() => handleViewGroomingNote(note)}>Ver</button>{!paciente.fallecido && (<button className="btn btn-delete-small" onClick={() => handleDeleteGroomingNote(note)}><FaTrash /></button>)}</div></div>))) : (<p className="no-results-message">No hay notas de peluquería.</p>)}{renderPagination(groomingNotesCurrentPage, totalPages, setGroomingNotesCurrentPage)}</div></div>);
   };
-  
+
   const renderVencimientos = () => {
     return (
-      <VencimientosManager 
-        vencimientos={vencimientos} 
-        setVencimientos={setVencimientos} 
-        pacienteId={id} 
-        pacienteSpecies={paciente.species} 
-        pacienteTutorName={paciente.tutorName} 
-        onAlert={setAlert} 
-        onAdd={() => !paciente.fallecido && setIsAddVencimientoModalOpen(true)} 
+      <VencimientosManager
+        vencimientos={vencimientos}
+        setVencimientos={setVencimientos}
+        pacienteId={id}
+        pacienteSpecies={paciente.species}
+        pacienteTutorName={paciente.tutorName}
+        onAlert={setAlert}
+        onAdd={() => !paciente.fallecido && setIsAddVencimientoModalOpen(true)}
       />
     );
   };
@@ -250,47 +228,56 @@ const PacienteProfile = () => {
   return (
     <div className="profile-container paciente-profile">
       <CustomAlert message={alert.message} type={alert.type} onClose={handleAlertClose} />
-      
-      {/* AQUÍ ESTÁ LA MAGIA: 
-         Pasamos patientName y tutorName a AMBOS modales 
-      */}
-      <ViewClinicalNoteModal 
-        isOpen={isViewModalOpen} 
-        onClose={handleCloseModals} 
-        onEdit={() => handleEditNote(selectedNote)} 
-        note={selectedNote} 
-        patientName={paciente?.name}
-        tutorName={paciente?.tutorName}
-      />
-      
-      <ClinicalNoteModal 
-        isOpen={isEditModalOpen} 
-        onClose={handleCloseModals} 
-        onSave={handleSaveClinicalNote} 
-        note={selectedNote} 
-        pacienteId={id} 
-        patientName={paciente?.name} 
-        tutorName={paciente?.tutorName} 
-      />
-
+      <ViewClinicalNoteModal isOpen={isViewModalOpen} onClose={handleCloseModals} onEdit={() => handleEditNote(selectedNote)} note={selectedNote} patientName={paciente?.name} tutorName={paciente?.tutorName} />
+      <ClinicalNoteModal isOpen={isEditModalOpen} onClose={handleCloseModals} onSave={handleSaveClinicalNote} note={selectedNote} pacienteId={id} patientName={paciente?.name} tutorName={paciente?.tutorName} />
       <AddVencimientoModal isOpen={isAddVencimientoModalOpen} onClose={() => setIsAddVencimientoModalOpen(false)} onSave={() => { setIsAddVencimientoModalOpen(false); fetchAllData(); }} pacienteId={id} tutorId={paciente.tutorId} tutorName={paciente.tutorName} pacienteName={paciente.name} />
       <CreateRecipeModal isOpen={isCreateRecipeModalOpen} onClose={handleCloseModals} onSave={handleSaveRecipe} paciente={paciente} />
       <ViewRecipeModal isOpen={!!selectedRecipe} onClose={handleCloseModals} onPrint={handlePrintRecipe} recipe={selectedRecipe} paciente={paciente} />
       <CreateNotaPeluqueriaModal isOpen={isCreateNotaPeluqueriaModalOpen} onClose={handleCloseModals} onSave={handleSaveGroomingNote} pacienteId={id} />
       <ViewNotaPeluqueriaModal isOpen={isViewGroomingNoteModalOpen} onClose={handleCloseModals} onEdit={() => handleEditGroomingNote(selectedGroomingNote)} note={selectedGroomingNote} />
       <EditNotaPeluqueriaModal isOpen={isEditGroomingNoteModalOpen} onClose={handleCloseModals} onSave={handleSaveGroomingNote} note={selectedGroomingNote} pacienteId={id} />
-
-      <div className="profile-header"><div className="profile-avatar">{paciente.species === "Canino" ? <FaDog /> : <FaCat />}</div><div className="profile-info"><h1>{paciente.name}</h1><p>Tutor: <Link to={`/admin/tutor-profile/${paciente.tutorId}`}>{paciente.tutorName}</Link></p></div><div className="profile-actions">{!paciente.fallecido && <button className="btn btn-primary" onClick={handleStartSale}>Vender</button>}<Link to={`/admin/edit-paciente/${id}`} className="btn btn-secondary">Editar Paciente</Link>{!paciente.fallecido && (<button className="btn btn-primary" onClick={handleAddNewNote}>+ Nota Clínica</button>)}</div></div>
+      <SimpleAppointmentModal
+        isOpen={isSimpleAppointmentOpen}
+        onClose={() => setIsSimpleAppointmentOpen(false)}
+        onSave={() => setIsSimpleAppointmentOpen(false)}
+        tutor={{ id: paciente.tutorId, name: paciente.tutorName }}
+        paciente={{ id: paciente.id, name: paciente.name }}
+      />
+      <div className="profile-header">
+        <div className="profile-avatar">{paciente.species === "Canino" ? <FaDog /> : <FaCat />}</div>
+        <div className="profile-info">
+          <h1>{paciente.name}</h1>
+          <p>Tutor: <Link to={`/admin/tutor-profile/${paciente.tutorId}`}>{paciente.tutorName}</Link></p>
+        </div>
+        <div className="profile-actions">
+          {!paciente.fallecido && <button className="btn btn-primary" onClick={handleStartSale}>Vender</button>}
+          {!paciente.fallecido && <button className="btn" onClick={() => setIsSimpleAppointmentOpen(true)}>+ Agendar Turno</button>}
+          <Link to={`/admin/edit-paciente/${id}`} className="btn btn-secondary">Editar Paciente</Link>
+          {!paciente.fallecido && (<button className="btn btn-primary" onClick={handleAddNewNote}>+ Nota Clínica</button>)}
+        </div>
+      </div>
       {paciente.fallecido && (<div className="fallecido-banner">Fallecido el {new Date(paciente.fechaFallecimiento).toLocaleDateString('es-AR', { timeZone: 'UTC' })}</div>)}
-      <div className="details-bar"><div className="detail-chip"><strong>Especie:</strong> {paciente.species}</div><div className="detail-chip"><strong>Raza:</strong> {paciente.breed}</div><div className="detail-chip"><strong>Sexo:</strong> {paciente.gender}</div><div className="detail-chip"><strong>Edad:</strong> {calculateAge(paciente.birthDate)}</div><div className="detail-chip"><strong>Peso:</strong> {paciente.weight ? `${paciente.weight} kg` : "N/A"}</div><div className="detail-chip"><strong>Chip:</strong> {paciente.chipNumber || "N/A"}</div>
+      <div className="details-bar">
+        <div className="detail-chip"><strong>Especie:</strong> {paciente.species}</div>
+        <div className="detail-chip"><strong>Raza:</strong> {paciente.breed}</div>
+        <div className="detail-chip"><strong>Sexo:</strong> {paciente.gender}</div>
+        <div className="detail-chip"><strong>Edad:</strong> {calculateAge(paciente.birthDate)}</div>
+        <div className="detail-chip"><strong>Peso:</strong> {paciente.weight ? `${paciente.weight} kg` : "N/A"}</div>
+        <div className="detail-chip"><strong>Chip:</strong> {paciente.chipNumber || "N/A"}</div>
         {(paciente.serviceTypes && paciente.serviceTypes.length > 0) && (
-            <div className="service-chips-inline">
-                {paciente.serviceTypes.includes('clinical') && <div className="service-chip clinical"><FaStethoscope /><span>Clínica</span></div>}
-                {paciente.serviceTypes.includes('grooming') && <div className="service-chip grooming"><PiBathtub /><span>Peluquería</span></div>}
-            </div>
+          <div className="service-chips-inline">
+            {paciente.serviceTypes.includes('clinical') && <div className="service-chip clinical"><FaStethoscope /><span>Clínica</span></div>}
+            {paciente.serviceTypes.includes('grooming') && <div className="service-chip grooming"><PiBathtub /><span>Peluquería</span></div>}
+          </div>
         )}
       </div>
-      <div className="profile-nav"><button className={activeTab === "historia" ? "active" : ""} onClick={() => setActiveTab("historia")}>Historia Clínica</button><button className={activeTab === "notas_peluqueria" ? "active" : ""} onClick={() => setActiveTab("notas_peluqueria")}>Notas Peluquería</button><button className={activeTab === "recetas" ? "active" : ""} onClick={() => setActiveTab("recetas")}>Recetas</button><button className={activeTab === "citas" ? "active" : ""} onClick={() => setActiveTab("citas")}>Citas</button><button className={activeTab === "vencimientos" ? "active" : ""} onClick={() => setActiveTab("vencimientos")}>Vencimientos</button></div>
+      <div className="profile-nav">
+        <button className={activeTab === "historia" ? "active" : ""} onClick={() => setActiveTab("historia")}>Historia Clínica</button>
+        <button className={activeTab === "notas_peluqueria" ? "active" : ""} onClick={() => setActiveTab("notas_peluqueria")}>Notas Peluquería</button>
+        <button className={activeTab === "recetas" ? "active" : ""} onClick={() => setActiveTab("recetas")}>Recetas</button>
+        <button className={activeTab === "citas" ? "active" : ""} onClick={() => setActiveTab("citas")}>Citas</button>
+        <button className={activeTab === "vencimientos" ? "active" : ""} onClick={() => setActiveTab("vencimientos")}>Vencimientos</button>
+      </div>
       <div className="profile-content">
         {activeTab === "historia" && renderHistoria()}
         {activeTab === "notas_peluqueria" && renderNotasPeluqueria()}

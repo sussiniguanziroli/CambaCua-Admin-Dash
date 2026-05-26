@@ -19,6 +19,7 @@ import LoaderSpinner from "../../utils/LoaderSpinner";
 import SaleDetailModal from "../../administracion/SaleDetailModal";
 import AddDebtModal from "./AddDebtModal";
 import PaySaleDebtModal from "../../administracion/PaySaleDebtModal";
+import SimpleAppointmentModal from "../agenda/SimpleAppointmentModal";
 
 const PaymentModal = ({ tutor, onClose, onPaymentSuccess, setAlertInfo }) => {
   const [amount, setAmount] = useState("");
@@ -167,6 +168,7 @@ const TutorProfile = () => {
   const [activeTab, setActiveTab] = useState("cuenta");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isDebtModalOpen, setIsDebtModalOpen] = useState(false);
+  const [isSimpleAppointmentOpen, setIsSimpleAppointmentOpen] = useState(false);
   const [alertInfo, setAlertInfo] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [selectedSale, setSelectedSale] = useState(null);
@@ -475,6 +477,12 @@ const TutorProfile = () => {
       {saleToPayDebt && (
         <PaySaleDebtModal sale={saleToPayDebt} onClose={() => setSaleToPayDebt(null)} onPaymentComplete={handlePaymentComplete} />
       )}
+      <SimpleAppointmentModal
+        isOpen={isSimpleAppointmentOpen}
+        onClose={() => setIsSimpleAppointmentOpen(false)}
+        onSave={() => setIsSimpleAppointmentOpen(false)}
+        tutor={{ id: tutor.id, name: tutor.name }}
+      />
       <div className="profile-header">
         <div className="profile-avatar">👤</div>
         <div className="profile-info">
@@ -489,6 +497,7 @@ const TutorProfile = () => {
         </div>
         <div className="profile-actions">
           <button className="btn btn-primary" onClick={handleStartSale}>Vender</button>
+          <button className="btn" onClick={() => setIsSimpleAppointmentOpen(true)}>+ Agendar Turno</button>
           <Link to={`/admin/edit-tutor/${tutor.id}`} className="btn btn-secondary">Editar Tutor</Link>
           <button className="btn" onClick={() => navigate(`/admin/add-paciente?tutorId=${id}`)}>+ Paciente</button>
         </div>
