@@ -9,6 +9,7 @@ import ProductSalesManager from './estadisticas/ProductSalesManager';
 import DebtAccountsManager from './estadisticas/DebtAccountsManager';
 import ExportDataModal from './estadisticas/ExportDataModal';
 import LoaderSpinner from '../utils/LoaderSpinner';
+import ResumenMensual from './ResumenMensual';
 
 const ResumenSemanal = () => {
     const [activeMainTab, setActiveMainTab] = useState('resumen');
@@ -312,6 +313,12 @@ const ResumenSemanal = () => {
                     📅 Resumen Semanal
                 </button>
                 <button
+                    className={`main-tab ${activeMainTab === 'mensual' ? 'active' : ''}`}
+                    onClick={() => setActiveMainTab('mensual')}
+                >
+                    🗓️ Resumen Mensual
+                </button>
+                <button
                     className={`main-tab ${activeMainTab === 'perros' ? 'active' : ''}`}
                     onClick={() => setActiveMainTab('perros')}
                 >
@@ -345,6 +352,8 @@ const ResumenSemanal = () => {
 
             <div className="main-content">
                 {activeMainTab === 'resumen' && renderResumenTab()}
+
+                {activeMainTab === 'mensual' && <ResumenMensual />}
 
                 {activeMainTab === 'perros' && (
                     <>

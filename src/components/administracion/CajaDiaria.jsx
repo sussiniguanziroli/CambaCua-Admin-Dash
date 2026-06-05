@@ -4,7 +4,7 @@ import SaleDetailModal from './SaleDetailModal';
 import CajaDetailPopup from './CajaDetailPopup';
 import VentasGuardadasModal from './VentasGuardadasModal';
 import PaySaleDebtModal from './PaySaleDebtModal';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { db } from '../../firebase/config';
 import { doc, writeBatch, increment, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
@@ -75,7 +75,14 @@ const deleteCobro = async (cobro) => {
 };
 
 const CajaDiaria = () => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const location = useLocation();
+    const [selectedDate, setSelectedDate] = useState(() => {
+        if (location.state?.date) {
+            const [y, m, d] = location.state.date.split('-').map(Number);
+            return new Date(y, m - 1, d);
+        }
+        return new Date();
+    });
     const [transactions, setTransactions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedTransaction, setSelectedTransaction] = useState(null);

@@ -1,0 +1,311 @@
+@import '../presencial/sharedStyles';
+
+// Paleta extra no definida en sharedStyles
+$teal:       #16a085;
+$orange:     #e67e22;
+$green-cob:  #2ecc71;
+$muted:      #6c757d;
+$blue-elec:  #3498db;
+$blue-deep:  #0b369c;
+
+.resumen-mensual-container {
+    padding: 2rem;
+
+    // ─── Navegador de mes ────────────────────────────────────────────
+    .rm-month-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .rm-nav-btn {
+            width: 38px;
+            height: 38px;
+            border: 1px solid $border-color;
+            border-radius: 50%;
+            background: white;
+            font-size: 1.6rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $primary-dark;
+            transition: all 0.2s ease;
+            box-shadow: $box-shadow;
+
+            &:hover:not(:disabled) {
+                background: $primary-color;
+                color: white;
+                border-color: $primary-color;
+                box-shadow: 0 3px 8px rgba($primary-color, 0.35);
+            }
+
+            &:disabled {
+                opacity: 0.35;
+                cursor: not-allowed;
+            }
+        }
+
+        .rm-month-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: $primary-dark;
+            min-width: 260px;
+            justify-content: center;
+
+            svg { color: $primary-color; font-size: 1.3rem; }
+        }
+    }
+
+    // ─── Banner de totales mensuales ─────────────────────────────────
+    .rm-summary-banner {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+
+        @media (max-width: 1200px) { grid-template-columns: repeat(4, 1fr); }
+        @media (max-width: 768px)  { grid-template-columns: repeat(2, 1fr); }
+
+        .rm-stat-card {
+            padding: 1rem 1.2rem;
+            border-radius: $border-radius;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.14);
+
+            .rm-stat-label {
+                font-size: 0.72rem;
+                font-weight: 600;
+                opacity: 0.88;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+
+            .rm-stat-value {
+                font-size: 1.25rem;
+                font-weight: 700;
+                line-height: 1.1;
+            }
+        }
+
+        .rm-stat-total       { background: linear-gradient(135deg, $blue-deep 0%, darken($blue-deep, 8%) 100%); }
+        .rm-stat-efectivo    { background: linear-gradient(135deg, $teal 0%, darken($teal, 8%) 100%); }
+        .rm-stat-electronico { background: linear-gradient(135deg, $blue-elec 0%, darken($blue-elec, 8%) 100%); }
+        .rm-stat-ventas      { background: linear-gradient(135deg, $success-color 0%, darken($success-color, 8%) 100%); }
+        .rm-stat-deuda-gen   { background: linear-gradient(135deg, $orange 0%, darken($orange, 8%) 100%); }
+        .rm-stat-deuda-cob   { background: linear-gradient(135deg, $green-cob 0%, darken($green-cob, 10%) 100%); }
+        .rm-stat-descuentos  { background: linear-gradient(135deg, $muted 0%, darken($muted, 8%) 100%); }
+    }
+
+    // ─── Loading ─────────────────────────────────────────────────────
+    .rm-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem;
+        gap: 1rem;
+        color: $grey-dark;
+        font-size: 0.95rem;
+    }
+
+    // ─── Calendario ──────────────────────────────────────────────────
+    .rm-calendar-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .rm-calendar {
+        min-width: 700px;
+
+        .rm-week-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 4px;
+
+            .rm-wh-cell {
+                text-align: center;
+                padding: 0.5rem 0.25rem;
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: $grey-dark;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                background: white;
+                border-radius: 4px;
+            }
+        }
+
+        .rm-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        // ─ Celda base
+        .rm-cell {
+            background: white;
+            border-radius: 6px;
+            min-height: 230px;
+            padding: 0.65rem 0.8rem;
+            border: 1px solid #e9ecef;
+            border-top: 3px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+            // Celda vacía (relleno de semana)
+            &.rm-cell-empty {
+                background: #f8f9fa;
+                border-color: #f0f0f0;
+                border-top-color: #f0f0f0;
+                min-height: 230px;
+            }
+
+            // Sin datos
+            &.no-data {
+                .rm-day-num { color: #adb5bd; }
+
+                .rm-no-data-label {
+                    font-size: 0.7rem;
+                    color: #d0d5db;
+                    text-align: center;
+                    margin: auto 0;
+                    font-style: italic;
+                }
+            }
+
+            // Con datos
+            &.has-data {
+                border-top-color: $primary-color;
+                cursor: pointer;
+
+                &:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 6px 18px rgba(0,0,0,0.13);
+
+                    .rm-link-icon { opacity: 1; }
+                }
+            }
+
+            // Hoy
+            &.is-today {
+                border-top-color: $orange;
+                background: rgba($orange, 0.025);
+
+                .rm-day-num {
+                    color: $orange;
+                    background: rgba($orange, 0.1);
+                    border-radius: 50%;
+                    width: 26px;
+                    height: 26px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+
+            // Número de día + ícono de link
+            .rm-cell-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 0.35rem;
+
+                .rm-day-num {
+                    font-size: 0.95rem;
+                    font-weight: 700;
+                    color: $primary-dark;
+                }
+
+                .rm-link-icon {
+                    font-size: 0.6rem;
+                    color: $primary-color;
+                    opacity: 0;
+                    transition: opacity 0.2s;
+                    margin-top: 2px;
+                }
+            }
+
+            // Total en caja del día
+            .rm-cell-total {
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: $primary-dark;
+                padding-bottom: 0.35rem;
+                margin-bottom: 0.35rem;
+                border-bottom: 1px solid #f0f0f0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            // Filas de métricas
+            .rm-cell-rows {
+                display: flex;
+                flex-direction: column;
+                gap: 0.18rem;
+                flex: 1;
+            }
+
+            .rm-cell-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 3px;
+            }
+
+            // Etiquetas de tipo (chips)
+            .rm-chip {
+                font-size: 0.75rem;
+                font-weight: 700;
+                padding: 1px 6px;
+                border-radius: 3px;
+                white-space: nowrap;
+                letter-spacing: 0.02em;
+
+                &.efec { background: rgba($teal, 0.12);       color: darken($teal, 5%); }
+                &.elec { background: rgba($blue-elec, 0.12);  color: darken($blue-elec, 5%); }
+                &.vtas { background: rgba($success-color, 0.12); color: darken($success-color, 5%); }
+                &.dgen { background: rgba($orange, 0.12);     color: darken($orange, 5%); }
+                &.dcob { background: rgba($green-cob, 0.12);  color: darken($green-cob, 12%); }
+                &.desc { background: rgba($muted, 0.1);       color: $muted; }
+            }
+
+            // Valores de cada fila
+            .rm-chip-val {
+                font-size: 0.92rem;
+                font-weight: 500;
+                color: $text-color;
+                text-align: right;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 65%;
+
+                &.warn  { color: $orange; }
+                &.good  { color: darken($green-cob, 12%); }
+                &.muted { color: $muted; }
+            }
+
+            // Pie de celda: cantidad de movimientos
+            .rm-cell-footer {
+                margin-top: auto;
+                padding-top: 0.25rem;
+                font-size: 0.7rem;
+                color: #adb5bd;
+                text-align: right;
+                border-top: 1px solid #f8f9fa;
+            }
+        }
+    }
+}
