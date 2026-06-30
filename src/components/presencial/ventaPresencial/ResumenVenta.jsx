@@ -20,7 +20,7 @@ const ResumenVenta = ({ saleData, onReset }) => {
             doc.setFontSize(16); doc.text('Recibo de Venta', margin, y); y += 30;
             doc.setFontSize(12);
             const meta = [
-                ['ID Venta:', saleData.id || 'N/A'],
+                ['N° Comprobante:', saleData.comprobante || 'N/A'],
                 ['Cliente:', saleData.tutor?.name || 'Cliente Genérico'],
             ];
             if (saleData.patients?.length > 0) meta.push(['Pacientes:', saleData.patients.map(p => p.name).join(', ')]);
@@ -40,7 +40,7 @@ const ResumenVenta = ({ saleData, onReset }) => {
             if (paymentsRows.length > 0) { autoTable(doc, { startY: y, head: [['Método', 'Monto Pagado']], body: paymentsRows, margin: { left: margin, right: margin } }); y = doc.lastAutoTable.finalY + 15; }
             if ((saleData.debt || 0) > 0) { doc.text(`Deuda Generada: $${saleData.debt.toFixed(2)}`, margin, y); y += 20; }
             doc.setFontSize(14); doc.text(`Total Venta: $${saleData.total.toFixed(2)}`, margin, y);
-            doc.save(`Recibo_CambaCuaVet_${saleData.id}.pdf`);
+            doc.save(`Recibo_CambaCuaVet_${saleData.comprobante || saleData.id}.pdf`);
         } catch (err) { console.error(err); alert('No se pudo generar el PDF.'); }
     };
 
@@ -49,6 +49,7 @@ const ResumenVenta = ({ saleData, onReset }) => {
             <div className="resumen-header">
                 <div className="success-icon">✓</div>
                 <h2>¡Venta Finalizada con Éxito!</h2>
+                {saleData.comprobante && <p className="resumen-comprobante">Comprobante {saleData.comprobante}</p>}
             </div>
 
             <div className="resumen-box">

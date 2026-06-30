@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { doc, writeBatch, collection, Timestamp, increment } from 'firebase/firestore';
 import { db } from '../../firebase/config';
+import { getNextComprobanteNumber } from '../../services/comprobanteService';
 import Swal from 'sweetalert2';
 import { FaCcVisa, FaCcMastercard, FaCreditCard, FaMoneyBillWave, FaExchangeAlt } from 'react-icons/fa';
 
@@ -39,6 +40,9 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
         setIsSubmitting(true);
 
         try {
+            // Número de recibo (R…) para el cobro: los cobros de deuda son recibos de pago.
+            const { numero: reciboNumero, code: comprobante } = await getNextComprobanteNumber('recibos');
+
             const batch = writeBatch(db);
             const paymentTimestamp = Timestamp.now();
 
@@ -52,6 +56,8 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
                 paymentMethod: paymentMethod,
                 saleId: sale.id,
                 saleType: sale.type,
+                numero: reciboNumero,
+                comprobante,
                 createdAt: paymentTimestamp,
                 type: 'Cobro Deuda'
             });

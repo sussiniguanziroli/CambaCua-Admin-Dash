@@ -18,6 +18,8 @@ import ViewRecipeModal from './ViewRecipeModal';
 import CreateNotaPeluqueriaModal from './CreateNotaPeluqueriaModal';
 import ViewNotaPeluqueriaModal from './ViewNotaPeluqueriaModal';
 import EditNotaPeluqueriaModal from './EditNotaPeluqueriaModal';
+import CreateEstudioModal from './CreateEstudioModal';
+import ViewEstudioModal from './ViewEstudioModal';
 import LoaderSpinner from '../../utils/LoaderSpinner';
 import SimpleAppointmentModal from '../agenda/SimpleAppointmentModal';
 
@@ -32,6 +34,7 @@ const PacienteProfile = () => {
   const [clinicalHistory, setClinicalHistory] = useState([]);
   const [groomingNotes, setGroomingNotes] = useState([]);
   const [recipes, setRecipes] = useState([]);
+  const [estudios, setEstudios] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('historia');
   const [alert, setAlert] = useState({ message: '', type: '' });
@@ -42,6 +45,7 @@ const PacienteProfile = () => {
   const [groomingNotesCurrentPage, setGroomingNotesCurrentPage] = useState(1);
   const [recipesCurrentPage, setRecipesCurrentPage] = useState(1);
   const [citasCurrentPage, setCitasCurrentPage] = useState(1);
+  const [estudiosCurrentPage, setEstudiosCurrentPage] = useState(1);
 
   const [historyFilters, setHistoryFilters] = useState({ searchTerm: '', startDate: '', endDate: '', sortOrder: 'date-desc' });
   const [recipeFilters, setRecipeFilters] = useState({ searchTerm: '', startDate: '', endDate: '', sortOrder: 'date-desc' });
@@ -58,9 +62,11 @@ const PacienteProfile = () => {
   const [selectedGroomingNote, setSelectedGroomingNote] = useState(null);
   const [isViewGroomingNoteModalOpen, setIsViewGroomingNoteModalOpen] = useState(false);
   const [isEditGroomingNoteModalOpen, setIsEditGroomingNoteModalOpen] = useState(false);
+  const [isCreateEstudioModalOpen, setIsCreateEstudioModalOpen] = useState(false);
+  const [selectedEstudio, setSelectedEstudio] = useState(null);
 
   const handleAlertClose = () => setAlert({ message: '', type: '' });
-  const handleCloseModals = () => { setIsViewModalOpen(false); setIsEditModalOpen(false); setSelectedNote(null); setIsCreateRecipeModalOpen(false); setSelectedRecipe(null); setIsCreateNotaPeluqueriaModalOpen(false); setIsViewGroomingNoteModalOpen(false); setIsEditGroomingNoteModalOpen(false); setSelectedGroomingNote(null); };
+  const handleCloseModals = () => { setIsViewModalOpen(false); setIsEditModalOpen(false); setSelectedNote(null); setIsCreateRecipeModalOpen(false); setSelectedRecipe(null); setIsCreateNotaPeluqueriaModalOpen(false); setIsViewGroomingNoteModalOpen(false); setIsEditGroomingNoteModalOpen(false); setSelectedGroomingNote(null); setIsCreateEstudioModalOpen(false); setSelectedEstudio(null); };
 
   const fetchAllData = useCallback(async () => {
     setIsLoading(true);
@@ -69,15 +75,17 @@ const PacienteProfile = () => {
       const historyQuery = query(collection(db, `pacientes/${id}/clinical_history`), orderBy('createdAt', 'desc'));
       const groomingNotesQuery = query(collection(db, `pacientes/${id}/notas_peluqueria`), orderBy('createdAt', 'desc'));
       const recipesQuery = query(collection(db, `pacientes/${id}/clinical_recipes`), orderBy('createdAt', 'desc'));
+      const estudiosQuery = query(collection(db, `pacientes/${id}/estudios`), orderBy('createdAt', 'desc'));
       const citasQuery = query(collection(db, 'citas'), where('pacienteId', '==', id), orderBy('startTime', 'desc'));
       const groomingAppointmentsQuery = query(collection(db, 'turnos_peluqueria'), where('pacienteId', '==', id), orderBy('startTime', 'desc'));
       const vencQuery = query(collection(db, `pacientes/${id}/vencimientos`), orderBy('dueDate', 'asc'));
 
-      const [pacienteSnap, historySnap, groomingNotesSnap, recipesSnap, citasSnap, groomingAppointmentsSnap, vencSnap] = await Promise.all([
+      const [pacienteSnap, historySnap, groomingNotesSnap, recipesSnap, estudiosSnap, citasSnap, groomingAppointmentsSnap, vencSnap] = await Promise.all([
         getDoc(pacienteRef),
         getDocs(historyQuery),
         getDocs(groomingNotesQuery),
         getDocs(recipesQuery),
+        getDocs(estudiosQuery),
         getDocs(citasQuery),
         getDocs(groomingAppointmentsQuery),
         getDocs(vencQuery)
@@ -99,6 +107,12 @@ const PacienteProfile = () => {
       }));
 
       setRecipes(recipesSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
+
+      setEstudios(estudiosSnap.docs.map((d) => {
+        const data = d.data();
+        const createdDate = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+        return { id: d.id, ...data, date: createdDate.toLocaleDateString('es-AR') };
+      }));
 
       const clinicalAppointments = citasSnap.docs.map(d => ({ ...d.data(), id: d.id, appointmentType: 'clinical', startTime: d.data().startTime.toDate() }));
       const groomingAppointments = groomingAppointmentsSnap.docs.map(d => ({ ...d.data(), id: d.id, appointmentType: 'grooming', startTime: d.data().startTime.toDate() }));
@@ -149,6 +163,8 @@ const PacienteProfile = () => {
   };
 
   const handleSaveRecipe = async (recipeData) => { try { await addDoc(collection(db, `pacientes/${id}/clinical_recipes`), { ...recipeData, createdAt: Timestamp.now() }); setAlert({ message: 'Receta guardada.', type: 'success' }); handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la receta.', type: 'error' }); } };
+  const handleSaveEstudio = async (estudioData) => { try { await addDoc(collection(db, `pacientes/${id}/estudios`), { ...estudioData, createdAt: Timestamp.now() }); setAlert({ message: 'Solicitud de estudios guardada.', type: 'success' }); handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la solicitud.', type: 'error' }); } };
+  const handleDeleteEstudio = async (estudio) => { const { isConfirmed } = await Swal.fire({ title: '¿Eliminar Solicitud?', text: `Se eliminará la solicitud del ${estudio.date}.`, icon: 'warning', showCancelButton: true, confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar' }); if (isConfirmed) { try { await deleteDoc(doc(db, `pacientes/${id}/estudios`, estudio.id)); setAlert({ message: 'Solicitud eliminada.', type: 'success' }); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo eliminar la solicitud.', type: 'error' }); } } };
   const handleSaveGroomingNote = async (noteData, originalNote) => { try { if (originalNote) { await updateDoc(doc(db, `pacientes/${id}/notas_peluqueria`, originalNote.id), noteData); setAlert({ message: 'Nota de peluquería actualizada.', type: 'success' }); } else { await addDoc(collection(db, `pacientes/${id}/notas_peluqueria`), { ...noteData, createdAt: Timestamp.now() }); setAlert({ message: 'Nota de peluquería guardada.', type: 'success' }); } handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la nota de peluquería.', type: 'error' }); } };
   const handleDeleteRecipe = async (recipeId) => { const { isConfirmed } = await Swal.fire({ title: '¿Eliminar Receta?', text: 'Esta acción no se puede deshacer.', icon: 'warning', showCancelButton: true, confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar' }); if (isConfirmed) { try { await deleteDoc(doc(db, `pacientes/${id}/clinical_recipes`, recipeId)); setAlert({ message: 'Receta eliminada.', type: 'success' }); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo eliminar la receta.', type: 'error' }); } } };
   const handleDeleteGroomingNote = async (note) => { const { isConfirmed } = await Swal.fire({ title: '¿Eliminar Nota?', text: 'Se eliminarán también los archivos adjuntos.', icon: 'warning', showCancelButton: true, confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar' }); if (isConfirmed) { try { if (note.media && note.media.length > 0) { const deletePromises = note.media.map(file => deleteObject(ref(storage, file.url))); await Promise.all(deletePromises); } await deleteDoc(doc(db, `pacientes/${id}/notas_peluqueria`, note.id)); setAlert({ message: 'Nota eliminada.', type: 'success' }); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo eliminar la nota.', type: 'error' }); } } };
@@ -211,6 +227,30 @@ const PacienteProfile = () => {
     return (<div className="tab-content"><div className="recipe-controls">{!paciente.fallecido && (<button className="btn btn-primary" onClick={() => setIsCreateNotaPeluqueriaModalOpen(true)}>+ Nota Peluquería</button>)}<div className="filters-group"><input type="text" name="searchTerm" placeholder="Buscar en notas..." value={groomingNotesFilters.searchTerm} onChange={handleGroomingNotesFilterChange} /><input type="date" name="startDate" value={groomingNotesFilters.startDate} onChange={handleGroomingNotesFilterChange} /><input type="date" name="endDate" value={groomingNotesFilters.endDate} onChange={handleGroomingNotesFilterChange} /><select name="sortOrder" value={groomingNotesFilters.sortOrder} onChange={handleGroomingNotesFilterChange}><option value="date-desc">Más Recientes</option><option value="date-asc">Más Antiguas</option></select></div></div><div className="recipe-list">{currentItems.length > 0 ? (currentItems.map((note) => (<div key={note.id} className="recipe-list-item"><span>Nota del {note.date}</span><div className="recipe-actions"><button className="btn btn-secondary" onClick={() => handleViewGroomingNote(note)}>Ver</button>{!paciente.fallecido && (<button className="btn btn-delete-small" onClick={() => handleDeleteGroomingNote(note)}><FaTrash /></button>)}</div></div>))) : (<p className="no-results-message">No hay notas de peluquería.</p>)}{renderPagination(groomingNotesCurrentPage, totalPages, setGroomingNotesCurrentPage)}</div></div>);
   };
 
+  const renderEstudios = () => {
+    const totalPages = Math.ceil(estudios.length / itemsPerPage);
+    const currentItems = estudios.slice((estudiosCurrentPage - 1) * itemsPerPage, estudiosCurrentPage * itemsPerPage);
+    return (
+      <div className="tab-content">
+        <div className="recipe-controls">
+          {!paciente.fallecido && (<button className="btn btn-primary" onClick={() => setIsCreateEstudioModalOpen(true)}>+ Solicitar Estudios</button>)}
+        </div>
+        <div className="recipe-list">
+          {currentItems.length > 0 ? (currentItems.map((estudio) => (
+            <div key={estudio.id} className="recipe-list-item">
+              <span>Solicitud del {estudio.date} — {(estudio.tipos || []).map(t => t.nombre).join(', ') || 'Sin estudios'}</span>
+              <div className="recipe-actions">
+                <button className="btn btn-secondary" onClick={() => setSelectedEstudio(estudio)}>Ver/Imprimir</button>
+                {!paciente.fallecido && (<button className="btn btn-delete-small" onClick={() => handleDeleteEstudio(estudio)}><FaTrash /></button>)}
+              </div>
+            </div>
+          ))) : (<p className="no-results-message">No hay solicitudes de estudios.</p>)}
+          {renderPagination(estudiosCurrentPage, totalPages, setEstudiosCurrentPage)}
+        </div>
+      </div>
+    );
+  };
+
   const renderVencimientos = () => {
     return (
       <VencimientosManager
@@ -236,6 +276,8 @@ const PacienteProfile = () => {
       <CreateNotaPeluqueriaModal isOpen={isCreateNotaPeluqueriaModalOpen} onClose={handleCloseModals} onSave={handleSaveGroomingNote} pacienteId={id} />
       <ViewNotaPeluqueriaModal isOpen={isViewGroomingNoteModalOpen} onClose={handleCloseModals} onEdit={() => handleEditGroomingNote(selectedGroomingNote)} note={selectedGroomingNote} />
       <EditNotaPeluqueriaModal isOpen={isEditGroomingNoteModalOpen} onClose={handleCloseModals} onSave={handleSaveGroomingNote} note={selectedGroomingNote} pacienteId={id} />
+      <CreateEstudioModal isOpen={isCreateEstudioModalOpen} onClose={handleCloseModals} onSave={handleSaveEstudio} />
+      <ViewEstudioModal isOpen={!!selectedEstudio} onClose={handleCloseModals} estudio={selectedEstudio} paciente={paciente} />
       <SimpleAppointmentModal
         isOpen={isSimpleAppointmentOpen}
         onClose={() => setIsSimpleAppointmentOpen(false)}
@@ -275,6 +317,7 @@ const PacienteProfile = () => {
         <button className={activeTab === "historia" ? "active" : ""} onClick={() => setActiveTab("historia")}>Historia Clínica</button>
         <button className={activeTab === "notas_peluqueria" ? "active" : ""} onClick={() => setActiveTab("notas_peluqueria")}>Notas Peluquería</button>
         <button className={activeTab === "recetas" ? "active" : ""} onClick={() => setActiveTab("recetas")}>Recetas</button>
+        <button className={activeTab === "estudios" ? "active" : ""} onClick={() => setActiveTab("estudios")}>Estudios</button>
         <button className={activeTab === "citas" ? "active" : ""} onClick={() => setActiveTab("citas")}>Citas</button>
         <button className={activeTab === "vencimientos" ? "active" : ""} onClick={() => setActiveTab("vencimientos")}>Vencimientos</button>
       </div>
@@ -282,6 +325,7 @@ const PacienteProfile = () => {
         {activeTab === "historia" && renderHistoria()}
         {activeTab === "notas_peluqueria" && renderNotasPeluqueria()}
         {activeTab === "recetas" && renderRecetas()}
+        {activeTab === "estudios" && renderEstudios()}
         {activeTab === "citas" && renderCitas()}
         {activeTab === "vencimientos" && renderVencimientos()}
       </div>

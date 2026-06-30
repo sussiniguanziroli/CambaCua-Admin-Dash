@@ -1052,3 +1052,20 @@ $background-light: #f1f3f5;
     }
   }
 }
+// --- Estudios complementarios ---
+.estudios-catalog-header { display: flex; justify-content: space-between; align-items: center; margin: 1rem 0 0.5rem; }
+.estudios-catalog-header h4 { margin: 0; }
+.estudios-catalog-manager { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 0.75rem; margin-bottom: 0.75rem; }
+.estudios-catalog-add { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.estudios-catalog-add input { flex: 1; min-width: 140px; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 6px; }
+.estudios-tipos-list { display: flex; flex-direction: column; gap: 0.4rem; max-height: 240px; overflow-y: auto; margin-bottom: 1rem; }
+.estudio-tipo-item { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.5rem 0.75rem; border: 1px solid #e0e6ed; border-radius: 6px; }
+.estudio-tipo-item.selected { background: #eef3ff; border-color: #cdd9f5; }
+.estudio-tipo-label { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; cursor: pointer; flex: 1; }
+.estudio-tipo-nombre { font-weight: 600; color: #3c4858; }
+.estudio-tipo-desc { font-size: 0.85rem; color: #6c757d; }
+.estudio-view-body { padding: 0.5rem 0; }
+.estudio-view-list { margin: 0.5rem 0 1rem; padding-left: 1.2rem; }
+.estudio-view-list li { margin-bottom: 0.35rem; }
+.estudio-view-notas { white-space: pre-wrap; color: #3c4858; }
+.btn-sm { padding: 0.35rem 0.7rem; font-size: 0.85rem; }

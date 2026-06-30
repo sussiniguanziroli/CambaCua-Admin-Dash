@@ -20,6 +20,9 @@ import SaleDetailModal from "../../administracion/SaleDetailModal";
 import AddDebtModal from "./AddDebtModal";
 import PaySaleDebtModal from "../../administracion/PaySaleDebtModal";
 import SimpleAppointmentModal from "../agenda/SimpleAppointmentModal";
+import { emitRecibosForSales, generateRecibosPDF } from "../../../services/reciboService";
+import { exportComprasPDF, exportComprasExcel } from "../../../services/comprasReportService";
+import { getNextComprobanteNumber } from "../../../services/comprobanteService";
 
 const PaymentModal = ({ tutor, onClose, onPaymentSuccess, setAlertInfo }) => {
   const [amount, setAmount] = useState("");
@@ -35,6 +38,9 @@ const PaymentModal = ({ tutor, onClose, onPaymentSuccess, setAlertInfo }) => {
     }
     setIsSubmitting(true);
     try {
+      // Número de recibo (R…): el cobro de deuda es un recibo de pago.
+      const { numero: reciboNumero, code: comprobante } = await getNextComprobanteNumber("recibos");
+
       const batch = writeBatch(db);
       const paymentRef = doc(collection(db, "cobros_deuda"));
       batch.set(paymentRef, {
@@ -42,6 +48,8 @@ const PaymentModal = ({ tutor, onClose, onPaymentSuccess, setAlertInfo }) => {
         tutorName: tutor.name,
         amount: paymentAmount,
         paymentMethod,
+        numero: reciboNumero,
+        comprobante,
         createdAt: serverTimestamp(),
         type: "Cobro Deuda",
       });
@@ -164,6 +172,10 @@ const TutorProfile = () => {
   const [allAppointments, setAllAppointments] = useState([]);
   const [accountTransactions, setAccountTransactions] = useState([]);
   const [salesHistory, setSalesHistory] = useState([]);
+  const [recibos, setRecibos] = useState([]);
+  const [selectedSaleIds, setSelectedSaleIds] = useState(() => new Set());
+  const [isEmittingReceipts, setIsEmittingReceipts] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("cuenta");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -192,13 +204,14 @@ const TutorProfile = () => {
       const tutorData = { id: tutorSnap.id, ...tutorSnap.data() };
       setTutor(tutorData);
 
-      const [pacientesSnap, salesSnap, paymentsSnap, citasSnap, groomingSnap, adjustmentsSnap] = await Promise.all([
+      const [pacientesSnap, salesSnap, paymentsSnap, citasSnap, groomingSnap, adjustmentsSnap, recibosSnap] = await Promise.all([
         getDocs(query(collection(db, "pacientes"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "ventas_presenciales"), where("tutorInfo.id", "==", id))),
         getDocs(query(collection(db, "cobros_deuda"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "citas"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "turnos_peluqueria"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "ajustes_cuenta"), where("tutorId", "==", id))),
+        getDocs(query(collection(db, "recibos"), where("tutorId", "==", id))),
       ]);
 
       setPacientes(pacientesSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -214,6 +227,9 @@ const TutorProfile = () => {
       const adjustments = adjustmentsSnap.docs.map((d) => ({ ...d.data(), id: d.id, type: d.data().type || "Ajuste Manual" }));
 
       setAccountTransactions([...sales, ...payments, ...adjustments].sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis()));
+
+      const recibosList = recibosSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      setRecibos(recibosList.sort((a, b) => (b.numero || 0) - (a.numero || 0)));
     } catch (error) {
       setAlertInfo({ title: "Error", text: "No se pudieron cargar los datos del tutor.", type: "error" });
     } finally {
@@ -281,6 +297,69 @@ const TutorProfile = () => {
     }
   };
 
+  const paidSalesInView = useMemo(
+    () => filteredSalesHistory.filter((s) => getPaymentStatus(s) === "paid"),
+    [filteredSalesHistory]
+  );
+  const allPaidSelected = paidSalesInView.length > 0 && paidSalesInView.every((s) => selectedSaleIds.has(s.id));
+
+  const toggleSaleSelection = (saleId) => {
+    setSelectedSaleIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(saleId)) next.delete(saleId); else next.add(saleId);
+      return next;
+    });
+  };
+
+  const toggleSelectAllPaid = () => {
+    setSelectedSaleIds((prev) => {
+      const next = new Set(prev);
+      if (paidSalesInView.every((s) => prev.has(s.id))) paidSalesInView.forEach((s) => next.delete(s.id));
+      else paidSalesInView.forEach((s) => next.add(s.id));
+      return next;
+    });
+  };
+
+  const handleEmitReceipts = async () => {
+    const sales = salesHistory.filter((s) => selectedSaleIds.has(s.id));
+    if (sales.length === 0) return;
+    setIsEmittingReceipts(true);
+    try {
+      const created = await emitRecibosForSales({ id: tutor.id, name: tutor.name }, sales);
+      await generateRecibosPDF(created, tutor);
+      setSelectedSaleIds(new Set());
+      setAlertInfo({ title: "Éxito", text: `${created.length} recibo(s) emitido(s) correctamente.`, type: "success" });
+      fetchAllData();
+    } catch (error) {
+      console.error("Error emitting receipts:", error);
+      setAlertInfo({ title: "Error", text: "No se pudieron emitir los recibos.", type: "error" });
+    } finally {
+      setIsEmittingReceipts(false);
+    }
+  };
+
+  const handleReprintRecibo = async (recibo) => {
+    try { await generateRecibosPDF([recibo], tutor); }
+    catch (error) { setAlertInfo({ title: "Error", text: "No se pudo generar el recibo.", type: "error" }); }
+  };
+
+  const handleExportCompras = async (format) => {
+    if (filteredSalesHistory.length === 0) {
+      setAlertInfo({ title: "Sin datos", text: "No hay compras para exportar con los filtros actuales.", type: "error" });
+      return;
+    }
+    setIsExporting(true);
+    try {
+      if (format === "excel") await exportComprasExcel(tutor, filteredSalesHistory);
+      else await exportComprasPDF(tutor, filteredSalesHistory);
+    } catch (error) {
+      console.error("Error exporting:", error);
+      setAlertInfo({ title: "Error", text: "No se pudo exportar el reporte.", type: "error" });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   if (isLoading) return (<div className="loading-message"><LoaderSpinner /><p>Cargando perfil del tutor...</p></div>);
   if (!tutor) return null;
 
@@ -342,7 +421,21 @@ const TutorProfile = () => {
                 <option value="partial">Pago Parcial</option>
                 <option value="unpaid">Sin Pagar</option>
               </select>
+              <button className="btn btn-secondary" onClick={() => handleExportCompras("pdf")} disabled={isExporting}>Exportar PDF</button>
+              <button className="btn btn-secondary" onClick={() => handleExportCompras("excel")} disabled={isExporting}>Exportar Excel</button>
             </div>
+            {paidSalesInView.length > 0 && (
+              <div className="recibos-selection-bar">
+                <label className="recibos-select-all">
+                  <input type="checkbox" checked={allPaidSelected} onChange={toggleSelectAllPaid} />
+                  Seleccionar pagas ({paidSalesInView.length})
+                </label>
+                <span className="recibos-selected-count">{selectedSaleIds.size} seleccionada(s)</span>
+                <button className="btn btn-primary" onClick={handleEmitReceipts} disabled={selectedSaleIds.size === 0 || isEmittingReceipts}>
+                  {isEmittingReceipts ? "Emitiendo..." : "Emitir recibos"}
+                </button>
+              </div>
+            )}
             <div className="compras-list">
               {currentSales.length > 0 ? (
                 currentSales.map((sale) => {
@@ -355,18 +448,29 @@ const TutorProfile = () => {
                   const hasDebt = currentDebt > 0.01;
                   return (
                     <div key={sale.id} className={`compra-card ${paymentStatus === "unpaid" ? "unpaid" : ""} ${paymentStatus === "partial" ? "partial-payment" : ""}`}>
-                      <div className="compra-info">
-                        <span className="date">{sale.createdAt.toDate().toLocaleDateString("es-AR")}</span>
-                        <span className="products-preview">{productPreview}</span>
-                        {hasDebt && (
-                          <div className="sale-debt-indicator">
-                            <FaExclamationTriangle />
-                            <span>
-                              {paymentStatus === "unpaid" && "Sin Pagar"}
-                              {paymentStatus === "partial" && `Deuda: $${currentDebt.toFixed(2)}`}
-                            </span>
-                          </div>
+                      <div className="compra-card-left">
+                        {paymentStatus === "paid" && (
+                          <input
+                            type="checkbox"
+                            className="compra-select-checkbox"
+                            checked={selectedSaleIds.has(sale.id)}
+                            onChange={() => toggleSaleSelection(sale.id)}
+                            title="Seleccionar para emitir recibo"
+                          />
                         )}
+                        <div className="compra-info">
+                          <span className="date">{sale.createdAt.toDate().toLocaleDateString("es-AR")}{sale.comprobante ? ` · ${sale.comprobante}` : ""}</span>
+                          <span className="products-preview">{productPreview}</span>
+                          {hasDebt && (
+                            <div className="sale-debt-indicator">
+                              <FaExclamationTriangle />
+                              <span>
+                                {paymentStatus === "unpaid" && "Sin Pagar"}
+                                {paymentStatus === "partial" && `Deuda: $${currentDebt.toFixed(2)}`}
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       </div>
                       <div className="compra-actions">
                         <span className="total">${sale.total.toFixed(2)}</span>
@@ -393,6 +497,29 @@ const TutorProfile = () => {
         );
       }
 
+      case "recibos":
+        return (
+          <div className="tab-content">
+            <div className="recibos-list">
+              {recibos.length > 0 ? (
+                recibos.map((r) => (
+                  <div key={r.id} className="recibo-card">
+                    <div className="recibo-info">
+                      <span className="recibo-numero">{r.comprobante}</span>
+                      <span className="recibo-concept">{r.concept}</span>
+                      <span className="recibo-date">{r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString("es-AR") : "N/A"}{r.saleComprobante ? ` · Venta ${r.saleComprobante}` : ""}</span>
+                    </div>
+                    <div className="recibo-actions">
+                      <span className="recibo-amount">${(r.amount || 0).toFixed(2)}</span>
+                      <button className="btn btn-secondary" onClick={() => handleReprintRecibo(r)}>Reimprimir</button>
+                    </div>
+                  </div>
+                ))
+              ) : (<p>No hay recibos emitidos.</p>)}
+            </div>
+          </div>
+        );
+
       case "cuenta":
         return (
           <div className="tutor-profile-tab-content">
@@ -414,7 +541,7 @@ const TutorProfile = () => {
                     <span className="date">{t.createdAt.toDate().toLocaleDateString("es-AR")}</span>
                     <span className="type">
                       {t.type === "Venta Presencial"
-                        ? `Venta #${t.id.substring(0, 6)}`
+                        ? `Venta ${t.comprobante || `#${t.id.substring(0, 6)}`}`
                         : t.type === "Cobro Deuda"
                         ? `Pago con ${t.paymentMethod}`
                         : `${t.type} (${t.reason || "S/M"})`}
@@ -507,6 +634,7 @@ const TutorProfile = () => {
         <button className={activeTab === "pacientes" ? "active" : ""} onClick={() => setActiveTab("pacientes")}>Pacientes ({pacientes.length})</button>
         <button className={activeTab === "citas" ? "active" : ""} onClick={() => setActiveTab("citas")}>Citas</button>
         <button className={activeTab === "compras" ? "active" : ""} onClick={() => setActiveTab("compras")}>Historial de Compras</button>
+        <button className={activeTab === "recibos" ? "active" : ""} onClick={() => setActiveTab("recibos")}>Recibos ({recibos.length})</button>
         <button className={activeTab === "cuenta" ? "active" : ""} onClick={() => setActiveTab("cuenta")}>Cuenta Corriente</button>
       </div>
       <div className="profile-content">{renderTabContent()}</div>

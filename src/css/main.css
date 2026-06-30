@@ -5075,6 +5075,13 @@ button.btn-reset:hover {
   background-color: #2980b9;
 }
 
+.resumen-comprobante {
+  margin: 0.25rem 0 0;
+  font-weight: 700;
+  color: #0b369c;
+  letter-spacing: 0.5px;
+}
+
 .seleccionar-pacientes-subtitle {
   text-align: center;
   color: #7f8c8d;
@@ -6805,6 +6812,102 @@ button.btn-reset:hover {
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.recibos-selection-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  background: #eef3ff;
+  border: 1px solid #cdd9f5;
+  border-radius: 8px;
+}
+
+.recibos-selection-bar .recibos-select-all {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #0b369c;
+  cursor: pointer;
+}
+
+.recibos-selection-bar .recibos-selected-count {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-left: auto;
+}
+
+.recibos-selection-bar .btn, .recibos-selection-bar .monitor-clinica-container .load-more-container button, .monitor-clinica-container .load-more-container .recibos-selection-bar button, .recibos-selection-bar .recipe-modal .add-line-btn, .recipe-modal .recibos-selection-bar .add-line-btn, .recibos-selection-bar .monitor-vencimientos-container .pagination-controls button, .monitor-vencimientos-container .pagination-controls .recibos-selection-bar button, .recibos-selection-bar .monitor-vencimientos-container .load-more-container button, .monitor-vencimientos-container .load-more-container .recibos-selection-bar button, .recibos-selection-bar .monitor-vencimientos-container .vencimiento-card .card-footer .card-footer-actions .action-btn, .monitor-vencimientos-container .vencimiento-card .card-footer .card-footer-actions .recibos-selection-bar .action-btn, .recibos-selection-bar .monitor-vencimientos-container .view-mode-toggle, .monitor-vencimientos-container .recibos-selection-bar .view-mode-toggle, .recibos-selection-bar .profile-container.paciente-profile .pagination-controls button, .profile-container.paciente-profile .pagination-controls .recibos-selection-bar button, .recibos-selection-bar .profile-container.paciente-profile .btn-delete-small, .profile-container.paciente-profile .recibos-selection-bar .btn-delete-small, .recibos-selection-bar .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .btn-delete-note, .profile-container.paciente-profile .clinical-history-list .clinical-entry-card .entry-header .recibos-selection-bar .btn-delete-note, .recibos-selection-bar .profile-container.paciente-profile .btn-custom-date, .profile-container.paciente-profile .recibos-selection-bar .btn-custom-date, .recibos-selection-bar .profile-container.paciente-profile .btn-suministrado, .profile-container.paciente-profile .recibos-selection-bar .btn-suministrado {
+  flex-shrink: 0;
+}
+
+/* Agrupa checkbox + datos a la izquierda para que el texto no se descentre con el space-between de la tarjeta */
+.profile-container .compras-list .compra-card .compra-card-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.compra-card .compra-select-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.recibos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.recibos-list .recibo-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  background: #fff;
+  border: 1px solid #e0e6ed;
+  border-left: 4px solid #27ae60;
+  border-radius: 8px;
+}
+
+.recibos-list .recibo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.recibos-list .recibo-numero {
+  font-weight: 700;
+  color: #0b369c;
+}
+
+.recibos-list .recibo-concept {
+  color: #3c4858;
+}
+
+.recibos-list .recibo-date {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.recibos-list .recibo-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.recibos-list .recibo-amount {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #27ae60;
 }
 
 .reporte-modal-overlay {
@@ -9963,6 +10066,105 @@ button.btn-reset:hover {
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+.estudios-catalog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0 0.5rem;
+}
+
+.estudios-catalog-header h4 {
+  margin: 0;
+}
+
+.estudios-catalog-manager {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.estudios-catalog-add {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.estudios-catalog-add input {
+  flex: 1;
+  min-width: 140px;
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+}
+
+.estudios-tipos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.estudio-tipo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e0e6ed;
+  border-radius: 6px;
+}
+
+.estudio-tipo-item.selected {
+  background: #eef3ff;
+  border-color: #cdd9f5;
+}
+
+.estudio-tipo-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  cursor: pointer;
+  flex: 1;
+}
+
+.estudio-tipo-nombre {
+  font-weight: 600;
+  color: #3c4858;
+}
+
+.estudio-tipo-desc {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.estudio-view-body {
+  padding: 0.5rem 0;
+}
+
+.estudio-view-list {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.2rem;
+}
+
+.estudio-view-list li {
+  margin-bottom: 0.35rem;
+}
+
+.estudio-view-notas {
+  white-space: pre-wrap;
+  color: #3c4858;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
 }
 
 .patient-list {

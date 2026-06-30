@@ -17,6 +17,9 @@ const SaleDetailModal = ({ sale, onClose }) => {
   const totalPaid = paymentsArray.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
   const totalDebtPaid = debtPaymentsArray.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
 
+  // Comprobante (C…/R…) si existe; si no, fallback al ID corto (pedidos online / registros viejos).
+  const comprobanteLabel = sale.comprobante || (sale.id ? sale.id.substring(0, 6) : 'N/A');
+
   const downloadPDF = async () => {
     try {
       const { jsPDF } = await import('jspdf');
@@ -35,7 +38,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
 
       doc.setFontSize(12);
       const meta = [
-        [`ID Transacción:`, sale.id || 'N/A'],
+        [`N° Comprobante:`, comprobanteLabel],
         [`Tipo:`, sale.type],
         [`Cliente:`, sale.tutorInfo?.name || sale.tutorName || 'N/A'],
       ];
@@ -117,7 +120,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
         doc.setFontSize(14);
       }
       
-      doc.save(`Recibo_CambaCuaVet_${sale.id}.pdf`);
+      doc.save(`Recibo_CambaCuaVet_${sale.comprobante || sale.id}.pdf`);
     } catch (err) {
       console.error("Error generating PDF:", err);
       const printable = buildPrintableHtml();
@@ -191,7 +194,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
     return `<!doctype html><html><head><meta charset="utf-8"><title>Recibo - CambaCuaVet</title>${style}</head><body>
       <h1>CambaCuaVet</h1>
       <h2>Recibo</h2>
-      <p><strong>ID Transacción:</strong> ${sale.id || 'N/A'}</p>
+      <p><strong>N° Comprobante:</strong> ${comprobanteLabel}</p>
       <p><strong>Tipo:</strong> ${sale.type}</p>
       <p><strong>Cliente:</strong> ${sale.tutorInfo?.name || sale.tutorName || 'N/A'}</p>
       ${sale.patientInfo?.name ? `<p><strong>Paciente:</strong> ${sale.patientInfo.name}</p>` : ''}
@@ -211,6 +214,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
 
         <div className="sale-detail-body">
           <div className="sale-detail-section">
+            <p><span>N° Comprobante:</span> <strong>{comprobanteLabel}</strong></p>
             <p><span>Cliente:</span> <strong>{sale.tutorInfo?.name || sale.tutorName || 'N/A'}</strong></p>
             {sale.patientInfo?.name && <p><span>Paciente:</span> <strong>{sale.patientInfo.name}</strong></p>}
             <p><span>Fecha:</span> <strong>{sale.createdAt?.toDate ? sale.createdAt.toDate().toLocaleString('es-AR') : 'N/A'}</strong></p>

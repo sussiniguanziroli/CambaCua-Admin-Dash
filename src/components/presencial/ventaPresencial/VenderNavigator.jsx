@@ -11,6 +11,7 @@ import ResumenVenta from "./ResumenVenta";
 import ProgramarVencimientos from "./ProgramarVencimientos";
 import { db } from "../../../firebase/config";
 import { collection, doc, writeBatch, increment, Timestamp } from "firebase/firestore";
+import { getNextComprobanteNumber } from "../../../services/comprobanteService";
 
 const INITIAL_SALE_DATA = {
     cart: [],
@@ -144,6 +145,9 @@ const VenderNavigator = () => {
     const handleConfirmSaleAndSchedule = async (scheduleByPatient, linksByPatient) => {
         setIsSubmitting(true);
         try {
+            // Número de comprobante consecutivo (atómico) ANTES del batch: los batches no pueden leer.
+            const { numero: comprobanteNumero, code: comprobante } = await getNextComprobanteNumber("ventas");
+
             const batch = writeBatch(db);
             const saleRef = doc(collection(db, "ventas_presenciales"));
             const { saleTimestamp } = saleData;
@@ -152,6 +156,8 @@ const VenderNavigator = () => {
 
             batch.set(saleRef, {
                 createdAt: saleTimestamp,
+                numero: comprobanteNumero,
+                comprobante,
                 tutorInfo: saleData.tutor ? { id: saleData.tutor.id, name: saleData.tutor.name } : { id: "generic", name: "Cliente Genérico" },
                 patientsInfo: saleData.patients.map(p => ({ id: p.id, name: p.name })),
                 payments: saleData.payments,
@@ -259,7 +265,7 @@ const VenderNavigator = () => {
                 batch.delete(doc(db, "ventas_guardadas", loadedSaleId));
 
             await batch.commit();
-            updateSaleData({ id: saleRef.id, createdAt: saleTimestamp, subtotal: totalSubtotal, discount: totalDiscount });
+            updateSaleData({ id: saleRef.id, numero: comprobanteNumero, comprobante, createdAt: saleTimestamp, subtotal: totalSubtotal, discount: totalDiscount });
             setStep(8);
         } catch (error) {
             console.error("Error confirming sale:", error);
