@@ -173,6 +173,7 @@ const TutorProfile = () => {
   const [accountTransactions, setAccountTransactions] = useState([]);
   const [salesHistory, setSalesHistory] = useState([]);
   const [recibos, setRecibos] = useState([]);
+  const [presupuestos, setPresupuestos] = useState([]);
   const [selectedSaleIds, setSelectedSaleIds] = useState(() => new Set());
   const [isEmittingReceipts, setIsEmittingReceipts] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -204,7 +205,7 @@ const TutorProfile = () => {
       const tutorData = { id: tutorSnap.id, ...tutorSnap.data() };
       setTutor(tutorData);
 
-      const [pacientesSnap, salesSnap, paymentsSnap, citasSnap, groomingSnap, adjustmentsSnap, recibosSnap] = await Promise.all([
+      const [pacientesSnap, salesSnap, paymentsSnap, citasSnap, groomingSnap, adjustmentsSnap, recibosSnap, presupuestosSnap] = await Promise.all([
         getDocs(query(collection(db, "pacientes"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "ventas_presenciales"), where("tutorInfo.id", "==", id))),
         getDocs(query(collection(db, "cobros_deuda"), where("tutorId", "==", id))),
@@ -212,6 +213,7 @@ const TutorProfile = () => {
         getDocs(query(collection(db, "turnos_peluqueria"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "ajustes_cuenta"), where("tutorId", "==", id))),
         getDocs(query(collection(db, "recibos"), where("tutorId", "==", id))),
+        getDocs(query(collection(db, "ventas_guardadas"), where("tutor.id", "==", id))),
       ]);
 
       setPacientes(pacientesSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -230,6 +232,9 @@ const TutorProfile = () => {
 
       const recibosList = recibosSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
       setRecibos(recibosList.sort((a, b) => (b.numero || 0) - (a.numero || 0)));
+
+      const presupuestosList = presupuestosSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      setPresupuestos(presupuestosList.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0)));
     } catch (error) {
       setAlertInfo({ title: "Error", text: "No se pudieron cargar los datos del tutor.", type: "error" });
     } finally {
@@ -275,6 +280,8 @@ const TutorProfile = () => {
   const handleStartSale = () => { navigate("/admin/vender", { state: { tutor: { id: tutor.id, name: tutor.name } } }); };
 
   const handlePaymentComplete = () => { fetchAllData(); setSaleToPayDebt(null); };
+
+  const handleLoadPresupuesto = (presupuesto) => { navigate("/admin/vender", { state: { savedSale: presupuesto } }); };
 
   const handleDeleteAdjustment = (transaction) => {
     setConfirmDelete(transaction);
@@ -520,6 +527,36 @@ const TutorProfile = () => {
           </div>
         );
 
+      case "presupuestos":
+        return (
+          <div className="tab-content">
+            <div className="compras-list presupuestos-list">
+              {presupuestos.length > 0 ? (
+                presupuestos.map((p) => {
+                  const productPreview = (p.cart && p.cart.length > 0) ? `${p.cart[0].name}${p.cart.length > 1 ? ` y ${p.cart.length - 1} más...` : ""}` : "Presupuesto sin items.";
+                  const patientsList = (p.patients && p.patients.length > 0) ? p.patients.map((pt) => pt.name).join(", ") : (p.patient?.name || null);
+                  const fecha = p.createdAt?.toDate ? p.createdAt.toDate() : null;
+                  return (
+                    <div key={p.id} className="compra-card presupuesto-card">
+                      <div className="compra-card-left">
+                        <div className="compra-info">
+                          <span className="date">{fecha ? `${fecha.toLocaleDateString("es-AR")} ${fecha.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}` : "N/A"}</span>
+                          <span className="products-preview">{productPreview}</span>
+                          {patientsList && <span className="presupuesto-patients">Paciente(s): {patientsList}</span>}
+                        </div>
+                      </div>
+                      <div className="compra-actions">
+                        <span className="total">${(p.total || 0).toFixed(2)}</span>
+                        <button className="btn btn-primary" onClick={() => handleLoadPresupuesto(p)}>Cargar Venta</button>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (<p>No hay presupuestos guardados.</p>)}
+            </div>
+          </div>
+        );
+
       case "cuenta":
         return (
           <div className="tutor-profile-tab-content">
@@ -634,6 +671,7 @@ const TutorProfile = () => {
         <button className={activeTab === "pacientes" ? "active" : ""} onClick={() => setActiveTab("pacientes")}>Pacientes ({pacientes.length})</button>
         <button className={activeTab === "citas" ? "active" : ""} onClick={() => setActiveTab("citas")}>Citas</button>
         <button className={activeTab === "compras" ? "active" : ""} onClick={() => setActiveTab("compras")}>Historial de Compras</button>
+        <button className={activeTab === "presupuestos" ? "active" : ""} onClick={() => setActiveTab("presupuestos")}>Presupuestos ({presupuestos.length})</button>
         <button className={activeTab === "recibos" ? "active" : ""} onClick={() => setActiveTab("recibos")}>Recibos ({recibos.length})</button>
         <button className={activeTab === "cuenta" ? "active" : ""} onClick={() => setActiveTab("cuenta")}>Cuenta Corriente</button>
       </div>

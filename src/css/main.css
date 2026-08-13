@@ -6412,6 +6412,10 @@ button.btn-reset:hover {
   color: #3c4858;
   font-weight: 500;
 }
+.profile-container .compras-list .compra-card .compra-info .presupuesto-patients {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
 .profile-container .compras-list .compra-card .compra-info .sale-debt-indicator {
   display: flex;
   align-items: center;
@@ -10072,16 +10076,29 @@ button.btn-reset:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin: 1rem 0 0.5rem;
 }
-
 .estudios-catalog-header h4 {
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.estudios-selected-badge {
+  background: #3498db;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
 }
 
 .estudios-catalog-manager {
   background: #f8f9fa;
-  border: 1px solid #dee2e6;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 0.75rem;
   margin-bottom: 0.75rem;
@@ -10097,17 +10114,73 @@ button.btn-reset:hover {
   flex: 1;
   min-width: 140px;
   padding: 0.5rem;
-  border: 1px solid #dee2e6;
+  border: 1px solid #e0e0e0;
   border-radius: 6px;
 }
 
-.estudios-tipos-list {
+.estudios-tipos-toolbar {
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  max-height: 240px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.estudios-tipos-search {
+  flex: 1;
+  min-width: 160px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.estudios-tipos-search:focus {
+  outline: none;
+  border-color: #5dade2;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.12);
+}
+
+.estudios-tipos-shortcuts {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #3498db;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.link-btn:hover:not(:disabled) {
+  text-decoration: underline;
+}
+.link-btn:disabled {
+  color: #6c757d;
+  cursor: default;
+  opacity: 0.6;
+}
+
+.estudios-tipos-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  max-height: 320px;
   overflow-y: auto;
   margin-bottom: 1rem;
+  padding: 0.25rem;
+}
+@media (max-width: 768px) {
+  .estudios-tipos-list {
+    grid-template-columns: 1fr;
+  }
+}
+.estudios-tipos-list > p {
+  grid-column: 1/-1;
 }
 
 .estudio-tipo-item {
@@ -10118,8 +10191,8 @@ button.btn-reset:hover {
   padding: 0.5rem 0.75rem;
   border: 1px solid #e0e6ed;
   border-radius: 6px;
+  transition: all 0.2s ease-in-out;
 }
-
 .estudio-tipo-item.selected {
   background: #eef3ff;
   border-color: #cdd9f5;
@@ -10137,10 +10210,11 @@ button.btn-reset:hover {
 .estudio-tipo-nombre {
   font-weight: 600;
   color: #3c4858;
+  font-size: 0.9rem;
 }
 
 .estudio-tipo-desc {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #6c757d;
 }
 

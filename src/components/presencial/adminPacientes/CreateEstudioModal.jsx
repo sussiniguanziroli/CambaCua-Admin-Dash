@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { getTiposEstudio, addTipoEstudio, deleteTipoEstudio } from '../../../services/estudioService';
@@ -7,6 +7,7 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave }) => {
     const [tipos, setTipos] = useState([]);
     const [isLoadingTipos, setIsLoadingTipos] = useState(true);
     const [selectedIds, setSelectedIds] = useState(() => new Set());
+    const [tiposSearch, setTiposSearch] = useState('');
 
     const [solicitadoPor, setSolicitadoPor] = useState('');
     const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
@@ -29,6 +30,7 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave }) => {
     useEffect(() => {
         if (isOpen) {
             setSelectedIds(new Set());
+            setTiposSearch('');
             setSolicitadoPor('');
             setFecha(new Date().toISOString().split('T')[0]);
             setNotas('');
@@ -46,6 +48,22 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave }) => {
             return next;
         });
     };
+
+    const filteredTipos = useMemo(() => {
+        const term = tiposSearch.trim().toLowerCase();
+        if (!term) return tipos;
+        return tipos.filter((t) => t.nombre.toLowerCase().includes(term) || (t.descripcion || '').toLowerCase().includes(term));
+    }, [tipos, tiposSearch]);
+
+    const selectAllFiltered = () => {
+        setSelectedIds((prev) => {
+            const next = new Set(prev);
+            filteredTipos.forEach((t) => next.add(t.id));
+            return next;
+        });
+    };
+
+    const clearSelection = () => setSelectedIds(new Set());
 
     const handleAddTipo = async () => {
         if (!newNombre.trim()) return;
@@ -112,7 +130,7 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave }) => {
                     </div>
 
                     <div className="estudios-catalog-header">
-                        <h4>Estudios a solicitar</h4>
+                        <h4>Estudios a solicitar {selectedIds.size > 0 && <span className="estudios-selected-badge">{selectedIds.size} seleccionado{selectedIds.size > 1 ? 's' : ''}</span>}</h4>
                         <button type="button" className="btn btn-secondary btn-sm" onClick={() => setShowCatalog((s) => !s)}>
                             {showCatalog ? 'Ocultar catálogo' : 'Gestionar catálogo'}
                         </button>
@@ -130,13 +148,29 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave }) => {
                         </div>
                     )}
 
+                    <div className="estudios-tipos-toolbar">
+                        <input
+                            type="text"
+                            className="estudios-tipos-search"
+                            placeholder="Buscar estudio..."
+                            value={tiposSearch}
+                            onChange={(e) => setTiposSearch(e.target.value)}
+                        />
+                        <div className="estudios-tipos-shortcuts">
+                            <button type="button" className="link-btn" onClick={selectAllFiltered} disabled={filteredTipos.length === 0}>Seleccionar todos</button>
+                            <button type="button" className="link-btn" onClick={clearSelection} disabled={selectedIds.size === 0}>Limpiar selección</button>
+                        </div>
+                    </div>
+
                     <div className="estudios-tipos-list">
                         {isLoadingTipos ? (
                             <p>Cargando catálogo...</p>
                         ) : tipos.length === 0 ? (
                             <p className="no-results-message">No hay tipos de estudio. Agregá uno desde "Gestionar catálogo".</p>
+                        ) : filteredTipos.length === 0 ? (
+                            <p className="no-results-message">No hay estudios que coincidan con "{tiposSearch}".</p>
                         ) : (
-                            tipos.map((t) => (
+                            filteredTipos.map((t) => (
                                 <div key={t.id} className={`estudio-tipo-item ${selectedIds.has(t.id) ? 'selected' : ''}`}>
                                     <label className="estudio-tipo-label">
                                         <input type="checkbox" checked={selectedIds.has(t.id)} onChange={() => toggleSelect(t.id)} />
