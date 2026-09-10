@@ -29,11 +29,17 @@ export const registerScriptFont = (doc, base64) => {
     doc.addFont(SCRIPT_FONT_FILE, SCRIPT_FONT, 'normal');
 };
 
-// Área útil de la página entre encabezado y pie.
+// Tamaños (pt) y posiciones pensados para A4; se escalan con el ancho de la página.
+// El bloque "MÉDICA VETERINARIA / Dra. / MP" y el cuerpo del documento comparten tamaño.
+const A4_WIDTH = 595.28;
+const FONT_SIZES = { titulo: 11, grado: 12, matricula: 9.5, local: 24, pie: 13.5, cuerpo: 12 };
+
+// Área útil de la página entre encabezado y pie, y tamaño del texto del cuerpo.
 export const getMembreteLayout = (doc) => {
     const W = doc.internal.pageSize.getWidth();
     const H = doc.internal.pageSize.getHeight();
-    return { marginX: W * 0.095, contentTop: W * 0.4, contentBottom: H - W * 0.27 };
+    const k = W / A4_WIDTH;
+    return { marginX: W * 0.095, contentTop: 210 * k, contentBottom: H - 135 * k, bodyFontSize: FONT_SIZES.cuerpo * k };
 };
 
 // Tamaño de fuente para que `text` ocupe `targetWidth` con la fuente actual.
@@ -145,38 +151,39 @@ export const drawMembrete = (doc) => {
     const W = doc.internal.pageSize.getWidth();
     const H = doc.internal.pageSize.getHeight();
     const center = W / 2;
+    const k = W / A4_WIDTH;
     doc.setTextColor(...INK);
     doc.setDrawColor(...INK);
     doc.setFillColor(...INK);
 
-    // Encabezado
+    // Encabezado: el nombre ocupa el 70% del ancho; el resto usa tamaños fijos.
     setScriptFont(doc);
     doc.setFontSize(fitFontSize(doc, MEMBRETE.profesional, W * 0.7));
-    doc.text(MEMBRETE.profesional, center, W * 0.16, { align: 'center' });
+    doc.text(MEMBRETE.profesional, center, 95 * k, { align: 'center' });
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(fitFontSize(doc, MEMBRETE.titulo, W * 0.23));
-    doc.text(MEMBRETE.titulo, center, W * 0.235, { align: 'center' });
+    doc.setFontSize(FONT_SIZES.titulo * k);
+    doc.text(MEMBRETE.titulo, center, 134 * k, { align: 'center' });
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(fitFontSize(doc, MEMBRETE.grado, W * 0.4));
-    doc.text(MEMBRETE.grado, center, W * 0.266, { align: 'center' });
+    doc.setFontSize(FONT_SIZES.grado * k);
+    doc.text(MEMBRETE.grado, center, 150 * k, { align: 'center' });
 
-    doc.setFontSize(fitFontSize(doc, MEMBRETE.matricula, W * 0.075));
-    doc.text(MEMBRETE.matricula, center, W * 0.293, { align: 'center' });
+    doc.setFontSize(FONT_SIZES.matricula * k);
+    doc.text(MEMBRETE.matricula, center, 164 * k, { align: 'center' });
 
     // Pie
     setScriptFont(doc);
-    doc.setFontSize(fitFontSize(doc, MEMBRETE.local, W * 0.42));
-    doc.text(MEMBRETE.local, center, H - W * 0.2, { align: 'center' });
+    doc.setFontSize(FONT_SIZES.local * k);
+    doc.text(MEMBRETE.local, center, H - 100 * k, { align: 'center' });
 
-    doc.setLineWidth(0.8);
-    doc.line(center - W * 0.405, H - W * 0.17, center + W * 0.405, H - W * 0.17);
+    doc.setLineWidth(0.8 * k);
+    doc.line(center - W * 0.405, H - 84 * k, center + W * 0.405, H - 84 * k);
 
     doc.setFont('helvetica', 'normal');
-    const footerSize = fitFontSize(doc, MEMBRETE.direccion, W * 0.55);
+    const footerSize = FONT_SIZES.pie * k;
     doc.setFontSize(footerSize);
-    doc.text(MEMBRETE.direccion, center, H - W * 0.128, { align: 'center' });
+    doc.text(MEMBRETE.direccion, center, H - 65 * k, { align: 'center' });
 
     // "Facebook: cambacuavet [f]   Whatsapp: 379 5048310 [wa]" centrado como una sola línea
     const facebookText = `Facebook: ${MEMBRETE.facebook}`;
@@ -185,7 +192,7 @@ export const drawMembrete = (doc) => {
     const iconWidth = (iconHeight * ICON_VIEWBOX.width) / ICON_VIEWBOX.height;
     const gap = footerSize * 0.35;
     const totalWidth = doc.getTextWidth(facebookText) + gap + iconWidth + gap * 3 + doc.getTextWidth(whatsappText) + gap + iconWidth;
-    const baseline = H - W * 0.09;
+    const baseline = H - 47 * k;
     // El glifo ocupa y 32..480 del viewBox: su borde inferior queda apenas bajo la línea base.
     const iconTop = baseline + footerSize * 0.12 - (iconHeight * 480) / ICON_VIEWBOX.height;
 

@@ -28,17 +28,17 @@ export const formatFechaEstudio = (estudio) => {
 export const buildEstudioPDF = (docPdf, autoTable, estudio, paciente) => {
     const W = docPdf.internal.pageSize.getWidth();
     const H = docPdf.internal.pageSize.getHeight();
-    const { marginX, contentTop, contentBottom } = getMembreteLayout(docPdf);
+    const { marginX, contentTop, contentBottom, bodyFontSize } = getMembreteLayout(docPdf);
     const contentWidth = W - marginX * 2;
     let y = contentTop;
 
     docPdf.setTextColor(...TEXT_COLOR);
     docPdf.setFont('helvetica', 'normal');
-    docPdf.setFontSize(10.5);
+    docPdf.setFontSize(bodyFontSize);
 
     const fecha = formatFechaEstudio(estudio);
     if (fecha) docPdf.text(`Corrientes, ${fecha}`, W - marginX, y, { align: 'right' });
-    y += 26;
+    y += bodyFontSize * 2.3;
 
     // Datos del paciente en dos columnas
     const datos = getDatosPaciente(estudio, paciente);
@@ -57,7 +57,7 @@ export const buildEstudioPDF = (docPdf, autoTable, estudio, paciente) => {
             docPdf.setFont('helvetica', 'normal');
             if (value) docPdf.text(docPdf.splitTextToSize(value, colWidth - labelWidth - 12)[0], x + labelWidth, y);
         });
-        y += 18;
+        y += bodyFontSize * 1.6;
     });
 
     docPdf.setDrawColor(190, 190, 190);
@@ -70,16 +70,16 @@ export const buildEstudioPDF = (docPdf, autoTable, estudio, paciente) => {
         startY: y,
         head: [['Estudio', 'Descripción / Indicación']],
         body: body.length > 0 ? body : [['—', '—']],
-        styles: { fontSize: 10, cellPadding: 5, textColor: TEXT_COLOR },
+        styles: { fontSize: bodyFontSize, cellPadding: 6, textColor: TEXT_COLOR },
         headStyles: { fillColor: [52, 73, 94], textColor: 255 },
         margin: { left: marginX, right: marginX, top: contentTop, bottom: H - contentBottom },
     });
-    y = docPdf.lastAutoTable.finalY + 24;
+    y = docPdf.lastAutoTable.finalY + bodyFontSize * 2.2;
 
-    const lineHeight = 14;
+    const lineHeight = bodyFontSize * 1.35;
     const section = (title, text) => {
         if (!text || !text.trim()) return;
-        docPdf.setFontSize(10.5);
+        docPdf.setFontSize(bodyFontSize);
         const lines = docPdf.splitTextToSize(text.trim(), contentWidth);
         if (y + lineHeight * 2 > contentBottom) { docPdf.addPage(); y = contentTop; }
         docPdf.setFont('helvetica', 'bold');
