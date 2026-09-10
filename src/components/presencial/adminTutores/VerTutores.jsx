@@ -1,7 +1,7 @@
 // VerTutores.jsx
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useDeferredValue } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 import Swal from "sweetalert2";
 import { FaPlus, FaDog, FaStethoscope, FaFileExcel } from "react-icons/fa";
@@ -10,15 +10,32 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { PiBathtub } from "react-icons/pi";
 import ReporteDeudoresModal from "./ReporteDeudoresModal";
+import { useLiveCollection } from "../../../services/liveCollectionStore";
+import { normalizeText, onlyDigits, isNumericTerm, esCollator } from "../../utils/searchUtils";
 
-// Cache for tutores data
-let tutoresCache = null;
-let cacheTimestamp = null;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const ITEMS_PER_PAGE = 12;
+
+// Los tutores importados guardan `pacientesIds`; los creados desde el dashboard, `pacienteIds`.
+const countPacientes = (tutor) =>
+  new Set([...(tutor.pacienteIds || []), ...(tutor.pacientesIds || [])]).size;
+
+const SORTERS = {
+  name_asc: (a, b) => esCollator.compare(a.name, b.name),
+  name_desc: (a, b) => esCollator.compare(b.name, a.name),
+  newest: (a, b) => b.createdMs - a.createdMs,
+  debt_asc: (a, b) => a.balance - b.balance,
+  debt_desc: (a, b) => b.balance - a.balance,
+};
+
+const matchesService = (services, serviceType) => {
+  if (serviceType === "clinical") return services.includes("clinical");
+  if (serviceType === "grooming") return services.includes("grooming");
+  if (serviceType === "both") return services.includes("clinical") && services.includes("grooming");
+  return true;
+};
 
 const VerTutores = () => {
-  const [tutores, setTutores] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { docs: tutores, isLoading, isSyncing, error } = useLiveCollection("tutores");
   const [showReporteModal, setShowReporteModal] = useState(false);
   const [filters, setFilters] = useState({
     searchTerm: "",
@@ -28,110 +45,55 @@ const VerTutores = () => {
   });
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
 
-  // Check if cache is valid
-  const isCacheValid = useCallback(() => {
-    return tutoresCache && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION);
-  }, []);
+  const { sortOrder, serviceType, showOnlyDebtors } = filters;
+  // El input se actualiza al instante; el filtrado corre con el valor diferido.
+  const deferredSearchTerm = useDeferredValue(filters.searchTerm);
 
-  const fetchTutores = useCallback(async (forceRefresh = false) => {
-    // Use cache if valid and not forcing refresh
-    if (!forceRefresh && isCacheValid()) {
-      setTutores(tutoresCache);
-      setIsLoading(false);
-      return;
-    }
+  // 1) Índice de búsqueda: se arma una vez por cambio de datos, no en cada tecla.
+  const indexed = useMemo(
+    () =>
+      tutores.map((tutor) => ({
+        tutor,
+        name: tutor.name || "",
+        search: normalizeText(`${tutor.name || ""} ${tutor.email || ""} ${tutor.dni || ""} ${tutor.phone || ""}`),
+        digits: `${onlyDigits(tutor.phone)} ${onlyDigits(tutor.dni)}`,
+        balance: tutor.accountBalance || 0,
+        createdMs: tutor.createdAt?.toMillis?.() || 0,
+        services: tutor.serviceTypes || [],
+        pacientesCount: countPacientes(tutor),
+      })),
+    [tutores]
+  );
 
-    setIsLoading(true);
-    try {
-      const snapshot = await getDocs(collection(db, "tutores"));
-      const tutorsList = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-      
-      // Update cache
-      tutoresCache = tutorsList;
-      cacheTimestamp = Date.now();
-      
-      setTutores(tutorsList);
-    } catch (error) {
-      console.error("Error fetching tutores:", error);
-      Swal.fire("Error", "No se pudieron cargar los tutores.", "error");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isCacheValid]);
+  // 2) Orden: solo cuando cambian los datos o el criterio.
+  const sorted = useMemo(
+    () => [...indexed].sort(SORTERS[sortOrder] || (() => 0)),
+    [indexed, sortOrder]
+  );
 
-  useEffect(() => {
-    fetchTutores();
-  }, [fetchTutores]);
-
-  // Memoized filtered and sorted tutores
+  // 3) Filtros: una pasada lineal sobre la lista ya ordenada.
   const filteredTutores = useMemo(() => {
-    let filtered = [...tutores];
+    const term = normalizeText(deferredSearchTerm.trim());
+    const termDigits = isNumericTerm(term) ? onlyDigits(term) : "";
 
-    // Service type filter
-    if (filters.serviceType !== "todos") {
-      filtered = filtered.filter((t) => {
-        const services = t.serviceTypes || [];
-        if (filters.serviceType === "clinical") return services.includes("clinical");
-        if (filters.serviceType === "grooming") return services.includes("grooming");
-        if (filters.serviceType === "both") return services.includes("clinical") && services.includes("grooming");
-        return true;
-      });
-    }
+    if (!term && serviceType === "todos" && !showOnlyDebtors) return sorted;
 
-    // Debtors filter
-    if (filters.showOnlyDebtors) {
-      filtered = filtered.filter((t) => (t.accountBalance || 0) < 0);
-    }
+    return sorted.filter(
+      (entry) =>
+        matchesService(entry.services, serviceType) &&
+        (!showOnlyDebtors || entry.balance < 0) &&
+        (!term || entry.search.includes(term) || (termDigits && entry.digits.includes(termDigits)))
+    );
+  }, [sorted, deferredSearchTerm, serviceType, showOnlyDebtors]);
 
-    // Search filter
-    const term = filters.searchTerm.toLowerCase();
-    if (term) {
-      filtered = filtered.filter(
-        (t) =>
-          t.name?.toLowerCase().includes(term) ||
-          t.email?.toLowerCase().includes(term) ||
-          t.dni?.includes(term) ||
-          t.phone?.includes(term)
-      );
-    }
+  const totalPages = Math.ceil(filteredTutores.length / ITEMS_PER_PAGE);
+  // Si una baja deja la página actual vacía, se muestra la última disponible.
+  const page = Math.min(currentPage, Math.max(1, totalPages));
+  const currentItems = filteredTutores.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
-    // Sort
-    filtered.sort((a, b) => {
-      const balanceA = a.accountBalance || 0;
-      const balanceB = b.accountBalance || 0;
-
-      switch (filters.sortOrder) {
-        case "name_asc":
-          return (a.name || "").localeCompare(b.name || "");
-        case "name_desc":
-          return (b.name || "").localeCompare(a.name || "");
-        case "newest":
-          return (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0);
-        case "debt_asc":
-          return balanceA - balanceB;
-        case "debt_desc":
-          return balanceB - balanceA;
-        default:
-          return 0;
-      }
-    });
-
-    return filtered;
-  }, [filters, tutores]);
-
-  // Memoized current page items
-  const { currentItems, totalPages } = useMemo(() => {
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const items = filteredTutores.slice(indexOfFirstItem, indexOfLastItem);
-    const pages = Math.ceil(filteredTutores.length / itemsPerPage);
-    
-    return { currentItems: items, totalPages: pages };
-  }, [filteredTutores, currentPage, itemsPerPage]);
-
-  const handleDelete = async (tutorId, tutorName) => {
+  // El listener de Firestore actualiza la lista solo; no hace falta recargar.
+  const handleDelete = useCallback(async (tutorId, tutorName) => {
     const result = await Swal.fire({
       title: `¿Eliminar a ${tutorName}?`,
       text: "Esta acción no se puede deshacer. Los pacientes asociados NO serán eliminados.",
@@ -140,23 +102,17 @@ const VerTutores = () => {
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
     });
-    
+
     if (result.isConfirmed) {
       try {
         await deleteDoc(doc(db, "tutores", tutorId));
-        
-        // Invalidate cache and refresh
-        tutoresCache = null;
-        cacheTimestamp = null;
-        
         Swal.fire("Eliminado", `${tutorName} ha sido eliminado.`, "success");
-        fetchTutores(true);
       } catch (error) {
         console.error("Error deleting tutor:", error);
         Swal.fire("Error", `No se pudo eliminar a ${tutorName}.`, "error");
       }
     }
-  };
+  }, []);
 
   const handleFilterChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
@@ -176,10 +132,15 @@ const VerTutores = () => {
       )}
 
       <div className="tutor-list__header">
-        <h1>Gestión de Tutores</h1>
+        <h1>
+          Gestión de Tutores
+          {isSyncing && !isLoading && (
+            <span style={{ fontSize: '0.8rem', fontWeight: 400, color: '#6c757d', marginLeft: '10px' }}>Actualizando…</span>
+          )}
+        </h1>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button 
-            className="tutor-list__btn" 
+          <button
+            className="tutor-list__btn"
             style={{ backgroundColor: '#1d6f42', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
             onClick={() => setShowReporteModal(true)}
           >
@@ -242,13 +203,16 @@ const VerTutores = () => {
 
       {isLoading ? (
         <p className="tutor-list__message">Cargando...</p>
+      ) : error && tutores.length === 0 ? (
+        <p className="tutor-list__message">No se pudieron cargar los tutores.</p>
       ) : (
         <>
           <div className="tutor-list__grid">
-            {currentItems.map((tutor) => (
+            {currentItems.map((entry) => (
               <TutorCard
-                key={tutor.id}
-                tutor={tutor}
+                key={entry.tutor.id}
+                tutor={entry.tutor}
+                pacientesCount={entry.pacientesCount}
                 onCardClick={handleCardClick}
                 onDelete={handleDelete}
               />
@@ -259,18 +223,18 @@ const VerTutores = () => {
             <div className="tutor-list__pagination">
               <button
                 className="tutor-list__btn"
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(Math.max(1, page - 1))}
+                disabled={page === 1}
               >
                 Anterior
               </button>
               <span>
-                Página {currentPage} de {totalPages}
+                Página {page} de {totalPages}
               </span>
               <button
                 className="tutor-list__btn"
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(Math.min(totalPages, page + 1))}
+                disabled={page === totalPages}
               >
                 Siguiente
               </button>
@@ -283,7 +247,7 @@ const VerTutores = () => {
 };
 
 // Memoized card component to prevent unnecessary re-renders
-const TutorCard = React.memo(({ tutor, onCardClick, onDelete }) => {
+const TutorCard = React.memo(({ tutor, pacientesCount, onCardClick, onDelete }) => {
   const handleClick = useCallback(() => {
     onCardClick(tutor.id);
   }, [tutor.id, onCardClick]);
@@ -320,7 +284,7 @@ const TutorCard = React.memo(({ tutor, onCardClick, onDelete }) => {
       <div className="tutor-list__card-body">
         <div className="tutor-list__chip">
           <FaDog />
-          <span>{tutor.pacientesIds?.length || 0} Pacientes</span>
+          <span>{pacientesCount} Pacientes</span>
         </div>
         <div
           className={`tutor-list__chip tutor-list__chip--balance ${

@@ -2,15 +2,29 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { getTiposEstudio, addTipoEstudio, deleteTipoEstudio } from '../../../services/estudioService';
+import { MEMBRETE } from '../../../services/pdf/membrete';
+import { DATOS_PACIENTE_VACIOS } from '../../../services/pdf/estudioPdf';
 
-const CreateEstudioModal = ({ isOpen, onClose, onSave }) => {
+const CAMPOS_DATOS = [
+    { name: 'pacienteNombre', label: 'Paciente', required: true },
+    { name: 'tutorNombre', label: 'Tutor' },
+    { name: 'especie', label: 'Especie' },
+    { name: 'raza', label: 'Raza' },
+    { name: 'sexo', label: 'Sexo' },
+    { name: 'edad', label: 'Edad' },
+    { name: 'telefono', label: 'Teléfono móvil', type: 'tel' },
+];
+
+// datosIniciales: datos del perfil desde el que se abre (paciente + tutor), editables antes de guardar.
+const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
     const [tipos, setTipos] = useState([]);
     const [isLoadingTipos, setIsLoadingTipos] = useState(true);
     const [selectedIds, setSelectedIds] = useState(() => new Set());
     const [tiposSearch, setTiposSearch] = useState('');
 
-    const [solicitadoPor, setSolicitadoPor] = useState('');
+    const [datos, setDatos] = useState(DATOS_PACIENTE_VACIOS);
     const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
+    const [diagnostico, setDiagnostico] = useState('');
     const [notas, setNotas] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,15 +45,21 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave }) => {
         if (isOpen) {
             setSelectedIds(new Set());
             setTiposSearch('');
-            setSolicitadoPor('');
+            setDatos({ ...DATOS_PACIENTE_VACIOS, ...datosIniciales });
             setFecha(new Date().toISOString().split('T')[0]);
+            setDiagnostico('');
             setNotas('');
             setShowCatalog(false);
             setNewNombre('');
             setNewDescripcion('');
             loadTipos();
         }
-    }, [isOpen, loadTipos]);
+    }, [isOpen, loadTipos, datosIniciales]);
+
+    const handleDatoChange = (e) => {
+        const { name, value } = e.target;
+        setDatos((prev) => ({ ...prev, [name]: value }));
+    };
 
     const toggleSelect = (id) => {
         setSelectedIds((prev) => {
@@ -106,7 +126,15 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave }) => {
             return;
         }
         setIsSubmitting(true);
-        const estudioData = { tipos: selectedTipos, solicitadoPor, fecha, notas };
+        const datosPaciente = Object.fromEntries(Object.entries(datos).map(([key, value]) => [key, (value || '').trim()]));
+        const estudioData = {
+            tipos: selectedTipos,
+            datosPaciente,
+            solicitadoPor: `Dra. ${MEMBRETE.profesional}`,
+            fecha,
+            diagnostico,
+            notas,
+        };
         Promise.resolve(onSave(estudioData)).finally(() => setIsSubmitting(false));
     };
 
@@ -120,13 +148,22 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave }) => {
                     <button className="close-btn" onClick={onClose}>&times;</button>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="solicitadoPor">Solicitado por:</label>
-                        <input id="solicitadoPor" type="text" value={solicitadoPor} onChange={(e) => setSolicitadoPor(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="fechaEstudio">Fecha:</label>
-                        <input id="fechaEstudio" type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
+                    <p className="estudio-membrete-note">
+                        Membrete: <strong>Dra. {MEMBRETE.profesional}</strong> · {MEMBRETE.matricula}
+                    </p>
+
+                    <h4>Datos del paciente</h4>
+                    <div className="estudio-datos-grid">
+                        {CAMPOS_DATOS.map(({ name, label, required, type }) => (
+                            <div className="form-group" key={name}>
+                                <label htmlFor={`estudio-${name}`}>{label}:</label>
+                                <input id={`estudio-${name}`} name={name} type={type || 'text'} value={datos[name]} onChange={handleDatoChange} required={required} />
+                            </div>
+                        ))}
+                        <div className="form-group">
+                            <label htmlFor="fechaEstudio">Fecha:</label>
+                            <input id="fechaEstudio" type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
+                        </div>
                     </div>
 
                     <div className="estudios-catalog-header">
@@ -185,6 +222,11 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave }) => {
                                 </div>
                             ))
                         )}
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="diagnosticoEstudio">Diagnóstico</label>
+                        <textarea id="diagnosticoEstudio" value={diagnostico} onChange={(e) => setDiagnostico(e.target.value)} />
                     </div>
 
                     <div className="form-group">

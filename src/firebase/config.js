@@ -1,6 +1,6 @@
 // src/firebase/config.js
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage"; 
 
@@ -18,8 +18,12 @@ const firebaseConfig = {
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 
-// Inicializar Firestore
-export const db = getFirestore(app);
+// Inicializar Firestore con caché persistente (IndexedDB) compartida entre pestañas:
+// las listas grandes (tutores, pacientes) se muestran al instante desde la caché y luego se sincronizan.
+// Las lecturas con getDocs/getDoc siguen yendo al servidor como antes.
+export const db = initializeFirestore(app, {
+    localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+});
 
 // Inicializar Firebase Auth
 export const auth = getAuth(app);

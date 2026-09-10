@@ -25,6 +25,8 @@ import SimpleAppointmentModal from '../agenda/SimpleAppointmentModal';
 
 const CustomAlert = ({ message, type, onClose }) => { if (!message) return null; return (<div className={`custom-alert ${type === 'error' ? 'alert-error' : 'alert-success'}`}><span>{message}</span><button onClick={onClose}>&times;</button></div>); };
 
+const calculateAge = (birthDateStr) => { if (!birthDateStr) return 'N/A'; const bd = new Date(birthDateStr); if (isNaN(bd.getTime())) return 'N/A'; const now = new Date(); let years = now.getFullYear() - bd.getFullYear(); let months = now.getMonth() - bd.getMonth(); if (now.getDate() < bd.getDate()) months--; if (months < 0) { years--; months += 12; } if (years < 0) return 'N/A'; return years === 0 ? `${months} meses` : `${years} año${years > 1 ? 's' : ''}${months ? `, ${months} meses` : ''}`; };
+
 const PacienteProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -35,6 +37,7 @@ const PacienteProfile = () => {
   const [groomingNotes, setGroomingNotes] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [estudios, setEstudios] = useState([]);
+  const [tutor, setTutor] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('historia');
   const [alert, setAlert] = useState({ message: '', type: '' });
@@ -186,7 +189,30 @@ const PacienteProfile = () => {
   const filteredAppointments = useMemo(() => { let filtered = [...allAppointments]; if (citasFilters.serviceType !== 'todos') { filtered = filtered.filter(a => a.appointmentType === citasFilters.serviceType); } if (citasFilters.startDate) { const start = new Date(citasFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter(a => a.startTime >= start); } if (citasFilters.endDate) { const end = new Date(citasFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter(a => a.startTime <= end); } return filtered; }, [allAppointments, citasFilters]);
   const filteredGroomingNotes = useMemo(() => { let filtered = [...groomingNotes]; if (groomingNotesFilters.startDate) { const start = new Date(groomingNotesFilters.startDate); start.setHours(0, 0, 0, 0); filtered = filtered.filter((e) => e.createdAt && e.createdAt.toDate ? e.createdAt.toDate() >= start : false); } if (groomingNotesFilters.endDate) { const end = new Date(groomingNotesFilters.endDate); end.setHours(23, 59, 59, 999); filtered = filtered.filter((e) => e.createdAt && e.createdAt.toDate ? e.createdAt.toDate() <= end : false); } if (groomingNotesFilters.searchTerm) { const term = groomingNotesFilters.searchTerm.toLowerCase(); filtered = filtered.filter((e) => (e.title || '').toLowerCase().includes(term) || (e.description || '').toLowerCase().includes(term)); } filtered.sort((a, b) => { if (!a.createdAt || !b.createdAt) return 0; if (groomingNotesFilters.sortOrder === 'date-desc') return b.createdAt.toMillis() - a.createdAt.toMillis(); return a.createdAt.toMillis() - b.createdAt.toMillis(); }); return filtered; }, [groomingNotes, groomingNotesFilters]);
 
-  const calculateAge = (birthDateStr) => { if (!birthDateStr) return 'N/A'; const bd = new Date(birthDateStr); if (isNaN(bd.getTime())) return 'N/A'; const now = new Date(); let years = now.getFullYear() - bd.getFullYear(); let months = now.getMonth() - bd.getMonth(); if (now.getDate() < bd.getDate()) months--; if (months < 0) { years--; months += 12; } if (years < 0) return 'N/A'; return years === 0 ? `${months} meses` : `${years} año${years > 1 ? 's' : ''}${months ? `, ${months} meses` : ''}`; };
+  // Tutor (nombre actualizado y teléfono) para precargar la solicitud de estudios. No bloquea la carga del perfil.
+  useEffect(() => {
+    if (!paciente?.tutorId) { setTutor(null); return; }
+    let cancelled = false;
+    getDoc(doc(db, 'tutores', paciente.tutorId))
+      .then((snap) => { if (!cancelled) setTutor(snap.exists() ? { id: snap.id, ...snap.data() } : null); })
+      .catch((err) => console.error('Error fetching tutor:', err));
+    return () => { cancelled = true; };
+  }, [paciente?.tutorId]);
+
+  const datosEstudio = useMemo(() => {
+    if (!paciente) return null;
+    const edad = calculateAge(paciente.birthDate);
+    return {
+      pacienteNombre: paciente.name || '',
+      tutorNombre: tutor?.name || paciente.tutorName || '',
+      telefono: tutor?.phone || '',
+      especie: paciente.species || '',
+      raza: paciente.breed || '',
+      sexo: paciente.gender || '',
+      edad: edad === 'N/A' ? '' : edad,
+    };
+  }, [paciente, tutor]);
+
   const handleStartSale = () => { navigate('/admin/vender', { state: { tutor: { id: paciente.tutorId, name: paciente.tutorName }, patient: { id: paciente.id, name: paciente.name } } }); };
 
   if (isLoading) return (<div className="loading-message"><LoaderSpinner /><p>Cargando perfil del paciente...</p></div>);
@@ -276,7 +302,7 @@ const PacienteProfile = () => {
       <CreateNotaPeluqueriaModal isOpen={isCreateNotaPeluqueriaModalOpen} onClose={handleCloseModals} onSave={handleSaveGroomingNote} pacienteId={id} />
       <ViewNotaPeluqueriaModal isOpen={isViewGroomingNoteModalOpen} onClose={handleCloseModals} onEdit={() => handleEditGroomingNote(selectedGroomingNote)} note={selectedGroomingNote} />
       <EditNotaPeluqueriaModal isOpen={isEditGroomingNoteModalOpen} onClose={handleCloseModals} onSave={handleSaveGroomingNote} note={selectedGroomingNote} pacienteId={id} />
-      <CreateEstudioModal isOpen={isCreateEstudioModalOpen} onClose={handleCloseModals} onSave={handleSaveEstudio} />
+      <CreateEstudioModal isOpen={isCreateEstudioModalOpen} onClose={handleCloseModals} onSave={handleSaveEstudio} datosIniciales={datosEstudio} />
       <ViewEstudioModal isOpen={!!selectedEstudio} onClose={handleCloseModals} estudio={selectedEstudio} paciente={paciente} />
       <SimpleAppointmentModal
         isOpen={isSimpleAppointmentOpen}
