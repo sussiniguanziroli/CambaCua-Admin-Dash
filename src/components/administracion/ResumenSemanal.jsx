@@ -129,7 +129,7 @@ const ResumenSemanal = () => {
     }, [selectedDate, fetchWeekSales]);
 
     useEffect(() => {
-        if (activeMainTab !== 'resumen' && !perrosData && !gatosData && !allData) {
+        if (['perros', 'gatos', 'comparativa'].includes(activeMainTab) && !perrosData && !gatosData && !allData) {
             fetchTopCustomers();
         }
     }, [activeMainTab, perrosData, gatosData, allData, fetchTopCustomers]);

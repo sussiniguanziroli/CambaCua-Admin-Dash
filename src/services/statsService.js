@@ -1,9 +1,20 @@
 import { db } from '../firebase/config';
-import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
+import { collection, documentId, getDocs, query, where, Timestamp } from 'firebase/firestore';
 
 const CACHE_DURATION = 10 * 60 * 1000;
 let statsCache = new Map();
 const BATCH_SIZE = 15;
+
+// Consultar únicamente entidades participantes; no descargar el padrón completo.
+const fetchMatchingDocs = async (name, field, values) => {
+    const ids = [...new Set(values)].filter(Boolean);
+    const docs = [];
+    for (let i = 0; i < ids.length; i += 30) {
+        const snap = await getDocs(query(collection(db, name), where(field, 'in', ids.slice(i, i + 30))));
+        docs.push(...snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    }
+    return docs;
+};
 
 const getDateRange = (period) => {
     const now = new Date();
@@ -148,15 +159,11 @@ export const calculateAllTopCustomers = async (period, limit = 10, onProgress) =
 
         if (onProgress) onProgress({ step: 'tutores', progress: 15, message: `Cargando ${activeTutorIds.size} tutores activos...` });
         
-        const tutoresSnap = await getDocs(collection(db, 'tutores'));
-        const allTutores = tutoresSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        const tutores = allTutores.filter(t => activeTutorIds.has(t.id));
+        const tutores = await fetchMatchingDocs('tutores', documentId(), activeTutorIds);
         
         if (onProgress) onProgress({ step: 'pacientes', progress: 20, message: 'Cargando pacientes...' });
         
-        const pacientesSnap = await getDocs(collection(db, 'pacientes'));
-        const allPacientes = pacientesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        const activePacientes = allPacientes.filter(p => activeTutorIds.has(p.tutorId));
+        const activePacientes = await fetchMatchingDocs('pacientes', 'tutorId', activeTutorIds);
         
         const tutorPatientsMap = new Map();
         activePacientes.forEach(p => {
@@ -613,7 +620,7 @@ export const getDebtAccountsReport = async (dateRange) => {
         const [salesSnap, cobrosSnap, tutoresSnap] = await Promise.all([
             getDocs(salesQuery),
             getDocs(cobrosQuery),
-            getDocs(collection(db, 'tutores'))
+            getDocs(query(collection(db, 'tutores'), where('accountBalance', '<', 0)))
         ]);
         
         const sales = salesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));

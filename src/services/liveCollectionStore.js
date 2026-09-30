@@ -1,7 +1,6 @@
 // liveCollectionStore.js
 // Colecciones completas (tutores, pacientes) mantenidas en memoria con un único onSnapshot compartido.
-// La primera vista abre el listener y lo deja vivo: las navegaciones siguientes renderizan al instante
-// y Firestore solo envía los documentos que cambian (ventas, ediciones, bajas se reflejan solas).
+// El listener existe solamente mientras alguna vista usa la colección.
 // Con la caché persistente de firebase/config.js, al recargar o abrir otra pestaña la lista sale
 // primero de IndexedDB y se sincroniza en segundo plano (isSyncing).
 import { useCallback, useSyncExternalStore } from "react";
@@ -31,7 +30,7 @@ const createStore = (name) => {
         const { fromCache } = snap.metadata;
         const patch = { isSyncing: fromCache, isLoading: fromCache && snap.empty, error: null };
         // Los cambios solo de metadata (confirmación del servidor, cache → server) no reconstruyen la lista.
-        if (snap.docChanges().length > 0 || store.state.isLoading) {
+        if (snap.empty || snap.docChanges().length > 0 || store.state.isLoading) {
           patch.docs = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
         }
         emit(patch);
@@ -55,7 +54,15 @@ export const useLiveCollection = (name) => {
     (onChange) => {
       store.listeners.add(onChange);
       store.start();
-      return () => store.listeners.delete(onChange);
+      return () => {
+        store.listeners.delete(onChange);
+        if (store.listeners.size === 0) {
+          store.unsubscribe?.();
+          store.unsubscribe = null;
+          // No conservar datos de una sesión anterior ni una lista que ya no se sincroniza.
+          store.state = { docs: [], isLoading: true, isSyncing: true, error: null };
+        }
+      };
     },
     [store]
   );
