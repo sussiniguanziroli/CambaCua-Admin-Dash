@@ -258,3 +258,9 @@
     &.alert-error { background-color: $error-color; }
     button { background: none; border: none; color: $white-color; font-size: 1.5rem; cursor: pointer; }
 }
+
+.recipe-view-modal {
+    .info-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5rem; }
+    .recipe-edited-note { margin: 0.5rem 0 0; font-size: 0.8rem; color: $text-light; text-align: right; }
+    @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+}

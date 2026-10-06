@@ -6914,6 +6914,43 @@ button.btn-reset:hover {
   color: #27ae60;
 }
 
+.presupuesto-age-badge {
+  display: inline-block;
+  margin-left: 0.6rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: #eef3ff;
+  color: #0b369c;
+  font-size: 0.75rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.presupuesto-view-modal .prescription-table .presupuesto-col-amount {
+  text-align: right;
+  white-space: nowrap;
+}
+.presupuesto-view-modal .presupuesto-item-discount {
+  display: block;
+  font-size: 0.8rem;
+  color: #c0392b;
+}
+.presupuesto-view-modal .presupuesto-totals {
+  margin-left: auto;
+  max-width: 320px;
+}
+.presupuesto-view-modal .presupuesto-totals > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+}
+.presupuesto-view-modal .presupuesto-totals .presupuesto-total-row {
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #e0e0e0;
+  font-size: 1.15rem;
+}
+
 .reporte-modal-overlay {
   position: fixed;
   top: 0;
@@ -10265,6 +10302,192 @@ button.btn-reset:hover {
   font-size: 0.85rem;
 }
 
+.estudios-catalog-add .estudio-tipo-preqx input {
+  flex: none;
+  min-width: 0;
+  width: auto;
+  padding: 0;
+}
+
+.estudios-catalog-add select {
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fff;
+  max-width: 200px;
+}
+
+.estudio-tipo-preqx {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.estudio-tipo-preqx input {
+  width: auto;
+  margin: 0;
+}
+
+.estudios-catalog-sync {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+.estudios-catalog-sync .link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.estudios-preset {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.estudios-preset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #3498db;
+  border-radius: 999px;
+  background: #fff;
+  color: #3498db;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.estudios-preset-btn span {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(52, 152, 219, 0.12);
+}
+.estudios-preset-btn:hover {
+  background: rgba(52, 152, 219, 0.08);
+}
+.estudios-preset-btn.active {
+  background: #3498db;
+  color: #fff;
+}
+.estudios-preset-btn.active span {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.estudios-preset-hint {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.estudios-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  padding: 0.25rem;
+}
+
+.estudios-group {
+  border: 1px solid #e0e6ed;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.estudios-group.has-selection {
+  border-color: #cdd9f5;
+}
+
+.estudios-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  background: #f8f9fa;
+  cursor: pointer;
+  user-select: none;
+}
+.estudios-group-header:hover {
+  background: #eef1f5;
+}
+.estudios-group-header input {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+}
+
+.estudios-group.has-selection .estudios-group-header {
+  background: #eef3ff;
+}
+
+.estudios-group-name {
+  flex: 1;
+  font-weight: 600;
+  color: #3c4858;
+}
+
+.estudios-group-count {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.estudios-group-chevron {
+  font-size: 0.7rem;
+  color: #6c757d;
+}
+
+.estudios-group-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+  padding: 0.5rem;
+}
+@media (max-width: 768px) {
+  .estudios-group-items {
+    grid-template-columns: 1fr;
+  }
+}
+.estudios-group-items .estudio-tipo-item {
+  flex-wrap: wrap;
+}
+
+.estudio-tipo-manage {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.estudio-tipo-manage select {
+  padding: 0.25rem 0.4rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  background: #fff;
+  max-width: 150px;
+}
+.estudio-tipo-manage .remove-line-btn {
+  padding: 0.3rem 0.45rem;
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: #e74c3c;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.estudio-tipo-manage .remove-line-btn:hover {
+  background: rgba(231, 76, 60, 0.1);
+}
+
 .patient-list {
   padding: 2rem;
   max-width: 1400px;
@@ -11668,6 +11891,23 @@ button.btn-reset:hover {
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+.recipe-view-modal .info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.5rem;
+}
+.recipe-view-modal .recipe-edited-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: #576677;
+  text-align: right;
+}
+@media (max-width: 600px) {
+  .recipe-view-modal .info-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .sale-summary-box {

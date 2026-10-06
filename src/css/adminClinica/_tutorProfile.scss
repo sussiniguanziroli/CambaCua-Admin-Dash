@@ -851,3 +851,19 @@ $background-light: #f1f3f5;
 .recibos-list .recibo-date { font-size: 0.85rem; color: #6c757d; }
 .recibos-list .recibo-actions { display: flex; align-items: center; gap: 1rem; }
 .recibos-list .recibo-amount { font-weight: 600; font-size: 1.1rem; color: #27ae60; }
+
+// --- Presupuestos: visor de detalle ---
+.presupuesto-age-badge {
+  display: inline-block; margin-left: 0.6rem; padding: 0.1rem 0.55rem;
+  border-radius: 999px; background: #eef3ff; color: #0b369c;
+  font-size: 0.75rem; font-weight: 600; vertical-align: middle;
+}
+.presupuesto-view-modal {
+  .prescription-table .presupuesto-col-amount { text-align: right; white-space: nowrap; }
+  .presupuesto-item-discount { display: block; font-size: 0.8rem; color: #c0392b; }
+  .presupuesto-totals {
+    margin-left: auto; max-width: 320px;
+    > div { display: flex; justify-content: space-between; padding: 0.25rem 0; }
+    .presupuesto-total-row { margin-top: 0.4rem; padding-top: 0.6rem; border-top: 1px solid #e0e0e0; font-size: 1.15rem; }
+  }
+}

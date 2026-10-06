@@ -2,10 +2,11 @@
 // Catálogo editable de tipos de estudios complementarios (tipos_estudios)
 // y generación del PDF de la solicitud (con el membrete de la doctora, ver services/pdf/).
 import { db } from '../firebase/config';
-import { collection, getDocs, addDoc, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, addDoc, deleteDoc, updateDoc, writeBatch, doc, orderBy, query } from 'firebase/firestore';
 import scriptFontUrl from '../assets/fonts/GreatVibes-Regular.ttf?url';
 import { registerScriptFont } from './pdf/membrete';
 import { buildEstudioPDF } from './pdf/estudioPdf';
+import { CATALOGO_INICIAL, normalizeNombre } from './estudiosCatalogo';
 
 const tiposRef = collection(db, 'tipos_estudios');
 
@@ -14,9 +15,48 @@ export const getTiposEstudio = async () => {
     return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 };
 
-export const addTipoEstudio = async (nombre, descripcion) => {
-    const ref = await addDoc(tiposRef, { nombre: nombre.trim(), descripcion: (descripcion || '').trim() });
-    return { id: ref.id, nombre: nombre.trim(), descripcion: (descripcion || '').trim() };
+export const addTipoEstudio = async (nombre, descripcion, categoria = '', prequirurgico = false) => {
+    const data = { nombre: nombre.trim(), descripcion: (descripcion || '').trim() };
+    if (categoria) data.categoria = categoria;
+    if (prequirurgico) data.prequirurgico = true;
+    const ref = await addDoc(tiposRef, data);
+    return { id: ref.id, ...data };
+};
+
+// patch: { categoria?, prequirurgico?, descripcion? }
+export const updateTipoEstudio = async (tipoId, patch) => {
+    await updateDoc(doc(db, 'tipos_estudios', tipoId), patch);
+};
+
+// Carga el catálogo sugerido (estudiosCatalogo.js) sin duplicar: los estudios existentes solo reciben
+// categoría (y marca prequirúrgica) si todavía no la tienen; los que faltan se crean.
+export const aplicarCatalogoCategorizado = async () => {
+    const snap = await getDocs(tiposRef);
+    const existentes = new Map(snap.docs.map((d) => [normalizeNombre(d.data().nombre), d]));
+    const batch = writeBatch(db);
+    let creados = 0;
+    let categorizados = 0;
+    let sinCambios = 0;
+
+    CATALOGO_INICIAL.forEach(({ nombre, categoria, prequirurgico }) => {
+        const existente = existentes.get(normalizeNombre(nombre));
+        if (!existente) {
+            const data = { nombre, descripcion: '', categoria };
+            if (prequirurgico) data.prequirurgico = true;
+            batch.set(doc(tiposRef), data);
+            creados++;
+        } else if (!existente.data().categoria) {
+            const cambios = { categoria };
+            if (prequirurgico && existente.data().prequirurgico === undefined) cambios.prequirurgico = true;
+            batch.update(existente.ref, cambios);
+            categorizados++;
+        } else {
+            sinCambios++;
+        }
+    });
+
+    if (creados + categorizados > 0) await batch.commit();
+    return { creados, categorizados, sinCambios };
 };
 
 export const deleteTipoEstudio = async (tipoId) => {

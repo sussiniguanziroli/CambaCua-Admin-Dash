@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { FaPlus, FaTrash } from 'react-icons/fa';
+import { useState, useEffect, useCallback } from 'react';
+import { FaPlus, FaSync } from 'react-icons/fa';
 import Swal from 'sweetalert2';
-import { getTiposEstudio, addTipoEstudio, deleteTipoEstudio } from '../../../services/estudioService';
+import { getTiposEstudio, addTipoEstudio, deleteTipoEstudio, updateTipoEstudio, aplicarCatalogoCategorizado } from '../../../services/estudioService';
+import { CATEGORIAS, normalizeNombre } from '../../../services/estudiosCatalogo';
 import { MEMBRETE } from '../../../services/pdf/membrete';
 import { DATOS_PACIENTE_VACIOS } from '../../../services/pdf/estudioPdf';
+import EstudiosCatalogoPicker from './EstudiosCatalogoPicker';
 
 const CAMPOS_DATOS = [
     { name: 'pacienteNombre', label: 'Paciente', required: true },
@@ -20,7 +22,6 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
     const [tipos, setTipos] = useState([]);
     const [isLoadingTipos, setIsLoadingTipos] = useState(true);
     const [selectedIds, setSelectedIds] = useState(() => new Set());
-    const [tiposSearch, setTiposSearch] = useState('');
 
     const [datos, setDatos] = useState(DATOS_PACIENTE_VACIOS);
     const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
@@ -32,7 +33,10 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
     const [showCatalog, setShowCatalog] = useState(false);
     const [newNombre, setNewNombre] = useState('');
     const [newDescripcion, setNewDescripcion] = useState('');
+    const [newCategoria, setNewCategoria] = useState('');
+    const [newPrequirurgico, setNewPrequirurgico] = useState(false);
     const [isAddingTipo, setIsAddingTipo] = useState(false);
+    const [isSyncing, setIsSyncing] = useState(false);
 
     const loadTipos = useCallback(async () => {
         setIsLoadingTipos(true);
@@ -44,7 +48,6 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
     useEffect(() => {
         if (isOpen) {
             setSelectedIds(new Set());
-            setTiposSearch('');
             setDatos({ ...DATOS_PACIENTE_VACIOS, ...datosIniciales });
             setFecha(new Date().toISOString().split('T')[0]);
             setDiagnostico('');
@@ -52,6 +55,8 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
             setShowCatalog(false);
             setNewNombre('');
             setNewDescripcion('');
+            setNewCategoria('');
+            setNewPrequirurgico(false);
             loadTipos();
         }
     }, [isOpen, loadTipos, datosIniciales]);
@@ -61,35 +66,11 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
         setDatos((prev) => ({ ...prev, [name]: value }));
     };
 
-    const toggleSelect = (id) => {
-        setSelectedIds((prev) => {
-            const next = new Set(prev);
-            if (next.has(id)) next.delete(id); else next.add(id);
-            return next;
-        });
-    };
-
-    const filteredTipos = useMemo(() => {
-        const term = tiposSearch.trim().toLowerCase();
-        if (!term) return tipos;
-        return tipos.filter((t) => t.nombre.toLowerCase().includes(term) || (t.descripcion || '').toLowerCase().includes(term));
-    }, [tipos, tiposSearch]);
-
-    const selectAllFiltered = () => {
-        setSelectedIds((prev) => {
-            const next = new Set(prev);
-            filteredTipos.forEach((t) => next.add(t.id));
-            return next;
-        });
-    };
-
-    const clearSelection = () => setSelectedIds(new Set());
-
     const handleAddTipo = async () => {
         if (!newNombre.trim()) return;
         setIsAddingTipo(true);
         try {
-            const created = await addTipoEstudio(newNombre, newDescripcion);
+            const created = await addTipoEstudio(newNombre, newDescripcion, newCategoria, newPrequirurgico);
             setNewNombre('');
             setNewDescripcion('');
             await loadTipos();
@@ -99,6 +80,17 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
             Swal.fire('Error', 'No se pudo agregar el tipo de estudio.', 'error');
         } finally {
             setIsAddingTipo(false);
+        }
+    };
+
+    const handleUpdateTipo = async (tipo, cambios) => {
+        const anterior = tipos;
+        setTipos((prev) => prev.map((t) => (t.id === tipo.id ? { ...t, ...cambios } : t)));
+        try {
+            await updateTipoEstudio(tipo.id, cambios);
+        } catch (e) {
+            setTipos(anterior);
+            Swal.fire('Error', 'No se pudo actualizar el estudio.', 'error');
         }
     };
 
@@ -118,9 +110,34 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
         }
     };
 
+    const handleSyncCatalogo = async () => {
+        const { isConfirmed } = await Swal.fire({
+            title: 'Aplicar categorías sugeridas',
+            text: 'Se agrupan los estudios en perfiles (Metabólico, Hepático, Renal…) y se agregan los que falten. No se borra ni se renombra nada, y los estudios que ya tienen categoría no se tocan.',
+            icon: 'question', showCancelButton: true, confirmButtonText: 'Aplicar', cancelButtonText: 'Cancelar',
+        });
+        if (!isConfirmed) return;
+        setIsSyncing(true);
+        try {
+            const { creados, categorizados } = await aplicarCatalogoCategorizado();
+            await loadTipos();
+            Swal.fire('Listo', `Estudios categorizados: ${categorizados}. Estudios nuevos: ${creados}.`, 'success');
+        } catch (e) {
+            console.error(e);
+            Swal.fire('Error', 'No se pudo aplicar el catálogo sugerido.', 'error');
+        } finally {
+            setIsSyncing(false);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const selectedTipos = tipos.filter((t) => selectedIds.has(t.id)).map((t) => ({ nombre: t.nombre, descripcion: t.descripcion || '' }));
+        // Un mismo estudio puede figurar en dos perfiles (ej. ecocardiograma): se envía una sola vez.
+        const vistos = new Set();
+        const selectedTipos = tipos
+            .filter((t) => selectedIds.has(t.id))
+            .filter((t) => { const key = normalizeNombre(t.nombre); if (vistos.has(key)) return false; vistos.add(key); return true; })
+            .map((t) => ({ nombre: t.nombre, descripcion: t.descripcion || '' }));
         if (selectedTipos.length === 0) {
             Swal.fire('Atención', 'Seleccioná al menos un estudio.', 'warning');
             return;
@@ -178,51 +195,30 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
                             <div className="estudios-catalog-add">
                                 <input type="text" placeholder="Nombre del estudio" value={newNombre} onChange={(e) => setNewNombre(e.target.value)} />
                                 <input type="text" placeholder="Descripción (opcional)" value={newDescripcion} onChange={(e) => setNewDescripcion(e.target.value)} />
+                                <select value={newCategoria} onChange={(e) => setNewCategoria(e.target.value)} aria-label="Categoría del nuevo estudio">
+                                    <option value="">Otros</option>
+                                    {CATEGORIAS.map((c) => <option key={c.nombre} value={c.nombre}>{c.nombre}</option>)}
+                                </select>
+                                <label className="estudio-tipo-preqx"><input type="checkbox" checked={newPrequirurgico} onChange={(e) => setNewPrequirurgico(e.target.checked)} /> Pre-qx</label>
                                 <button type="button" className="add-line-btn" onClick={handleAddTipo} disabled={isAddingTipo || !newNombre.trim()}>
                                     <FaPlus /> {isAddingTipo ? 'Agregando...' : 'Agregar'}
                                 </button>
                             </div>
+                            <div className="estudios-catalog-sync">
+                                <button type="button" className="link-btn" onClick={handleSyncCatalogo} disabled={isSyncing}>
+                                    <FaSync /> {isSyncing ? 'Aplicando...' : 'Aplicar categorías sugeridas'}
+                                </button>
+                                <span>Agrupa el catálogo en perfiles y agrega los estudios que falten.</span>
+                            </div>
                         </div>
                     )}
 
-                    <div className="estudios-tipos-toolbar">
-                        <input
-                            type="text"
-                            className="estudios-tipos-search"
-                            placeholder="Buscar estudio..."
-                            value={tiposSearch}
-                            onChange={(e) => setTiposSearch(e.target.value)}
-                        />
-                        <div className="estudios-tipos-shortcuts">
-                            <button type="button" className="link-btn" onClick={selectAllFiltered} disabled={filteredTipos.length === 0}>Seleccionar todos</button>
-                            <button type="button" className="link-btn" onClick={clearSelection} disabled={selectedIds.size === 0}>Limpiar selección</button>
-                        </div>
-                    </div>
-
-                    <div className="estudios-tipos-list">
-                        {isLoadingTipos ? (
-                            <p>Cargando catálogo...</p>
-                        ) : tipos.length === 0 ? (
-                            <p className="no-results-message">No hay tipos de estudio. Agregá uno desde "Gestionar catálogo".</p>
-                        ) : filteredTipos.length === 0 ? (
-                            <p className="no-results-message">No hay estudios que coincidan con "{tiposSearch}".</p>
-                        ) : (
-                            filteredTipos.map((t) => (
-                                <div key={t.id} className={`estudio-tipo-item ${selectedIds.has(t.id) ? 'selected' : ''}`}>
-                                    <label className="estudio-tipo-label">
-                                        <input type="checkbox" checked={selectedIds.has(t.id)} onChange={() => toggleSelect(t.id)} />
-                                        <span className="estudio-tipo-nombre">{t.nombre}</span>
-                                        {t.descripcion && <span className="estudio-tipo-desc">{t.descripcion}</span>}
-                                    </label>
-                                    {showCatalog && (
-                                        <button type="button" className="remove-line-btn" onClick={() => handleDeleteTipo(t)} title="Eliminar del catálogo">
-                                            <FaTrash />
-                                        </button>
-                                    )}
-                                </div>
-                            ))
-                        )}
-                    </div>
+                    {isLoadingTipos ? (
+                        <p>Cargando catálogo...</p>
+                    ) : (
+                        <EstudiosCatalogoPicker tipos={tipos} selectedIds={selectedIds} onSelectionChange={setSelectedIds}
+                            managing={showCatalog} onDeleteTipo={handleDeleteTipo} onUpdateTipo={handleUpdateTipo} />
+                    )}
 
                     <div className="form-group">
                         <label htmlFor="diagnosticoEstudio">Diagnóstico</label>

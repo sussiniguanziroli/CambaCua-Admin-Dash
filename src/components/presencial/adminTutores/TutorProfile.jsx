@@ -18,6 +18,8 @@ import { PiBathtub } from "react-icons/pi";
 import LoaderSpinner from "../../utils/LoaderSpinner";
 import SaleDetailModal from "../../administracion/SaleDetailModal";
 import AddDebtModal from "./AddDebtModal";
+import ViewPresupuestoModal from "./ViewPresupuestoModal";
+import { formatPresupuestoAge } from "../../../services/presupuestoService";
 import PaySaleDebtModal from "../../administracion/PaySaleDebtModal";
 import SimpleAppointmentModal from "../agenda/SimpleAppointmentModal";
 import { emitRecibosForSales, generateRecibosPDF } from "../../../services/reciboService";
@@ -174,6 +176,7 @@ const TutorProfile = () => {
   const [salesHistory, setSalesHistory] = useState([]);
   const [recibos, setRecibos] = useState([]);
   const [presupuestos, setPresupuestos] = useState([]);
+  const [selectedPresupuesto, setSelectedPresupuesto] = useState(null);
   const [selectedSaleIds, setSelectedSaleIds] = useState(() => new Set());
   const [isEmittingReceipts, setIsEmittingReceipts] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -540,13 +543,14 @@ const TutorProfile = () => {
                     <div key={p.id} className="compra-card presupuesto-card">
                       <div className="compra-card-left">
                         <div className="compra-info">
-                          <span className="date">{fecha ? `${fecha.toLocaleDateString("es-AR")} ${fecha.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}` : "N/A"}</span>
+                          <span className="date">{fecha ? `${fecha.toLocaleDateString("es-AR")} ${fecha.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}` : "N/A"}<span className="presupuesto-age-badge">{formatPresupuestoAge(p)}</span></span>
                           <span className="products-preview">{productPreview}</span>
                           {patientsList && <span className="presupuesto-patients">Paciente(s): {patientsList}</span>}
                         </div>
                       </div>
                       <div className="compra-actions">
                         <span className="total">${(p.total || 0).toFixed(2)}</span>
+                        <button className="btn btn-secondary" onClick={() => setSelectedPresupuesto(p)}>Ver</button>
                         <button className="btn btn-primary" onClick={() => handleLoadPresupuesto(p)}>Cargar Venta</button>
                       </div>
                     </div>
@@ -638,6 +642,7 @@ const TutorProfile = () => {
         <AddDebtModal tutor={tutor} onClose={() => setIsDebtModalOpen(false)} onDebtAdded={() => { setIsDebtModalOpen(false); fetchAllData(); }} setAlertInfo={setAlertInfo} />
       )}
       {selectedSale && <SaleDetailModal sale={selectedSale} onClose={() => setSelectedSale(null)} />}
+      <ViewPresupuestoModal presupuesto={selectedPresupuesto} onClose={() => setSelectedPresupuesto(null)} onLoad={handleLoadPresupuesto} />
       {saleToPayDebt && (
         <PaySaleDebtModal sale={saleToPayDebt} onClose={() => setSaleToPayDebt(null)} onPaymentComplete={handlePaymentComplete} />
       )}

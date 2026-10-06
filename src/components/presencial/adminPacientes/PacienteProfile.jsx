@@ -61,6 +61,7 @@ const PacienteProfile = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateRecipeModalOpen, setIsCreateRecipeModalOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [isEditRecipeModalOpen, setIsEditRecipeModalOpen] = useState(false);
   const [isCreateNotaPeluqueriaModalOpen, setIsCreateNotaPeluqueriaModalOpen] = useState(false);
   const [selectedGroomingNote, setSelectedGroomingNote] = useState(null);
   const [isViewGroomingNoteModalOpen, setIsViewGroomingNoteModalOpen] = useState(false);
@@ -69,7 +70,7 @@ const PacienteProfile = () => {
   const [selectedEstudio, setSelectedEstudio] = useState(null);
 
   const handleAlertClose = () => setAlert({ message: '', type: '' });
-  const handleCloseModals = () => { setIsViewModalOpen(false); setIsEditModalOpen(false); setSelectedNote(null); setIsCreateRecipeModalOpen(false); setSelectedRecipe(null); setIsCreateNotaPeluqueriaModalOpen(false); setIsViewGroomingNoteModalOpen(false); setIsEditGroomingNoteModalOpen(false); setSelectedGroomingNote(null); setIsCreateEstudioModalOpen(false); setSelectedEstudio(null); };
+  const handleCloseModals = () => { setIsViewModalOpen(false); setIsEditModalOpen(false); setSelectedNote(null); setIsCreateRecipeModalOpen(false); setIsEditRecipeModalOpen(false); setSelectedRecipe(null); setIsCreateNotaPeluqueriaModalOpen(false); setIsViewGroomingNoteModalOpen(false); setIsEditGroomingNoteModalOpen(false); setSelectedGroomingNote(null); setIsCreateEstudioModalOpen(false); setSelectedEstudio(null); };
 
   const fetchAllData = useCallback(async () => {
     setIsLoading(true);
@@ -165,7 +166,7 @@ const PacienteProfile = () => {
     }
   };
 
-  const handleSaveRecipe = async (recipeData) => { try { await addDoc(collection(db, `pacientes/${id}/clinical_recipes`), { ...recipeData, createdAt: Timestamp.now() }); setAlert({ message: 'Receta guardada.', type: 'success' }); handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la receta.', type: 'error' }); } };
+  const handleSaveRecipe = async (recipeData, originalRecipe) => { try { if (originalRecipe) { await updateDoc(doc(db, `pacientes/${id}/clinical_recipes`, originalRecipe.id), { ...recipeData, updatedAt: Timestamp.now() }); setAlert({ message: 'Receta actualizada.', type: 'success' }); } else { await addDoc(collection(db, `pacientes/${id}/clinical_recipes`), { ...recipeData, createdAt: Timestamp.now() }); setAlert({ message: 'Receta guardada.', type: 'success' }); } handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la receta.', type: 'error' }); } };
   const handleSaveEstudio = async (estudioData) => { try { await addDoc(collection(db, `pacientes/${id}/estudios`), { ...estudioData, createdAt: Timestamp.now() }); setAlert({ message: 'Solicitud de estudios guardada.', type: 'success' }); handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la solicitud.', type: 'error' }); } };
   const handleDeleteEstudio = async (estudio) => { const { isConfirmed } = await Swal.fire({ title: '¿Eliminar Solicitud?', text: `Se eliminará la solicitud del ${estudio.date}.`, icon: 'warning', showCancelButton: true, confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar' }); if (isConfirmed) { try { await deleteDoc(doc(db, `pacientes/${id}/estudios`, estudio.id)); setAlert({ message: 'Solicitud eliminada.', type: 'success' }); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo eliminar la solicitud.', type: 'error' }); } } };
   const handleSaveGroomingNote = async (noteData, originalNote) => { try { if (originalNote) { await updateDoc(doc(db, `pacientes/${id}/notas_peluqueria`, originalNote.id), noteData); setAlert({ message: 'Nota de peluquería actualizada.', type: 'success' }); } else { await addDoc(collection(db, `pacientes/${id}/notas_peluqueria`), { ...noteData, createdAt: Timestamp.now() }); setAlert({ message: 'Nota de peluquería guardada.', type: 'success' }); } handleCloseModals(); await fetchAllData(); } catch (error) { setAlert({ message: 'No se pudo guardar la nota de peluquería.', type: 'error' }); } };
@@ -297,8 +298,8 @@ const PacienteProfile = () => {
       <ViewClinicalNoteModal isOpen={isViewModalOpen} onClose={handleCloseModals} onEdit={() => handleEditNote(selectedNote)} note={selectedNote} patientName={paciente?.name} tutorName={paciente?.tutorName} />
       <ClinicalNoteModal isOpen={isEditModalOpen} onClose={handleCloseModals} onSave={handleSaveClinicalNote} note={selectedNote} pacienteId={id} patientName={paciente?.name} tutorName={paciente?.tutorName} />
       <AddVencimientoModal isOpen={isAddVencimientoModalOpen} onClose={() => setIsAddVencimientoModalOpen(false)} onSave={() => { setIsAddVencimientoModalOpen(false); fetchAllData(); }} pacienteId={id} tutorId={paciente.tutorId} tutorName={paciente.tutorName} pacienteName={paciente.name} />
-      <CreateRecipeModal isOpen={isCreateRecipeModalOpen} onClose={handleCloseModals} onSave={handleSaveRecipe} paciente={paciente} />
-      <ViewRecipeModal isOpen={!!selectedRecipe} onClose={handleCloseModals} onPrint={handlePrintRecipe} recipe={selectedRecipe} paciente={paciente} />
+      <CreateRecipeModal isOpen={isCreateRecipeModalOpen || isEditRecipeModalOpen} onClose={handleCloseModals} onSave={handleSaveRecipe} recipe={isEditRecipeModalOpen ? selectedRecipe : null} />
+      <ViewRecipeModal isOpen={!!selectedRecipe && !isEditRecipeModalOpen} onClose={handleCloseModals} onPrint={handlePrintRecipe} onEdit={paciente.fallecido ? undefined : () => setIsEditRecipeModalOpen(true)} recipe={selectedRecipe} paciente={paciente} />
       <CreateNotaPeluqueriaModal isOpen={isCreateNotaPeluqueriaModalOpen} onClose={handleCloseModals} onSave={handleSaveGroomingNote} pacienteId={id} />
       <ViewNotaPeluqueriaModal isOpen={isViewGroomingNoteModalOpen} onClose={handleCloseModals} onEdit={() => handleEditGroomingNote(selectedGroomingNote)} note={selectedGroomingNote} />
       <EditNotaPeluqueriaModal isOpen={isEditGroomingNoteModalOpen} onClose={handleCloseModals} onSave={handleSaveGroomingNote} note={selectedGroomingNote} pacienteId={id} />

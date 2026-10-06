@@ -1,36 +1,42 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { db } from '../../../firebase/config';
-import { collection, getDocs } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 
-const CreateRecipeModal = ({ isOpen, onClose, onSave, paciente }) => {
+const EMPTY_LINE = { productName: '', dose: '', frequency: '', duration: '' };
+const today = () => new Date().toISOString().split('T')[0];
+
+// Fecha de la receta como YYYY-MM-DD para el input: la elegida al crearla o, en recetas viejas, la de creación.
+const recipeDate = (recipe) => {
+    if (recipe.creationDate) return recipe.creationDate;
+    return recipe.createdAt?.toDate ? recipe.createdAt.toDate().toISOString().split('T')[0] : today();
+};
+
+// Sin `recipe` crea una receta nueva; con `recipe` edita la existente (onSave recibe los datos y la receta original).
+const CreateRecipeModal = ({ isOpen, onClose, onSave, recipe = null }) => {
+    const isEditing = !!recipe;
     const [prescribedBy, setPrescribedBy] = useState('');
     const [generalIndications, setGeneralIndications] = useState('');
-    const [creationDate, setCreationDate] = useState(new Date().toISOString().split('T')[0]);
-    const [prescriptions, setPrescriptions] = useState([{ productName: '', dose: '', frequency: '', duration: '' }]);
+    const [creationDate, setCreationDate] = useState(today());
+    const [prescriptions, setPrescriptions] = useState([{ ...EMPTY_LINE }]);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     useEffect(() => {
-        if (isOpen) {
-            setPrescribedBy('');
-            setGeneralIndications('');
-            setCreationDate(new Date().toISOString().split('T')[0]);
-            setPrescriptions([{ productName: '', dose: '', frequency: '', duration: '' }]);
-        }
-    }, [isOpen]);
+        if (!isOpen) return;
+        setPrescribedBy(recipe?.prescribedBy || '');
+        setGeneralIndications(recipe?.generalIndications || '');
+        setCreationDate(recipe ? recipeDate(recipe) : today());
+        setPrescriptions(recipe?.prescriptions?.length ? recipe.prescriptions.map((p) => ({ ...EMPTY_LINE, ...p })) : [{ ...EMPTY_LINE }]);
+    }, [isOpen, recipe]);
 
     const handlePrescriptionChange = (index, field, value) => {
-        const newPrescriptions = [...prescriptions];
-        newPrescriptions[index][field] = value;
-        setPrescriptions(newPrescriptions);
+        setPrescriptions((prev) => prev.map((p, i) => (i === index ? { ...p, [field]: value } : p)));
     };
 
     const addPrescriptionLine = () => {
-        setPrescriptions([...prescriptions, { productName: '', dose: '', frequency: '', duration: '' }]);
+        setPrescriptions((prev) => [...prev, { ...EMPTY_LINE }]);
     };
 
     const removePrescriptionLine = (index) => {
-        setPrescriptions(prescriptions.filter((_, i) => i !== index));
+        setPrescriptions((prev) => prev.filter((_, i) => i !== index));
     };
 
     const handleSubmit = (e) => {
@@ -39,10 +45,10 @@ const CreateRecipeModal = ({ isOpen, onClose, onSave, paciente }) => {
         const recipeData = {
             prescribedBy,
             generalIndications,
-            creationDate: creationDate,
-            prescriptions: prescriptions.filter(p => p.productName),
+            creationDate,
+            prescriptions: prescriptions.filter((p) => p.productName),
         };
-        onSave(recipeData).finally(() => setIsSubmitting(false));
+        Promise.resolve(onSave(recipeData, recipe)).finally(() => setIsSubmitting(false));
     };
 
     if (!isOpen) return null;
@@ -51,7 +57,7 @@ const CreateRecipeModal = ({ isOpen, onClose, onSave, paciente }) => {
         <div className="agenda-modal-overlay">
             <div className="agenda-modal-content recipe-modal">
                 <div className="modal-header">
-                    <h3>Nueva Receta Clínica</h3>
+                    <h3>{isEditing ? 'Editar Receta Clínica' : 'Nueva Receta Clínica'}</h3>
                     <button className="close-btn" onClick={onClose}>&times;</button>
                 </div>
                 <form onSubmit={handleSubmit}>
@@ -67,7 +73,7 @@ const CreateRecipeModal = ({ isOpen, onClose, onSave, paciente }) => {
                         <label htmlFor="generalIndications">Indicaciones Generales</label>
                         <textarea id="generalIndications" value={generalIndications} onChange={(e) => setGeneralIndications(e.target.value)} />
                     </div>
-                    
+
                     <h4>Prescripciones</h4>
                     <div className="prescription-list">
                         {prescriptions.map((p, index) => (
@@ -76,7 +82,7 @@ const CreateRecipeModal = ({ isOpen, onClose, onSave, paciente }) => {
                                 <input type="text" placeholder="Dosis" value={p.dose} onChange={(e) => handlePrescriptionChange(index, 'dose', e.target.value)} required />
                                 <input type="text" placeholder="Frecuencia" value={p.frequency} onChange={(e) => handlePrescriptionChange(index, 'frequency', e.target.value)} required />
                                 <input type="text" placeholder="Duración" value={p.duration} onChange={(e) => handlePrescriptionChange(index, 'duration', e.target.value)} required />
-                                <button type="button" className="remove-line-btn" onClick={() => removePrescriptionLine(index)}><FaTrash/></button>
+                                <button type="button" className="remove-line-btn" onClick={() => removePrescriptionLine(index)}><FaTrash /></button>
                             </div>
                         ))}
                     </div>
@@ -84,7 +90,9 @@ const CreateRecipeModal = ({ isOpen, onClose, onSave, paciente }) => {
 
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" onClick={onClose}>Cancelar</button>
-                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>{isSubmitting ? 'Guardando...' : 'Guardar Receta'}</button>
+                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                            {isSubmitting ? 'Guardando...' : (isEditing ? 'Guardar Cambios' : 'Guardar Receta')}
+                        </button>
                     </div>
                 </form>
             </div>
