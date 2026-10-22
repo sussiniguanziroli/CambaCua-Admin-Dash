@@ -1,0 +1,84 @@
+// Novedades: comentarios de tutores sobre la evolución de la mascota (type: 'novedad' en clinical_history).
+// Tono ámbar sutil para distinguirlas de las notas clínicas.
+$novedad-bg: #fffaf0;
+$novedad-bg-strong: #fdf1d6;
+$novedad-border: #f0d9a8;
+$novedad-accent: #b7791f;
+
+.note-type-toggle {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    margin-bottom: 1.5rem;
+    background: #eef0f3;
+    border-radius: 10px;
+
+    button {
+        flex: 1;
+        padding: 0.6rem 1rem;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        color: #6b7280;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &.active {
+            background: #fff;
+            color: #3498db;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+
+            &.novedad { color: $novedad-accent; }
+        }
+
+        &:disabled:not(.active) {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.entry-tag-novedad {
+    display: inline-block;
+    margin-right: 0.6rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: $novedad-accent;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.profile-container.paciente-profile .clinical-history-list .clinical-entry-card.novedad {
+    background: $novedad-bg;
+    border-color: $novedad-border;
+
+    &:hover { border-color: darken($novedad-border, 12%); }
+
+    .entry-header {
+        background: $novedad-bg-strong;
+        border-bottom-color: $novedad-border;
+    }
+
+    .entry-novedad-text {
+        margin: 0;
+        white-space: pre-line;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+.monitor-clinica-container .history-entry-card.novedad {
+    background: $novedad-bg;
+    box-shadow: inset 3px 0 0 $novedad-accent;
+
+    &:hover { background-color: $novedad-bg-strong; }
+}
+
+.view-note-modal.is-novedad .modal-header h3 { color: $novedad-accent; }

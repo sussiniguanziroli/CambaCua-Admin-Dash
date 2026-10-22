@@ -10,6 +10,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { PiBathtub } from "react-icons/pi";
 import ReporteDeudoresModal from "./ReporteDeudoresModal";
+import { formatDecimal } from '../../../utils/format';
 import { useLiveCollection } from "../../../services/liveCollectionStore";
 import { normalizeText, onlyDigits, isNumericTerm, esCollator } from "../../utils/searchUtils";
 
@@ -291,7 +292,7 @@ const TutorCard = React.memo(({ tutor, pacientesCount, onCardClick, onDelete }) 
             tutor.accountBalance < 0 ? "tutor-list__chip--deudor" : ""
           }`}
         >
-          <span>${tutor.accountBalance?.toFixed?.(2) || "0.00"}</span>
+          <span>${formatDecimal(tutor.accountBalance || 0)}</span>
         </div>
         {tutor.serviceTypes && tutor.serviceTypes.length > 0 && (
           <div className="tutor-list__service-chips">

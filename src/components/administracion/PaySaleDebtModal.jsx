@@ -4,6 +4,7 @@ import { db } from '../../firebase/config';
 import { getNextComprobanteNumber } from '../../services/comprobanteService';
 import Swal from 'sweetalert2';
 import { FaCcVisa, FaCcMastercard, FaCreditCard, FaMoneyBillWave, FaExchangeAlt } from 'react-icons/fa';
+import { formatDecimal } from '../../utils/format';
 
 const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
     const totalPaid = (sale.payments || []).reduce((sum, p) => sum + parseFloat(p.amount), 0);
@@ -91,7 +92,7 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
 
             Swal.fire({
                 title: 'Pago Registrado',
-                text: `Se registró el pago de $${paymentAmount.toFixed(2)}`,
+                text: `Se registró el pago de $${formatDecimal(paymentAmount)}`,
                 icon: 'success',
                 confirmButtonText: 'OK'
             });
@@ -117,11 +118,11 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
                         <div className="sale-info-summary">
                             <div className="info-row">
                                 <span>Total Venta:</span>
-                                <strong>${sale.total.toFixed(2)}</strong>
+                                <strong>${formatDecimal(sale.total)}</strong>
                             </div>
                             <div className="info-row">
                                 <span>Total Pagado:</span>
-                                <strong>${totalPayments.toFixed(2)}</strong>
+                                <strong>${formatDecimal(totalPayments)}</strong>
                             </div>
                         </div>
                     </div>
@@ -159,15 +160,15 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
                             </div>
                             <div className="info-row">
                                 <span>Total Venta:</span>
-                                <strong>${sale.total.toFixed(2)}</strong>
+                                <strong>${formatDecimal(sale.total)}</strong>
                             </div>
                             <div className="info-row">
                                 <span>Total Pagado:</span>
-                                <strong>${totalPayments.toFixed(2)}</strong>
+                                <strong>${formatDecimal(totalPayments)}</strong>
                             </div>
                             <div className="info-row debt">
                                 <span>Deuda Actual:</span>
-                                <strong className="debt-amount">${remainingDebt.toFixed(2)}</strong>
+                                <strong className="debt-amount">${formatDecimal(remainingDebt)}</strong>
                             </div>
                         </div>
 
@@ -230,22 +231,22 @@ const PaySaleDebtModal = ({ sale, onClose, onPaymentComplete }) => {
                                 </button>
                             </div>
                             <small className="helper-text">
-                                Máximo: ${remainingDebt.toFixed(2)}
+                                Máximo: ${formatDecimal(remainingDebt)}
                             </small>
                         </div>
 
                         <div className="payment-preview">
                             <div className="preview-row">
                                 <span>Deuda Actual:</span>
-                                <span>${remainingDebt.toFixed(2)}</span>
+                                <span>${formatDecimal(remainingDebt)}</span>
                             </div>
                             <div className="preview-row payment">
                                 <span>Pago:</span>
-                                <span>-${paymentAmount.toFixed(2)}</span>
+                                <span>-${formatDecimal(paymentAmount)}</span>
                             </div>
                             <div className="preview-row total">
                                 <span>Deuda Restante:</span>
-                                <strong>${newDebt.toFixed(2)}</strong>
+                                <strong>${formatDecimal(newDebt)}</strong>
                             </div>
                         </div>
                     </div>

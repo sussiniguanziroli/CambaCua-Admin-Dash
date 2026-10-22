@@ -25,6 +25,7 @@ import SimpleAppointmentModal from "../agenda/SimpleAppointmentModal";
 import { emitRecibosForSales, generateRecibosPDF } from "../../../services/reciboService";
 import { exportComprasPDF, exportComprasExcel } from "../../../services/comprasReportService";
 import { getNextComprobanteNumber } from "../../../services/comprobanteService";
+import { formatDecimal } from '../../../utils/format';
 
 const PaymentModal = ({ tutor, onClose, onPaymentSuccess, setAlertInfo }) => {
   const [amount, setAmount] = useState("");
@@ -476,14 +477,14 @@ const TutorProfile = () => {
                               <FaExclamationTriangle />
                               <span>
                                 {paymentStatus === "unpaid" && "Sin Pagar"}
-                                {paymentStatus === "partial" && `Deuda: $${currentDebt.toFixed(2)}`}
+                                {paymentStatus === "partial" && `Deuda: $${formatDecimal(currentDebt)}`}
                               </span>
                             </div>
                           )}
                         </div>
                       </div>
                       <div className="compra-actions">
-                        <span className="total">${sale.total.toFixed(2)}</span>
+                        <span className="total">${formatDecimal(sale.total)}</span>
                         {hasDebt && (
                           <button className="btn btn-pay-debt" onClick={(e) => { e.stopPropagation(); setSaleToPayDebt(sale); }}>
                             <FaMoneyBillWave /> Pagar
@@ -520,7 +521,7 @@ const TutorProfile = () => {
                       <span className="recibo-date">{r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString("es-AR") : "N/A"}{r.saleComprobante ? ` · Venta ${r.saleComprobante}` : ""}</span>
                     </div>
                     <div className="recibo-actions">
-                      <span className="recibo-amount">${(r.amount || 0).toFixed(2)}</span>
+                      <span className="recibo-amount">${formatDecimal((r.amount || 0))}</span>
                       <button className="btn btn-secondary" onClick={() => handleReprintRecibo(r)}>Reimprimir</button>
                     </div>
                   </div>
@@ -549,7 +550,7 @@ const TutorProfile = () => {
                         </div>
                       </div>
                       <div className="compra-actions">
-                        <span className="total">${(p.total || 0).toFixed(2)}</span>
+                        <span className="total">${formatDecimal((p.total || 0))}</span>
                         <button className="btn btn-secondary" onClick={() => setSelectedPresupuesto(p)}>Ver</button>
                         <button className="btn btn-primary" onClick={() => handleLoadPresupuesto(p)}>Cargar Venta</button>
                       </div>
@@ -567,7 +568,7 @@ const TutorProfile = () => {
             <div className="tutor-account-summary">
               <div className="tutor-balance-card">
                 <h3>Saldo Actual</h3>
-                <p className={`balance-amount ${tutor.accountBalance < 0 ? "deudor" : ""}`}>${(tutor.accountBalance || 0).toFixed(2)}</p>
+                <p className={`balance-amount ${tutor.accountBalance < 0 ? "deudor" : ""}`}>${formatDecimal((tutor.accountBalance || 0))}</p>
               </div>
               <div className="account-actions">
                 <button className="btn btn-success" onClick={() => setIsPaymentModalOpen(true)}>+ Registrar Pago</button>
@@ -590,11 +591,11 @@ const TutorProfile = () => {
                   </div>
                   <div className="transaction-amount">
                     {t.type === "Venta Presencial" ? (
-                      <span className="debit">- ${(t.debt || 0).toFixed(2)}</span>
+                      <span className="debit">- ${formatDecimal((t.debt || 0))}</span>
                     ) : t.type === "Cobro Deuda" ? (
-                      <span className="credit">+ ${(t.amount || 0).toFixed(2)}</span>
+                      <span className="credit">+ ${formatDecimal((t.amount || 0))}</span>
                     ) : (
-                      <span className="debit">- ${(t.amount || 0).toFixed(2)}</span>
+                      <span className="debit">- ${formatDecimal((t.amount || 0))}</span>
                     )}
                   </div>
                   {t.type === "Ajuste Manual - Deuda" && (
@@ -630,7 +631,7 @@ const TutorProfile = () => {
       {confirmDelete && (
         <ConfirmAlert
           title="Eliminar Ajuste"
-          text={`¿Estás seguro de que querés eliminar la deuda de $${confirmDelete.amount.toFixed(2)} (${confirmDelete.reason || "S/M"})? Esta acción revertirá el saldo.`}
+          text={`¿Estás seguro de que querés eliminar la deuda de $${formatDecimal(confirmDelete.amount)} (${confirmDelete.reason || "S/M"})? Esta acción revertirá el saldo.`}
           onConfirm={confirmDeleteAdjustment}
           onCancel={() => setConfirmDelete(null)}
         />

@@ -3,9 +3,11 @@ import { storage } from '../../../firebase/config';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import Swal from 'sweetalert2';
 
-// AHORA RECIBE patientName Y tutorName
+import { NOTE_TYPE_NOVEDAD, NOTE_TYPE_CLINICA, isNovedad } from '../../utils/noteTypes';
+
 const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteId, patientName, tutorName }) => {
-    const [formData, setFormData] = useState({ reason: '', diagnosis: '', treatment: '' });
+    const [noteType, setNoteType] = useState(NOTE_TYPE_CLINICA);
+    const [formData, setFormData] = useState({ reason: '', diagnosis: '', treatment: '', comment: '' });
     const [noteDate, setNoteDate] = useState(new Date().toISOString().split('T')[0]);
     const [existingMedia, setExistingMedia] = useState([]);
     const [filesToUpload, setFilesToUpload] = useState([]);
@@ -17,6 +19,8 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
     const displayPatient = patientName || note?.pacienteName;
     const displayTutor = tutorName || note?.tutorName;
 
+    const novedad = noteType === NOTE_TYPE_NOVEDAD;
+
     useEffect(() => {
         if (isOpen) {
             let defaultDate = new Date().toISOString().split('T')[0];
@@ -25,7 +29,7 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
                 // Prioridad: Si existe el Timestamp original de Firebase
                 if (note.createdAt && typeof note.createdAt.toDate === 'function') {
                     defaultDate = note.createdAt.toDate().toISOString().split('T')[0];
-                } 
+                }
                 // Respaldo: Si viene como string formateado "DD/MM/YYYY"
                 else if (typeof note.date === 'string' && note.date.includes('/')) {
                     const parts = note.date.split('/');
@@ -35,10 +39,12 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
                 }
             }
 
+            setNoteType(isNovedad(note) ? NOTE_TYPE_NOVEDAD : NOTE_TYPE_CLINICA);
             setFormData({
                 reason: note?.reason || '',
                 diagnosis: note?.diagnosis || '',
                 treatment: note?.treatment || '',
+                comment: note?.comment || '',
             });
             setNoteDate(defaultDate);
             setExistingMedia(note?.media || []);
@@ -83,14 +89,14 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
                 const noteId = note?.id || `${Date.now()}`;
                 const storageRef = ref(storage, `clinicalHistory/${pacienteId}/${noteId}/${file.name}`);
                 const uploadTask = uploadBytesResumable(storageRef, file);
-                
+
                 return new Promise((resolve, reject) => {
-                    uploadTask.on('state_changed', 
+                    uploadTask.on('state_changed',
                         (snapshot) => {
                             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                             setUploadProgress(progress);
-                        }, 
-                        (error) => reject(error), 
+                        },
+                        (error) => reject(error),
                         async () => {
                             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
                             resolve({ url: downloadURL, name: file.name, type: file.type });
@@ -101,14 +107,19 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
 
             const newMediaFiles = await Promise.all(uploadPromises);
             const finalMedia = [...existingMedia, ...newMediaFiles];
-            
+
             const [year, month, day] = noteDate.split('-').map(Number);
             const dateToSave = new Date(year, month - 1, day, 12, 0, 0);
 
-            await onSave({ 
-                ...formData, 
-                media: finalMedia, 
-                createdAt: dateToSave 
+            const fields = novedad
+                ? { reason: formData.reason, comment: formData.comment }
+                : { reason: formData.reason, diagnosis: formData.diagnosis, treatment: formData.treatment };
+
+            await onSave({
+                ...fields,
+                type: noteType,
+                media: finalMedia,
+                createdAt: dateToSave
             }, note, noteIndex);
 
         } catch (error) {
@@ -120,12 +131,14 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
 
     if (!isOpen) return null;
 
+    const typeLabel = novedad ? 'Novedad' : 'Nota';
+
     return (
         <div className="agenda-modal-overlay">
             <div className="agenda-modal-content">
                 <div className="modal-header">
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                        <h3 style={{ margin: 0 }}>{note ? 'Editar Nota' : 'Agregar Nota'}</h3>
+                        <h3 style={{ margin: 0 }}>{note ? `Editar ${typeLabel}` : `Agregar ${typeLabel}`}</h3>
                         {/* AQUI ESTÁ EL NOMBRE Y TUTOR EN EL MODAL DE EDICIÓN */}
                         {displayPatient && (
                             <span style={{ fontSize: '0.9em', color: '#4a4a4a', fontWeight: '500' }}>
@@ -135,28 +148,41 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
                     </div>
                     <button className="close-btn" onClick={onClose}>&times;</button>
                 </div>
+                <div className="note-type-toggle" role="tablist">
+                    <button type="button" role="tab" aria-selected={!novedad} className={!novedad ? 'active' : ''} disabled={!!note || isSubmitting} onClick={() => setNoteType(NOTE_TYPE_CLINICA)}>Nota clínica</button>
+                    <button type="button" role="tab" aria-selected={novedad} className={novedad ? 'active novedad' : ''} disabled={!!note || isSubmitting} onClick={() => setNoteType(NOTE_TYPE_NOVEDAD)}>Comentario / Novedades</button>
+                </div>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Motivo</label>
-                        <input type="text" value={formData.reason} onChange={(e) => setFormData({...formData, reason: e.target.value})} required />
+                        <label>{novedad ? 'Título' : 'Motivo'}</label>
+                        <input type="text" value={formData.reason} onChange={(e) => setFormData({...formData, reason: e.target.value})} placeholder={novedad ? 'Ej: Come mejor, sigue con vómitos...' : ''} required />
                     </div>
                     <div className="form-group">
-                        <label>Fecha de Nota</label>
+                        <label>{novedad ? 'Fecha' : 'Fecha de Nota'}</label>
                         <input type="date" value={noteDate} onChange={(e) => setNoteDate(e.target.value)} required />
                     </div>
-                    <div className="form-group">
-                        <label>Diagnóstico</label>
-                        <textarea value={formData.diagnosis} onChange={(e) => setFormData({...formData, diagnosis: e.target.value})}></textarea>
-                    </div>
-                    <div className="form-group">
-                        <label>Tratamiento</label>
-                        <textarea value={formData.treatment} onChange={(e) => setFormData({...formData, treatment: e.target.value})}></textarea>
-                    </div>
+                    {novedad ? (
+                        <div className="form-group">
+                            <label>Comentario / Novedad</label>
+                            <textarea value={formData.comment} onChange={(e) => setFormData({...formData, comment: e.target.value})} placeholder="Lo que cuenta el tutor sobre cómo evoluciona la mascota" required></textarea>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="form-group">
+                                <label>Diagnóstico</label>
+                                <textarea value={formData.diagnosis} onChange={(e) => setFormData({...formData, diagnosis: e.target.value})}></textarea>
+                            </div>
+                            <div className="form-group">
+                                <label>Tratamiento</label>
+                                <textarea value={formData.treatment} onChange={(e) => setFormData({...formData, treatment: e.target.value})}></textarea>
+                            </div>
+                        </>
+                    )}
                     <div className="form-group">
                         <label>Adjuntar Archivos</label>
                         <input type="file" multiple onChange={handleFileChange} />
                     </div>
-                    
+
                     {(existingMedia.length > 0 || filesToUpload.length > 0) && (
                         <div className="file-preview-list">
                             {existingMedia.map((file, i) => (
@@ -173,17 +199,17 @@ const ClinicalNoteModal = ({ isOpen, onClose, onSave, note, noteIndex, pacienteI
                             ))}
                         </div>
                     )}
-                    
+
                     {isSubmitting && (
                         <div className="upload-progress-bar">
                             <div style={{ width: `${uploadProgress}%`, transition: 'width 0.3s' }}></div>
                         </div>
                     )}
-                    
+
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" onClick={onClose} disabled={isSubmitting}>Cancelar</button>
                         <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                            {isSubmitting ? 'Guardando...' : 'Guardar Nota'}
+                            {isSubmitting ? 'Guardando...' : `Guardar ${typeLabel}`}
                         </button>
                     </div>
                 </form>

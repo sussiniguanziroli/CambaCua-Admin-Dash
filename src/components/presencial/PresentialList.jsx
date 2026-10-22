@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { formatNumber } from '../../utils/format';
 import {
   FaPlus,
   FaTimes,
@@ -574,7 +575,7 @@ const PresentialList = () => {
                       <span className="item-card__price">
                         $
                         {item.price
-                          ? item.price.toLocaleString("es-AR")
+                          ? formatNumber(item.price)
                           : "N/A"}
                       </span>
                       <span className="item-card__category">

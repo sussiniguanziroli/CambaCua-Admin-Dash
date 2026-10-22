@@ -3,6 +3,7 @@ import Flickity from 'flickity';
 import imagesLoaded from 'imagesloaded';
 import 'flickity/css/flickity.css';
 import { FaTimes } from 'react-icons/fa';
+import { formatDecimal } from '../utils/format';
 
 const AdminProductModal = ({ producto, isOpen, onClose }) => {
     const modalRef = useRef();
@@ -300,7 +301,7 @@ const AdminProductModal = ({ producto, isOpen, onClose }) => {
 
                             {currentDisplayProduct ? (
                                 <>
-                                    <p className="admin-product-price">${currentDisplayProduct.precio ? currentDisplayProduct.precio.toFixed(2) : 'N/A'}</p>
+                                    <p className="admin-product-price">${currentDisplayProduct.precio ? formatDecimal(currentDisplayProduct.precio) : 'N/A'}</p>
                                     <p className="admin-product-stock">
                                         <strong>Stock:</strong> {currentDisplayProduct.stock !== undefined ? `${currentDisplayProduct.stock} unidades` : 'N/A'}
                                     </p>

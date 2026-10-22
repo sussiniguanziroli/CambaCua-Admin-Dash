@@ -10,6 +10,7 @@ import DebtAccountsManager from './estadisticas/DebtAccountsManager';
 import ExportDataModal from './estadisticas/ExportDataModal';
 import LoaderSpinner from '../utils/LoaderSpinner';
 import ResumenMensual from './ResumenMensual';
+import { formatDecimal } from '../../utils/format';
 
 const ResumenSemanal = () => {
     const [activeMainTab, setActiveMainTab] = useState('resumen');
@@ -199,7 +200,7 @@ const ResumenSemanal = () => {
                     <span className="label">Total de la Semana</span>
                     <span className="dates">{startOfWeek.toLocaleDateString('es-AR')} - {endOfWeek.toLocaleDateString('es-AR')}</span>
                 </div>
-                <div className="total-value">${weekTotal.toFixed(2)}</div>
+                <div className="total-value">${formatDecimal(weekTotal)}</div>
             </div>
 
             {isLoadingWeekly ? (
@@ -213,7 +214,7 @@ const ResumenSemanal = () => {
                         <div className="day-card" key={date.toISOString()}>
                             <span className="day-name">{date.toLocaleDateString('es-AR', { weekday: 'long' })}</span>
                             <span className="day-date">{date.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' })}</span>
-                            <span className="day-total">${total.toFixed(2)}</span>
+                            <span className="day-total">${formatDecimal(total)}</span>
                         </div>
                     ))}
                 </div>

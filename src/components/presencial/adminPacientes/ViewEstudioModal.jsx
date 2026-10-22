@@ -1,7 +1,8 @@
 import { generateEstudioPDF } from '../../../services/estudioService';
 import { getDatosPaciente, formatFechaEstudio } from '../../../services/pdf/estudioPdf';
 
-const ViewEstudioModal = ({ isOpen, onClose, estudio, paciente }) => {
+// onEdit: si se pasa, muestra el botón "Editar" (se omite, por ejemplo, con pacientes fallecidos).
+const ViewEstudioModal = ({ isOpen, onClose, onEdit, estudio, paciente }) => {
     if (!isOpen || !estudio) return null;
 
     const datos = getDatosPaciente(estudio, paciente);
@@ -77,8 +78,12 @@ const ViewEstudioModal = ({ isOpen, onClose, estudio, paciente }) => {
                         </div>
                     )}
                 </div>
+                {estudio.updatedAt?.toDate && (
+                    <p className="recipe-edited-note">Editada el {estudio.updatedAt.toDate().toLocaleDateString('es-AR')}</p>
+                )}
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" onClick={onClose}>Cerrar</button>
+                    {onEdit && <button type="button" className="btn btn-secondary" onClick={onEdit}>Editar</button>}
                     <button type="button" className="btn btn-primary" onClick={() => generateEstudioPDF(estudio, paciente)}>Imprimir PDF</button>
                 </div>
             </div>

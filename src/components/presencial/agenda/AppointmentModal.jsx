@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 import { FaUser, FaDog, FaDownload, FaTimes, FaSearch } from "react-icons/fa";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { formatDecimal } from '../../../utils/format';
+import { AppointmentProfileLinks } from "./ProfileLinks";
 
 const AppointmentModal = ({
   isOpen,
@@ -357,6 +359,8 @@ const AppointmentModal = ({
           </button>
         </div>
 
+        <AppointmentProfileLinks appointment={appointmentData} />
+
         <form onSubmit={handleSubmit} className="agenda-modal-form">
           <div className="agenda-form-section">
             <div className="agenda-checkbox-group">
@@ -589,7 +593,7 @@ const AppointmentModal = ({
                       onClick={() => handleServiceToggle(service)}
                     >
                       <span className="item-name">{service.name}</span>
-                      <span className="item-price">${service.price || 0}</span>
+                      <span className="item-price">${formatDecimal(service.price || 0)}</span>
                     </div>
                   );
                 })

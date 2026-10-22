@@ -4,6 +4,7 @@ import { db } from '../../../firebase/config';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
 import { FaTimes, FaFileExcel, FaEye, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { formatDecimal } from '../../../utils/format';
 
 const ReporteDeudoresModal = ({ onClose }) => {
     const [startDate, setStartDate] = useState('');
@@ -146,7 +147,7 @@ const ReporteDeudoresModal = ({ onClose }) => {
                                             <tr className={expandedTutor === deudor.tutorId ? 'expanded' : ''}>
                                                 <td>{deudor.nombre}</td>
                                                 <td>{deudor.tickets.length}</td>
-                                                <td className="debt-cell">${deudor.totalDeuda.toFixed(2)}</td>
+                                                <td className="debt-cell">${formatDecimal(deudor.totalDeuda)}</td>
                                                 <td>
                                                     <button className="btn-icon" onClick={() => setExpandedTutor(expandedTutor === deudor.tutorId ? null : deudor.tutorId)}>
                                                         {expandedTutor === deudor.tutorId ? <FaChevronUp /> : <FaEye />}
@@ -161,7 +162,7 @@ const ReporteDeudoresModal = ({ onClose }) => {
                                                                 <div key={t.id} className="ticket-mini-card">
                                                                     <p><strong>ID:</strong> {t.id.substring(0,8)}... | <strong>Fecha:</strong> {t.fecha.toLocaleDateString('es-AR')}</p>
                                                                     <p className="items-text">{t.items}</p>
-                                                                    <p className="price-text">${t.monto.toFixed(2)}</p>
+                                                                    <p className="price-text">${formatDecimal(t.monto)}</p>
                                                                 </div>
                                                             ))}
                                                         </div>

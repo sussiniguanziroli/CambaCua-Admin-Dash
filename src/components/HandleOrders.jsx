@@ -3,6 +3,7 @@ import { collection, getDocs, doc, deleteDoc, setDoc, writeBatch, increment, get
 import { db } from '../firebase/config';
 import Swal from 'sweetalert2';
 import { FaClock, FaTags, FaGift, FaHandshake } from 'react-icons/fa';
+import { formatNumber } from '../utils/format';
 
 const HandleOrders = () => {
     const [pedidos, setPedidos] = useState([]);
@@ -175,12 +176,12 @@ const HandleOrders = () => {
 
                             <div className="pedido-details">
                                 <p><strong>Fecha:</strong> {pedido.fecha?.toLocaleString('es-AR') || 'N/A'}</p>
-                                <p><strong>Subtotal:</strong> ${pedido.subtotalBruto?.toLocaleString('es-AR')}</p>
-                                {pedido.descuentoPromociones > 0 && <p className="discount-detail promo-discount"><FaTags /><strong> Promociones:</strong> -${pedido.descuentoPromociones.toLocaleString('es-AR')}</p>}
-                                {pedido.descuentoConvenio > 0 && <p className="discount-detail convenio-discount"><FaHandshake /><strong> Convenio:</strong> -${pedido.descuentoConvenio.toLocaleString('es-AR')}</p>}
-                                {pedido.puntosDescontados > 0 && <p className="discount-detail points-discount"><FaGift /><strong> Puntos:</strong> -${pedido.puntosDescontados.toLocaleString('es-AR')}</p>}
-                                <p className="final-total"><strong>Total a Pagar:</strong> ${pedido.total.toLocaleString('es-AR')}</p>
-                                {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${pedido.costoEnvio.toLocaleString('es-AR')}</p>}
+                                <p><strong>Subtotal:</strong> ${formatNumber(pedido.subtotalBruto)}</p>
+                                {pedido.descuentoPromociones > 0 && <p className="discount-detail promo-discount"><FaTags /><strong> Promociones:</strong> -${formatNumber(pedido.descuentoPromociones)}</p>}
+                                {pedido.descuentoConvenio > 0 && <p className="discount-detail convenio-discount"><FaHandshake /><strong> Convenio:</strong> -${formatNumber(pedido.descuentoConvenio)}</p>}
+                                {pedido.puntosDescontados > 0 && <p className="discount-detail points-discount"><FaGift /><strong> Puntos:</strong> -${formatNumber(pedido.puntosDescontados)}</p>}
+                                <p className="final-total"><strong>Total a Pagar:</strong> ${formatNumber(pedido.total)}</p>
+                                {pedido.costoEnvio > 0 && <p><strong>Costo Envío:</strong> ${formatNumber(pedido.costoEnvio)}</p>}
                                 <p><strong>Método de pago:</strong> {pedido.metodoPago || 'N/A'}</p>
                             </div>
 
@@ -197,7 +198,7 @@ const HandleOrders = () => {
                                                 </div>
                                                 <div className="product-sub-info">
                                                     <span>Cant: {producto.quantity || producto.cantidad}</span>
-                                                    <span>Precio: ${ (producto.price || producto.precio)?.toLocaleString('es-AR')}</span>
+                                                    <span>Precio: ${ formatNumber((producto.price || producto.precio))}</span>
                                                 </div>
                                                 {producto.hasVariations && producto.attributes && (<span className="product-variation-details">({Object.entries(producto.attributes).map(([k, v]) => `${k}: ${v}`).join(', ')})</span>)}
                                             </li>

@@ -6,8 +6,9 @@ import {
     getPresupuestoPacientes,
     getPresupuestoTotals,
 } from '../../../services/presupuestoService';
+import { formatDecimal } from '../../../utils/format';
 
-const money = (value) => `$${(value || 0).toFixed(2)}`;
+const money = (value) => `$${formatDecimal((value || 0))}`;
 
 // Detalle de un presupuesto guardado: cuándo se generó, qué incluye, y la opción de convertirlo en venta.
 const ViewPresupuestoModal = ({ presupuesto, onClose, onLoad }) => {

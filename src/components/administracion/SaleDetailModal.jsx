@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { formatDecimal } from '../../utils/format';
 
 const FaTimes = () => (
   <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 352 512" height="1.1em" width="1.1em" xmlns="http://www.w3.org/2000/svg"><path d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.19 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.19 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>
@@ -52,17 +53,17 @@ const SaleDetailModal = ({ sale, onClose }) => {
         doc.setFontSize(14);
         doc.text(`Pago Recibido:`, margin, y); y += 20;
         doc.setFontSize(12);
-        doc.text(`${sale.paymentMethod} — $${(sale.amount || 0).toFixed(2)}`, margin + 10, y); y += 22;
+        doc.text(`${sale.paymentMethod} — $${formatDecimal((sale.amount || 0))}`, margin + 10, y); y += 22;
         doc.setFontSize(14);
-        doc.text(`Monto Cobrado: $${(sale.amount || 0).toFixed(2)}`, margin, y);
+        doc.text(`Monto Cobrado: $${formatDecimal((sale.amount || 0))}`, margin, y);
       } else {
         const items = (sale.items || []).map(it => {
             const quantity = it.isDoseable ? `${it.quantity} ${it.unit}` : String(it.quantity ?? 1);
             let name = it.name;
             if (it.discountAmount > 0) {
-                name += ` (Dto: -$${it.discountAmount.toFixed(2)})`;
+                name += ` (Dto: -$${formatDecimal(it.discountAmount)})`;
             }
-            const price = `$${it.price.toFixed(2)}`;
+            const price = `$${formatDecimal(it.price)}`;
             return [quantity, name, price];
         });
 
@@ -78,7 +79,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
           
           const initialPayments = paymentsArray.map(p => {
               const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
-              return [p.method || '-', paymentDate, `$${parseFloat(p.amount ?? 0).toFixed(2)}`];
+              return [p.method || '-', paymentDate, `$${formatDecimal(parseFloat(p.amount ?? 0))}`];
           });
           
           autoTable(doc, { startY: y, head: [['Método', 'Fecha', 'Monto']], body: initialPayments, margin: { left: margin, right: margin } });
@@ -92,7 +93,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
           
           const debtPayments = debtPaymentsArray.map(p => {
               const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
-              return [p.method || '-', paymentDate, `$${parseFloat(p.amount ?? 0).toFixed(2)}`];
+              return [p.method || '-', paymentDate, `$${formatDecimal(parseFloat(p.amount ?? 0))}`];
           });
           
           autoTable(doc, { startY: y, head: [['Método', 'Fecha', 'Monto']], body: debtPayments, margin: { left: margin, right: margin } });
@@ -100,21 +101,18 @@ const SaleDetailModal = ({ sale, onClose }) => {
         }
 
         doc.setFontSize(12);
-        if (sale.subtotal) {
-            doc.text(`Subtotal: $${(sale.subtotal || 0).toFixed(2)}`, margin, y); y += 20;
-            if ((sale.discount || 0) > 0) {
-                doc.text(`Descuentos: -$${(sale.discount || 0).toFixed(2)}`, margin, y); y += 20;
-            }
+        if ((sale.discount || 0) > 0) {
+            doc.text(`Descuentos: -${formatDecimal((sale.discount || 0))}`, margin, y); y += 20;
         }
         
-        doc.text(`Total Venta: $${(sale.total ?? 0).toFixed(2)}`, margin, y); y += 20;
-        doc.text(`Pagado Inicialmente: $${totalPaid.toFixed(2)}`, margin, y); y += 20;
+        doc.text(`Total Venta: $${formatDecimal((sale.total ?? 0))}`, margin, y); y += 20;
+        doc.text(`Pago inicial: $${formatDecimal(totalPaid)}`, margin, y); y += 20;
         if (totalDebtPaid > 0) {
-            doc.text(`Cobrado Posteriormente: $${totalDebtPaid.toFixed(2)}`, margin, y); y += 20;
+            doc.text(`Pagos posteriores (Total): $${formatDecimal(totalDebtPaid)}`, margin, y); y += 20;
         }
         
         if ((sale.debt || 0) > 0) { 
-            doc.text(`Deuda Restante: $${sale.debt.toFixed(2)}`, margin, y); y += 20; 
+            doc.text(`Deuda actual: $${formatDecimal(sale.debt)}`, margin, y); y += 20; 
         }
         
         doc.setFontSize(14);
@@ -140,31 +138,31 @@ const SaleDetailModal = ({ sale, onClose }) => {
         content = `
             <h3>Pago Recibido</h3>
             <table><thead><tr><th>Método</th><th>Monto</th></tr></thead><tbody>
-                <tr><td>${sale.paymentMethod}</td><td>$${(sale.amount || 0).toFixed(2)}</td></tr>
+                <tr><td>${sale.paymentMethod}</td><td>$${formatDecimal((sale.amount || 0))}</td></tr>
             </tbody></table>
-            <div class="total-summary"><p class="total">Monto Cobrado: $${(sale.amount || 0).toFixed(2)}</p></div>
+            <div class="total-summary"><p class="total">Monto Cobrado: $${formatDecimal((sale.amount || 0))}</p></div>
         `;
     } else {
         const itemsHtml = (sale.items || []).map(it => {
             const quantity = it.isDoseable ? `${it.quantity} ${it.unit}` : String(it.quantity ?? 1);
             let name = it.name;
             if (it.discountAmount > 0) {
-                name += `<br><small>(Orig: $${it.priceBeforeDiscount.toFixed(2)}, Dto: -$${it.discountAmount.toFixed(2)})</small>`;
+                name += `<br><small>(Orig: $${formatDecimal(it.priceBeforeDiscount)}, Dto: -$${formatDecimal(it.discountAmount)})</small>`;
             }
-            return `<tr><td>${quantity}</td><td>${name}</td><td>$${(it.price ?? 0).toFixed(2)}</td></tr>`;
+            return `<tr><td>${quantity}</td><td>${name}</td><td>$${formatDecimal((it.price ?? 0))}</td></tr>`;
         }).join('') || '<tr><td colspan="3">No hay items</td></tr>';
 
         const initialPaymentsHtml = paymentsArray.length > 0 
           ? paymentsArray.map(p => {
               const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
-              return `<tr><td>${p.method}</td><td>${paymentDate}</td><td>$${parseFloat(p.amount ?? 0).toFixed(2)}</td></tr>`;
+              return `<tr><td>${p.method}</td><td>${paymentDate}</td><td>$${formatDecimal(parseFloat(p.amount ?? 0))}</td></tr>`;
             }).join('')
           : '<tr><td colspan="3">No se registraron pagos iniciales.</td></tr>';
         
         const debtPaymentsHtml = debtPaymentsArray.length > 0
           ? debtPaymentsArray.map(p => {
               const paymentDate = p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-';
-              return `<tr><td>${p.method}</td><td>${paymentDate}</td><td>$${parseFloat(p.amount ?? 0).toFixed(2)}</td></tr>`;
+              return `<tr><td>${p.method}</td><td>${paymentDate}</td><td>$${formatDecimal(parseFloat(p.amount ?? 0))}</td></tr>`;
             }).join('')
           : '';
         
@@ -181,12 +179,11 @@ const SaleDetailModal = ({ sale, onClose }) => {
             ` : ''}
             
             <div class="total-summary">
-                ${sale.subtotal ? `<p>Subtotal: $${(sale.subtotal || 0).toFixed(2)}</p>` : ''}
-                ${(sale.discount || 0) > 0 ? `<p>Descuentos: -$${(sale.discount || 0).toFixed(2)}</p>` : ''}
-                <p class="total">Total Venta: $${(sale.total ?? 0).toFixed(2)}</p>
-                <p>Pagado Inicialmente: $${totalPaid.toFixed(2)}</p>
-                ${totalDebtPaid > 0 ? `<p>Cobrado Posteriormente: $${totalDebtPaid.toFixed(2)}</p>` : ''}
-                ${(sale.debt || 0) > 0 ? `<p style="color:#e74c3c;font-weight:600">Deuda Restante: $${sale.debt.toFixed(2)}</p>` : ''}
+                ${(sale.discount || 0) > 0 ? `<p>Descuentos: -$${formatDecimal((sale.discount || 0))}</p>` : ''}
+                <p class="total">Total Venta: $${formatDecimal((sale.total ?? 0))}</p>
+                <p>Pago inicial: $${formatDecimal(totalPaid)}</p>
+                ${totalDebtPaid > 0 ? `<p>Pagos posteriores (Total): $${formatDecimal(totalDebtPaid)}</p>` : ''}
+                ${(sale.debt || 0) > 0 ? `<p style="color:#e74c3c;font-weight:600">Deuda actual: $${formatDecimal(sale.debt)}</p>` : ''}
             </div>
         `;
     }
@@ -203,7 +200,6 @@ const SaleDetailModal = ({ sale, onClose }) => {
     </body></html>`;
   };
 
-  const subtotal = sale.subtotal || sale.total;
   const totalDiscount = sale.discount || 0;
 
   return (
@@ -233,13 +229,13 @@ const SaleDetailModal = ({ sale, onClose }) => {
                           )}
                           {item.discountAmount > 0 && (
                               <div className="item-discount-info">
-                                  <span>Orig: ${item.priceBeforeDiscount.toFixed(2)}</span>
-                                  <span>Dto: -${item.discountAmount.toFixed(2)}</span>
+                                  <span>Orig: ${formatDecimal(item.priceBeforeDiscount)}</span>
+                                  <span>Dto: -${formatDecimal(item.discountAmount)}</span>
                               </div>
                           )}
                       </div>
                       <strong className={`item-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}>
-                          ${(item.price ?? 0).toFixed(2)}
+                          ${formatDecimal((item.price ?? 0))}
                       </strong>
                   </li>
                 ))}
@@ -255,7 +251,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
                     <span>{sale.paymentMethod}</span>
                     <span className="payment-date">{sale.createdAt?.toDate ? sale.createdAt.toDate().toLocaleDateString('es-AR') : '-'}</span>
                   </div>
-                  <strong>${(sale.amount || 0).toFixed(2)}</strong>
+                  <strong>${formatDecimal((sale.amount || 0))}</strong>
                 </li>
               </ul>
             ) : (
@@ -270,7 +266,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
                             <span>{p.method}</span>
                             <span className="payment-date">{p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-'}</span>
                           </div>
-                          <strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong>
+                          <strong>${formatDecimal(parseFloat(p.amount ?? 0))}</strong>
                         </li>
                       ))}
                     </ul>
@@ -287,7 +283,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
                             <span>{p.method}</span>
                             <span className="payment-date">{p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-'}</span>
                           </div>
-                          <strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong>
+                          <strong>${formatDecimal(parseFloat(p.amount ?? 0))}</strong>
                         </li>
                       ))}
                     </ul>
@@ -306,7 +302,7 @@ const SaleDetailModal = ({ sale, onClose }) => {
                           <span>{p.method}</span>
                           <span className="payment-date">{p.date?.toDate ? p.date.toDate().toLocaleDateString('es-AR') : '-'}</span>
                         </div>
-                        <strong>${parseFloat(p.amount ?? 0).toFixed(2)}</strong>
+                        <strong>${formatDecimal(parseFloat(p.amount ?? 0))}</strong>
                       </li>
                     ))}
                   </ul>
@@ -318,23 +314,18 @@ const SaleDetailModal = ({ sale, onClose }) => {
         
         <div className="sale-detail-footer">
           {isDebtPayment ? (
-            <p className="sale-detail-total"><span>Monto Cobrado:</span> <strong>${(sale.amount || 0).toFixed(2)}</strong></p>
+            <p className="sale-detail-total"><span>Monto Cobrado:</span> <strong>${formatDecimal((sale.amount || 0))}</strong></p>
           ) : (
             <>
-              {subtotal && (
-                <>
-                  <p className="sale-detail-row"><span>Subtotal:</span> <strong>${subtotal.toFixed(2)}</strong></p>
-                  {totalDiscount > 0 && (
-                    <p className="sale-detail-row discount"><span>Descuentos:</span> <strong>-${totalDiscount.toFixed(2)}</strong></p>
-                  )}
-                </>
+              {totalDiscount > 0 && (
+                <p className="sale-detail-row discount"><span>Descuentos:</span> <strong>-${formatDecimal(totalDiscount)}</strong></p>
               )}
-              <p className="sale-detail-total"><span>Total Venta:</span> <strong>${(sale.total ?? 0).toFixed(2)}</strong></p>
-              <p className="sale-detail-row"><span>Pagado Inicialmente:</span> <strong>${totalPaid.toFixed(2)}</strong></p>
+              <p className="sale-detail-total"><span>Total Venta:</span> <strong>${formatDecimal((sale.total ?? 0))}</strong></p>
+              <p className="sale-detail-row"><span>Pago inicial:</span> <strong>${formatDecimal(totalPaid)}</strong></p>
               {totalDebtPaid > 0 && (
-                <p className="sale-detail-row"><span>Cobrado Posteriormente:</span> <strong>${totalDebtPaid.toFixed(2)}</strong></p>
+                <p className="sale-detail-row"><span>Pagos posteriores (Total):</span> <strong>${formatDecimal(totalDebtPaid)}</strong></p>
               )}
-              {(sale.debt || 0) > 0 && <p className="sale-detail-row debt"><span>Deuda Restante:</span> <strong>${sale.debt.toFixed(2)}</strong></p>}
+              {(sale.debt || 0) > 0 && <p className="sale-detail-row debt"><span>Deuda actual:</span> <strong>${formatDecimal(sale.debt)}</strong></p>}
             </>
           )}
         </div>

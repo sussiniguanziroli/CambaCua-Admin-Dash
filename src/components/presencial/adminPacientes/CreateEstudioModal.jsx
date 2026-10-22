@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { FaPlus, FaSync } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { getTiposEstudio, addTipoEstudio, deleteTipoEstudio, updateTipoEstudio, aplicarCatalogoCategorizado } from '../../../services/estudioService';
@@ -18,10 +18,13 @@ const CAMPOS_DATOS = [
 ];
 
 // datosIniciales: datos del perfil desde el que se abre (paciente + tutor), editables antes de guardar.
-const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
+// estudio: si se pasa, el modal edita esa solicitud (para corregir errores) en lugar de crear una nueva.
+const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales, estudio }) => {
     const [tipos, setTipos] = useState([]);
     const [isLoadingTipos, setIsLoadingTipos] = useState(true);
     const [selectedIds, setSelectedIds] = useState(() => new Set());
+    // Estudios de la solicitud editada que ya no existen en el catálogo: se conservan salvo que se quiten.
+    const [extraTipos, setExtraTipos] = useState([]);
 
     const [datos, setDatos] = useState(DATOS_PACIENTE_VACIOS);
     const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
@@ -40,26 +43,54 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
 
     const loadTipos = useCallback(async () => {
         setIsLoadingTipos(true);
-        try { setTipos(await getTiposEstudio()); }
-        catch (e) { console.error(e); }
+        try {
+            const lista = await getTiposEstudio();
+            setTipos(lista);
+            return lista;
+        }
+        catch (e) { console.error(e); return []; }
         finally { setIsLoadingTipos(false); }
     }, []);
+
+    // Descripciones tal como se emitieron: al editar no se pisan con las actuales del catálogo.
+    const descripcionesPrevias = useMemo(
+        () => new Map((estudio?.tipos || []).map((t) => [normalizeNombre(t.nombre), t.descripcion || ''])),
+        [estudio]
+    );
 
     useEffect(() => {
         if (isOpen) {
             setSelectedIds(new Set());
-            setDatos({ ...DATOS_PACIENTE_VACIOS, ...datosIniciales });
-            setFecha(new Date().toISOString().split('T')[0]);
-            setDiagnostico('');
-            setNotas('');
+            setExtraTipos([]);
+            setDatos({ ...DATOS_PACIENTE_VACIOS, ...(estudio?.datosPaciente || datosIniciales) });
+            setFecha(estudio?.fecha || new Date().toISOString().split('T')[0]);
+            setDiagnostico(estudio?.diagnostico || '');
+            setNotas(estudio?.notas || '');
             setShowCatalog(false);
             setNewNombre('');
             setNewDescripcion('');
             setNewCategoria('');
             setNewPrequirurgico(false);
-            loadTipos();
+            loadTipos().then((lista) => {
+                if (!estudio) return;
+                // Se marcan los estudios de la solicitud; un mismo nombre puede figurar en varios perfiles.
+                const idsPorNombre = new Map();
+                lista.forEach((t) => {
+                    const key = normalizeNombre(t.nombre);
+                    idsPorNombre.set(key, [...(idsPorNombre.get(key) || []), t.id]);
+                });
+                const ids = new Set();
+                const faltantes = [];
+                (estudio.tipos || []).forEach((t) => {
+                    const encontrados = idsPorNombre.get(normalizeNombre(t.nombre));
+                    if (encontrados) encontrados.forEach((id) => ids.add(id));
+                    else faltantes.push({ nombre: t.nombre, descripcion: t.descripcion || '' });
+                });
+                setSelectedIds(ids);
+                setExtraTipos(faltantes);
+            });
         }
-    }, [isOpen, loadTipos, datosIniciales]);
+    }, [isOpen, loadTipos, datosIniciales, estudio]);
 
     const handleDatoChange = (e) => {
         const { name, value } = e.target;
@@ -137,7 +168,8 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
         const selectedTipos = tipos
             .filter((t) => selectedIds.has(t.id))
             .filter((t) => { const key = normalizeNombre(t.nombre); if (vistos.has(key)) return false; vistos.add(key); return true; })
-            .map((t) => ({ nombre: t.nombre, descripcion: t.descripcion || '' }));
+            .map((t) => ({ nombre: t.nombre, descripcion: descripcionesPrevias.get(normalizeNombre(t.nombre)) ?? (t.descripcion || '') }));
+        selectedTipos.push(...extraTipos);
         if (selectedTipos.length === 0) {
             Swal.fire('Atención', 'Seleccioná al menos un estudio.', 'warning');
             return;
@@ -147,21 +179,23 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
         const estudioData = {
             tipos: selectedTipos,
             datosPaciente,
-            solicitadoPor: `Dra. ${MEMBRETE.profesional}`,
+            solicitadoPor: estudio?.solicitadoPor || `Dra. ${MEMBRETE.profesional}`,
             fecha,
             diagnostico,
             notas,
         };
-        Promise.resolve(onSave(estudioData)).finally(() => setIsSubmitting(false));
+        Promise.resolve(onSave(estudioData, estudio)).finally(() => setIsSubmitting(false));
     };
 
     if (!isOpen) return null;
+
+    const totalSeleccionados = selectedIds.size + extraTipos.length;
 
     return (
         <div className="agenda-modal-overlay">
             <div className="agenda-modal-content recipe-modal">
                 <div className="modal-header">
-                    <h3>Nueva Solicitud de Estudios</h3>
+                    <h3>{estudio ? 'Editar Solicitud de Estudios' : 'Nueva Solicitud de Estudios'}</h3>
                     <button className="close-btn" onClick={onClose}>&times;</button>
                 </div>
                 <form onSubmit={handleSubmit}>
@@ -184,7 +218,7 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
                     </div>
 
                     <div className="estudios-catalog-header">
-                        <h4>Estudios a solicitar {selectedIds.size > 0 && <span className="estudios-selected-badge">{selectedIds.size} seleccionado{selectedIds.size > 1 ? 's' : ''}</span>}</h4>
+                        <h4>Estudios a solicitar {totalSeleccionados > 0 && <span className="estudios-selected-badge">{totalSeleccionados} seleccionado{totalSeleccionados > 1 ? 's' : ''}</span>}</h4>
                         <button type="button" className="btn btn-secondary btn-sm" onClick={() => setShowCatalog((s) => !s)}>
                             {showCatalog ? 'Ocultar catálogo' : 'Gestionar catálogo'}
                         </button>
@@ -220,6 +254,18 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
                             managing={showCatalog} onDeleteTipo={handleDeleteTipo} onUpdateTipo={handleUpdateTipo} />
                     )}
 
+                    {extraTipos.length > 0 && (
+                        <div className="estudios-extra-tipos">
+                            <small>Incluidos en esta solicitud y ya fuera del catálogo:</small>
+                            {extraTipos.map((t) => (
+                                <span key={t.nombre} className="estudios-extra-chip">
+                                    {t.nombre}
+                                    <button type="button" aria-label={`Quitar ${t.nombre}`} onClick={() => setExtraTipos((prev) => prev.filter((x) => x.nombre !== t.nombre))}>&times;</button>
+                                </span>
+                            ))}
+                        </div>
+                    )}
+
                     <div className="form-group">
                         <label htmlFor="diagnosticoEstudio">Diagnóstico</label>
                         <textarea id="diagnosticoEstudio" value={diagnostico} onChange={(e) => setDiagnostico(e.target.value)} />
@@ -232,7 +278,7 @@ const CreateEstudioModal = ({ isOpen, onClose, onSave, datosIniciales }) => {
 
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" onClick={onClose}>Cancelar</button>
-                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>{isSubmitting ? 'Guardando...' : 'Guardar Solicitud'}</button>
+                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>{isSubmitting ? 'Guardando...' : (estudio ? 'Guardar Cambios' : 'Guardar Solicitud')}</button>
                     </div>
                 </form>
             </div>

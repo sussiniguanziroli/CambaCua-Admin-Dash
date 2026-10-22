@@ -4,6 +4,7 @@ import { collection, query, where, getDocs, doc, getDoc, updateDoc, increment } 
 import { db } from '../../firebase/config';
 import Swal from 'sweetalert2';
 import LoaderSpinner from '../utils/LoaderSpinner';
+import { formatNumber } from '../../utils/format';
 
 const UserDetailModal = ({ user, isOpen, onClose, onUserUpdate }) => {
     const modalRef = useRef();
@@ -17,9 +18,9 @@ const UserDetailModal = ({ user, isOpen, onClose, onUserUpdate }) => {
 
     const formatPrice = (price) => {
         if (price !== null && price !== undefined) {
-            return `$${price.toLocaleString('es-AR')}`;
+            return `$${formatNumber(price)}`;
         }
-        return '$0.00';
+        return '$0,00';
     };
 
     const formatDate = (timestamp) => {

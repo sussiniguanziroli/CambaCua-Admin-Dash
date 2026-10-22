@@ -1,5 +1,6 @@
 import { db } from '../firebase/config';
 import { collection, documentId, getDocs, query, where, Timestamp } from 'firebase/firestore';
+import { formatDecimal } from '../utils/format';
 
 const CACHE_DURATION = 10 * 60 * 1000;
 let statsCache = new Map();
@@ -301,7 +302,8 @@ export const calculateAllTopCustomers = async (period, limit = 10, onProgress) =
             let vencimientoCount = 0;
 
             for (const patient of tutorPatients) {
-                const historias = historiasByPatient.get(patient.id) || [];
+                // Las novedades (comentarios del tutor) no tienen peso clínico: no cuentan como historia.
+                const historias = (historiasByPatient.get(patient.id) || []).filter(d => d.data().type !== 'novedad');
                 historiaCount += historias.length;
                 historias.forEach(doc => {
                     const decay = calculateDecay(doc.data().createdAt);
@@ -487,7 +489,7 @@ export const exportToCSV = (data, filename) => {
     const rows = data.map((item, index) => [
         index + 1,
         item.tutorName,
-        `$${item.totalSpent.toFixed(2)}`,
+        `$${formatDecimal(item.totalSpent)}`,
         item.purchaseCount,
         item.engagementScore,
         item.lastPurchase ? item.lastPurchase.toDate().toLocaleDateString('es-AR') : 'N/A',

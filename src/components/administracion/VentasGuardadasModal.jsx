@@ -4,6 +4,7 @@ import { collection, query, where, getDocs, deleteDoc, doc, Timestamp } from 'fi
 import Swal from 'sweetalert2';
 import { FaTimes, FaTrash, FaEdit, FaFileDownload } from 'react-icons/fa';
 import { generatePresupuestoPDF } from '../../services/presupuestoService';
+import { formatDecimal } from '../../utils/format';
 
 const VentasGuardadasModal = ({ isOpen, onClose, selectedDate, onLoadSale }) => {
     const [savedSales, setSavedSales] = useState([]);
@@ -118,7 +119,7 @@ const VentasGuardadasModal = ({ isOpen, onClose, selectedDate, onLoadSale }) => 
                                             <span className="venta-guardada-time">
                                                 {sale.createdAt?.toDate().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
                                             </span>
-                                            <span className="venta-guardada-total">${sale.total.toFixed(2)}</span>
+                                            <span className="venta-guardada-total">${formatDecimal(sale.total)}</span>
                                         </div>
                                         <div className="venta-guardada-details">
                                             <p><strong>Tutor:</strong> {sale.tutor?.name || 'Cliente Genérico'}</p>

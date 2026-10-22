@@ -3,6 +3,7 @@
 import { db } from '../firebase/config';
 import { collection, doc, writeBatch, serverTimestamp } from 'firebase/firestore';
 import { reserveComprobanteRange } from './comprobanteService';
+import { formatDecimal } from '../utils/format';
 
 const buildConcept = (sale) => {
     const items = sale.items || [];
@@ -89,7 +90,7 @@ export const generateRecibosPDF = async (recibos, tutor) => {
 
         y += 16;
         docPdf.setFontSize(16);
-        docPdf.text(`Total recibido: $${(recibo.amount || 0).toFixed(2)}`, margin, y);
+        docPdf.text(`Total recibido: $${formatDecimal((recibo.amount || 0))}`, margin, y);
 
         y += 70;
         docPdf.setFontSize(11);

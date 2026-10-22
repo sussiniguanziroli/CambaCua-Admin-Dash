@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowUp, FaArrowDown, FaMinus, FaEye, FaUser } from 'react-icons/fa';
+import { formatMoney } from '../../../utils/format';
 
 const RankingCard = ({ customer, position, onViewDetail, rankingType }) => {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ const RankingCard = ({ customer, position, onViewDetail, rankingType }) => {
     };
 
     const formatCurrency = (value) => {
-        return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value);
+        return formatMoney(value);
     };
 
     const getMainMetric = () => {

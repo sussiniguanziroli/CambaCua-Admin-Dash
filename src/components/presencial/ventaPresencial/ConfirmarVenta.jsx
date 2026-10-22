@@ -4,6 +4,7 @@ import { FaSyringe, FaDog, FaCat } from 'react-icons/fa';
 import { db } from '../../../firebase/config';
 import { collection, addDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2';
+import { formatDecimal } from '../../../utils/format';
 
 const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleClinicalHistory, onToggleSuministro, onSaleReset }) => {
     const [isSaving, setIsSaving] = useState(false);
@@ -67,13 +68,13 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                                     )}
                                     {item.discountAmount > 0 && (
                                         <div className="item-discount-info">
-                                            <span>Orig: ${item.priceBeforeDiscount.toFixed(2)}</span>
-                                            <span>Dto: -${item.discountAmount.toFixed(2)}</span>
+                                            <span>Orig: ${formatDecimal(item.priceBeforeDiscount)}</span>
+                                            <span>Dto: -${formatDecimal(item.discountAmount)}</span>
                                         </div>
                                     )}
                                 </div>
                                 <span className={`item-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}>
-                                    ${item.price.toFixed(2)}
+                                    ${formatDecimal(item.price)}
                                 </span>
                             </div>
                         </li>
@@ -152,9 +153,9 @@ const ConfirmarVenta = ({ saleData, onConfirm, prevStep, isSubmitting, onToggleC
                             <strong>{saleData.patients.map(p => p.name).join(', ')}</strong>
                         </div>
                     )}
-                    <div className="summary-row"><span>Subtotal:</span><strong>${subtotal.toFixed(2)}</strong></div>
-                    {totalDiscount > 0 && <div className="summary-row discount"><span>Descuentos:</span><strong>-${totalDiscount.toFixed(2)}</strong></div>}
-                    <div className="summary-total"><span>Total Venta:</span><strong>${saleData.total.toFixed(2)}</strong></div>
+                    <div className="summary-row"><span>Subtotal:</span><strong>${formatDecimal(subtotal)}</strong></div>
+                    {totalDiscount > 0 && <div className="summary-row discount"><span>Descuentos:</span><strong>-${formatDecimal(totalDiscount)}</strong></div>}
+                    <div className="summary-total"><span>Total Venta:</span><strong>${formatDecimal(saleData.total)}</strong></div>
                 </div>
             </div>
 

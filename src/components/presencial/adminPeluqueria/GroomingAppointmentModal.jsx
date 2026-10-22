@@ -3,6 +3,7 @@ import { db } from "../../../firebase/config";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import Swal from "sweetalert2";
 import { FaUser, FaDog, FaCut, FaTimes } from "react-icons/fa";
+import { AppointmentProfileLinks } from "../agenda/ProfileLinks";
 
 const GroomingAppointmentModal = ({
   isOpen,
@@ -253,6 +254,8 @@ const GroomingAppointmentModal = ({
             <FaTimes />
           </button>
         </div>
+
+        <AppointmentProfileLinks appointment={appointmentData} />
 
         <form onSubmit={handleSubmit} className="peluqueria-modal-form">
           <div className="peluqueria-form-section">

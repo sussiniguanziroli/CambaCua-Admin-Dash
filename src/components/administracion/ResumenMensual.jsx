@@ -4,6 +4,7 @@ import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore
 import { useNavigate } from 'react-router-dom';
 import { FaCalendarAlt, FaExternalLinkAlt } from 'react-icons/fa';
 import LoaderSpinner from '../utils/LoaderSpinner';
+import { formatDecimal } from '../../utils/format';
 
 const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const DAY_NAMES = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
@@ -37,8 +38,7 @@ const ResumenMensual = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const fmt = (n) =>
-        (parseFloat(n) || 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmt = (n) => formatDecimal(n);
 
     const fetchMonth = useCallback(async (y, m) => {
         setIsLoading(true);

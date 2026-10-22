@@ -3,6 +3,7 @@ import { getProductSalesHistory } from '../../../services/statsService';
 import { Timestamp } from 'firebase/firestore';
 import { FaSearch, FaDownload, FaBox } from 'react-icons/fa';
 import LoaderSpinner from '../../utils/LoaderSpinner';
+import { formatMoney } from '../../../utils/format';
 
 const ProductSalesManager = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -14,7 +15,7 @@ const ProductSalesManager = () => {
     const ITEMS_PER_PAGE = 20;
 
     const formatCurrency = (value) => {
-        return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value);
+        return formatMoney(value);
     };
 
     const formatDate = (timestamp) => {

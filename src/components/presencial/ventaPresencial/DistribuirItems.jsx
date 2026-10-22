@@ -1,6 +1,7 @@
 // DistribuirItems.jsx
 import React, { useState } from 'react';
 import { FaDog, FaCat } from 'react-icons/fa';
+import { formatDecimal } from '../../../utils/format';
 
 const DistribuirItems = ({ saleData, onDistributionConfirmed, prevStep }) => {
     const numPatients = saleData.patients.length;
@@ -92,7 +93,7 @@ const DistribuirItems = ({ saleData, onDistributionConfirmed, prevStep }) => {
                                         Comprado: {item.isDoseable ? `${item.quantity} ${item.unit}` : `${item.quantity} u.`}
                                     </span>
                                     <span className={`di-distributed-total ${isOver ? 'over' : ''}`}>
-                                        Distribuido: {item.isDoseable ? `${totalDist.toFixed(2)} ${item.unit}` : `${totalDist} u.`}
+                                        Distribuido: {item.isDoseable ? `${formatDecimal(totalDist)} ${item.unit}` : `${totalDist} u.`}
                                     </span>
                                 </div>
                             </div>

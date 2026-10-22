@@ -1,3 +1,4 @@
+import { formatDecimal } from '../utils/format';
 // comprasReportService.js
 // Exportación del historial de compras de un tutor a PDF y Excel.
 
@@ -54,9 +55,9 @@ export const exportComprasPDF = async (tutor, sales) => {
             fmtDate(sale),
             fmtPatients(sale),
             fmtItems(sale),
-            `$${c.total.toFixed(2)}`,
-            `$${c.paid.toFixed(2)}`,
-            `$${c.debt.toFixed(2)}`,
+            `$${formatDecimal(c.total)}`,
+            `$${formatDecimal(c.paid)}`,
+            `$${formatDecimal(c.debt)}`,
             c.status,
         ];
     });
@@ -69,7 +70,7 @@ export const exportComprasPDF = async (tutor, sales) => {
         headStyles: { fillColor: [52, 73, 94] },
         columnStyles: { 3: { cellWidth: 220 } },
         margin: { left: margin, right: margin },
-        foot: [['', '', '', 'TOTALES', `$${grandTotal.toFixed(2)}`, `$${grandPaid.toFixed(2)}`, `$${grandDebt.toFixed(2)}`, '']],
+        foot: [['', '', '', 'TOTALES', `$${formatDecimal(grandTotal)}`, `$${formatDecimal(grandPaid)}`, `$${formatDecimal(grandDebt)}`, '']],
         footStyles: { fillColor: [236, 240, 241], textColor: 20, fontStyle: 'bold' },
     });
 

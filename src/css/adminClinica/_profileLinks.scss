@@ -1,0 +1,74 @@
+// Accesos directos a perfiles de paciente/tutor desde tarjetas y modales de agenda.
+.agenda-profile-link {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+        color: #3498db;
+        text-decoration: underline;
+    }
+}
+
+.appointment-profile-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    padding: 0.6rem 1.5rem;
+    background: #f4f7fd;
+    border-bottom: 1px solid #dde5f4;
+    font-size: 0.95rem;
+
+    span { color: #6b7280; }
+
+    a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.25rem 0.75rem;
+        border: 1px solid #c9d6f0;
+        border-radius: 999px;
+        background: #fff;
+        color: #3498db;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: #3498db;
+            border-color: #3498db;
+            color: #fff;
+        }
+    }
+}
+
+// Estudios incluidos en una solicitud que se edita y ya no están en el catálogo.
+.estudios-extra-tipos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.5rem 0 1rem;
+
+    small { color: #6b7280; }
+
+    .estudios-extra-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.2rem 0.6rem;
+        border: 1px solid #f0d9a8;
+        border-radius: 999px;
+        background: #fffaf0;
+        font-size: 0.85rem;
+
+        button {
+            border: none;
+            background: none;
+            color: #b7791f;
+            font-size: 1.1rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+    }
+}

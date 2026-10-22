@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaFilePdf, FaFileWord, FaFileAlt, FaImage } from 'react-icons/fa';
+import { isNovedad } from '../../utils/noteTypes';
 
 const ViewClinicalNoteModal = ({ isOpen, onClose, onEdit, note, patientName, tutorName }) => {
     if (!isOpen || !note) return null;
@@ -7,6 +8,7 @@ const ViewClinicalNoteModal = ({ isOpen, onClose, onEdit, note, patientName, tut
     // Lógica robusta: Toma el nombre de las props (si viene de Perfil) o de la nota (si viene de Monitor)
     const displayPatient = patientName || note.pacienteName;
     const displayTutor = tutorName || note.tutorName;
+    const novedad = isNovedad(note);
 
     const getFileIcon = (fileType) => {
         if (fileType.startsWith('image/')) return <FaImage />;
@@ -17,10 +19,10 @@ const ViewClinicalNoteModal = ({ isOpen, onClose, onEdit, note, patientName, tut
 
     return (
         <div className="agenda-modal-overlay">
-            <div className="agenda-modal-content view-note-modal">
+            <div className={`agenda-modal-content view-note-modal ${novedad ? 'is-novedad' : ''}`}>
                 <div className="modal-header">
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                        <h3 style={{ margin: 0 }}>Detalle de Nota Clínica</h3>
+                        <h3 style={{ margin: 0 }}>{novedad ? 'Detalle de Novedad' : 'Detalle de Nota Clínica'}</h3>
                         {/* AQUI ESTÁ EL NOMBRE Y TUTOR SIEMPRE VISIBLE */}
                         {displayPatient && (
                             <span style={{ fontSize: '0.9em', color: '#4a4a4a', fontWeight: '500' }}>
@@ -36,17 +38,26 @@ const ViewClinicalNoteModal = ({ isOpen, onClose, onEdit, note, patientName, tut
                         <p>{note.date}</p>
                     </div>
                     <div className="info-section">
-                        <small>Motivo de Consulta</small>
+                        <small>{novedad ? 'Título' : 'Motivo de Consulta'}</small>
                         <p>{note.reason || 'N/A'}</p>
                     </div>
-                    <div className="info-section">
-                        <small>Diagnóstico</small>
-                        <p>{note.diagnosis || 'N/A'}</p>
-                    </div>
-                    <div className="info-section">
-                        <small>Tratamiento</small>
-                        <p>{note.treatment || 'N/A'}</p>
-                    </div>
+                    {novedad ? (
+                        <div className="info-section">
+                            <small>Comentario / Novedad</small>
+                            <p style={{ whiteSpace: 'pre-wrap' }}>{note.comment || 'N/A'}</p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="info-section">
+                                <small>Diagnóstico</small>
+                                <p>{note.diagnosis || 'N/A'}</p>
+                            </div>
+                            <div className="info-section">
+                                <small>Tratamiento</small>
+                                <p>{note.treatment || 'N/A'}</p>
+                            </div>
+                        </>
+                    )}
                     {note.media && note.media.length > 0 && (
                         <div className="info-section">
                             <small>Archivos Adjuntos</small>
@@ -67,7 +78,7 @@ const ViewClinicalNoteModal = ({ isOpen, onClose, onEdit, note, patientName, tut
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" onClick={onClose}>Cerrar</button>
-                    <button type="button" className="btn btn-primary" onClick={onEdit}>Editar Nota</button>
+                    <button type="button" className="btn btn-primary" onClick={onEdit}>{novedad ? 'Editar Novedad' : 'Editar Nota'}</button>
                 </div>
             </div>
         </div>

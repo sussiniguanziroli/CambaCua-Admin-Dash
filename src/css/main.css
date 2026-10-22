@@ -12201,6 +12201,154 @@ button.btn-reset:hover {
   }
 }
 
+.note-type-toggle {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  margin-bottom: 1.5rem;
+  background: #eef0f3;
+  border-radius: 10px;
+}
+.note-type-toggle button {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #6b7280;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.note-type-toggle button.active {
+  background: #fff;
+  color: #3498db;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+.note-type-toggle button.active.novedad {
+  color: #b7791f;
+}
+.note-type-toggle button:disabled:not(.active) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.entry-tag-novedad {
+  display: inline-block;
+  margin-right: 0.6rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #b7791f;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.profile-container.paciente-profile .clinical-history-list .clinical-entry-card.novedad {
+  background: #fffaf0;
+  border-color: #f0d9a8;
+}
+.profile-container.paciente-profile .clinical-history-list .clinical-entry-card.novedad:hover {
+  border-color: #e7c274;
+}
+.profile-container.paciente-profile .clinical-history-list .clinical-entry-card.novedad .entry-header {
+  background: #fdf1d6;
+  border-bottom-color: #f0d9a8;
+}
+.profile-container.paciente-profile .clinical-history-list .clinical-entry-card.novedad .entry-novedad-text {
+  margin: 0;
+  white-space: pre-line;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.monitor-clinica-container .history-entry-card.novedad {
+  background: #fffaf0;
+  box-shadow: inset 3px 0 0 #b7791f;
+}
+.monitor-clinica-container .history-entry-card.novedad:hover {
+  background-color: #fdf1d6;
+}
+
+.view-note-modal.is-novedad .modal-header h3 {
+  color: #b7791f;
+}
+
+.agenda-profile-link {
+  color: inherit;
+  text-decoration: none;
+}
+.agenda-profile-link:hover {
+  color: #3498db;
+  text-decoration: underline;
+}
+
+.appointment-profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.6rem 1.5rem;
+  background: #f4f7fd;
+  border-bottom: 1px solid #dde5f4;
+  font-size: 0.95rem;
+}
+.appointment-profile-links span {
+  color: #6b7280;
+}
+.appointment-profile-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid #c9d6f0;
+  border-radius: 999px;
+  background: #fff;
+  color: #3498db;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.appointment-profile-links a:hover {
+  background: #3498db;
+  border-color: #3498db;
+  color: #fff;
+}
+
+.estudios-extra-tipos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.5rem 0 1rem;
+}
+.estudios-extra-tipos small {
+  color: #6b7280;
+}
+.estudios-extra-tipos .estudios-extra-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid #f0d9a8;
+  border-radius: 999px;
+  background: #fffaf0;
+  font-size: 0.85rem;
+}
+.estudios-extra-tipos .estudios-extra-chip button {
+  border: none;
+  background: none;
+  color: #b7791f;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
 .paciente-form-container {
   max-width: 800px;
   margin: 2rem auto;
@@ -18127,6 +18275,47 @@ button.btn-reset:hover {
 .invoice-review .review-header .margin-control .input-group span {
   color: #666;
   padding-right: 5px;
+}
+
+.agenda-profile-link {
+  color: inherit;
+  text-decoration: none;
+}
+.agenda-profile-link:hover {
+  color: #0b369c;
+  text-decoration: underline;
+}
+
+.appointment-profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.6rem 1.5rem;
+  background: #f4f7fd;
+  border-bottom: 1px solid #dde5f4;
+  font-size: 0.95rem;
+}
+.appointment-profile-links span {
+  color: #6b7280;
+}
+.appointment-profile-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid #c9d6f0;
+  border-radius: 999px;
+  background: #fff;
+  color: #0b369c;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.appointment-profile-links a:hover {
+  background: #0b369c;
+  border-color: #0b369c;
+  color: #fff;
 }
 
 * {

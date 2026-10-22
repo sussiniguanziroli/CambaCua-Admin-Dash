@@ -1,6 +1,7 @@
 // ResumenVenta.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { formatDecimal } from '../../../utils/format';
 
 const ResumenVenta = ({ saleData, onReset }) => {
     const totalPaid = saleData.payments.filter(p => !p.isVuelto).reduce((sum, p) => sum + parseFloat(p.amount), 0);
@@ -29,17 +30,17 @@ const ResumenVenta = ({ saleData, onReset }) => {
             const items = (saleData.cart || []).map(it => {
                 const quantity = it.isDoseable ? `${it.quantity} ${it.unit}` : String(it.quantity ?? 1);
                 let name = it.name;
-                if (it.discountAmount > 0) name += ` (Dto: -$${it.discountAmount.toFixed(2)})`;
-                return [quantity, name, `$${it.price.toFixed(2)}`];
+                if (it.discountAmount > 0) name += ` (Dto: -$${formatDecimal(it.discountAmount)})`;
+                return [quantity, name, `$${formatDecimal(it.price)}`];
             });
             if (items.length > 0) { autoTable(doc, { startY: y, head: [['Cant.', 'Item', 'Subtotal']], body: items, margin: { left: margin, right: margin } }); y = doc.lastAutoTable.finalY + 15; }
             doc.setFontSize(12);
-            doc.text(`Subtotal: $${subtotal.toFixed(2)}`, margin, y); y += 20;
-            if (totalDiscount > 0) { doc.text(`Descuentos: -$${totalDiscount.toFixed(2)}`, margin, y); y += 20; }
-            const paymentsRows = (saleData.payments || []).map(p => [p.method || '-', `$${parseFloat(p.amount ?? 0).toFixed(2)}`]);
+            doc.text(`Subtotal: $${formatDecimal(subtotal)}`, margin, y); y += 20;
+            if (totalDiscount > 0) { doc.text(`Descuentos: -$${formatDecimal(totalDiscount)}`, margin, y); y += 20; }
+            const paymentsRows = (saleData.payments || []).map(p => [p.method || '-', `$${formatDecimal(parseFloat(p.amount ?? 0))}`]);
             if (paymentsRows.length > 0) { autoTable(doc, { startY: y, head: [['Método', 'Monto Pagado']], body: paymentsRows, margin: { left: margin, right: margin } }); y = doc.lastAutoTable.finalY + 15; }
-            if ((saleData.debt || 0) > 0) { doc.text(`Deuda Generada: $${saleData.debt.toFixed(2)}`, margin, y); y += 20; }
-            doc.setFontSize(14); doc.text(`Total Venta: $${saleData.total.toFixed(2)}`, margin, y);
+            if ((saleData.debt || 0) > 0) { doc.text(`Deuda Generada: $${formatDecimal(saleData.debt)}`, margin, y); y += 20; }
+            doc.setFontSize(14); doc.text(`Total Venta: $${formatDecimal(saleData.total)}`, margin, y);
             doc.save(`Recibo_CambaCuaVet_${saleData.comprobante || saleData.id}.pdf`);
         } catch (err) { console.error(err); alert('No se pudo generar el PDF.'); }
     };
@@ -68,13 +69,13 @@ const ResumenVenta = ({ saleData, onReset }) => {
                                         )}
                                         {item.discountAmount > 0 && (
                                             <div className="item-discount-info">
-                                                <span>Orig: ${item.priceBeforeDiscount.toFixed(2)}</span>
-                                                <span>Dto: -${item.discountAmount.toFixed(2)}</span>
+                                                <span>Orig: ${formatDecimal(item.priceBeforeDiscount)}</span>
+                                                <span>Dto: -${formatDecimal(item.discountAmount)}</span>
                                             </div>
                                         )}
                                     </div>
                                     <span className={`item-price ${item.discountAmount > 0 ? 'is-discounted' : ''}`}>
-                                        ${item.price.toFixed(2)}
+                                        ${formatDecimal(item.price)}
                                     </span>
                                 </div>
                             </li>
@@ -108,23 +109,23 @@ const ResumenVenta = ({ saleData, onReset }) => {
                 </div>
 
                 <div className="resumen-section">
-                    <div className="summary-row"><span>Subtotal:</span><strong>${subtotal.toFixed(2)}</strong></div>
-                    {totalDiscount > 0 && <div className="summary-row discount"><span>Descuentos:</span><strong>-${totalDiscount.toFixed(2)}</strong></div>}
-                    {totalSurcharges > 0 && <div className="summary-row surcharge"><span>Recargos:</span><strong>+${totalSurcharges.toFixed(2)}</strong></div>}
+                    <div className="summary-row"><span>Subtotal:</span><strong>${formatDecimal(subtotal)}</strong></div>
+                    {totalDiscount > 0 && <div className="summary-row discount"><span>Descuentos:</span><strong>-${formatDecimal(totalDiscount)}</strong></div>}
+                    {totalSurcharges > 0 && <div className="summary-row surcharge"><span>Recargos:</span><strong>+${formatDecimal(totalSurcharges)}</strong></div>}
                     <div className="summary-row">
                         <span>Pagos Registrados:</span>
                         <div className="payment-details">
                             {saleData.payments.filter(p => !p.isVuelto).map(p => (
-                                <strong key={p.id}>{p.method}{p.cardType ? ` (${p.cardType})` : ''}: ${parseFloat(p.amount).toFixed(2)}</strong>
+                                <strong key={p.id}>{p.method}{p.cardType ? ` (${p.cardType})` : ''}: ${formatDecimal(parseFloat(p.amount))}</strong>
                             ))}
                         </div>
                     </div>
-                    {vuelto > 0 && <div className="summary-row"><span>Vuelto:</span><strong>${vuelto.toFixed(2)}</strong></div>}
-                    {saleData.debt > 0 && <div className="summary-row debt"><span>Deuda Generada:</span><strong>-${saleData.debt.toFixed(2)}</strong></div>}
+                    {vuelto > 0 && <div className="summary-row"><span>Vuelto:</span><strong>${formatDecimal(vuelto)}</strong></div>}
+                    {saleData.debt > 0 && <div className="summary-row debt"><span>Deuda Generada:</span><strong>-${formatDecimal(saleData.debt)}</strong></div>}
                 </div>
 
                 <div className="resumen-total-section">
-                    <div className="summary-total"><span>Total Abonado:</span><strong>${totalPaid.toFixed(2)}</strong></div>
+                    <div className="summary-total"><span>Total Abonado:</span><strong>${formatDecimal(totalPaid)}</strong></div>
                 </div>
             </div>
 

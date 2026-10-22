@@ -20,6 +20,7 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import AppointmentModal from "./AppointmentModal";
+import { PacienteLink, TutorLink } from "./ProfileLinks";
 
 const AppointmentCard = ({ appointment, onClick, viewMode }) => {
   const tutor = appointment.tutorName || "Genérico";
@@ -47,9 +48,9 @@ const AppointmentCard = ({ appointment, onClick, viewMode }) => {
       <div className="agenda-appointment-body">
         <p className="agenda-appointment-patient">
           <FaUser />
-          {paciente}
+          <PacienteLink id={appointment.pacienteId} name={paciente} />
         </p>
-        <p className="agenda-appointment-tutor">{tutor}</p>
+        <p className="agenda-appointment-tutor"><TutorLink id={appointment.tutorId} name={tutor} /></p>
         <p className="agenda-appointment-service">
           <FaStethoscope />
           {appointment.services?.[0]?.nombre || "Consulta"}

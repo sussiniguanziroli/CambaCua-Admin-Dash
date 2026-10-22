@@ -1,3 +1,4 @@
+import { formatDecimal } from '../utils/format';
 // presupuestoService.js
 // Utilidades de los presupuestos (colección `ventas_guardadas`): PDF y antigüedad.
 
@@ -65,9 +66,9 @@ export const generatePresupuestoPDF = async (sale) => {
         const quantity = formatCartQuantity(it);
         let name = it.name;
         if (it.discountAmount > 0) {
-            name += ` (Dto: -$${it.discountAmount.toFixed(2)})`;
+            name += ` (Dto: -$${formatDecimal(it.discountAmount)})`;
         }
-        const price = `$${it.price.toFixed(2)}`;
+        const price = `$${formatDecimal(it.price)}`;
         return [quantity, name, price];
     });
 
@@ -79,15 +80,15 @@ export const generatePresupuestoPDF = async (sale) => {
     doc.setFontSize(12);
     const { subtotal, discount } = getPresupuestoTotals(sale);
 
-    doc.text(`Subtotal: $${subtotal.toFixed(2)}`, margin, y);
+    doc.text(`Subtotal: $${formatDecimal(subtotal)}`, margin, y);
     y += 20;
     if (discount > 0) {
-        doc.text(`Descuentos: -$${discount.toFixed(2)}`, margin, y);
+        doc.text(`Descuentos: -$${formatDecimal(discount)}`, margin, y);
         y += 20;
     }
 
     doc.setFontSize(14);
-    doc.text(`Total Estimado: $${sale.total.toFixed(2)}`, margin, y);
+    doc.text(`Total Estimado: $${formatDecimal(sale.total)}`, margin, y);
     y += 30;
 
     doc.setFontSize(10);

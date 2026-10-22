@@ -7,6 +7,7 @@ import Filtrado from './Filtrado';
 import LoaderSpinner from './utils/LoaderSpinner';
 import Swal from 'sweetalert2';
 import AdminProductModal from './AdminProductModal';
+import { formatDecimal } from '../utils/format';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -483,8 +484,8 @@ const ProductList = () => {
             const prices = producto.variationsList
                 .filter(v => v.activo && typeof v.precio === 'number')
                 .map(v => v.precio);
-            const minPrice = prices.length > 0 ? Math.min(...prices).toFixed(2) : 'N/A';
-            const maxPrice = prices.length > 0 ? Math.max(...prices).toFixed(2) : 'N/A';
+            const minPrice = prices.length > 0 ? formatDecimal(Math.min(...prices)) : 'N/A';
+            const maxPrice = prices.length > 0 ? formatDecimal(Math.max(...prices)) : 'N/A';
             const priceRange = (minPrice === maxPrice && minPrice !== 'N/A') ? `$${minPrice}` : (minPrice !== 'N/A' ? `$${minPrice} - $${maxPrice}` : 'N/A');
 
             const stocks = producto.variationsList
@@ -549,7 +550,7 @@ const ProductList = () => {
                     <div className="product-image-container">
                         {producto.imagen ? <img src={producto.imagen} alt={producto.nombre} onError={(e) => e.target.src = 'https://via.placeholder.com/400?text=Sin+Imagen'} /> : <span className="no-image">Sin imagen</span>}
                     </div>
-                    <p><strong>Precio:</strong> ${producto.precio ? producto.precio.toFixed(2) : 'N/A'}</p>
+                    <p><strong>Precio:</strong> ${producto.precio ? formatDecimal(producto.precio) : 'N/A'}</p>
                     <p><strong>Stock:</strong> {producto.stock !== undefined ? producto.stock : 'N/A'}</p>
                     <p><strong>Categoría:</strong> {producto.categoria || 'N/A'}</p>
                     <p><strong>Subcategoría:</strong> {producto.subcategoria || 'N/A'}</p>

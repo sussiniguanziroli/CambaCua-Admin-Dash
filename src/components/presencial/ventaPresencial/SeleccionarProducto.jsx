@@ -5,6 +5,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import SeleccionarPrecioModal from './SeleccionarPrecioModal';
+import { formatDecimal } from '../../../utils/format';
 
 let productsCache = null;
 let categoriesCache = null;
@@ -27,7 +28,7 @@ const DosageModal = ({ isOpen, onClose, onConfirm, item }) => {
                 </div>
                 <div className="dosage-price-preview">
                     <span>Precio Calculado:</span>
-                    <strong>${calculatedPrice.toFixed(2)}</strong>
+                    <strong>${formatDecimal(calculatedPrice)}</strong>
                 </div>
                 <div className="dosage-modal-actions">
                     <button onClick={onClose} className="btn btn-secondary">Cancelar</button>
@@ -58,7 +59,7 @@ const ProductListItem = React.memo(({ item, isInCart, onAddToCart }) => {
                     {stockValue} u.
                 </span>
                 <span className="item-price">
-                    {item.isDoseable ? `$${(item.pricePerML || 0).toFixed(2)}/ml` : `$${(item.displayPrice || 0).toFixed(2)}`}
+                    {item.isDoseable ? `$${formatDecimal((item.pricePerML || 0))}/ml` : `$${formatDecimal((item.displayPrice || 0))}`}
                 </span>
                 <button className="add-item-btn" onClick={() => onAddToCart(item)} disabled={isInCart}>
                     {isInCart ? '✓' : '+'}
@@ -82,14 +83,14 @@ const CartItem = React.memo(({ item, onChangeQuantity, onOpenPriceModal, onRemov
                 <span className="card-item-name">{item.displayName}</span>
                 <span className="card-item-price-unit">
                     {item.isDoseable
-                        ? `${item.quantity} ml @ $${(item.originalPrice || item.pricePerML || 0).toFixed(2)}/ml`
-                        : `${item.quantity} u. @ $${(item.originalPrice || 0).toFixed(2)}/u.`}
+                        ? `${item.quantity} ml @ $${formatDecimal((item.originalPrice || item.pricePerML || 0))}/ml`
+                        : `${item.quantity} u. @ $${formatDecimal((item.originalPrice || 0))}/u.`}
                 </span>
             </div>
             {item.discountAmount > 0 && (
                 <div className="card-item-discount-info">
-                    <span>Precio original: ${item.priceBeforeDiscount.toFixed(2)}</span>
-                    <span>Descuento: -${item.discountAmount.toFixed(2)}</span>
+                    <span>Precio original: ${formatDecimal(item.priceBeforeDiscount)}</span>
+                    <span>Descuento: -${formatDecimal(item.discountAmount)}</span>
                 </div>
             )}
             <div className="card-item-controls">
@@ -105,7 +106,7 @@ const CartItem = React.memo(({ item, onChangeQuantity, onOpenPriceModal, onRemov
                     onClick={() => onOpenPriceModal(item)}
                     title="Click para modificar precio/descuento"
                 >
-                    ${(item.price || 0).toFixed(2)}
+                    ${formatDecimal((item.price || 0))}
                 </span>
                 <button className="remove-item-btn" onClick={() => onRemove(item.id)}><TrashIcon /></button>
             </div>
@@ -345,9 +346,9 @@ const SeleccionarProducto = ({ onProductsSelected, prevStep, initialCart, saleDa
                     </div>
                     {cart.length > 0 && (
                         <div className="cart-summary-footer">
-                            <div className="summary-line"><span>Subtotal</span><span>${cartSummary.subtotal.toFixed(2)}</span></div>
-                            <div className="summary-line discount"><span>Descuentos</span><span>-${cartSummary.totalDiscount.toFixed(2)}</span></div>
-                            <div className="summary-line total"><span>Total</span><strong>${cartSummary.total.toFixed(2)}</strong></div>
+                            <div className="summary-line"><span>Subtotal</span><span>${formatDecimal(cartSummary.subtotal)}</span></div>
+                            <div className="summary-line discount"><span>Descuentos</span><span>-${formatDecimal(cartSummary.totalDiscount)}</span></div>
+                            <div className="summary-line total"><span>Total</span><strong>${formatDecimal(cartSummary.total)}</strong></div>
                         </div>
                     )}
                 </div>

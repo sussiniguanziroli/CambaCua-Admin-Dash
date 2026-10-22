@@ -1,6 +1,7 @@
 // MetodoPago.jsx
 import React, { useState, useMemo } from 'react';
 import { FaCcVisa, FaCcMastercard, FaCreditCard, FaMoneyBillWave, FaExchangeAlt } from 'react-icons/fa';
+import { formatDecimal } from '../../../utils/format';
 
 const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
     const [payments, setPayments] = useState(saleData.payments || []);
@@ -92,7 +93,7 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
                                                 <button type="button" className={payment.cardType === 'naranja' ? 'active' : ''} onClick={() => updateCardType(payment.id, 'naranja')}><FaCreditCard /> Naranja</button>
                                             </div>
                                             {payment.surchargeAmount > 0 && (
-                                                <div className="surcharge-info">Recargo ({payment.surchargePercent}%): <span>+${payment.surchargeAmount.toFixed(2)}</span></div>
+                                                <div className="surcharge-info">Recargo ({payment.surchargePercent}%): <span>+${formatDecimal(payment.surchargeAmount)}</span></div>
                                             )}
                                         </div>
                                     )}
@@ -103,13 +104,13 @@ const MetodoPago = ({ onPaymentSelected, prevStep, saleData }) => {
                 </div>
                 <div className="payment-summary-panel">
                     <h3>Resumen</h3>
-                    <div className="summary-row"><span>Subtotal</span><strong>${baseTotal.toFixed(2)}</strong></div>
-                    {totalSurcharges > 0 && <div className="summary-row surcharge"><span>Recargos</span><strong>+${totalSurcharges.toFixed(2)}</strong></div>}
-                    <div className="summary-row total"><span>Total a Pagar</span><strong>${totalWithSurcharges.toFixed(2)}</strong></div>
-                    <div className="summary-row"><span>Total Abonado</span><strong>${totalPaid.toFixed(2)}</strong></div>
+                    <div className="summary-row"><span>Subtotal</span><strong>${formatDecimal(baseTotal)}</strong></div>
+                    {totalSurcharges > 0 && <div className="summary-row surcharge"><span>Recargos</span><strong>+${formatDecimal(totalSurcharges)}</strong></div>}
+                    <div className="summary-row total"><span>Total a Pagar</span><strong>${formatDecimal(totalWithSurcharges)}</strong></div>
+                    <div className="summary-row"><span>Total Abonado</span><strong>${formatDecimal(totalPaid)}</strong></div>
                     <div className={`summary-row remaining ${remainingBalance > 0.01 ? 'debt' : ''} ${remainingBalance < -0.01 ? 'change' : ''}`}>
                         <span>{remainingBalance < -0.01 ? 'Vuelto:' : 'Saldo Restante:'}</span>
-                        <strong>${Math.abs(remainingBalance).toFixed(2)}</strong>
+                        <strong>${formatDecimal(Math.abs(remainingBalance))}</strong>
                     </div>
                     {remainingBalance > 0.01 && saleData.tutor && <div className="debt-info">Este saldo se agregará a la cuenta corriente del tutor.</div>}
                     {isGenericAndHasDebt && <div className="debt-error">Las ventas a clientes genéricos deben abonarse en su totalidad.</div>}

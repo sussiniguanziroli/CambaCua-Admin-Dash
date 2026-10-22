@@ -24,6 +24,7 @@ import {
   FaNotesMedical,
 } from "react-icons/fa";
 import { fetchDailyTransactions } from "../../services/cashFlowService";
+import { formatDecimal } from '../../utils/format';
 
 const ClinicalDashboard = () => {
   const [citasHoy, setCitasHoy] = useState([]);
@@ -151,12 +152,7 @@ const ClinicalDashboard = () => {
     setExpandedWidget((prev) => (prev === widget ? null : widget));
   };
 
-  const formatCurrency = (value) => {
-    return value.toLocaleString("es-AR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
+  const formatCurrency = (value) => formatDecimal(value);
 
   const scheduledOrdersCount = useMemo(
     () => pedidosPendientes.filter((p) => p.programado).length,
@@ -364,7 +360,7 @@ const ClinicalDashboard = () => {
                       <Link to={`/admin/paciente-profile/${h.pacienteId}`} className="list-item-link">
                         <span className="item-time">{h.date}</span>
                         <span className="item-name">{h.pacienteName || "Paciente"}</span>
-                        <span className="item-extra">{h.reason}</span>
+                        <span className="item-extra">{h.type === "novedad" ? `Novedad: ${h.reason}` : h.reason}</span>
                       </Link>
                     </div>
                   ))

@@ -22,6 +22,8 @@ import {
 } from "react-icons/fa";
 import GroomingAppointmentModal from "./GroomingAppointmentModal";
 
+import { PacienteLink, TutorLink } from "../agenda/ProfileLinks";
+
 const GroomingAppointmentCard = ({ appointment, onClick, viewMode }) => {
   const startTime = appointment.startTime.toLocaleTimeString("es-AR", {
     hour: "2-digit",
@@ -44,11 +46,11 @@ const GroomingAppointmentCard = ({ appointment, onClick, viewMode }) => {
       <div className="peluqueria-appointment-body">
         <p className="peluqueria-appointment-patient">
           <FaDog />
-          {appointment.pacienteName}
+          <PacienteLink id={appointment.pacienteId} name={appointment.pacienteName} />
         </p>
         <p className="peluqueria-appointment-tutor">
           <FaUser />
-          {appointment.tutorName}
+          <TutorLink id={appointment.tutorId} name={appointment.tutorName} />
         </p>
         {appointment.peluqueroName && (
           <p className="peluqueria-appointment-groomer">

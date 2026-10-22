@@ -3,6 +3,7 @@ import { FaSave, FaTrash, FaPlus, FaCheckCircle, FaSearch, FaTimes, FaLink } fro
 import { collection, getDocs, writeBatch, doc, increment } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
 
+import { formatDecimal } from '../../../utils/format';
 
 const InvoiceReview = ({ data, onBack, imageUrl }) => {
   const [items, setItems] = useState([]);
@@ -251,10 +252,10 @@ const InvoiceReview = ({ data, onBack, imageUrl }) => {
                         />
                       </td>
                       <td className="text-right cost-cell">
-                        ${item.costoUnitario?.toFixed(2)}
+                        ${formatDecimal(item.costoUnitario)}
                       </td>
                       <td className="text-right current-price-cell">
-                        {item.selectedProduct ? `$${item.selectedProduct.precioVenta}` : '-'}
+                        {item.selectedProduct ? `$${formatDecimal(item.selectedProduct.precioVenta)}` : '-'}
                       </td>
                       <td>
                         <input
@@ -361,7 +362,7 @@ const ProductSearchCell = ({ selectedProduct, allProducts, onSelect }) => {
                   <strong>{prod.nombre}</strong>
                   <small>{prod.categoria}</small>
                 </div>
-                <span className="price-tag">${prod.precioVenta}</span>
+                <span className="price-tag">${formatDecimal(prod.precioVenta)}</span>
               </div>
             )) : <div className="no-results">No encontrado</div>}
           </div>

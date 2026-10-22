@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import SaleDetailModal from '../../administracion/SaleDetailModal';
 import ViewClinicalNoteModal from '../adminPacientes/ViewClinicalNoteModal';
 import ClinicalNoteModal from '../adminPacientes/ClinicalNoteModal';
+import { isNovedad } from '../../utils/noteTypes';
 import { FaEye, FaPencilAlt, FaSync } from 'react-icons/fa';
 
 const ITEMS_PER_PAGE = 25;
@@ -214,7 +215,8 @@ const MonitorClinica = () => {
                 entry.tutorName?.toLowerCase().includes(lowerTerm) ||
                 entry.reason?.toLowerCase().includes(lowerTerm) ||
                 entry.diagnosis?.toLowerCase().includes(lowerTerm) ||
-                entry.treatment?.toLowerCase().includes(lowerTerm)
+                entry.treatment?.toLowerCase().includes(lowerTerm) ||
+                entry.comment?.toLowerCase().includes(lowerTerm)
             );
         }
 
@@ -270,21 +272,28 @@ const MonitorClinica = () => {
                     <div className="history-list-body">
                         {filteredAndSortedHistory.length > 0 ? (
                             filteredAndSortedHistory.map(entry => (
-                                <div key={entry.id} className="history-entry-card">
+                                <div key={entry.id} className={`history-entry-card${isNovedad(entry) ? " novedad" : ""}`}>
                                     <div className="col-date">{entry.date}</div>
                                     <div className="col-patient">
                                         <Link to={`/admin/paciente-profile/${entry.pacienteId}`}>{entry.pacienteName}</Link>
                                         <small><Link to={`/admin/tutor-profile/${entry.tutorId}`}>{entry.tutorName}</Link></small>
                                     </div>
                                     <div className="col-reason">
+                                        {isNovedad(entry) && <span className="entry-tag-novedad">Novedad</span>}
                                         {entry.reason}
                                         {entry.saleId && (
                                             <button className="sale-link-btn" title="Ver venta asociada" onClick={() => handleViewSale(entry.saleId)}>$</button>
                                         )}
                                     </div>
                                     <div className="col-details">
-                                        <p><strong>Diagnóstico:</strong> {entry.diagnosis || 'N/A'}</p>
-                                        <p><strong>Tratamiento:</strong> {entry.treatment || 'N/A'}</p>
+                                        {isNovedad(entry) ? (
+                                            <p>{entry.comment || 'Sin comentario.'}</p>
+                                        ) : (
+                                            <>
+                                                <p><strong>Diagnóstico:</strong> {entry.diagnosis || 'N/A'}</p>
+                                                <p><strong>Tratamiento:</strong> {entry.treatment || 'N/A'}</p>
+                                            </>
+                                        )}
                                     </div>
                                     <div className="col-actions">
                                         <button className="action-btn view" onClick={() => handleViewNote(entry)}><FaEye /></button>

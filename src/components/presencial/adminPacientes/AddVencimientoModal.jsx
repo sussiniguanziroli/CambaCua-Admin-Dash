@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { collection, addDoc, writeBatch, Timestamp, getDocs, doc, query, where } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
 import { FaTrash } from 'react-icons/fa';
+import { formatDecimal } from '../../../utils/format';
 
 const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tutorName, pacienteName }) => {
     const [selectedProducts, setSelectedProducts] = useState([]);
@@ -265,7 +266,7 @@ const AddVencimientoModal = ({ isOpen, onClose, onSave, pacienteId, tutorId, tut
                         <div className="vencimiento-items-grid">{isLoading ? <p>Cargando...</p> : filteredAndSortedData.map(item => (<div key={item.id} 
                             className={`vencimiento-item-card ${selectedProducts.some(p => p.id === item.id) ? 'selected' : ''}`} 
                             onClick={() => handleProductSelect(item)}
-                        ><span className="item-name">{item.name}</span><strong className="item-price">${(item.price || 0).toFixed(2)}</strong></div>))}</div>
+                        ><span className="item-name">{item.name}</span><strong className="item-price">${formatDecimal((item.price || 0))}</strong></div>))}</div>
                     </div>
 
                     <div className="vencimiento-details-section">

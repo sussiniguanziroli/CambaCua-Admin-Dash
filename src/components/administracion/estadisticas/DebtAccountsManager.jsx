@@ -4,6 +4,7 @@ import { Timestamp } from 'firebase/firestore';
 import { FaSearch, FaDownload, FaMoneyBillWave, FaExclamationTriangle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import LoaderSpinner from '../../utils/LoaderSpinner';
+import { formatMoney } from '../../../utils/format';
 
 const DebtAccountsManager = () => {
     const [startDate, setStartDate] = useState('');
@@ -16,7 +17,7 @@ const DebtAccountsManager = () => {
     const navigate = useNavigate();
 
     const formatCurrency = (value) => {
-        return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value);
+        return formatMoney(value);
     };
 
     const formatDate = (timestamp) => {

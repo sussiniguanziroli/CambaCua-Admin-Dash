@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { db } from '../../firebase/config';
 import { doc, writeBatch, increment, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
 import { FaFileInvoiceDollar, FaHandHoldingUsd, FaPencilAlt, FaTrash, FaSave, FaExclamationTriangle, FaMoneyBillWave, FaTh, FaList } from 'react-icons/fa';
+import { formatDecimal } from '../../utils/format';
 
 const cancelSale = async (sale) => {
     if (sale.type !== 'Venta Presencial' && sale.type !== 'Pedido Online') {
@@ -95,13 +96,7 @@ const CajaDiaria = () => {
     const [viewMode, setViewMode] = useState('grid');
     const navigate = useNavigate();
 
-    const formatCurrency = (number) => {
-        const num = parseFloat(number) || 0;
-        return num.toLocaleString('es-AR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
-    };
+    const formatCurrency = (number) => formatDecimal(number);
 
     const fetchAndSetTransactions = useCallback(async (date) => {
         setIsLoading(true);

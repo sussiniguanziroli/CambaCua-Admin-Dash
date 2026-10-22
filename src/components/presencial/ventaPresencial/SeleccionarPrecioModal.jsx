@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../../firebase/config';
 import { doc, updateDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2';
+import { formatDecimal } from '../../../utils/format';
 
 const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUpdateProductPrice, onApplyDiscount }) => {
     const [activeTab, setActiveTab] = useState('precio');
@@ -74,7 +75,7 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
                         <h3>Modificar Precio</h3>
                         <div className="precio-current">
                             <span>Precio Actual {item.isDoseable ? '(por ml)' : '(por unidad)'}:</span>
-                            <strong>${currentPrice.toFixed(2)}</strong>
+                            <strong>${formatDecimal(currentPrice)}</strong>
                         </div>
                         <div className="precio-input-group">
                             <label>Nuevo Precio {item.isDoseable ? '(por ml)' : '(por unidad)'}</label>
@@ -84,8 +85,8 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
                             </div>
                         </div>
                         <div className="precio-preview">
-                            <div className="preview-row"><span>Subtotal Anterior (sin dto):</span><span>${item.priceBeforeDiscount.toFixed(2)}</span></div>
-                            <div className="preview-row new"><span>Nuevo Subtotal (sin dto):</span><strong>${newTotal.toFixed(2)}</strong></div>
+                            <div className="preview-row"><span>Subtotal Anterior (sin dto):</span><span>${formatDecimal(item.priceBeforeDiscount)}</span></div>
+                            <div className="preview-row new"><span>Nuevo Subtotal (sin dto):</span><strong>${formatDecimal(newTotal)}</strong></div>
                         </div>
                     </div>
                 )}
@@ -104,9 +105,9 @@ const SeleccionarPrecioModal = ({ isOpen, onClose, item, onUpdateCartPrice, onUp
                             </div>
                         </div>
                         <div className="precio-preview">
-                            <div className="preview-row"><span>Subtotal (sin dto):</span><span>${item.priceBeforeDiscount.toFixed(2)}</span></div>
-                            <div className="preview-row discount"><span>Descuento:</span><span>-${discountPreview.toFixed(2)}</span></div>
-                            <div className="preview-row new"><span>Nuevo Subtotal:</span><strong>${newTotalWithDiscount.toFixed(2)}</strong></div>
+                            <div className="preview-row"><span>Subtotal (sin dto):</span><span>${formatDecimal(item.priceBeforeDiscount)}</span></div>
+                            <div className="preview-row discount"><span>Descuento:</span><span>-${formatDecimal(discountPreview)}</span></div>
+                            <div className="preview-row new"><span>Nuevo Subtotal:</span><strong>${formatDecimal(newTotalWithDiscount)}</strong></div>
                         </div>
                     </div>
                 )}
