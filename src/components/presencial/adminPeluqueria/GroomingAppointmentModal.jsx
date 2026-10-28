@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../../../firebase/config";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { where } from "firebase/firestore";
+import { getCachedCollection, SMALL_COLLECTION_TTL } from "../../../services/collectionCache";
 import Swal from "sweetalert2";
 import { FaUser, FaDog, FaCut, FaTimes } from "react-icons/fa";
 import { AppointmentProfileLinks } from "../agenda/ProfileLinks";
@@ -83,29 +83,23 @@ const GroomingAppointmentModal = ({
     if (!isOpen) return;
     const fetchInitialData = async () => {
       try {
-        const [tutorsSnap, pacientesSnap, servicesSnap, peluquerosSnap] =
+        const [tutorsList, pacientesList, services, peluquerosList] =
           await Promise.all([
-            getDocs(collection(db, "tutores")),
-            getDocs(collection(db, "pacientes")),
-            getDocs(
-              query(
-                collection(db, "productos_presenciales"),
-                where("category", "==", "peluqueria")
-              )
+            getCachedCollection("tutores"),
+            getCachedCollection("pacientes"),
+            getCachedCollection(
+              "productos_presenciales",
+              [where("category", "==", "peluqueria")],
+              "productos_presenciales:peluqueria",
+              SMALL_COLLECTION_TTL
             ),
-            getDocs(
-              query(collection(db, "peluqueros"), where("isActive", "==", true))
+            getCachedCollection(
+              "peluqueros",
+              [where("isActive", "==", true)],
+              "peluqueros:activos",
+              SMALL_COLLECTION_TTL
             ),
           ]);
-
-        const tutorsList = tutorsSnap.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        const pacientesList = pacientesSnap.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
 
         tutorsList.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
         pacientesList.sort((a, b) =>
@@ -117,12 +111,8 @@ const GroomingAppointmentModal = ({
         setFilteredTutores(tutorsList);
         setFilteredPacientes(pacientesList);
 
-        setAvailableServices(
-          servicesSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        );
-        setPeluqueros(
-          peluquerosSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        );
+        setAvailableServices(services);
+        setPeluqueros(peluquerosList);
       } catch (error) {
         console.error("Error fetching initial data: ", error);
       }

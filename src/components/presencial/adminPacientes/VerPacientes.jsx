@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, useDeferredValue } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, getDocs, doc, deleteDoc, updateDoc, arrayRemove, query, where } from "firebase/firestore";
 import { db } from "../../../firebase/config";
+import { invalidateCollections } from "../../../services/collectionCache";
 import Swal from "sweetalert2";
 import { FaCat, FaDog, FaPlus } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
@@ -109,6 +110,7 @@ const VerPacientes = () => {
     const newTypes = SERVICE_TYPES_BY_VALUE[value] || [];
     try {
       await updateDoc(doc(db, "pacientes", paciente.id), { serviceTypes: newTypes });
+      invalidateCollections("pacientes");
       await recalculateTutorServiceTypes(paciente.tutorId);
 
       Swal.fire({
@@ -138,6 +140,7 @@ const VerPacientes = () => {
     if (result.isConfirmed) {
       try {
         await deleteDoc(doc(db, "pacientes", paciente.id));
+        invalidateCollections("pacientes", "tutores");
 
         if (paciente.tutorId) {
           const tutorRef = doc(db, "tutores", paciente.tutorId);

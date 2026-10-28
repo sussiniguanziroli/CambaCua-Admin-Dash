@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, documentId, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
@@ -24,13 +24,22 @@ const ReporteDeudoresModal = ({ onClose }) => {
             const start = new Date(startDate); start.setHours(0,0,0,0);
             const end = new Date(endDate); end.setHours(23,59,59,999);
 
-            const [tutoresSnap, ventasSnap] = await Promise.all([
-                getDocs(collection(db, "tutores")),
-                getDocs(query(collection(db, 'ventas_presenciales'), where('debt', '>', 0)))
-            ]);
+            const ventasSnap = await getDocs(query(collection(db, 'ventas_presenciales'), where('debt', '>', 0)));
 
+            // Solo se leen los tutores que aparecen en el período (se necesita su teléfono), no todo el padrón.
+            const tutorIds = [...new Set(
+                ventasSnap.docs
+                    .filter(d => { const c = d.data().createdAt?.toDate(); return c && c >= start && c <= end; })
+                    .map(d => d.data().tutorInfo?.id)
+                    .filter(Boolean)
+            )];
             const tutoresMap = {};
-            tutoresSnap.forEach(doc => { tutoresMap[doc.id] = doc.data(); });
+            const tutoresSnaps = await Promise.all(
+                Array.from({ length: Math.ceil(tutorIds.length / 30) }, (_, i) =>
+                    getDocs(query(collection(db, 'tutores'), where(documentId(), 'in', tutorIds.slice(i * 30, i * 30 + 30))))
+                )
+            );
+            tutoresSnaps.forEach(snap => snap.forEach(doc => { tutoresMap[doc.id] = doc.data(); }));
 
             const tempDetalle = [];
             const tempResumen = {};

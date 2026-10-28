@@ -10,6 +10,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../../firebase/config";
+import { getCachedCollection, invalidateCollections } from "../../../services/collectionCache";
 import Swal from "sweetalert2";
 
 const AddPaciente = () => {
@@ -40,8 +41,7 @@ const AddPaciente = () => {
     const fetchTutores = async () => {
       setIsLoadingTutores(true);
       try {
-        const snapshot = await getDocs(collection(db, "tutores"));
-        setTutores(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        setTutores(await getCachedCollection("tutores"));
       } catch (error) {
         Swal.fire("Error", "No se pudieron cargar los tutores.", "error");
       } finally {
@@ -148,6 +148,7 @@ const AddPaciente = () => {
       const docRef = await addDoc(collection(db, "pacientes"), dataToSave);
       const tutorRef = doc(db, "tutores", pacienteData.tutorId);
       await updateDoc(tutorRef, { pacienteIds: arrayUnion(docRef.id) });
+      invalidateCollections("tutores", "pacientes");
       Swal.fire("Éxito", "Paciente agregado y vinculado al tutor.", "success");
       navigate(`/admin/tutor-profile/${pacienteData.tutorId}`);
     } catch (error) {

@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { db } from '../../../firebase/config';
-import { collection, getDocs } from 'firebase/firestore';
-
-// Cache for tutors data - shared with VerTutores if needed
-let tutorsCache = null;
-let cacheTimestamp = null;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+import { getCachedCollection } from '../../../services/collectionCache';
 
 const SeleccionarTutor = ({ onTutorSelected, onGenericSelected }) => {
     const [tutors, setTutors] = useState([]);
@@ -13,39 +7,20 @@ const SeleccionarTutor = ({ onTutorSelected, onGenericSelected }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
-    // Check if cache is valid
-    const isCacheValid = useCallback(() => {
-        return tutorsCache && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION);
-    }, []);
-
     useEffect(() => {
         const fetchTutors = async () => {
-            // Use cache if valid
-            if (isCacheValid()) {
-                setTutors(tutorsCache);
-                setIsLoading(false);
-                return;
-            }
-
             setIsLoading(true);
             try {
-                const tutorsSnapshot = await getDocs(collection(db, 'tutores'));
-                const tutorsList = tutorsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                
-                // Update cache
-                tutorsCache = tutorsList;
-                cacheTimestamp = Date.now();
-                
-                setTutors(tutorsList);
+                setTutors(await getCachedCollection('tutores'));
             } catch (error) {
                 console.error("Error fetching tutors:", error);
             } finally {
                 setIsLoading(false);
             }
         };
-        
+
         fetchTutors();
-    }, [isCacheValid]);
+    }, []);
 
     // Memoized filtered tutors
     const filteredTutors = useMemo(() => {

@@ -68,6 +68,7 @@ test('ranking consulta solamente IDs activos en lotes de hasta 30 y conserva los
     let salesRead = 0;
     const service = await loadService('statsService.js', {
         '../firebase/config': { db: {} },
+        '../utils/format': { formatDecimal: value => String(value) },
         'firebase/firestore': {
             collection: (_, name) => name,
             documentId: () => '__name__',
@@ -110,6 +111,7 @@ test('ranking consulta solamente IDs activos en lotes de hasta 30 y conserva los
 test('cuentas consulta solo tutores deudores y conserva el saldo agregado', async () => {
     const service = await loadService('statsService.js', {
         '../firebase/config': { db: {} },
+        '../utils/format': { formatDecimal: value => String(value) },
         'firebase/firestore': {
             collection: (_, name) => name,
             documentId: () => '__name__',
@@ -126,4 +128,40 @@ test('cuentas consulta solo tutores deudores y conserva el saldo agregado', asyn
     const result = await service.getDebtAccountsReport({ start: stamp(new Date()), end: stamp(new Date()) });
     assert.equal(result.summary.deudaPendiente, 200);
     assert.equal(result.summary.deudoresCount, 1);
+});
+
+test('la caché comparte lecturas simultáneas, reutiliza dentro del TTL y relee tras invalidar', async () => {
+    const reads = [];
+    const service = await loadService('collectionCache.js', {
+        '../firebase/config': { db: {} },
+        'firebase/firestore': {
+            collection: (_, name) => name,
+            query: (name, ...filters) => ({ name, filters }),
+            getDocs: async q => {
+                const name = q.name ?? q;
+                reads.push(name);
+                return { docs: [document(`${name}-1`, { name: 'B' }), document(`${name}-0`, { name: 'A' })] };
+            },
+        },
+    });
+    const [first, second] = await Promise.all([
+        service.getCachedCollection('tutores'),
+        service.getCachedCollection('tutores'),
+    ]);
+    assert.equal(reads.length, 1, 'Las lecturas simultáneas comparten una consulta');
+    first.sort((a, b) => a.name.localeCompare(b.name));
+    assert.equal(second[0].id, 'tutores-1', 'Cada consumidor recibe su propia copia');
+
+    await service.getCachedCollection('tutores');
+    assert.equal(reads.length, 1, 'Dentro del TTL no hay nueva lectura');
+
+    await service.getCachedCollection('productos_presenciales', [{ field: 'tipo' }], 'productos_presenciales:servicio');
+    service.invalidateCollections('tutores');
+    await service.getCachedCollection('tutores');
+    await service.getCachedCollection('productos_presenciales', [{ field: 'tipo' }], 'productos_presenciales:servicio');
+    assert.deepEqual(reads, ['tutores', 'productos_presenciales', 'tutores'], 'Invalidar tutores no afecta otras colecciones');
+
+    service.invalidateCollections('productos_presenciales');
+    await service.getCachedCollection('productos_presenciales', [{ field: 'tipo' }], 'productos_presenciales:servicio');
+    assert.equal(reads.length, 4, 'Invalidar la colección descarta también sus consultas filtradas');
 });

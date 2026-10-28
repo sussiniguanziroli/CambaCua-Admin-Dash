@@ -3,6 +3,7 @@ import React, { useState, useCallback, useMemo, useDeferredValue } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
+import { invalidateCollections } from "../../../services/collectionCache";
 import Swal from "sweetalert2";
 import { FaPlus, FaDog, FaStethoscope, FaFileExcel } from "react-icons/fa";
 import { FaUserLarge } from "react-icons/fa6";
@@ -107,6 +108,7 @@ const VerTutores = () => {
     if (result.isConfirmed) {
       try {
         await deleteDoc(doc(db, "tutores", tutorId));
+        invalidateCollections("tutores");
         Swal.fire("Eliminado", `${tutorName} ha sido eliminado.`, "success");
       } catch (error) {
         console.error("Error deleting tutor:", error);

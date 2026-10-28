@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
+import { invalidateCollections } from '../../../services/collectionCache';
 import Swal from 'sweetalert2';
 
 const AddTutor = () => {
@@ -51,6 +52,7 @@ const AddTutor = () => {
             await addDoc(collection(db, 'tutores'), {
                 ...tutorData, accountBalance: 0, createdAt: serverTimestamp(), pacienteIds: []
             });
+            invalidateCollections('tutores');
             Swal.fire('Éxito', 'Tutor agregado correctamente.', 'success');
             navigate('/admin/tutores');
         } catch (error) {

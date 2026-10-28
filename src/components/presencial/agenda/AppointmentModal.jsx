@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { db } from "../../../firebase/config";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { where } from "firebase/firestore";
+import { getCachedCollection, SMALL_COLLECTION_TTL } from "../../../services/collectionCache";
 import Swal from "sweetalert2";
 import { FaUser, FaDog, FaDownload, FaTimes, FaSearch } from "react-icons/fa";
 import jsPDF from "jspdf";
@@ -100,25 +100,16 @@ const AppointmentModal = ({
     if (!isOpen) return;
     const fetchInitialData = async () => {
       try {
-        const [tutorsSnap, pacientesSnap, servicesSnap] = await Promise.all([
-          getDocs(collection(db, "tutores")),
-          getDocs(collection(db, "pacientes")),
-          getDocs(
-            query(
-              collection(db, "productos_presenciales"),
-              where("tipo", "==", "servicio")
-            )
+        const [tutorsList, pacientesList, services] = await Promise.all([
+          getCachedCollection("tutores"),
+          getCachedCollection("pacientes"),
+          getCachedCollection(
+            "productos_presenciales",
+            [where("tipo", "==", "servicio")],
+            "productos_presenciales:servicio",
+            SMALL_COLLECTION_TTL
           ),
         ]);
-
-        const tutorsList = tutorsSnap.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        const pacientesList = pacientesSnap.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
 
         tutorsList.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
         pacientesList.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
@@ -128,9 +119,7 @@ const AppointmentModal = ({
         setFilteredTutores(tutorsList);
         setFilteredPacientes(pacientesList);
 
-        setAvailableServices(
-          servicesSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        );
+        setAvailableServices(services);
       } catch (error) {
         console.error("Error fetching initial data: ", error);
       }

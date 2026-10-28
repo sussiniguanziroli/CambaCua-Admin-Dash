@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { collection, getDocs, writeBatch, doc, arrayRemove, arrayUnion, query, where } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
+import { getCachedCollection, invalidateCollections } from '../../../services/collectionCache';
 import Swal from 'sweetalert2';
 
 const TransferPacienteModal = ({ isOpen, onClose, paciente, onTransferComplete }) => {
@@ -63,9 +64,8 @@ const TransferPacienteModal = ({ isOpen, onClose, paciente, onTransferComplete }
   const fetchTutores = async () => {
     setIsLoading(true);
     try {
-      const snapshot = await getDocs(collection(db, 'tutores'));
-      const tutoresList = snapshot.docs
-        .map(d => ({ id: d.id, ...d.data() }))
+      const todos = await getCachedCollection('tutores');
+      const tutoresList = todos
         .filter(t => t.id !== paciente.tutorId)
         .sort((a, b) => a.name.localeCompare(b.name));
       setTutores(tutoresList);
@@ -157,6 +157,7 @@ const TransferPacienteModal = ({ isOpen, onClose, paciente, onTransferComplete }
       batch2.update(oldTutorRef, { serviceTypes: oldTutorServices });
       batch2.update(newTutorRef, { serviceTypes: newTutorServices });
       await batch2.commit();
+      invalidateCollections('tutores', 'pacientes');
 
       await Swal.fire('Éxito', 'Paciente transferido correctamente.', 'success');
       

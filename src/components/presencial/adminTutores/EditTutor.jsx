@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
+import { invalidateCollections } from '../../../services/collectionCache';
 import Swal from 'sweetalert2';
 
 const EditTutor = () => {
@@ -69,6 +70,7 @@ const EditTutor = () => {
         setIsSubmitting(true);
         try {
             await updateDoc(doc(db, 'tutores', id), tutorData);
+            invalidateCollections('tutores');
             Swal.fire('Éxito', 'Tutor actualizado correctamente.', 'success');
             navigate(`/admin/tutor-profile/${id}`);
         } catch (error) {

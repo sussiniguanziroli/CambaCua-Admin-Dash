@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc, collection, getDocs, deleteField } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
+import { invalidateCollections } from '../../../services/collectionCache';
 import Swal from 'sweetalert2';
 import TransferPacienteModal from './TransferPacienteModal';
 
@@ -74,6 +75,7 @@ const EditPaciente = () => {
             if (dataToUpdate.fallecido) { dataToUpdate.fechaFallecimiento = dataToUpdate.fechaFallecimiento || new Date().toISOString().split('T')[0]; } 
             else { dataToUpdate.fallecido = deleteField(); dataToUpdate.fechaFallecimiento = deleteField(); }
             await updateDoc(doc(db, 'pacientes', id), dataToUpdate);
+            invalidateCollections('pacientes');
             Swal.fire('Éxito', 'Paciente actualizado correctamente.', 'success');
             navigate(`/admin/paciente-profile/${id}`);
         } catch (error) { Swal.fire('Error', 'No se pudo actualizar el paciente.', 'error');

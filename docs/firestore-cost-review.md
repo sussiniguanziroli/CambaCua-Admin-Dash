@@ -48,3 +48,17 @@ No se encontraron intervalos de polling en `src`. Los únicos `onSnapshot` encon
 No hay una estimación fiable del ahorro en dólares con los datos disponibles.
 
 Referencias: [facturación de Firestore](https://firebase.google.com/docs/firestore/pricing), [límites de consultas](https://firebase.google.com/docs/firestore/query-data/queries), [reglas superpuestas](https://firebase.google.com/docs/firestore/security/rules-structure). La persistencia local no vuelve gratuitas todas las lecturas: las consultas y reconexiones pueden facturarse, y una consulta vacía tiene un cargo mínimo de lectura.
+
+## Segunda revisión — 28/10/2026 (factura de ~USD 100)
+
+Sin acceso a la facturación no se puede atribuir el importe; esto cubre lo que el código permite corregir.
+
+| Problema | Corrección |
+| --- | --- |
+| `AppointmentModal` y `GroomingAppointmentModal` descargaban tutores + pacientes completos (~4.150 docs) en cada apertura, tanto para crear como para ver/editar un turno | Lectura compartida con caché en memoria (`src/services/collectionCache.js`, TTL 10 min; catálogos chicos 2 min) |
+| `SeleccionarTutor`, `AddPaciente`, `TransferPacienteModal` descargaban todos los tutores | Misma caché |
+| `ReporteDeudoresModal` descargaba todos los tutores solo para obtener teléfonos | Consulta `in` por los tutores que aparecen en el período |
+
+La caché se invalida al crear/editar/borrar/transferir tutores y pacientes (`invalidateCollections`). Los cambios hechos desde otra pestaña o equipo pueden tardar hasta el TTL en verse en los selectores.
+
+Sigue pendiente: `PedidosCompletados`, `HandleOrders` y `ClinicalDashboard` (todos los `pedidos`), `ProductList`/`PresentialList`/`InvoiceReview`/`AddVencimientoModal` (catálogos completos en cada visita), `LinkUserModal` (users + tutores), recarga completa de `PacienteProfile` tras cada guardado. Un listener de `liveCollectionStore` que se reabre después de 30 min sin conexión vuelve a facturar la colección entera.
